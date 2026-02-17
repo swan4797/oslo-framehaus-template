@@ -1,0 +1,68 @@
+// ========================================
+// BRANCH TEAM MEMBER CARD STYLES
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/effects' as effects;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+
+.team-member {
+  background: colors.$color-bg-secondary;
+  border-radius: effects.$radius-lg;
+  overflow: hidden;
+  box-shadow: effects.$shadow-sm;
+  transition: effects.$transition-base;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: effects.$shadow-lg;
+  }
+
+  &__image {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+  }
+
+  &__placeholder {
+    width: 100%;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: colors.$color-bg-secondary;
+    color: colors.$color-text-muted;
+  }
+
+  &__info {
+    padding: spacing.$space-5;
+  }
+
+  &__name {
+    font-size: typography.$font-size-lg;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+    margin: 0 0 spacing.$space-1;
+  }
+
+  &__title {
+    font-size: typography.$font-size-sm;
+    color: colors.$color-primary;
+    margin: 0 0 spacing.$space-3;
+  }
+
+  &__email,
+  &__phone {
+    display: block;
+    font-size: typography.$font-size-sm;
+    color: colors.$color-text-muted;
+    text-decoration: none;
+    margin-top: spacing.$space-1;
+    transition: effects.$transition-fast;
+
+    &:hover {
+      color: colors.$color-primary;
+    }
+  }
+}

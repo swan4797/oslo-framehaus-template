@@ -1,0 +1,31 @@
+---
+// ========================================
+// VIEWING FORM PRESET
+// Ready-to-use property viewing request form
+// ========================================
+
+import Form from '../core/Form.astro'
+import { viewingFormConfig } from '../configs'
+
+interface Props {
+  /** Property ID for the viewing request */
+  propertyId?: string
+  /** Custom CSS class */
+  class?: string
+  /** Form variant */
+  variant?: 'default' | 'compact'
+  /** Override success redirect URL */
+  successRedirect?: string
+  /** Additional hidden fields */
+  hiddenFields?: Record<string, string>
+}
+
+const { propertyId, class: className, ...props } = Astro.props
+---
+
+<Form
+  config={viewingFormConfig}
+  propertyId={propertyId}
+  class={className}
+  {...props}
+/>

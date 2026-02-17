@@ -1,0 +1,1155 @@
+// ========================================
+// HEADER STYLES
+// Modular navigation header with variant support
+// Variants: transparent (hero pages), solid (standard pages)
+// Using centralized design tokens
+// ========================================
+
+@use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../mixins' as *;
+
+// ----------------------------------------
+// LOCAL DESIGN TOKENS
+// Component-specific values not in centralized tokens
+// ----------------------------------------
+
+$z-fixed: 100;
+$z-dropdown: 200;
+$container-max-width: 90rem;
+
+// ========================================
+// CSS CUSTOM PROPERTIES
+// Dynamic from Stratos CRM via CSS custom properties
+// These are set inline by the Header component
+// ========================================
+
+.site-header {
+  // Sizing (static - design system constants)
+  --header-height: 5rem;
+  --header-height-mobile: 4rem;
+  --header-padding-x: 2rem;
+  --header-padding-x-mobile: 1.25rem;
+
+  // Colors (fallback defaults - overridden by inline styles from Header component)
+  // These ensure the header works even without JS or inline styles
+  --header-bg: transparent;
+  --header-border: transparent;
+  --header-text-color: #{colors.$color-text-primary};
+  --header-text-hover: #{colors.$color-primary};
+  --header-scrolled-bg: #{colors.$color-bg-primary-98};
+}
+
+// ========================================
+// HEADER BASE
+// ========================================
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $z-fixed;
+  font-family: typography.$font-family-base;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--header-border);
+  transform: translateY(0);
+  transition:
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+  will-change: transform;
+
+  // Non-sticky variant (static positioning)
+  &:not(.site-header--sticky) {
+    position: absolute;
+  }
+
+  // Hidden state - slide up
+  &.is-hidden {
+    transform: translateY(-100%);
+  }
+
+  // Prevent hiding when mobile menu is open
+  &.is-menu-open {
+    transform: translateY(0) !important;
+  }
+}
+
+// ========================================
+// VARIANT: TRANSPARENT
+// For pages with hero sections - overlays content
+// ========================================
+
+.site-header--transparent {
+  --header-text-color: #{colors.$color-text-light-90};
+  --header-text-hover: #{colors.$color-text-light};
+  --header-bg: transparent;
+  --header-border: transparent;
+
+  // Menu open state - switch to solid with brand accents
+  &.is-menu-open {
+    --header-bg: #{colors.$color-bg-primary};
+    --header-border: #{colors.$color-border-light};
+    --header-text-color: #{colors.$color-text-primary};
+    --header-text-hover: #{colors.$color-primary};
+
+    .header__logo-icon,
+    .header__logo-text,
+    .header__logo-tagline {
+      color: colors.$color-primary;
+    }
+  }
+
+  // Scrolled state - solid background with blur and brand accents
+  &.is-scrolled {
+    --header-bg: var(--header-scrolled-bg, #{colors.$color-bg-primary-98});
+    --header-border: #{colors.$color-border-light};
+    --header-text-color: #{colors.$color-text-primary};
+    --header-text-hover: #{colors.$color-primary};
+    box-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.08);
+
+    .header__logo-icon,
+    .header__logo-text,
+    .header__logo-tagline {
+      color: colors.$color-primary;
+    }
+  }
+
+  // Blur effect when scrolled (controlled by data attribute)
+  &[data-scrolled-blur="true"].is-scrolled {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+// ========================================
+// VARIANT: SOLID
+// For standard pages without hero sections
+// Uses brand colors for accents on white background
+// ========================================
+
+.site-header--solid {
+  // Scrolled state - add shadow
+  &.is-scrolled {
+    box-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.08);
+  }
+
+  // Logo uses brand color
+  .header__logo-icon,
+  .header__logo-text,
+  .header__logo-tagline {
+    color: colors.$color-primary;
+  }
+}
+
+// ========================================
+// VARIANT: DARK
+// For pages with dark backgrounds
+// Light text on dark background
+// ========================================
+
+.site-header--dark {
+  // Scrolled state - subtle shadow
+  &.is-scrolled {
+    box-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  // Menu open state
+  &.is-menu-open {
+    --header-bg: #{colors.$color-bg-dark};
+    --header-border: #{colors.$color-border-light};
+  }
+}
+
+// ========================================
+// VARIANT: MINIMAL
+// Clean, borderless design for simple pages
+// Transitions to solid on scroll
+// ========================================
+
+.site-header--minimal {
+  // Scrolled state - fade in background
+  &.is-scrolled {
+    --header-border: #{colors.$color-border-light};
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.04);
+  }
+
+  // Logo uses brand color
+  .header__logo-icon,
+  .header__logo-text,
+  .header__logo-tagline {
+    color: colors.$color-primary;
+  }
+}
+
+// ========================================
+// LIGHT LOGO MODIFIER
+// Forces logo to be light (for dark backgrounds)
+// ========================================
+
+.site-header--light-logo {
+  .header__logo-img {
+    filter: brightness(0) invert(1);
+  }
+}
+
+// ========================================
+// CONTAINER
+// ========================================
+
+.header__container {
+  position: relative;
+  z-index: 1000; // Stay above mobile menu overlay
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: 0 var(--header-padding-x);
+  height: var(--header-height);
+  background: transparent; // Inherit header background
+
+  @include mobile-only {
+    height: var(--header-height-mobile);
+    padding: 0 var(--header-padding-x-mobile);
+  }
+}
+
+// Left navigation links
+.header__left-nav {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.header__left-link {
+  font-family: typography.$font-family-base;
+  font-size: 0.75rem;
+  font-weight: typography.$font-weight-regular;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--header-text-color, rgba(255, 255, 255, 0.9));
+  transition: color 0.2s ease, opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  // When scrolled or menu open
+  .site-header--transparent.is-scrolled &,
+  .site-header--transparent.is-menu-open &,
+  .site-header--solid & {
+    color: colors.$color-text-primary;
+  }
+
+  // Hide on mobile
+  @include mobile-only {
+    display: none;
+  }
+}
+
+// ========================================
+// LOGO
+// ========================================
+
+.header__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+// Stacked logo layout (name + tagline)
+.header__logo-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.header__logo-text {
+  font-family: typography.$font-family-heading;
+  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+  font-weight: typography.$font-weight-medium;
+  color: var(--header-text-color);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+}
+
+.header__logo-tagline {
+  font-family: typography.$font-family-base;
+  font-size: clamp(0.625rem, 1.2vw, 0.75rem);
+  font-weight: typography.$font-weight-regular;
+  color: var(--header-text-color);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  opacity: 0.9;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+// Legacy icon support
+.header__logo-icon {
+  width: 2rem;
+  height: 2rem;
+  color: var(--header-text-color);
+  transition: color 0.3s ease;
+
+  @include mobile-only {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
+.header__logo-img {
+  max-height: 3.5rem;
+  width: auto;
+  object-fit: contain;
+  transition: filter 0.3s ease;
+
+  // Invert logo for transparent variant (assuming dark logo)
+  // .site-header--transparent:not(.is-scrolled):not(.is-menu-open) & {
+  //   filter: brightness(0) invert(1);
+  // }
+
+  @include mobile-only {
+    max-height: 2.25rem;
+  }
+
+  @media (max-width: 480px) {
+    max-height: 2rem;
+  }
+}
+
+// ========================================
+// DESKTOP NAVIGATION - FULL-SCREEN OVERLAY
+// Two-column layout: nav links left, tagline right
+// ========================================
+
+.header__nav {
+  // Full-screen fixed overlay (hidden by default)
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--color-bg-tertiary, #{colors.$color-bg-tertiary});
+  z-index: 998;
+
+  // Hidden by default
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  // Show when menu is open
+  .site-header.is-menu-open & {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+// Top bar inside full-screen nav
+.header__nav-topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-height);
+  padding: 0 var(--header-padding-x);
+  z-index: 10;
+  width: 85%;
+  margin: auto;
+
+  @include mobile-only {
+    height: var(--header-height-mobile);
+    padding: 0 var(--header-padding-x-mobile);
+  }
+}
+
+.header__nav-topbar-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.header__nav-topbar-link {
+  font-family: typography.$font-family-base;
+  font-size: 0.75rem;
+  font-weight: typography.$font-weight-regular;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: colors.$color-text-primary;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  @include mobile-only {
+    display: none;
+  }
+}
+
+.header__nav-topbar-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.header__nav-topbar-logo-img {
+  max-height: 3rem;
+  width: auto;
+  object-fit: contain;
+
+  @include mobile-only {
+    max-height: 2.25rem;
+  }
+}
+
+.header__nav-topbar-logo-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.header__nav-topbar-logo-text {
+  font-family: typography.$font-family-heading;
+  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.header__nav-topbar-logo-tagline {
+  font-family: typography.$font-family-base;
+  font-size: clamp(0.625rem, 1.2vw, 0.75rem);
+  font-weight: typography.$font-weight-regular;
+  color: colors.$color-text-primary;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.header__nav-topbar-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+// Close button for full-screen nav
+.header__nav-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: transparent;
+  border: 1px solid colors.$color-border-light;
+  border-radius: 50%;
+  color: colors.$color-text-primary;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+
+  svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  &:hover {
+    background: colors.$color-bg-secondary;
+    border-color: colors.$color-text-primary;
+    transform: rotate(90deg);
+  }
+
+  &:active {
+    transform: rotate(90deg) scale(0.95);
+  }
+
+  @include mobile-only {
+    width: 2.5rem;
+    height: 2.5rem;
+
+    svg {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+}
+
+// Full-screen container with two columns
+.header__nav-fullscreen {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  width: 90%;
+  height: 100%;
+  margin: auto;
+  padding: calc(var(--header-height) + 2rem) var(--header-padding-x) 2rem;
+
+  @include mobile-only {
+    grid-template-columns: 1fr;
+    padding: calc(var(--header-height-mobile) + 1.5rem) var(--header-padding-x-mobile) 1.5rem;
+    gap: 2rem;
+  }
+}
+
+// Navigation column (left side)
+.header__nav-column--left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 2rem;
+
+  @include mobile-only {
+    padding-left: 0;
+    justify-content: flex-start;
+  }
+}
+
+// Tagline column (right side)
+.header__nav-column--right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 2rem;
+
+  @include mobile-only {
+    padding-right: 0;
+    align-items: flex-start;
+  }
+}
+
+// Navigation list - vertical stack
+.header__nav-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header__nav-item {
+  position: relative;
+}
+
+// Navigation link - large typography
+.header__nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  font-family: typography.$font-family-base;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: typography.$font-weight-regular;
+  color: colors.$color-text-primary;
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  transition: color 0.2s ease, opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &[aria-current="page"],
+  &.header__nav-link--highlight {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+    text-decoration-thickness: 2px;
+  }
+
+  @include mobile-only {
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
+    padding: 0.375rem 0;
+  }
+}
+
+// Highlighted nav item
+.header__nav-item--highlight .header__nav-link {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 2px;
+}
+
+// Tagline wrapper - positioned container for transitions
+.header__nav-tagline-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 60ch;
+}
+
+// Tagline text - large display typography
+.header__nav-tagline {
+  font-family: typography.$font-family-heading;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: typography.$font-weight-regular;
+  color: colors.$color-text-primary;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+  max-width: 20ch;
+  transition:
+    opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @include mobile-only {
+    font-size: clamp(1.5rem, 8vw, 2.5rem);
+  }
+
+  // Default tagline - visible state
+  &--active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  // Default tagline - hidden state (when hover is active)
+  &.is-hidden {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  // Hover tagline - hidden by default
+  &--hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transform: translateY(0.5rem);
+    pointer-events: none;
+
+    // Visible state on hover
+    &.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      position: relative;
+      pointer-events: auto;
+    }
+  }
+}
+
+.header__dropdown-icon {
+  width: 1rem;
+  height: 1rem;
+  opacity: 0.5;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+
+  .header__nav-item--has-dropdown:hover &,
+  .header__nav-link--dropdown[aria-expanded="true"] + .header__dropdown & {
+    transform: rotate(180deg);
+    opacity: 1;
+  }
+}
+
+// ========================================
+// DESKTOP DROPDOWN - INLINE EXPANSION
+// ========================================
+
+.header__nav-item--has-dropdown {
+  position: relative;
+
+  &:hover .header__dropdown,
+  &:focus-within .header__dropdown,
+  &.is-open .header__dropdown {
+    opacity: 1;
+    visibility: visible;
+    max-height: 30rem;
+    pointer-events: auto;
+  }
+
+  &:hover .header__nav-link--dropdown,
+  &:focus-within .header__nav-link--dropdown {
+    opacity: 0.6;
+  }
+}
+
+.header__dropdown {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  padding-top: 0;
+  padding-left: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  max-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0.3s ease;
+  z-index: $z-dropdown;
+
+  // Remove arrow for inline style
+  &::before {
+    display: none;
+  }
+}
+
+.header__dropdown-content {
+  position: relative;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  min-width: auto;
+  padding: 0.5rem 0;
+  overflow: visible;
+}
+
+.header__dropdown-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.375rem 0;
+  text-decoration: none;
+  border-radius: 0;
+  transition: opacity 0.2s ease;
+  position: relative;
+
+  &::before {
+    display: none;
+  }
+
+  &:hover {
+    background: transparent;
+    transform: none;
+    opacity: 0.6;
+  }
+
+  &:active {
+    transform: none;
+  }
+}
+
+.header__dropdown-label {
+  font-family: typography.$font-family-base;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: typography.$font-weight-regular;
+  color: colors.$color-text-primary;
+  transition: opacity 0.2s ease;
+}
+
+.header__dropdown-desc {
+  font-size: 0.875rem;
+  color: colors.$color-text-secondary;
+  line-height: 1.4;
+  display: none; // Hide descriptions in this minimal design
+}
+
+// ========================================
+// RIGHT ACTIONS
+// ========================================
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.header__search-btn {
+  // Hidden by default for minimal design
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.5rem;
+  color: var(--header-text-color);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &:hover {
+    color: var(--header-text-hover);
+  }
+
+  // Transparent variant hover
+  .site-header--transparent:not(.is-scrolled):not(.is-menu-open) &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  // Solid variant or scrolled hover
+  .site-header--solid &:hover,
+  .site-header--transparent.is-scrolled &:hover,
+  .site-header--transparent.is-menu-open &:hover {
+    background: colors.$color-bg-tertiary;
+  }
+
+  @include mobile-only {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+.header__cta {
+  // Hidden by default for minimal design
+  display: none;
+  align-items: center;
+  justify-content: center;
+  height: 2.75rem;
+  padding: 0 1.5rem;
+  font-size: 0.875rem;
+  font-weight: typography.$font-weight-semibold;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+
+  // Transparent variant - glassmorphic style
+  .site-header--transparent:not(.is-scrolled):not(.is-menu-open) & {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: colors.$color-text-light;
+    border: 1px solid colors.$color-text-light-25;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: colors.$color-text-light-40;
+      transform: translateY(-0.0625rem);
+    }
+  }
+
+  // Solid variant or scrolled - brand color button
+  .site-header--solid &,
+  .site-header--transparent.is-scrolled &,
+  .site-header--transparent.is-menu-open & {
+    color: colors.$color-text-light;
+    background: colors.$color-primary;
+    border: 1px solid transparent;
+
+    &:hover {
+      background: colors.$color-primary-dark;
+      box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.15);
+      transform: translateY(-0.0625rem);
+    }
+  }
+}
+
+// ========================================
+// MOBILE MENU TOGGLE
+// ========================================
+
+.header__mobile-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  // Transparent variant hover
+  .site-header--transparent:not(.is-scrolled):not(.is-menu-open) &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  // Solid variant or scrolled hover
+  .site-header--solid &:hover,
+  .site-header--transparent.is-scrolled &:hover,
+  .site-header--transparent.is-menu-open &:hover {
+    background: colors.$color-bg-tertiary;
+  }
+
+  // Always visible for minimal design
+}
+
+.header__hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  width: 24px;
+  height: 24px;
+}
+
+.header__hamburger-line {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: var(--header-text-color, #ffffff);
+  border-radius: 1px;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.2s ease,
+    background-color 0.3s ease;
+
+  // Ensure visibility on transparent header
+  .site-header--transparent:not(.is-scrolled):not(.is-menu-open) & {
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+
+  // Dark color when scrolled or menu open
+  .site-header--transparent.is-scrolled &,
+  .site-header--transparent.is-menu-open &,
+  .site-header--solid & {
+    background-color: colors.$color-text-primary;
+  }
+}
+
+// Hamburger animation when open (2-line X)
+.site-header.is-menu-open {
+  .header__hamburger-line:nth-child(1) {
+    transform: translateY(4px) rotate(45deg);
+  }
+
+  .header__hamburger-line:nth-child(2) {
+    transform: translateY(-4px) rotate(-45deg);
+  }
+}
+
+// ========================================
+// MOBILE MENU - PREMIUM FULL-SCREEN OVERLAY
+// ========================================
+
+// Design tokens for mobile menu - use centralized tokens
+$mobile-menu-bg: colors.$color-bg-primary;
+$mobile-menu-text: colors.$color-text-primary;
+$mobile-menu-text-muted: colors.$color-text-muted;
+$mobile-menu-border: colors.$color-border-light;
+$mobile-menu-hover-bg: colors.$color-bg-secondary;
+
+.header__mobile-menu {
+  // Hidden - replaced by full-screen .header__nav
+  display: none !important;
+}
+
+// When menu is open - fade in the full-screen menu
+.site-header.is-menu-open .header__mobile-menu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.header__mobile-nav {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  // Add padding-top to account for the header height
+  padding: calc(var(--header-height-mobile) + 1.5rem) 1.5rem 2rem;
+
+  @media (max-width: 480px) {
+    padding: calc(var(--header-height-mobile) + 1.25rem) 1.25rem 1.5rem;
+  }
+}
+
+.header__mobile-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+
+.header__mobile-item {
+  border-bottom: 1px solid $mobile-menu-border;
+
+  &:first-child {
+    border-top: 1px solid $mobile-menu-border;
+  }
+}
+
+.header__mobile-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1.25rem 0.5rem;
+  font-size: 1.0625rem;
+  font-weight: typography.$font-weight-medium;
+  color: $mobile-menu-text;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease, background 0.2s ease;
+  border: none;
+  background: transparent;
+  font-family: typography.$font-family-base;
+  cursor: pointer;
+  text-align: left;
+  margin: 0 -0.5rem;
+  border-radius: 0.5rem;
+
+  &:hover,
+  &:active {
+    color: colors.$color-primary;
+    background: colors.$color-bg-tertiary;
+  }
+
+  @media (max-width: 480px) {
+    padding: 1.125rem 0.5rem;
+    font-size: 1rem;
+  }
+}
+
+.header__mobile-dropdown-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: $mobile-menu-text-muted;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s ease;
+
+  .header__mobile-item--has-dropdown.is-open & {
+    transform: rotate(180deg);
+    color: colors.$color-primary;
+  }
+}
+
+.header__mobile-dropdown {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0.75rem 0;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.25s ease,
+    padding 0.35s ease;
+
+  .header__mobile-item--has-dropdown.is-open & {
+    max-height: 25rem;
+    opacity: 1;
+  }
+}
+
+.header__mobile-dropdown-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  margin: 0.25rem 0;
+  font-size: 0.9375rem;
+  font-weight: typography.$font-weight-medium;
+  color: $mobile-menu-text-muted;
+  text-decoration: none;
+  background: colors.$color-bg-tertiary;
+  border-radius: 0.5rem;
+  transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  position: relative;
+
+  // Left accent bar
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    background: colors.$color-primary;
+    border-radius: 0 2px 2px 0;
+    transition: height 0.2s ease;
+  }
+
+  &:hover,
+  &:active {
+    color: colors.$color-primary;
+    background: colors.$color-bg-secondary;
+    transform: translateX(0.25rem);
+
+    &::before {
+      height: 1.25rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.75rem 0.875rem;
+    font-size: 0.875rem;
+  }
+}
+
+.header__mobile-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 3.5rem;
+  margin-top: 2rem;
+  background: colors.$color-primary;
+  color: colors.$color-text-light;
+  font-size: 0.9375rem;
+  font-weight: typography.$font-weight-semibold;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  border-radius: 0.5rem;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  &:hover,
+  &:active {
+    background: colors.$color-primary-dark;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 480px) {
+    height: 3.25rem;
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+  }
+}

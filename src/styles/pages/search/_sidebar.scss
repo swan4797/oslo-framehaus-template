@@ -1,0 +1,49 @@
+// ========================================
+// SEARCH SIDEBAR STYLES
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../mixins' as *;
+
+.search-sidebar {
+  // Mobile: static positioning, full width
+  position: relative;
+  width: 100%;
+
+  @include lg {
+    // Desktop: sidebar becomes sticky
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: colors.$color-primary-30 transparent;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: colors.$color-bg-secondary;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: colors.$color-bg-secondary;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: colors.$color-bg-secondary;
+    }
+  }
+}
+
+.search-sidebar__sticky {
+  position: static;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+
+  @include mobile-only {
+    border-radius: 6px;
+  }
+}

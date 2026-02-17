@@ -1,0 +1,58 @@
+---
+// ========================================
+// AREA GUIDES LISTING PAGE
+// Displays all published area guides from Stratos CRM
+// ========================================
+
+import Layout from '../../layouts/Layout.astro'
+import Hero from '../../components/Hero.astro'
+import IntroSection from '../../components/static-page/layouts/IntroSection.astro'
+import CTABanner from '../../components/static-page/layouts/CTABanner.astro'
+import AreasGrid from '../../components/areas/layouts/AreasGrid.astro'
+
+import { getAllAreaGuides } from '../../lib/area-guides'
+
+// Fetch all published area guides
+const areaGuides = await getAllAreaGuides()
+
+// Page meta
+const pageTitle = 'Area Guides | Local Property Expertise'
+const pageDescription = 'Explore our local area guides to discover the best places to live. Find information about schools, transport, amenities, and properties in each area.'
+
+console.log('[Areas Index] Rendering:', areaGuides.length, 'area guides')
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Hero Section -->
+  <Hero
+    headline="Area Guides"
+    description="Discover the best places to live with our comprehensive local area guides"
+    ctaText="View Properties"
+    ctaLink="/search"
+    backgroundType="image"
+    backgroundSrc="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920&q=80"
+    overlayOpacity="dark"
+    showPhoneButton={false}
+    showScrollIndicator={false}
+  />
+
+  <!-- Intro Section -->
+  <IntroSection
+    title="Explore Local Areas"
+    subtitle="Area Guides"
+    description="Our comprehensive area guides provide insights into the best places to live. Discover local amenities, schools, transport links, and browse properties in each area."
+  />
+
+  <!-- Areas Grid -->
+  <AreasGrid areas={areaGuides} />
+
+  <!-- CTA Banner -->
+  <CTABanner
+    title="Looking for your perfect home?"
+    subtitle="Browse our latest properties or speak to our local experts about the best areas to suit your needs."
+    primaryCtaText="Search Properties"
+    primaryCtaLink="/search"
+    secondaryCtaText="Contact Us"
+    secondaryCtaLink="/contact"
+  />
+</Layout>

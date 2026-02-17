@@ -1,0 +1,435 @@
+// ========================================
+// GENERAL ENQUIRY FORM STYLES
+// Universal contact form for general questions
+// Using centralized design tokens
+// ========================================
+
+@use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../mixins' as *;
+
+// ========================================
+// FORM CONTAINER
+// ========================================
+
+.general-enquiry-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: spacing.$space-8;
+  align-items: start;
+}
+
+.general-enquiry-card {
+  background: colors.$color-bg-secondary;
+  border-radius: effects.$radius-lg;
+  box-shadow: effects.$shadow-card;
+  border: 1px solid colors.$color-border-light;
+  overflow: hidden;
+}
+
+// ========================================
+// HEADER
+// ========================================
+
+.general-enquiry-card .form-header {
+  display: flex;
+  align-items: center;
+  gap: spacing.$space-3-5;
+  padding: spacing.$space-6 spacing.$space-8;
+  background: colors.$color-bg-secondary;
+  color: colors.$color-text-light;
+}
+
+.general-enquiry-card .form-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.general-enquiry-card .form-title {
+  font-family: typography.$font-family-base;
+  font-size: 1.375rem;
+  font-weight: typography.$font-weight-bold;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.general-enquiry-card .form-subtitle {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  margin: spacing.$space-1 0 0 0;
+  opacity: 0.9;
+  line-height: typography.$line-height-base;
+}
+
+// ========================================
+// FORM BODY
+// ========================================
+
+.general-enquiry-form {
+  padding: spacing.$space-8;
+}
+
+.general-enquiry-card .form-group {
+  margin-bottom: spacing.$space-5;
+  flex: 1;
+}
+
+.general-enquiry-card .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: spacing.$space-4;
+  margin-bottom: spacing.$space-5;
+}
+
+.general-enquiry-card .form-label {
+  display: block;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-secondary;
+  margin-bottom: spacing.$space-2;
+}
+
+.general-enquiry-card .form-input,
+.general-enquiry-card .form-textarea {
+  width: 100%;
+  height: 65px;
+  padding: spacing.$space-3 spacing.$space-4;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  border: 1.5px solid colors.$color-border-light;
+  border-radius: effects.$radius-md;
+  transition: all effects.$transition-fast;
+  background: colors.$color-bg-secondary;
+  color: colors.$color-text-primary;
+
+  &:focus {
+    outline: none;
+    border-color: colors.$color-primary;
+    box-shadow: 0 0 0 3px colors.$color-primary-10;
+  }
+
+  &::placeholder {
+    color: colors.$color-text-muted;
+  }
+}
+
+.general-enquiry-card .form-textarea {
+  height: auto;
+  resize: vertical;
+  min-height: 120px;
+  line-height: typography.$line-height-relaxed;
+}
+
+.general-enquiry-card .field-hint {
+  font-family: typography.$font-family-base;
+  font-size: 0.8125rem;
+  color: colors.$color-text-muted;
+  margin: spacing.$space-1-5 0 0 0;
+  line-height: typography.$line-height-base;
+}
+
+// ========================================
+// CHECKBOX
+// ========================================
+
+.general-enquiry-card .form-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: spacing.$space-2-5;
+  margin-bottom: spacing.$space-6;
+}
+
+.general-enquiry-card .checkbox-input {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid colors.$color-border-medium;
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+
+  &:checked {
+    background: colors.$color-bg-secondary;
+    border-color: colors.$color-primary;
+  }
+}
+
+.general-enquiry-card .checkbox-label {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-text-muted;
+  line-height: typography.$line-height-relaxed;
+  cursor: pointer;
+}
+
+// ========================================
+// SUBMIT BUTTON
+// ========================================
+
+.general-enquiry-card .submit-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.$space-2-5;
+  padding: spacing.$space-4 spacing.$space-6;
+  background: colors.$color-bg-secondary;
+  color: colors.$color-text-light;
+  border: none;
+  border-radius: effects.$radius-md;
+  font-family: typography.$font-family-base;
+  font-size: 1.0625rem;
+  font-weight: typography.$font-weight-semibold;
+  cursor: pointer;
+  transition: all effects.$transition-fast;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px colors.$color-primary-25;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.general-enquiry-card .btn-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.general-enquiry-card .privacy-notice {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-xs;
+  color: colors.$color-text-muted;
+  text-align: center;
+  margin-top: spacing.$space-4;
+  margin-bottom: 0;
+  line-height: typography.$line-height-relaxed;
+}
+
+// ========================================
+// STATUS MESSAGES
+// ========================================
+
+.general-enquiry-card .message {
+  display: none;
+  align-items: flex-start;
+  gap: spacing.$space-3;
+  padding: spacing.$space-6 spacing.$space-8;
+  margin: spacing.$space-8;
+  border-radius: effects.$radius-md;
+  font-family: typography.$font-family-base;
+
+  &.show {
+    display: flex;
+  }
+}
+
+.general-enquiry-card .message-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.general-enquiry-card .message-title {
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-semibold;
+  margin: 0 0 spacing.$space-1-5 0;
+  line-height: typography.$line-height-base;
+}
+
+.general-enquiry-card .message-text {
+  font-size: typography.$font-size-base;
+  margin: 0;
+  line-height: typography.$line-height-relaxed;
+  opacity: 0.9;
+}
+
+.general-enquiry-card .message-success {
+  background: colors.$color-bg-secondary;
+  color: colors.$color-success-dark;
+  border: 1.5px solid colors.$color-success-border;
+
+  .message-icon {
+    color: colors.$color-success;
+  }
+}
+
+.general-enquiry-card .message-error {
+  background: colors.$color-bg-secondary;
+  color: colors.$color-error-dark;
+  border: 1.5px solid colors.$color-error-border;
+
+  .message-icon {
+    color: colors.$color-error;
+  }
+}
+
+// ========================================
+// CONTACT INFO CARD
+// ========================================
+
+.contact-info-card {
+  background: colors.$color-bg-secondary;
+  border-radius: effects.$radius-lg;
+  box-shadow: effects.$shadow-card;
+  border: 1px solid colors.$color-border-light;
+  padding: spacing.$space-6;
+  position: sticky;
+  top: spacing.$space-8;
+}
+
+.contact-info-header {
+  display: flex;
+  align-items: center;
+  gap: spacing.$space-2-5;
+  margin-bottom: spacing.$space-6;
+  padding-bottom: spacing.$space-4;
+  border-bottom: 1px solid colors.$color-border-light;
+
+  h4 {
+    font-family: typography.$font-family-base;
+    font-size: typography.$font-size-base;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+    margin: 0;
+  }
+}
+
+.info-icon {
+  color: colors.$color-primary;
+  flex-shrink: 0;
+}
+
+// ========================================
+// CONTACT METHODS
+// ========================================
+
+.contact-methods {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$space-5;
+  margin-bottom: spacing.$space-6;
+}
+
+.contact-method {
+  display: flex;
+  align-items: flex-start;
+  gap: spacing.$space-3-5;
+}
+
+.method-icon {
+  color: colors.$color-primary;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.method-label {
+  font-family: typography.$font-family-base;
+  font-size: 0.8125rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-secondary;
+  margin: 0 0 spacing.$space-1 0;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.method-value {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-text-muted;
+  margin: 0;
+  line-height: typography.$line-height-relaxed;
+}
+
+// ========================================
+// RESPONSE TIME
+// ========================================
+
+.response-time {
+  display: flex;
+  align-items: flex-start;
+  gap: spacing.$space-2-5;
+  padding: spacing.$space-4;
+  background: colors.$color-bg-secondary;
+  border-radius: effects.$radius-md;
+  border: 1px solid colors.$color-border-light;
+
+  p {
+    font-family: typography.$font-family-base;
+    font-size: 0.8125rem;
+    color: colors.$color-text-muted;
+    margin: 0;
+    line-height: typography.$line-height-relaxed;
+  }
+}
+
+.time-icon {
+  color: colors.$color-primary;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+// ========================================
+// RESPONSIVE
+// ========================================
+
+@media (max-width: 968px) {
+  .general-enquiry-container {
+    grid-template-columns: 1fr;
+    gap: spacing.$space-6;
+  }
+
+  .contact-info-card {
+    position: static;
+    order: -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .general-enquiry-card .form-header {
+    padding: spacing.$space-5 spacing.$space-6;
+  }
+
+  .general-enquiry-card .form-title {
+    font-size: typography.$font-size-lg;
+  }
+
+  .general-enquiry-card .form-subtitle {
+    font-size: typography.$font-size-sm;
+  }
+
+  .general-enquiry-form {
+    padding: spacing.$space-6;
+  }
+
+  .general-enquiry-card .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .general-enquiry-card .form-input {
+    height: 50px;
+  }
+
+  .general-enquiry-card .message {
+    margin: spacing.$space-6;
+    padding: spacing.$space-5 spacing.$space-6;
+  }
+
+  .contact-info-card {
+    padding: spacing.$space-5;
+  }
+}

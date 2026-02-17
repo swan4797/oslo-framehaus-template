@@ -1,0 +1,22 @@
+// ========================================
+// GALLERY SECTION STYLES
+// Image gallery container
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../mixins' as *;
+
+// Local design tokens
+$page-width: 1200px;
+
+.gallery-section {
+  background: colors.$color-bg-secondary;
+  padding: 17em 2em 5em 2em;
+
+  &__container {
+    max-width: $page-width;
+    margin: 0 auto;
+    padding: 0;
+  }
+}

@@ -1,0 +1,179 @@
+---
+// ========================================
+// HERO COMPONENT
+// Premium landing-style hero with configurable background
+// Supports both video and image backgrounds
+// ========================================
+
+type BackgroundType = 'video' | 'image'
+
+interface Props {
+  // Content
+  headline: string
+  description?: string
+  ctaText?: string
+  ctaLink?: string
+
+  // Background configuration
+  backgroundType?: BackgroundType
+  backgroundSrc?: string
+  backgroundAlt?: string
+  backgroundPoster?: string  // Poster image for video (shown while loading)
+
+  // Overlay configuration
+  overlayOpacity?: 'light' | 'medium' | 'dark'
+
+  // Floating elements
+  showPhoneButton?: boolean
+  phoneNumber?: string
+  showScrollIndicator?: boolean
+}
+
+const {
+  // Content
+  headline,
+  description = '',
+  ctaText = 'Start your search',
+  ctaLink = '/search',
+
+  // Background - video is default
+  backgroundType = 'video',
+  backgroundSrc = 'https://videos.pexels.com/video-files/1918465/1918465-uhd_2560_1440_24fps.mp4',
+  backgroundAlt = 'Hero background',
+  backgroundPoster = '',
+
+  // Overlay
+  overlayOpacity = 'medium',
+
+  // Floating elements
+  showPhoneButton = true,
+  phoneNumber = '+1234567890',
+  showScrollIndicator = true,
+} = Astro.props
+
+// Determine overlay class based on opacity setting
+const overlayClass = `hero__overlay hero__overlay--${overlayOpacity}`
+---
+
+<section class="hero">
+  <!-- Background with reveal animation -->
+  <div class="hero__background">
+    {backgroundType === 'video' ? (
+      <video
+        class="hero__background-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        poster={backgroundPoster}
+      >
+        <source src={backgroundSrc} type="video/mp4" />
+      </video>
+    ) : (
+      <div
+        class="hero__background-image"
+        style={`background-image: url('${backgroundSrc}')`}
+        role="img"
+        aria-label={backgroundAlt}
+      />
+    )}
+    <div class={overlayClass}></div>
+  </div>
+
+  <!-- Centered Content -->
+  <div class="hero__content">
+    <h1 class="hero__headline" set:html={headline} />
+    {description && (
+      <p class="hero__description">
+        {description}
+      </p>
+    )}
+    {ctaText && ctaLink && (
+      <a href={ctaLink} class="hero__cta">
+        {ctaText}
+      </a>
+    )}
+  </div>
+
+
+  <!-- Floating Utility: Phone Link (Bottom Right) -->
+  <!-- {showPhoneButton && (
+    <a href={`tel:${phoneNumber}`} class="hero__phone-btn" aria-label="Call us">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+      </svg>
+      <span>{phoneNumber}</span>
+    </a>
+  )} -->
+
+  <!-- Scroll Indicator -->
+  {showScrollIndicator && (
+    <div class="hero__scroll-indicator">
+      <button
+        type="button"
+        class="hero__scroll-circle"
+        id="hero-scroll-btn"
+        aria-label="Scroll to next section"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5v14M19 12l-7 7-7-7"/>
+        </svg>
+      </button>
+    </div>
+  )}
+</section>
+
+<script>
+  // ========================================
+  // SCROLL INDICATOR FUNCTIONALITY
+  // Dynamically scrolls to the next section after Hero
+  // ========================================
+
+  function initScrollIndicator() {
+    const scrollBtn = document.getElementById('hero-scroll-btn')
+    if (!scrollBtn) return
+
+    scrollBtn.addEventListener('click', () => {
+      // Find the hero section (parent of the button)
+      const heroSection = scrollBtn.closest('.hero')
+      if (!heroSection) return
+
+      // Find the next sibling element (the section after hero)
+      let nextSection = heroSection.nextElementSibling
+
+      // Skip over script tags, style tags, or empty text nodes
+      while (nextSection && (
+        nextSection.tagName === 'SCRIPT' ||
+        nextSection.tagName === 'STYLE' ||
+        nextSection.tagName === 'NOSCRIPT' ||
+        (nextSection.nodeType === Node.TEXT_NODE && !nextSection.textContent?.trim())
+      )) {
+        nextSection = nextSection.nextElementSibling
+      }
+
+      // If we found a next section, scroll to it
+      if (nextSection && nextSection instanceof HTMLElement) {
+        nextSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        })
+      } else {
+        // Fallback: scroll down by viewport height
+        window.scrollBy({
+          top: window.innerHeight,
+          behavior: 'smooth'
+        })
+      }
+    })
+  }
+
+  // Initialize on page load
+  initScrollIndicator()
+
+  // Re-initialize on Astro page transitions
+  document.addEventListener('astro:page-load', initScrollIndicator)
+</script>
+
+<style lang="scss">
+  @use '../styles/components/hero';
+</style>

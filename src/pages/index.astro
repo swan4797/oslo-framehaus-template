@@ -1,0 +1,293 @@
+---
+// ========================================
+// HOMEPAGE
+// UK Estate Agent Homepage - Clean Modern Design
+// Dynamic content from Stratos CRM
+// ========================================
+
+import Layout from '../layouts/Layout.astro'
+import PropertySearch from '../components/search/PropertySearch.astro'
+import Hero from '../components/Hero.astro'
+import ServiceGrid from '../components/static-page/layouts/ServiceGrid.astro'
+import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
+import CTABanner from '../components/static-page/layouts/CTABanner.astro'
+import IntroSection from '../components/static-page/layouts/IntroSection.astro'
+import PropertyGridSlider from '../components/properties/grids/PropertyGridSlider.astro'
+import ReviewCarousel from '../components/reviews/ReviewCarousel.astro'
+import { siteConfig } from '../lib/config'
+import PropertyGrid from '../components/properties/grids/PropertyGrid.astro'           
+
+// Brand utilities
+import {
+  fetchBrandSettings,
+  getContactInfo,
+  getSocialLinks,
+} from '../lib/brand'
+
+// Page content utilities
+import {
+  getPageContent,
+  getSectionTitle,
+  getSectionContent,
+  getSectionImage,
+  hasSection,
+} from '../lib/pages'
+
+// Fetch brand settings
+const brand = await fetchBrandSettings(true)
+const contact = getContactInfo(brand)
+
+// Fetch homepage content from Stratos CRM
+const pageContent = await getPageContent('homepage')
+
+// ========================================
+// SPECIFIC SECTION BLOCK KEYS
+// These match the block_keys from Stratos CRM
+// ========================================
+
+// Featured Properties section (block_key: featured_properties)
+const featuredTitle = getSectionTitle(pageContent, 'featured_properties', 'Featured Properties')
+const featuredContent = getSectionContent(pageContent, 'featured_properties', '<p>Discover our handpicked selection of premium properties.</p>')
+
+// Why Choose Us section (block_key: why_choose_us)
+const whyChooseTitle = getSectionTitle(pageContent, 'why_choose_us', 'Why Choose Us')
+const whyChooseContent = getSectionContent(pageContent, 'why_choose_us', '')
+
+// Testimonials section (block_key: testimonials)
+const testimonialsTitle = getSectionTitle(pageContent, 'testimonials', 'What Our Clients Say')
+const testimonialsContent = getSectionContent(pageContent, 'testimonials', '')
+
+// Check which sections exist in CRM
+const hasFeaturedSection = hasSection(pageContent, 'featured_properties')
+const hasWhyChooseSection = hasSection(pageContent, 'why_choose_us')
+const hasTestimonialsSection = hasSection(pageContent, 'testimonials')
+
+// ========================================
+// REVIEWS DATA
+// Sample reviews for the homepage carousel
+// ========================================
+
+const reviews = [
+  {
+    id: '1',
+    quote: "From our first meeting to completion, the team provided exceptional service. They understood exactly what we were looking for and found us our dream home within weeks.",
+    author: {
+      name: "Sarah & James Mitchell",
+      location: "Kensington, London",
+    },
+    rating: 5,
+    source: "Google",
+    transactionType: "Purchase",
+    propertyType: "4 Bed Victorian Terrace",
+  },
+  {
+    id: '2',
+    quote: "Selling our family home was emotional, but the team made the process smooth and stress-free. They achieved a price above our expectations and kept us informed every step of the way.",
+    author: {
+      name: "Robert Thompson",
+      location: "Chelsea, London",
+    },
+    rating: 5,
+    source: "Trustpilot",
+    transactionType: "Sale",
+    propertyType: "3 Bed Apartment",
+  },
+  {
+    id: '3',
+    quote: "Outstanding local knowledge and genuine care for their clients. They went above and beyond to ensure we found the perfect property for our growing family.",
+    author: {
+      name: "Emma & David Chen",
+      location: "Fulham, London",
+    },
+    rating: 5,
+    source: "Google",
+    transactionType: "Purchase",
+    propertyType: "5 Bed Detached",
+  },
+  {
+    id: '4',
+    quote: "Professional, responsive, and truly dedicated. The lettings team found us excellent tenants within days and manage everything seamlessly.",
+    author: {
+      name: "Michael Andrews",
+      location: "Notting Hill, London",
+    },
+    rating: 5,
+    source: "Google",
+    transactionType: "Let",
+    propertyType: "2 Bed Flat",
+  },
+  {
+    id: '5',
+    quote: "We've used them for three property transactions now. Consistently excellent service, honest advice, and they always deliver results.",
+    author: {
+      name: "Patricia & John Williams",
+      location: "Richmond, London",
+    },
+    rating: 5,
+    source: "Trustpilot",
+    transactionType: "Sale",
+    propertyType: "Period Townhouse",
+  },
+]
+
+// Experience grid items (5 items for asymmetric layout: 2 + 1 featured + 2)
+const experienceItems = [
+  // Left column (2 cards)
+  {
+    id: 'buyers',
+    title: 'Buyers',
+    href: '/buyers',
+    mediaType: 'image' as const,
+    mediaSrc: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80',
+    overlayOpacity: 'medium' as const,
+  },
+  {
+    id: 'sellers',
+    title: 'Sellers',
+    href: '/sellers',
+    mediaType: 'image' as const,
+    mediaSrc: 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=800&q=80',
+    overlayOpacity: 'medium' as const,
+  },
+  // Center column (1 featured card)
+  {
+    id: 'valuation',
+    title: 'Free Valuation',
+    href: '/valuation',
+    mediaType: 'image' as const,
+    mediaSrc: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80',
+    overlayOpacity: 'medium' as const,
+  },
+  // Right column (2 cards)
+  {
+    id: 'landlords',
+    title: 'Landlords',
+    href: '/landlords',
+    mediaType: 'image' as const,
+    mediaSrc: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80',
+    overlayOpacity: 'medium' as const,
+  },
+  {
+    id: 'tenants',
+    title: 'Tenants',
+    href: '/tenants',
+    mediaType: 'image' as const,
+    mediaSrc: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80',
+    overlayOpacity: 'medium' as const,
+  },
+]
+
+---
+
+<Layout>
+  <!-- Hero Section -->
+  <Hero
+    headline={brand.tagline || "A Sprawling Coastal Escape"}
+    description={brand.mission_statement || "Discover exceptional properties with personalized service from our experienced local team."}
+    ctaText="Start your search"
+    ctaLink="/search"
+    backgroundType="image"
+    backgroundSrc="https://images.pexels.com/photos/3614082/pexels-photo-3614082.jpeg"
+    overlayOpacity="medium"
+  />
+
+  <!-- Intro Section -->
+  <IntroSection
+    title="A well-designed home is a <em>work of art</em>"
+    description="An aesthetically storied compilation of elements that speak to your lifestyle and ideals, while honouring the organic structure of your space. Melanie Hay Design sets out to pull together your ever-evolving interior canvas and bring forth exquisite, enduring environments that welcome restoration, conversation, and celebration."
+    ctaText="Work Together"
+    ctaLink="/contact"
+    leftImageSrc="https://images.pexels.com/photos/6585598/pexels-photo-6585598.jpeg?auto=compress&cs=tinysrgb&w=800"
+    leftImageAlt="Cozy living room interior"
+    rightImageSrc="https://images.pexels.com/photos/6782567/pexels-photo-6782567.jpeg?auto=compress&cs=tinysrgb&w=800"
+    rightImageAlt="Modern kitchen with bar stools"
+    backgroundVariant="light"
+  />
+
+  <!-- Content Blocks - Alternating Layout -->
+  <ContentBlock                                                              
+    title="<em>Our</em><strong> Services</strong>"                            
+    description="Your description text here..."                              
+    mediaSrc="https://images.pexels.com/photos/6585598/pexels-photo-6585598.jpeg?auto=compress&cs=tinysrgb&w=800"                         
+    secondaryMediaSrc="https://images.pexels.com/photos/6782567/pexels-photo-6782567.jpeg?auto=compress&cs=tinysrgb&w=800"              
+    imagePosition="right"                                                    
+    serviceItems={["New Build", "Large-Scale Renovation", "Interior Design"]}
+  />
+
+  <!-- How We Work Together - Cards Layout -->
+  <ServiceGrid
+    title="How We Can Work Together"
+    subtitle="MHD specializes in a quietly refined aesthetic – accentuated by an assemblage of high-quality materials, textiles, and craftsmanship that exude an old-world, lived-in feel."
+    layout="cards"
+    items={[
+      {
+        id: 'service-1',
+        title: 'New Build',
+        description: 'We guide you through every step of the established process, from concept to completion. Our team ensures effortless navigation of conscious design decisions and artful execution of your interiors project.',
+        mediaSrc: 'https://images.pexels.com/photos/12292600/pexels-photo-12292600.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+        href: '/services/new-build',
+        ctaText: 'Learn More'
+      },
+      {
+        id: 'service-2',
+        title: 'Renovation',
+        description: 'Transform your existing space with our comprehensive renovation services. We honour the organic structure of your home while bringing forth exquisite, enduring environments that welcome restoration and celebration.',
+        mediaSrc: 'https://images.pexels.com/photos/11403257/pexels-photo-11403257.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+        href: '/services/renovation',
+        ctaText: 'Learn More'
+      }
+    ]}
+  />
+
+  
+  <!-- Latest Properties - Uses filter props for automatic data fetching -->
+  <PropertyGridSlider
+    title={featuredTitle}
+    subtitle={hasFeaturedSection && featuredContent ? featuredContent : 'Our latest properties for sale and to rent'}
+    ctaText="View All Properties"
+    source="homepage"
+    layout="slider"
+    sectionId="latest-properties"
+    limit={6}
+    sortBy="newest"
+    listingStatus="available"
+  />
+
+<!-- 4-column featured sales -->                                                     
+ <!-- <PropertyGrid                                                                        
+ title="Featured Properties"                                                        
+ columns={4}                                                                        
+ limit={4}                                                                          
+ listingType="sale"                                                                 
+ listingStatus="available"                                                          
+ />   -->
+
+  <!-- CTA Banner -->
+  <!-- <CTABanner
+    title="Thinking of Selling or Letting?"
+    subtitle="Get an instant online valuation or book a free home visit with our local experts"
+    primaryCtaText="Get Free Valuation"
+    primaryCtaLink="/valuation"
+    secondaryCtaText={contact.phone ? "Call Us" : ""}
+    secondaryCtaLink={contact.phone ? `tel:${contact.phone}` : ""}
+  /> -->
+
+
+
+  <!-- Client Reviews -->
+  <ReviewCarousel
+    title={testimonialsTitle}
+    subtitle="Trusted by buyers, sellers, and landlords across London"
+    ctaText="Read All Reviews"
+    ctaLink="/reviews"
+    reviews={reviews}
+    variant="alt"
+    showRating={true}
+    showSource={true}
+  />
+
+</Layout>
+
+<style lang="scss">
+  @use '../styles/pages/homepage';
+</style>

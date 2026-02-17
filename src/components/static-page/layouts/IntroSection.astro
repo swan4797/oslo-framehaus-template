@@ -1,0 +1,173 @@
+---
+// ========================================
+// INTRO SECTION COMPONENT
+// Reusable introductory text block for static pages
+// Centered layout with clean typographic hierarchy
+// ========================================
+
+import type { PageContent } from '../../../lib/pages'
+import { getSectionTitle, getSectionContent } from '../../../lib/pages'
+
+// ----------------------------------------
+// TYPE DEFINITIONS
+// ----------------------------------------
+
+type Alignment = 'center' | 'left'
+type BackgroundVariant = 'white' | 'light' | 'dark'
+
+interface Props {
+  // CMS Integration
+  blockKey?: string
+  pageContent?: PageContent | null
+
+  // Content props
+  title?: string
+  subtitle?: string
+  description?: string
+
+  // Primary CTA
+  ctaText?: string
+  ctaLink?: string
+
+  // Secondary CTA (future-proof)
+  secondaryCtaText?: string
+  secondaryCtaLink?: string
+
+  // Side images
+  leftImageSrc?: string
+  leftImageAlt?: string
+  rightImageSrc?: string
+  rightImageAlt?: string
+
+  // Layout options
+  alignment?: Alignment
+  backgroundVariant?: BackgroundVariant
+
+  // Styling options
+  maxWidth?: string
+  topPadding?: boolean
+  bottomPadding?: boolean
+}
+
+// ----------------------------------------
+// COMPONENT PROPS
+// ----------------------------------------
+
+const {
+  // CMS Integration
+  blockKey,
+  pageContent,
+
+  // Content
+  title,
+  subtitle,
+  description,
+
+  // Primary CTA
+  ctaText,
+  ctaLink,
+
+  // Secondary CTA
+  secondaryCtaText,
+  secondaryCtaLink,
+
+  // Side images
+  leftImageSrc,
+  leftImageAlt = 'Decorative image',
+  rightImageSrc,
+  rightImageAlt = 'Decorative image',
+
+  // Layout
+  alignment = 'center',
+  backgroundVariant = 'white',
+
+  // Styling
+  maxWidth = '48rem',
+  topPadding = true,
+  bottomPadding = true,
+} = Astro.props
+
+// Check if we have side images
+const hasLeftImage = !!leftImageSrc
+const hasRightImage = !!rightImageSrc
+const hasSideImages = hasLeftImage || hasRightImage
+
+// ----------------------------------------
+// CMS CONTENT RESOLUTION
+// ----------------------------------------
+
+const cmsTitle = blockKey && pageContent ? getSectionTitle(pageContent, blockKey, title) : title
+const cmsContent = blockKey && pageContent ? getSectionContent(pageContent, blockKey, description) : description
+
+const finalTitle = cmsTitle || title
+const finalDescription = cmsContent || description
+
+// ----------------------------------------
+// CLASS BUILDING
+// ----------------------------------------
+
+const sectionClasses = [
+  'intro-section',
+  `intro-section--${alignment}`,
+  `intro-section--bg-${backgroundVariant}`,
+  hasSideImages && 'intro-section--with-images',
+  !topPadding && 'intro-section--no-top-padding',
+  !bottomPadding && 'intro-section--no-bottom-padding',
+].filter(Boolean).join(' ')
+
+// Check if we have any CTAs
+const hasPrimaryCta = ctaText && ctaLink
+const hasSecondaryCta = secondaryCtaText && secondaryCtaLink
+const hasCtaButtons = hasPrimaryCta || hasSecondaryCta
+---
+
+<section class={sectionClasses}>
+  <!-- Left Side Image -->
+  {hasLeftImage && (
+    <div class="intro-section__side-image intro-section__side-image--left">
+      <img src={leftImageSrc} alt={leftImageAlt} loading="lazy" />
+    </div>
+  )}
+
+  <!-- Center Content -->
+  <div class="intro-section__container" style={`--intro-max-width: ${maxWidth};`}>
+    {subtitle && (
+      <span class="intro-section__subtitle">{subtitle}</span>
+    )}
+
+    {finalTitle && (
+      <h2 class="intro-section__title" set:html={finalTitle} />
+    )}
+
+    {finalDescription && (
+      <div class="intro-section__description" set:html={finalDescription} />
+    )}
+
+    {hasCtaButtons && (
+      <div class="intro-section__actions">
+        {hasPrimaryCta && (
+          <a href={ctaLink} class="intro-section__btn intro-section__btn--primary">
+            {ctaText}
+          </a>
+        )}
+
+        {hasSecondaryCta && (
+          <a href={secondaryCtaLink} class="intro-section__btn intro-section__btn--secondary">
+            {secondaryCtaText}
+          </a>
+        )}
+      </div>
+    )}
+  </div>
+
+  <!-- Right Side Image -->
+  {hasRightImage && (
+    <div class="intro-section__side-image intro-section__side-image--right">
+      <img src={rightImageSrc} alt={rightImageAlt} loading="lazy" />
+    </div>
+  )}
+</section>
+
+<style lang="scss">
+  @use '../../../styles/components/intro-section';
+</style>

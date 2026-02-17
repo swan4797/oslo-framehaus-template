@@ -1,0 +1,48 @@
+---
+// ========================================
+// BRANCHES GRID COMPONENT
+// Grid layout for displaying branch microsites
+// ========================================
+
+import type { BranchMicrosite } from '../../../lib/microsites'
+import BranchCard from '../cards/BranchCard.astro'
+
+interface Props {
+  branches: BranchMicrosite[]
+  emptyTitle?: string
+  emptyMessage?: string
+  linkText?: string
+}
+
+const {
+  branches,
+  emptyTitle = 'No branches available',
+  emptyMessage = 'Branch information will be available soon.',
+  linkText = 'View Branch',
+} = Astro.props
+---
+
+<section class="branches-section">
+  <div class="branches-container">
+    {branches.length === 0 ? (
+      <div class="branches-empty">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        <h3>{emptyTitle}</h3>
+        <p>{emptyMessage}</p>
+      </div>
+    ) : (
+      <div class="branches-grid">
+        {branches.map((branch) => (
+          <BranchCard branch={branch} linkText={linkText} />
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../../styles/components/branches/branches-grid';
+</style>

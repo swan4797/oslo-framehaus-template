@@ -1,0 +1,52 @@
+---
+// ========================================
+// CONTACT ALTERNATIVE COMPONENT
+// "Prefer to speak directly?" section with phone/email
+// ========================================
+
+import type { ContactInfo } from '../types'
+
+interface Props {
+  /** Contact information with phone and/or email */
+  contactInfo: ContactInfo
+  /** Optional custom lead text (default: "Prefer to speak directly?") */
+  leadText?: string
+  /** Optional CSS class override */
+  class?: string
+}
+
+const {
+  contactInfo,
+  leadText = "Prefer to speak directly?",
+  class: className
+} = Astro.props
+
+const hasContact = contactInfo.phone || contactInfo.email
+---
+
+{hasContact && (
+  <div class:list={["contact-alternative", className]}>
+    <p class="contact-alternative__text">
+      {leadText}
+      {contactInfo.phone && (
+        <>Call us on <a href={`tel:${contactInfo.phone.replace(/\s/g, '')}`}>{contactInfo.phone}</a></>
+      )}
+      {contactInfo.phone && contactInfo.email && <> or </>}
+      {contactInfo.email && (
+        <>email <a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a></>
+      )}
+    </p>
+  </div>
+)}
+
+<style lang="scss">
+  @use '../../../styles/pages/form-page/shared' as *;
+
+  .contact-alternative {
+    @include contact-alternative;
+  }
+
+  .contact-alternative__text {
+    @include contact-alternative-text;
+  }
+</style>

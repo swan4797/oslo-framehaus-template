@@ -1,0 +1,95 @@
+// ========================================
+// TEAM MEMBER CARD STYLES
+// Simple vertical card with portrait image, name, and title
+// Clean minimal design matching design specification
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/effects' as effects;
+
+// ========================================
+// DESIGN TOKENS
+// ========================================
+
+$text-primary: colors.$color-text-primary;
+$text-secondary: colors.$color-text-secondary;
+$font-serif: typography.$font-family-heading;
+$font-sans: typography.$font-family-base;
+$transition-base: 250ms ease;
+
+// ========================================
+// CARD BASE
+// Simple vertical layout
+// ========================================
+
+.team-card {
+  display: flex;
+  flex-direction: column;
+  font-family: $font-sans;
+  transition: transform $transition-base;
+
+  &:hover {
+    transform: translateY(-4px);
+
+    .team-card__image {
+      transform: scale(1.03);
+    }
+  }
+
+  // Featured variant (subtle emphasis)
+  &--featured {
+    .team-card__name {
+      color: colors.$color-primary;
+    }
+  }
+}
+
+// ========================================
+// IMAGE
+// Large portrait with rounded corners
+// ========================================
+
+.team-card__image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: colors.$color-bg-tertiary;
+}
+
+.team-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+// ========================================
+// INFO SECTION
+// Name and title below image
+// ========================================
+
+.team-card__info {
+  padding: spacing.$spacing-4 0 0 0;
+  text-align: left;
+}
+
+.team-card__name {
+  font-family: $font-serif;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: typography.$font-weight-semibold;
+  color: $text-primary;
+  margin: 0 0 spacing.$spacing-1 0;
+  line-height: 1.3;
+}
+
+.team-card__title {
+  font-family: $font-sans;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-regular;
+  color: $text-secondary;
+  margin: 0;
+  line-height: 1.4;
+}

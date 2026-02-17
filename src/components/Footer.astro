@@ -1,0 +1,343 @@
+---
+// ========================================
+// FOOTER COMPONENT - STRATOS BRANDED
+// Dynamic content from Stratos CRM brand_settings
+// ========================================
+
+import { fetchBrandSettings, getContactInfo, getSocialLinks } from '../lib/brand'
+import type { BrandSettings } from '../types/brand'
+
+// Fetch brand settings from Stratos CRM
+let brand: BrandSettings
+try {
+  brand = await fetchBrandSettings()
+} catch (error) {
+  console.error('[Footer] Error fetching brand settings:', error)
+  // Fallback handled by fetchBrandSettings internally
+  brand = await fetchBrandSettings()
+}
+
+// Extract contact info and social links
+const contactInfo = getContactInfo(brand)
+const socialLinks = getSocialLinks(brand)
+
+// Check which social links are available
+const hasSocialLinks = Object.values(socialLinks).some(link => link)
+
+// Check if logo URL is valid (not a blob URL)
+const hasValidLogo = brand.logo_light_url &&
+  brand.logo_light_url.trim() !== '' &&
+  !brand.logo_light_url.startsWith('blob:')
+
+const currentYear = new Date().getFullYear()
+---
+
+<footer class="site-footer">
+  <!-- ========================================
+       TIER 1 - Newsletter / Hero Section
+       ======================================== -->
+  <div class="footer-tier footer-tier--hero">
+    <div class="footer-tier__container">
+      <!-- Award Badge -->
+      <div class="footer-hero__badge">
+        <svg class="footer-hero__badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L14.09 8.26L21 9.27L16.18 13.97L17.18 21L12 17.77L6.82 21L7.82 13.97L3 9.27L9.91 8.26L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Premium Property Experts</span>
+      </div>
+
+      <!-- Hero Heading -->
+      <h2 class="footer-hero__heading">
+        Stay informed with<br />exclusive property insights
+      </h2>
+
+      <!-- Newsletter Form -->
+      <form class="footer-newsletter" action="/api/newsletter" method="POST">
+        <div class="footer-newsletter__field">
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email address"
+            class="footer-newsletter__input"
+            required
+            aria-label="Email address for newsletter"
+          />
+          <button type="submit" class="footer-newsletter__button">
+            Subscribe
+            <svg class="footer-newsletter__button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================
+       TIER 2 - Navigation Row
+       ======================================== -->
+  <div class="footer-tier footer-tier--nav">
+    <div class="footer-tier__container">
+      <!-- Left: Logo -->
+      <div class="footer-nav__logo">
+        <a href="/" class="footer-logo-link" aria-label="Home">
+          {hasValidLogo ? (
+            <img
+              src={brand.logo_light_url}
+              alt={brand.business_name || 'Company Logo'}
+              class="footer-logo-img"
+            />
+          ) : (
+            <svg class="footer-logo" viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+              <path d="M50 10 L85 35 L85 80 L50 130 L15 80 L15 35 Z" fill="currentColor" opacity="0.3"/>
+              <path d="M50 30 L70 45 L70 75 L50 95 L30 75 L30 45 Z" fill="currentColor"/>
+              <circle cx="50" cy="60" r="12" fill="#f6f4f4"/>
+            </svg>
+          )}
+        </a>
+      </div>
+
+      <!-- Center-Right: Navigation -->
+      <nav class="footer-nav__menu">
+        <a href="/" class="footer-nav__link">Home</a>
+        <a href="/about" class="footer-nav__link">About</a>
+        <a href="/services" class="footer-nav__link">Services</a>
+        <a href="/search" class="footer-nav__link">Properties</a>
+        <a href="/insights" class="footer-nav__link">Insights</a>
+        <a href="/contact" class="footer-nav__link">Contact</a>
+      </nav>
+
+      <!-- Far Right: Language Selector -->
+      <div class="footer-nav__language">
+        <span class="footer-nav__divider"></span>
+        <button class="footer-nav__lang-btn" aria-label="Select language">
+          <svg class="footer-nav__lang-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span>EN</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================
+       TIER 3 - Information & Utility Section
+       ======================================== -->
+  <div class="footer-tier footer-tier--info">
+    <div class="footer-tier__container">
+      <!-- Left Zone: Address -->
+      <div class="footer-info__address">
+        <span class="footer-info__label">Our Office</span>
+        {contactInfo.addressLines.length > 0 && (
+          <address class="footer-info__address-lines">
+            {contactInfo.addressLines.map((line) => (
+              <span class="footer-info__address-line">{line}</span>
+            ))}
+          </address>
+        )}
+        {contactInfo.phone && (
+          <a href={`tel:${contactInfo.phone.replace(/\s/g, '')}`} class="footer-link">
+            {contactInfo.phone}
+          </a>
+        )}
+      </div>
+
+      <!-- Center Zone: Partner Logos -->
+      <div class="footer-info__partners">
+        <div class="footer-info__partner-logos">
+          <!-- Rightmove Logo -->
+          <div class="footer-info__partner-logo" title="Rightmove">
+            <svg viewBox="0 0 120 30" fill="currentColor">
+              <text x="0" y="22" font-size="14" font-weight="600" letter-spacing="0.5">RIGHTMOVE</text>
+            </svg>
+          </div>
+          <!-- Zoopla Logo -->
+          <div class="footer-info__partner-logo" title="Zoopla">
+            <svg viewBox="0 0 100 30" fill="currentColor">
+              <text x="0" y="22" font-size="14" font-weight="600" letter-spacing="0.5">ZOOPLA</text>
+            </svg>
+          </div>
+          <!-- OnTheMarket Logo -->
+          <div class="footer-info__partner-logo" title="OnTheMarket">
+            <svg viewBox="0 0 140 30" fill="currentColor">
+              <text x="0" y="22" font-size="14" font-weight="600" letter-spacing="0.5">ONTHEMARKET</text>
+            </svg>
+          </div>
+          <!-- The Property Ombudsman -->
+          <div class="footer-info__partner-logo" title="The Property Ombudsman">
+            <svg viewBox="0 0 50 30" fill="currentColor">
+              <text x="0" y="22" font-size="14" font-weight="600" letter-spacing="0.5">TPO</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Zone: Back to Top -->
+      <div class="footer-info__back-to-top">
+        <a href="#top" class="footer-info__top-link">
+          <span>Back to top</span>
+          <span class="footer-info__top-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 19V5M5 12l7-7 7 7"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================
+       Massive Brand Name
+       ======================================== -->
+  <div class="footer-brand">
+    <div class="footer-brand__container">
+      <h2 class="brand-name" aria-label={brand.business_name || 'Your Estate Agency'}>
+        {(brand.business_name || 'Your Estate Agency').toLowerCase()}
+      </h2>
+    </div>
+  </div>
+
+  <!-- ========================================
+       FINAL BOTTOM BAR
+       ======================================== -->
+  <div class="footer-tier footer-tier--bottom">
+    <div class="footer-tier__container">
+      <!-- Left: Copyright & Legal -->
+      <div class="footer-bottom__legal">
+        <p class="footer-copyright">
+          © {currentYear} {brand.business_name || 'Your Estate Agency'}. All rights reserved.
+        </p>
+        <nav class="footer-bottom__legal-links">
+          <a href="/privacy-policy" class="footer-link">Privacy Policy</a>
+          <span class="footer-bottom__sep">·</span>
+          <a href="/terms-and-conditions" class="footer-link">Terms</a>
+          <span class="footer-bottom__sep">·</span>
+          <a href="/cookie-policy" class="footer-link">Cookies</a>
+          <span class="footer-bottom__sep">·</span>
+          <a href="/complaints" class="footer-link">Complaints</a>
+        </nav>
+      </div>
+
+      <!-- Right: Social Icons -->
+      {hasSocialLinks && (
+        <div class="footer-bottom__social">
+          {socialLinks.facebook && (
+            <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+              </svg>
+            </a>
+          )}
+          {socialLinks.instagram && (
+            <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+              </svg>
+            </a>
+          )}
+          {socialLinks.linkedin && (
+            <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="LinkedIn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                <rect width="4" height="12" x="2" y="9"/>
+                <circle cx="4" cy="4" r="2"/>
+              </svg>
+            </a>
+          )}
+          {socialLinks.twitter && (
+            <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Twitter">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
+              </svg>
+            </a>
+          )}
+          {socialLinks.youtube && (
+            <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="YouTube">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
+                <path d="m10 15 5-3-5-3z"/>
+              </svg>
+            </a>
+          )}
+          {socialLinks.tiktok && (
+            <a href={socialLinks.tiktok} target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="TikTok">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+              </svg>
+            </a>
+          )}
+        </div>
+      )}
+    </div>
+  </div>
+</footer>
+
+<style lang="scss">
+  @use '../styles/components/footer';
+</style>
+
+<script>
+  // ✅ TRACKING: Track footer link clicks
+  document.addEventListener('DOMContentLoaded', () => {
+    const footerLinks = document.querySelectorAll('.site-footer .footer-link')
+
+    footerLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href')
+        const text = (e.currentTarget as HTMLAnchorElement).textContent?.trim()
+
+        if (window.StratosTracker && href && text) {
+          window.StratosTracker.trackEvent('footer_link_click', {
+            link_text: text,
+            link_href: href,
+            link_type: href.startsWith('http') ? 'external' : 'internal'
+          })
+        }
+      })
+    })
+
+    // ✅ ANIMATION: Fade-up brand name when it enters viewport
+    const brandName = document.querySelector('.brand-name')
+
+    if (brandName) {
+      // Create intersection observer
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              // Element is visible, trigger animation
+              entry.target.classList.add('animate-in')
+
+              // Optional: Stop observing after animation triggers once
+              observer.unobserve(entry.target)
+            }
+          })
+        },
+        {
+          // Trigger when 20% of element is visible
+          threshold: 0.2,
+          // Start observing 100px before element enters viewport
+          rootMargin: '0px 0px -100px 0px'
+        }
+      )
+
+      // Start observing the brand name
+      observer.observe(brandName)
+    }
+
+    // ✅ SMOOTH SCROLL: Back to top functionality
+    const backToTopLinks = document.querySelectorAll('.footer-info__top-link')
+    backToTopLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault()
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      })
+    })
+
+    console.log('✅ Footer tracking initialized')
+    console.log('✅ Footer brand animation initialized')
+  })
+</script>

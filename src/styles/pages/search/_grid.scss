@@ -1,0 +1,49 @@
+// ========================================
+// SEARCH PAGE GRID STYLES
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../mixins' as *;
+
+// Local layout tokens
+$search-content-width: 95%;
+$search-sidebar-width: 340px;
+
+.search-page__container {
+  width: 100%;
+  max-width: $search-content-width;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  @include md {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.search-page__main {
+  padding-top: 1.5rem;
+  padding-bottom: 3rem;
+  position: relative;
+  z-index: 2;
+
+  @include md {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+  }
+
+  @include lg {
+    padding-top: 2.5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+.search-page__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: start;
+
+}

@@ -1,0 +1,68 @@
+---
+// ========================================
+// AREA SECTIONS GRID COMPONENT
+// "Living in [area]" section with info cards
+// ========================================
+
+import AreaSectionCard from './AreaSectionCard.astro'
+import type { AreaSection } from '../../../lib/area-guides'
+
+interface Props {
+  areaName: string
+  localAmenities?: AreaSection | null
+  schools?: AreaSection | null
+  transport?: AreaSection | null
+  demographics?: AreaSection | null
+  hasContent: (section: AreaSection | null | undefined) => boolean
+}
+
+const { areaName, localAmenities, schools, transport, demographics, hasContent } = Astro.props
+
+const hasAnySection = hasContent(localAmenities) || hasContent(schools) || hasContent(transport) || hasContent(demographics)
+---
+
+{hasAnySection && (
+  <section class="area-sections">
+    <div class="area-sections__container">
+      <h2 class="area-sections__title">Living in {areaName}</h2>
+
+      <div class="area-sections__grid">
+        {hasContent(localAmenities) && (
+          <AreaSectionCard
+            title={localAmenities?.title || 'Local Amenities'}
+            content={localAmenities?.content}
+            icon="amenities"
+          />
+        )}
+
+        {hasContent(schools) && (
+          <AreaSectionCard
+            title={schools?.title || 'Schools & Education'}
+            content={schools?.content}
+            icon="schools"
+          />
+        )}
+
+        {hasContent(transport) && (
+          <AreaSectionCard
+            title={transport?.title || 'Transport Links'}
+            content={transport?.content}
+            icon="transport"
+          />
+        )}
+
+        {hasContent(demographics) && (
+          <AreaSectionCard
+            title={demographics?.title || 'Community & Demographics'}
+            content={demographics?.content}
+            icon="demographics"
+          />
+        )}
+      </div>
+    </div>
+  </section>
+)}
+
+<style lang="scss">
+  @use '../../../styles/components/areas/area-sections-grid';
+</style>

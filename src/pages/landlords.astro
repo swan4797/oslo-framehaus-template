@@ -1,0 +1,115 @@
+---
+// ========================================
+// LANDLORDS PAGE
+// Services page for property landlords
+// Dynamic content from Stratos CRM
+// ========================================
+
+import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
+import IntroSection from '../components/static-page/layouts/IntroSection.astro'
+import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
+import CTABanner from '../components/static-page/layouts/CTABanner.astro'
+
+// Page content utilities
+import { getPageContent, hasSection } from '../lib/pages'
+
+const pageTitle = 'Landlord Services'
+const pageDescription = 'Professional letting and property management services for landlords. Maximise your rental income with expert support.'
+
+// Fetch landlords page content from Stratos CRM
+const pageContent = await getPageContent('landlords')
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Hero Section -->
+  <Hero
+    headline="Professional Landlord Services"
+    description="From finding quality tenants to full property management, we take the stress out of being a landlord."
+    ctaText="Get a Rental Valuation"
+    ctaLink="/valuation"
+    backgroundType="image"
+    backgroundSrc="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=80"
+    overlayOpacity="dark"
+    showPhoneButton={false}
+  />
+
+  <!-- Intro Section -->
+  <IntroSection
+    title="Maximise Your Rental Income"
+    subtitle="Landlord Services"
+    description="Whether you own one property or a portfolio, we understand that your rental income matters. Our letting services are designed to minimise void periods, find reliable tenants, and ensure your property is well-maintained."
+    ctaText="Request a valuation"
+    ctaLink="/valuation"
+    leftImageSrc="https://images.pexels.com/photos/1974596/pexels-photo-1974596.jpeg?auto=compress&cs=tinysrgb&w=800"
+    leftImageAlt="Modern apartment interior"
+    rightImageSrc="https://images.pexels.com/photos/2089698/pexels-photo-2089698.jpeg?auto=compress&cs=tinysrgb&w=800"
+    rightImageAlt="Rental property exterior"
+  />
+
+  <!-- Content Blocks - Alternating Layout -->
+  <ContentBlock
+    blockKey="services"
+    pageContent={pageContent}
+    mediaSrc="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80"
+    mediaAlt="Our landlord services"
+    secondaryMediaSrc="https://images.pexels.com/photos/1571453/pexels-photo-1571453.jpeg?auto=compress&cs=tinysrgb&w=800"
+    secondaryMediaAlt="Property management"
+    title="Our Landlord Services"
+    subtitle="Complete Solutions"
+    description="Whether you own one property or a portfolio, we understand that your rental income matters. Our letting services are designed to minimise void periods, find reliable tenants, and ensure your property is well-maintained."
+    ctaText="Learn more"
+    ctaLink="/contact"
+    imagePosition="left"
+    overlayStrength="light"
+    serviceItems={["Tenant Finding", "Rent Collection", "Full Management"]}
+  />
+
+
+  <ContentBlock
+    blockKey="why_let_with_us"
+    pageContent={pageContent}
+    mediaSrc="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=1200&q=80"
+    mediaAlt="Why let with us"
+    secondaryMediaSrc="https://images.pexels.com/photos/2079249/pexels-photo-2079249.jpeg?auto=compress&cs=tinysrgb&w=800"
+    secondaryMediaAlt="Property inspection"
+    title="Why Let With Us"
+    subtitle="Your Investment Protected"
+    description="Tenant find service, rent collection, full property management, inventory and check-in/out, maintenance coordination, and legal compliance management. We offer a range of services so you can choose the level of support that works best for you."
+    ctaText="View packages"
+    ctaLink="/contact"
+    imagePosition="right"
+    overlayStrength="light"
+    textBackground="var(--color-bg-tertiary)"
+    serviceItems={["Inventory Management", "Maintenance Support", "Legal Compliance"]}
+  />
+
+  <!-- CTA Banner -->
+  <CTABanner
+    title="Ready to Let Your Property?"
+    subtitle="Get a free rental valuation and find out how we can help you maximise your rental income while minimising the hassle."
+    primaryCtaText="Request Valuation"
+    primaryCtaLink="/valuation"
+    secondaryCtaText="Contact Us"
+    secondaryCtaLink="/contact"
+  />
+
+  <ContentBlock
+    blockKey="compliance"
+    pageContent={pageContent}
+    mediaSrc="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=1200&q=80"
+    mediaAlt="Compliance and safety"
+    secondaryMediaSrc="https://images.pexels.com/photos/3935350/pexels-photo-3935350.jpeg?auto=compress&cs=tinysrgb&w=800"
+    secondaryMediaAlt="Property compliance check"
+    title="Compliance & Safety"
+    subtitle="Peace of Mind"
+    description="14 days average time to let, 99% rent collection rate, and over 200 properties managed. We stay up-to-date with all the latest legislation and compliance requirements, so you can have peace of mind."
+    ctaText="Get started"
+    ctaLink="/contact"
+    imagePosition="left"
+    overlayStrength="light"
+    serviceItems={["14 Days to Let", "99% Rent Collection", "200+ Properties"]}
+  />
+
+
+</Layout>

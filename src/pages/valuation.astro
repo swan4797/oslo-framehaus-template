@@ -1,0 +1,80 @@
+---
+// ========================================
+// VALUATION PAGE
+// Modern, premium valuation request form
+// Uses modular form components
+// Dynamic contact info from Stratos CRM
+// ========================================
+
+import Layout from '../layouts/Layout.astro'
+import { fetchBrandSettings, getContactInfo, getSocialLinks } from '../lib/brand'
+import type { BrandSettings } from '../types/brand'
+
+// Form Page Components
+import FormPageLayout from '../components/form-page/layout/FormPageLayout.astro'
+import FormHero from '../components/form-page/hero/FormHero.astro'
+import FaqSection from '../components/form-page/faq/FaqSection.astro'
+import FormCard from '../components/form-page/card/FormCard.astro'
+import ContactAlternative from '../components/form-page/card/ContactAlternative.astro'
+import FormCardHeader from '../components/form-page/card/FormCardHeader.astro'
+import ContactInfoGrid from '../components/form-page/contact-info/ContactInfoGrid.astro'
+
+// Form Component
+import ValuationForm from '../components/forms/presets/ValuationForm.astro'
+
+// Configuration
+import { valuationPageConfig } from '../components/form-page/config'
+
+// Fetch brand settings from Stratos CRM
+let brand: BrandSettings
+try {
+  brand = await fetchBrandSettings()
+} catch (error) {
+  console.error('[Valuation] Error fetching brand settings:', error)
+  brand = await fetchBrandSettings()
+}
+
+// Extract contact info and social links
+const contactInfo = getContactInfo(brand)
+const socialLinks = getSocialLinks(brand)
+
+const pageTitle = 'Free Property Valuation'
+const pageDescription = `Get a free, no-obligation property valuation from ${brand.business_name || 'expert local agents'}. Discover what your home is worth in today's market.`
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <FormPageLayout backgroundImage="https://images.pexels.com/photos/18729227/pexels-photo-18729227/free-photo-of-colorful-terraced-houses-in-town-in-uk.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=2">
+    <!-- Page Hero -->
+    <FormHero
+      title={valuationPageConfig.hero.title}
+      subtitle={valuationPageConfig.hero.subtitle}
+    />
+
+    <!-- Contact Info Cards -->
+    <ContactInfoGrid
+      contactInfo={contactInfo}
+      socialLinks={socialLinks}
+    />    
+
+    <!-- Form Section -->
+    <FormCard>
+      <FormCardHeader
+        title="Send us a message"
+        subtitle="Fill in the form below and we'll get back to you within 24 hours."
+      />      
+      <ValuationForm />
+      <ContactAlternative contactInfo={contactInfo} />
+    </FormCard>
+
+    <!-- FAQ Section -->
+    <FaqSection
+      title={valuationPageConfig.faq.title}
+      subtitle={valuationPageConfig.faq.subtitle}
+      items={valuationPageConfig.faq.items}
+    />
+  </FormPageLayout>
+</Layout>
+
+<style lang="scss">
+  @use '../styles/pages/valuation';
+</style>

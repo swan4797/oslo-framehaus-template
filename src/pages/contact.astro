@@ -1,0 +1,86 @@
+---
+// ========================================
+// CONTACT PAGE
+// Modern, premium contact form with FAQ
+// Uses modular form components
+// Dynamic contact info from Stratos CRM
+// ========================================
+
+import Layout from '../layouts/Layout.astro'
+import { fetchBrandSettings, getContactInfo, getSocialLinks } from '../lib/brand'
+import type { BrandSettings } from '../types/brand'
+
+// Form Page Components
+import FormPageLayout from '../components/form-page/layout/FormPageLayout.astro'
+import FormHero from '../components/form-page/hero/FormHero.astro'
+import ContactInfoGrid from '../components/form-page/contact-info/ContactInfoGrid.astro'
+import FaqSection from '../components/form-page/faq/FaqSection.astro'
+import FormCard from '../components/form-page/card/FormCard.astro'
+import FormCardHeader from '../components/form-page/card/FormCardHeader.astro'
+
+// Form Component
+import ContactForm from '../components/forms/presets/ContactForm.astro'
+
+// Page content utilities
+import { getPageContent } from '../lib/pages'
+
+// Configuration
+import { contactPageConfig } from '../components/form-page/config'
+
+// Fetch brand settings from Stratos CRM
+let brand: BrandSettings
+try {
+  brand = await fetchBrandSettings()
+} catch (error) {
+  console.error('[Contact] Error fetching brand settings:', error)
+  brand = await fetchBrandSettings()
+}
+
+// Extract contact info and social links
+const contactInfo = getContactInfo(brand)
+const socialLinks = getSocialLinks(brand)
+
+// Fetch contact page content from Stratos CRM
+const pageContent = await getPageContent('contact')
+
+const pageTitle = 'Contact Us'
+const pageDescription = `Get in touch with ${brand.business_name || 'our team'}. We're here to help with all your property needs.`
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <FormPageLayout
+   backgroundImage="https://images.pexels.com/photos/5098531/pexels-photo-5098531.jpeg"
+  >
+    <!-- Page Hero -->
+    <FormHero
+      title={contactPageConfig.hero.title}
+      subtitle={contactPageConfig.hero.subtitle}
+    />
+
+    <!-- Contact Info Cards -->
+    <ContactInfoGrid
+      contactInfo={contactInfo}
+      socialLinks={socialLinks}
+    />
+
+    <!-- Form Section -->
+    <FormCard>
+      <FormCardHeader
+        title="Send us a message"
+        subtitle="Fill in the form below and we'll get back to you within 24 hours."
+      />
+      <ContactForm />
+    </FormCard>
+
+    <!-- FAQ Section -->
+    <FaqSection
+      title={contactPageConfig.faq.title}
+      subtitle={contactPageConfig.faq.subtitle}
+      items={contactPageConfig.faq.items}
+    />
+  </FormPageLayout>
+</Layout>
+
+<style lang="scss">
+  @use '../styles/pages/contact';
+</style>

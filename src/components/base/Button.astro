@@ -1,0 +1,70 @@
+---
+// ========================================
+// BUTTON COMPONENT
+// Reusable button with variants
+// ========================================
+
+export interface Props {
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger'
+  size?: 'sm' | 'md' | 'lg'
+  href?: string
+  type?: 'button' | 'submit' | 'reset'
+  disabled?: boolean
+  fullWidth?: boolean
+  loading?: boolean
+  icon?: boolean
+  class?: string
+  [key: string]: any
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  type = 'button',
+  disabled = false,
+  fullWidth = false,
+  loading = false,
+  icon = false,
+  class: className,
+  ...rest
+} = Astro.props
+
+const Tag = href ? 'a' : 'button'
+
+const classes = [
+  'btn',
+  `btn--${variant}`,
+  `btn--${size}`,
+  fullWidth && 'btn--full-width',
+  loading && 'btn--loading',
+  icon && 'btn--icon',
+  disabled && 'btn--disabled',
+  className,
+].filter(Boolean).join(' ')
+---
+
+<Tag
+  class={classes}
+  href={href}
+  type={!href ? type : undefined}
+  disabled={disabled || loading}
+  aria-disabled={disabled || loading}
+  {...rest}
+>
+  {loading && (
+    <span class="btn__spinner" aria-hidden="true">
+      <svg class="btn__spinner-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle class="btn__spinner-track" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" />
+        <path class="btn__spinner-head" d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+      </svg>
+    </span>
+  )}
+  <span class="btn__content" class:list={{ 'btn__content--hidden': loading }}>
+    <slot />
+  </span>
+</Tag>
+
+<style lang="scss" is:global>
+  @use '../../styles/components/base/button';
+</style>

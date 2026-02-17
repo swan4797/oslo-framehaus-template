@@ -1,0 +1,270 @@
+---
+// ========================================
+// PROPERTY DETAILS PAGE
+// Dynamic route: /properties/{slug}
+// Displays full property listing with gallery, details, map, and contact form
+// ========================================
+
+export const prerender = false
+
+// -- Layout & Components --
+import Layout from '../../layouts/Layout.astro'
+import Breadcrumbs from '../../components/ui/Breadcrumbs.astro'
+import ImageGallery from '../../components/propertydetails/ImageGallery.astro'
+import PropertyDetailsSection from '../../components/propertydetails/PropertyDetailsSection.astro'
+import DescriptionSection from '../../components/propertydetails/DescriptionSection.astro'
+import FloorplanSection from '../../components/propertydetails/FloorplanSection.astro'
+import KeyFeaturesSection from '../../components/propertydetails/KeyFeaturesSection.astro'
+import PropertyMapSection from '../../components/map/PropertyMapSection.astro'
+import EnergyPerformanceSection from '../../components/propertydetails/EnergyPerformanceSection.astro'
+import SimilarProperties from '../../components/propertydetails/SimilarProperties.astro'
+import ViewingSection from '../../components/propertydetails/ViewingSection.astro'
+import ContactCard from '../../components/ui/ContactCard.astro'
+import ShareCard from '../../components/ui/ShareCard.astro'
+
+// -- API & Utilities --
+import { getPropertyBySlug } from '../../lib/api'
+import { fetchBrandSettings, getContactInfo } from '../../lib/brand'
+import {
+  extractPropertySlugFromUrl,
+  getDisplayPrice,
+  formatPropertyType,
+  formatDate,
+  getStatusBadgeText,
+} from '../../lib/utils'
+
+// -- Route Validation --
+const slug = extractPropertySlugFromUrl(Astro.url.pathname)
+if (!slug) {
+  return Astro.redirect('/search')
+}
+
+// -- Data Fetching --
+const property = await getPropertyBySlug(slug)
+if (!property) {
+  return Astro.redirect('/search')
+}
+
+const brand = await fetchBrandSettings()
+const contact = getContactInfo(brand)
+
+// -- Computed Values --
+const displayPrice = getDisplayPrice(property)
+const propertyType = formatPropertyType(property.property_type)
+const listedDate = property.listed_date ? formatDate(property.listed_date) : null
+const statusText = getStatusBadgeText(property.listing_status)
+const hasLocation = property.latitude && property.longitude
+
+// -- Media Filtering --
+const floorplanImages = (property.property_media || []).filter(
+  (media) => media.media_type === 'floorplan'
+)
+const epcImages = (property.property_media || []).filter(
+  (media) => media.media_type === 'epc'
+)
+
+// -- SEO: Structured Data (Schema.org) --
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': property.listing_type === 'sale' ? 'RealEstateListing' : 'Apartment',
+  name: property.display_address,
+  description: property.description || property.summary,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: property.address_line_1,
+    addressLocality: property.city,
+    addressRegion: property.county,
+    postalCode: property.postcode,
+    addressCountry: property.country_code,
+  },
+}
+
+// -- Page Metadata --
+const pageTitle = `${property.display_address} - ${propertyType}`
+const pageDescription = property.summary || `${propertyType} in ${property.city || property.postcode}`
+---
+
+<Layout title={pageTitle} description={pageDescription} headerVariant="solid">
+  <!-- SEO: JSON-LD structured data -->
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+  <article class="property-page">
+    <!-- Navigation breadcrumbs -->
+    <Breadcrumbs
+      items={[
+        { label: 'Home', href: '/' },
+        {
+          label: property.listing_type === 'sale' ? 'Properties for Sale' : 'Properties to Let',
+          href: `/search?listing_type=${property.listing_type}`
+        },
+        { label: property.display_address }
+      ]}
+    />
+
+
+    <!-- Main content container -->
+    <section class="property-details">
+      <!-- Top Section: Two Column Grid -->
+      <div class="property-details__top-grid">
+        <!-- Left Column: Details + Viewing -->
+        <div class="property-details__info-column">
+
+          <!-- Viewing request section with form -->
+          <ViewingSection property={property} />
+        </div>
+
+        <!-- Right Column: Image Gallery -->
+        <div class="property-details__gallery-column">
+          <ImageGallery
+            images={property.property_media || []}
+            propertyAddress={property.display_address}
+            propertyId={property.id}
+          />
+          <!-- Contact & Share Actions -->
+          <div class="property-header__actions">
+            {(contact.phone || contact.email) && (
+              <ContactCard
+                phone={contact.phone}
+                email={contact.email}
+                title=""
+                subtitle=""
+                emailSubject={`Enquiry about ${property.display_address}`}
+                showCard={false}
+              />
+            )}
+            <ShareCard
+              shareUrl={Astro.url.href}
+              shareText={property.display_address}
+              title=""
+              copyButtonId="header-share-copy"
+              showCard={false}
+            />
+          </div>          
+        </div>
+      </div>
+
+      <!-- Property Header & Details Row -->
+      <div class="property-details__header-row">
+        <!-- Left Column: Property Title & Location -->
+        <div class="property-header">
+          {property.listing_status !== 'available' && (
+            <span class="property-header__status">{statusText}</span>
+          )}
+          <h1 class="property-header__title">{property.display_address}</h1>
+          <p class="property-header__location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span>{property.city && `${property.city}, `}{property.postcode}</span>
+          </p>
+        </div>
+
+        <!-- Right Column: Price & Property Details -->
+        <PropertyDetailsSection
+          propertyType={propertyType}
+          bedrooms={property.bedrooms}
+          bathrooms={property.bathrooms}
+          receptions={property.receptions}
+          tenure={property.tenure}
+          epcRating={property.epc_rating}
+          listedDate={listedDate}
+          listingType={property.listing_type}
+          displayPrice={displayPrice}
+        />
+      </div>
+      <!-- Description & Key Features Row -->
+      <div class="property-details__description-row">
+        <!-- Property description text -->
+        <DescriptionSection description={property.description} />
+
+        <!-- Key features list with image slider -->
+        <KeyFeaturesSection
+          features={property.key_features}
+          images={property.property_media || []}
+          propertyAddress={property.display_address}
+        />
+      </div>
+
+      <!-- Bottom Section: Full Width Content -->
+      <div class="property-details__content-sections">
+        <!-- Floorplan images (if available) -->
+        {floorplanImages.length > 0 && (
+          <FloorplanSection
+            floorplanImages={floorplanImages}
+            propertyAddress={property.display_address}
+          />
+        )}
+
+        <!-- Interactive location map (if coordinates exist) -->
+        {hasLocation && (
+          <PropertyMapSection
+            latitude={property.latitude!}
+            longitude={property.longitude!}
+            address={property.display_address}
+            postcode={property.postcode}
+            displayAddress={property.display_address}
+            provider="openstreetmap"
+          />
+        )}
+
+        <!-- EPC rating and certificate (if available) -->
+        <EnergyPerformanceSection
+          epcRating={property.epc_rating}
+          epcCurrentScore={property.epc_current_score}
+          epcPotentialScore={property.epc_potential_score}
+          epcImages={epcImages}
+          propertyAddress={property.display_address}
+        />
+
+        <!-- Recommended similar properties -->
+        <SimilarProperties
+          propertyId={property.id}
+          listingType={property.listing_type}
+          limit={4}
+        />
+      </div>
+    </section>
+
+    <!-- Analytics: track property views -->
+    <script define:vars={{ propertyId: property.id }}>
+      // Key to track which property has already been tracked in this page session
+      const TRACKED_PROPERTY_KEY = '__stratos_tracked_property';
+
+      const trackProperty = () => {
+        // Prevent duplicate tracking for the same property
+        if (window[TRACKED_PROPERTY_KEY] === propertyId) {
+          console.log('[Property] Already tracked:', propertyId);
+          return;
+        }
+
+        if (window.StratosTracker) {
+          // Mark this property as tracked
+          window[TRACKED_PROPERTY_KEY] = propertyId;
+
+          window.StratosTracker.trackPropertyView(propertyId);
+          window.StratosTracker.setupPropertyDurationTracking(propertyId);
+          console.log('[Property] Tracked view:', propertyId);
+        }
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', trackProperty);
+      } else {
+        trackProperty();
+      }
+
+      // Handle Astro View Transitions
+      document.addEventListener('astro:page-load', () => {
+        // Only re-track if we navigated to a different property
+        if (window[TRACKED_PROPERTY_KEY] !== propertyId) {
+          trackProperty();
+        }
+      });
+    </script>
+  </article>
+</Layout>
+
+<style lang="scss" is:global>
+  @use '../../styles/pages/property-details';
+</style>

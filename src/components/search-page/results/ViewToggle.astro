@@ -1,0 +1,53 @@
+---
+// ========================================
+// VIEW TOGGLE
+// Grid/List view toggle for search results
+// ========================================
+
+interface Props {
+  defaultView?: 'grid' | 'list'
+  class?: string
+}
+
+const {
+  defaultView = 'grid',
+  class: className = '',
+} = Astro.props
+---
+
+<div class:list={['view-toggle', className]} data-view-toggle>
+  <button
+    type="button"
+    class:list={['view-toggle__btn', { 'view-toggle__btn--active': defaultView === 'grid' }]}
+    data-view="grid"
+    aria-label="Grid view"
+    aria-pressed={defaultView === 'grid'}
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="3" width="7" height="7"></rect>
+      <rect x="14" y="3" width="7" height="7"></rect>
+      <rect x="3" y="14" width="7" height="7"></rect>
+      <rect x="14" y="14" width="7" height="7"></rect>
+    </svg>
+    <span class="view-toggle__label">Grid</span>
+  </button>
+
+  <button
+    type="button"
+    class:list={['view-toggle__btn', { 'view-toggle__btn--active': defaultView === 'list' }]}
+    data-view="list"
+    aria-label="List view"
+    aria-pressed={defaultView === 'list'}
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+    <span class="view-toggle__label">List</span>
+  </button>
+</div>
+
+<style lang="scss">
+  @use '../../../styles/pages/search/view-toggle';
+</style>

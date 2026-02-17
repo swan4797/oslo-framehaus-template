@@ -1,0 +1,196 @@
+---
+// ========================================
+// BASE LAYOUT
+// Main layout with navigation, SEO, and footer
+// Integrates with modular Header component
+// ========================================
+
+import { siteConfig } from '../lib/config'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import CookieConsent from '../components/CookieConsent.astro'
+import BrandProvider from '../components/BrandProvider.astro'
+
+// Import Header types for configuration
+import type { HeaderVariant, HeaderConfig, HeaderVariantConfig, NavItem } from '../components/Header.astro'
+
+// Global styles
+import '../styles/global/_layouts.scss'
+
+// ========================================
+// LAYOUT PROPS INTERFACE
+// ========================================
+
+interface Props {
+  // SEO & Meta
+  title?: string
+  description?: string
+  ogImage?: string
+  canonicalUrl?: string
+  noIndex?: boolean
+
+  // Header Configuration (Simple)
+  /** Header variant preset - 'transparent', 'solid', 'dark', or 'minimal' */
+  headerVariant?: HeaderVariant
+
+  // Header Configuration (Advanced)
+  /** Complete header configuration object for advanced customization */
+  headerConfig?: HeaderConfig
+
+  // Layout Options
+  /** Hide the footer */
+  hideFooter?: boolean
+  /** Custom body class */
+  bodyClass?: string
+}
+
+// ========================================
+// PROPS DESTRUCTURING
+// ========================================
+
+const {
+  // SEO
+  title = siteConfig.name,
+  description = siteConfig.description,
+  ogImage = '/images/og-default.jpg',
+  canonicalUrl = Astro.url.href,
+  noIndex = false,
+
+  // Header (simple API for common cases)
+  headerVariant = 'transparent',
+
+  // Header (advanced API for full control)
+  headerConfig,
+
+  // Layout
+  hideFooter = false,
+  bodyClass = '',
+} = Astro.props
+
+// ========================================
+// COMPUTED VALUES
+// ========================================
+
+const fullTitle = title === siteConfig.name ? title : `${title} | ${siteConfig.name}`
+
+// Merge simple headerVariant with advanced headerConfig
+// Advanced config takes precedence if provided
+const finalHeaderConfig: HeaderConfig = {
+  variant: headerVariant,
+  ...headerConfig,
+}
+
+// Body classes
+const bodyClasses = ['body_wrapper', bodyClass].filter(Boolean).join(' ')
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- SEO Meta Tags -->
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta property="twitter:title" content={fullTitle} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={ogImage} />
+
+    <!-- Brand Provider - Dynamic theming from Stratos CRM -->
+    <BrandProvider />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Domine:wght@400..700&family=Figtree:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class={bodyClasses}>
+    <!-- Header Navigation -->
+    <Header {...finalHeaderConfig} />
+
+    <!-- Main Content -->
+    <main class="main_content">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    {!hideFooter && <Footer />}
+
+    <!-- Session Management -->
+    <!-- Initialize Stratos Tracker (GDPR Compliant) -->
+    <script>
+      import { StratosTracker } from '../lib/stratos-tracker';
+      import { initSession, hasAnalyticsConsent } from '../lib/session';
+
+      // Key to track which page has been tracked in this navigation
+      const TRACKED_PAGE_KEY = '__stratos_tracked_page';
+
+      // Create tracker instance (does NOT track yet - waits for consent)
+      const tracker = new StratosTracker({
+        apiUrl: import.meta.env.PUBLIC_SUPABASE_URL,
+        apiKey: import.meta.env.PUBLIC_WEBSITE_API_KEY,
+        trackingEnabled: true,
+        debug: import.meta.env.DEV, // Debug in development only
+      });
+
+      // Make tracker globally available
+      (window as any).StratosTracker = tracker;
+
+      const trackPageIfNeeded = () => {
+        const currentPath = window.location.pathname + window.location.search;
+
+        // Prevent duplicate tracking for the same page
+        if ((window as any)[TRACKED_PAGE_KEY] === currentPath) {
+          console.log('[Tracker] Page already tracked:', currentPath);
+          return;
+        }
+
+        if (hasAnalyticsConsent()) {
+          (window as any)[TRACKED_PAGE_KEY] = currentPath;
+          tracker.trackPageView();
+          console.log('[Tracker] Page view tracked:', currentPath);
+        }
+      };
+
+      // GDPR: Only initialize if consent already given (returning visitor)
+      if (hasAnalyticsConsent()) {
+        console.log('[GDPR] Analytics consent found - initializing tracker');
+        initSession();
+        tracker.init();
+        trackPageIfNeeded();
+      } else {
+        console.log('[GDPR] No analytics consent - tracker waiting for consent');
+        // Tracker will auto-initialize when consent is given via cookieConsentUpdated event
+      }
+
+      // Handle Astro View Transitions - track new pages
+      document.addEventListener('astro:page-load', () => {
+        trackPageIfNeeded();
+      });
+    </script>
+
+    <!-- Cookie Consent -->
+    <CookieConsent />
+  </body>
+</html>

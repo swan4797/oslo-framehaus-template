@@ -1,0 +1,69 @@
+// ========================================
+// FORM HERO STYLES
+// Hero section for form pages
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+@use '../../mixins' as *;
+
+.form-hero {
+  padding: spacing.$space-16 spacing.$space-6 spacing.$space-12;
+  text-align: center;
+
+  @include md {
+    padding: spacing.$space-20 spacing.$space-6 spacing.$space-14;
+  }
+
+  @include mobile-only {
+    padding: spacing.$space-12 spacing.$space-5 spacing.$space-8;
+  }
+}
+
+.form-hero__content {
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+.form-hero__title {
+  font-family: typography.$font-family-heading;
+  font-size: typography.$font-size-4xl;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-light;
+  margin: 0 0 spacing.$space-4 0;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+  @include md {
+    font-size: 2.75rem;
+    margin-bottom: spacing.$space-5;
+  }
+
+  @include lg {
+    font-size: typography.$font-size-5xl;
+  }
+}
+
+.form-hero__subtitle {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  color: colors.$color-white-85;
+  margin: 0;
+  line-height: 1.7;
+  max-width: 32rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+  @include md {
+    font-size: typography.$font-size-lg;
+  }
+
+  // Style for CMS content
+  :global(p) {
+    margin: 0;
+  }
+}

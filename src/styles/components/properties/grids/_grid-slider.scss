@@ -1,0 +1,364 @@
+// ========================================
+// PROPERTY GRID SLIDER COMPONENT
+// Horizontal slider for property cards
+// Using centralized design tokens
+// ========================================
+
+@use '../../../tokens/colors' as colors;
+@use '../../../tokens/effects' as effects;
+@use '../../../tokens/spacing' as spacing;
+@use '../../../tokens/typography' as typography;
+@use '../../../mixins' as *;
+
+// ----------------------------------------
+// SECTION BASE
+// ----------------------------------------
+
+.pgs {
+  position: relative;
+  padding: 4rem 0;
+  background: colors.$color-bg-secondary;
+  overflow: hidden;
+
+  @include md {
+    padding: 5rem 0;
+  }
+
+  @include lg {
+    padding: 6rem 0;
+  }
+
+  &--alt {
+    background: colors.$color-bg-secondary;
+  }
+
+  &--has-bg {
+    color: colors.$color-bg-secondary;
+
+    .pgs__title,
+    .pgs__subtitle,
+    .pgs__link {
+      color: colors.$color-bg-secondary;
+    }
+
+    .pgs__nav-btn {
+      background: colors.$color-bg-secondary;
+      border-color: transparent;
+
+      &:hover:not(.pgs__nav-btn--disabled) {
+        background: colors.$color-bg-secondary;
+      }
+    }
+  }
+}
+
+// ----------------------------------------
+// BACKGROUND
+// ----------------------------------------
+
+.pgs__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+
+}
+
+.pgs__bg-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pgs__bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    colors.$color-black-40 0%,
+    colors.$color-black-60 100%
+  );
+}
+
+// ----------------------------------------
+// CONTAINER
+// ----------------------------------------
+
+.pgs__container {
+  @include container;
+  position: relative;
+  z-index: 1;
+}
+
+// ----------------------------------------
+// HEADER
+// ----------------------------------------
+
+.pgs__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+
+  @include md {
+    align-items: center;
+    margin-bottom: 3rem;
+  }
+}
+
+.pgs__title-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.pgs__title {
+  font-family: typography.$font-family-heading;
+  font-size: 1.75rem;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.02em;
+  line-height: typography.$line-height-tight;
+
+  @include md {
+    font-size: 2rem;
+  }
+
+  @include lg {
+    font-size: 2.25rem;
+  }
+}
+
+.pgs__subtitle {
+  font-size: 0.9375rem;
+  color: colors.$color-text-secondary;
+  margin: 0;
+  line-height: typography.$line-height-relaxed;
+  max-width: 32rem;
+
+  @include md {
+    font-size: 1rem;
+  }
+}
+
+// ----------------------------------------
+// CONTROLS
+// ----------------------------------------
+
+.pgs__controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pgs__link {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-primary;
+  text-decoration: none;
+  transition: gap 0.2s ease;
+
+  @include md {
+    display: inline-flex;
+  }
+
+  &:hover {
+    gap: 0.75rem;
+  }
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover svg {
+    transform: translateX(4px);
+  }
+}
+
+// ----------------------------------------
+// SLIDER NAVIGATION
+// ----------------------------------------
+
+.pgs__slider-nav {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+
+  @include md {
+    display: flex;
+  }
+}
+
+.pgs__nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 1px solid colors.$color-border-light;
+  background: colors.$color-bg-secondary;
+  color: colors.$color-text-primary;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    stroke: colors.$color-secondary;
+  }
+
+  &:hover:not(.pgs__nav-btn--disabled) {
+    border-color: colors.$color-primary;
+    color: colors.$color-primary;
+    background: colors.$color-bg-secondary;
+  }
+
+  &--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+// ----------------------------------------
+// SLIDER
+// ----------------------------------------
+
+.pgs__slider {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.pgs__slider-track {
+  display: flex;
+  gap: 1rem;
+
+  @include md {
+    gap: 1.25rem;
+  }
+
+  @include lg {
+    gap: 1.5rem;
+  }
+}
+
+.pgs__slider-item {
+  // Mobile: 1 full card, peek of next
+  flex: 0 0 calc(100% - 3rem);
+  scroll-snap-align: start;
+
+  @include sm {
+    // 2 full cards visible
+    flex: 0 0 calc(50% - 0.5rem);
+  }
+
+  @include md {
+    // 3 full cards visible
+    flex: 0 0 calc(33.333% - 0.834rem);
+  }
+
+  @include lg {
+    // 4 full cards visible (gap: 1.5rem, 3 gaps = 4.5rem)
+    flex: 0 0 calc(25% - 1.125rem);
+  }
+}
+
+// ----------------------------------------
+// GRID
+// ----------------------------------------
+
+.pgs__grid {
+  display: grid;
+  gap: 1.5rem;
+
+  &--cols-2 {
+    grid-template-columns: 1fr;
+
+    @include sm {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &--cols-3 {
+    grid-template-columns: 1fr;
+
+    @include sm {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include lg {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &--cols-4 {
+    grid-template-columns: 1fr;
+
+    @include sm {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include lg {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include xl {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}
+
+// ----------------------------------------
+// MOBILE CTA
+// ----------------------------------------
+
+.pgs__mobile-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+
+  @include md {
+    display: none;
+  }
+}
+
+.pgs__mobile-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 2rem;
+  background: colors.$color-bg-secondary;
+  color: colors.$color-bg-primary;
+  font-size: 0.9375rem;
+  font-weight: typography.$font-weight-semibold;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    background: colors.$color-bg-secondary;
+    filter: brightness(0.92);
+    transform: translateY(-1px);
+  }
+}

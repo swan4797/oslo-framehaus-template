@@ -1,0 +1,57 @@
+---
+// ========================================
+// BRANCHES INDEX PAGE
+// Lists all branch microsites
+// ========================================
+
+import Layout from '../../layouts/Layout.astro'
+import Hero from '../../components/Hero.astro'
+import IntroSection from '../../components/static-page/layouts/IntroSection.astro'
+import CTABanner from '../../components/static-page/layouts/CTABanner.astro'
+import BranchesGrid from '../../components/branches/layouts/BranchesGrid.astro'
+
+// Microsite utilities
+import { getAllBranchMicrosites } from '../../lib/microsites'
+
+// Fetch all published branch microsites
+const microsites = await getAllBranchMicrosites()
+
+// Page meta
+const pageTitle = 'Our Branches'
+const pageDescription = 'Find your local branch and discover our property services in your area.'
+
+console.log('[Branches Index] Found microsites:', microsites.length)
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Hero Section -->
+  <Hero
+    headline="Our Branches"
+    description="Find your local property experts"
+    ctaText="View Properties"
+    ctaLink="/properties"
+    backgroundType="image"
+    backgroundSrc="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=80"
+    overlayOpacity="dark"
+    showPhoneButton={false}
+    showScrollIndicator={false}
+  />
+
+  <!-- Intro Section -->
+  <IntroSection
+    title="Find Your Local Branch"
+    subtitle="Locations"
+    description="We have offices across the region, each staffed with local experts who know the area inside and out. Find your nearest branch to start your property journey."
+  />
+
+  <!-- Branches Grid -->
+  <BranchesGrid branches={microsites} />
+
+  <!-- CTA Banner -->
+  <CTABanner
+    title="Can't find your local branch?"
+    subtitle="Get in touch and we'll help you find the right team for your property needs."
+    primaryCtaText="Contact Us"
+    primaryCtaLink="/contact"
+  />
+</Layout>

@@ -1,0 +1,50 @@
+// ========================================
+// CONTACT CARD STYLES
+// Standalone contact card component
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../mixins' as *;
+
+
+/* Standalone variant (without card wrapper) */
+.contact-card-standalone {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+.btn{
+    &--primary{
+        background: colors.$color-bg-tertiary;
+        color: colors.$color-text-primary;
+    }
+}
+
+  .btn--secondary{
+    color: colors.$color-accent;
+    border-color: colors.$color-accent;
+    background: transparent;
+  }
+}
+
+.contact-card-standalone__title {
+  font-family: typography.$font-family-heading;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: colors.$color-accent;
+  margin: 0;
+}
+
+.contact-card-standalone__subtitle {
+  font-size: 0.875rem;
+  color: colors.$color-text-muted;
+  margin: 0;
+}
+
+.contact-card-standalone__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}

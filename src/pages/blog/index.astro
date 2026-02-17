@@ -1,0 +1,114 @@
+---
+// ========================================
+// BLOG LIST PAGE
+// Clean, modern blog page aligned with template design
+// Uses configurable ArticleGrid component
+// ========================================
+
+import Layout from '../../layouts/Layout.astro'
+import ArticleGrid from '../../components/blog/layouts/ArticleGrid.astro'
+import BlogArticleCard from '../../components/blog/cards/BlogArticleCard.astro'
+import { getBlogArticles } from '../../lib/api'
+import { fetchBrandSettings } from '../../lib/brand'
+
+// Fetch brand settings
+const brand = await fetchBrandSettings()
+
+// Get pagination from URL
+const url = new URL(Astro.request.url)
+const currentPage = parseInt(url.searchParams.get('page') || '1')
+const limit = 12
+
+// Fetch blog articles
+const blogResponse = await getBlogArticles({ page: currentPage, limit })
+const articles = blogResponse?.articles || []
+const totalArticles = blogResponse?.total || 0
+const hasMore = blogResponse?.hasMore || false
+
+// Separate featured and regular articles (only on first page)
+const featuredArticles = currentPage === 1 ? articles.filter(a => a.is_featured).slice(0, 3) : []
+const regularArticles = currentPage === 1
+  ? articles.filter(a => !featuredArticles.some(f => f.article_id === a.article_id))
+  : articles
+
+// Calculate pagination
+const totalPages = Math.ceil(totalArticles / limit)
+
+const pageTitle = `Blog | ${brand.business_name}`
+const pageDescription = `Read the latest property news, market insights, and helpful guides from ${brand.business_name}.`
+
+// Stats
+const stats = [
+  { value: totalArticles.toString(), label: 'Articles', icon: 'book' },
+  { value: articles.reduce((sum, a) => sum + (a.view_count || 0), 0).toLocaleString(), label: 'Total Views', icon: 'eye' },
+  { value: 'Weekly', label: 'New Content', icon: 'clock' }
+]
+---
+
+<Layout title={pageTitle} description={pageDescription} headerVariant="solid">
+  <div class="blog-page">
+
+    <!-- Page Header -->
+    <section class="blog-header">
+      <div class="blog-header__content">
+        <h1 class="blog-header__title">Our Blog</h1>
+        <p class="blog-header__subtitle">
+          Property insights, market updates, and helpful guides to keep you informed about the local property market.
+        </p>
+      </div>
+    </section>
+
+
+    <!-- All Articles -->
+    <section class="blog-section">
+      <div class="blog-section__container">
+
+        <ArticleGrid
+          articles={regularArticles}
+          configId="listing"
+          emptyMessage="No articles yet. Check back soon for our latest property insights and guides."
+        />
+
+        <!-- Pagination -->
+        {totalPages > 1 && (
+          <nav class="pagination" aria-label="Blog pagination">
+            {currentPage > 1 && (
+              <a href={`/blog?page=${currentPage - 1}`} class="pagination__btn pagination__btn--prev">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                Previous
+              </a>
+            )}
+
+            <div class="pagination__numbers">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                <a
+                  href={`/blog?page=${page}`}
+                  class:list={['pagination__number', { 'pagination__number--active': page === currentPage }]}
+                  aria-current={page === currentPage ? 'page' : undefined}
+                >
+                  {page}
+                </a>
+              ))}
+            </div>
+
+            {hasMore && (
+              <a href={`/blog?page=${currentPage + 1}`} class="pagination__btn pagination__btn--next">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </a>
+            )}
+          </nav>
+        )}
+      </div>
+    </section>
+
+  </div>
+</Layout>
+
+<style lang="scss">
+  @use '../../styles/pages/blog/list';
+</style>

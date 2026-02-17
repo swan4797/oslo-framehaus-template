@@ -1,0 +1,503 @@
+// ========================================
+// REVIEW CAROUSEL STYLES
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../mixins' as *;
+
+.rc {
+  position: relative;
+  padding: 4rem 0;
+  background: colors.$color-bg-secondary;
+  overflow: hidden;
+
+  @include md {
+    padding: 5rem 0;
+  }
+
+  @include lg {
+    padding: 6rem 0;
+  }
+
+  &--alt {
+    background: colors.$color-bg-secondary;
+  }
+
+  &--dark {
+    background: colors.$color-bg-secondary;
+
+    .rc__title,
+    .rc__subtitle {
+      color: colors.$color-bg-primary;
+    }
+
+    .rc__card {
+      background: colors.$color-bg-secondary;
+      border-color: colors.$color-white-10;
+    }
+
+    .rc__quote p {
+      color: colors.$color-bg-primary;
+    }
+
+    .rc__author-name {
+      color: colors.$color-bg-primary;
+    }
+
+    .rc__author-role,
+    .rc__author-location {
+      color: colors.$color-white-60;
+    }
+  }
+
+  &--has-bg {
+    color: colors.$color-bg-primary;
+
+    .rc__title,
+    .rc__subtitle,
+    .rc__link {
+      color: colors.$color-bg-primary;
+    }
+
+    .rc__nav-btn {
+      background: colors.$color-bg-secondary;
+      border-color: transparent;
+
+      &:hover:not(.rc__nav-btn--disabled) {
+        background: colors.$color-bg-secondary;
+      }
+    }
+  }
+}
+
+// ----------------------------------------
+// BACKGROUND
+// ----------------------------------------
+
+.rc__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.rc__bg-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rc__bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+}
+
+// ----------------------------------------
+// CONTAINER
+// ----------------------------------------
+
+.rc__container {
+  @include container;
+  position: relative;
+  z-index: 1;
+}
+
+// ----------------------------------------
+// HEADER
+// ----------------------------------------
+
+.rc__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+
+  @include md {
+    align-items: center;
+    margin-bottom: 3rem;
+  }
+}
+
+.rc__title-group {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+
+  @include md {
+    text-align: left;
+  }
+}
+
+.rc__title {
+  font-family: typography.$font-family-heading;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: colors.$color-text-primary;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+
+  @include md {
+    font-size: 2rem;
+  }
+
+  @include lg {
+    font-size: 2.25rem;
+  }
+}
+
+.rc__subtitle {
+  font-size: 0.9375rem;
+  color: colors.$color-text-secondary;
+  margin: 0;
+  line-height: 1.6;
+  max-width: 32rem;
+
+  @include md {
+    font-size: 1rem;
+  }
+}
+
+// ----------------------------------------
+// CONTROLS
+// ----------------------------------------
+
+.rc__controls {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+
+  @include md {
+    display: flex;
+  }
+}
+
+.rc__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: colors.$color-primary;
+  text-decoration: none;
+  transition: gap 0.2s ease;
+
+  &:hover {
+    gap: 0.75rem;
+  }
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover svg {
+    transform: translateX(4px);
+  }
+}
+
+// ----------------------------------------
+// CAROUSEL NAVIGATION
+// ----------------------------------------
+
+.rc__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rc__nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 1px solid colors.$color-border-light;
+  background: colors.$color-bg-secondary;
+  color: colors.$color-text-primary;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &:hover:not(.rc__nav-btn--disabled) {
+    border-color: colors.$color-primary;
+    color: colors.$color-primary;
+    background: colors.$color-bg-secondary;
+  }
+
+  &--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+// ----------------------------------------
+// CAROUSEL
+// ----------------------------------------
+
+.rc__carousel {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.rc__carousel-track {
+  display: flex;
+  gap: 1.25rem;
+
+  @include md {
+    gap: 1.5rem;
+  }
+}
+
+.rc__carousel-item {
+  flex: 0 0 calc(100% - 2rem);
+  scroll-snap-align: start;
+
+  @include sm {
+    flex: 0 0 calc(50% - 0.75rem);
+  }
+
+  @include lg {
+    flex: 0 0 calc(33.333% - 1rem);
+  }
+}
+
+// ----------------------------------------
+// GRID
+// ----------------------------------------
+
+.rc__grid {
+  display: grid;
+  gap: 1.25rem;
+
+  @include md {
+    gap: 1.5rem;
+  }
+
+  &--cols-2 {
+    grid-template-columns: 1fr;
+
+    @include sm {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &--cols-3 {
+    grid-template-columns: 1fr;
+
+    @include sm {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include lg {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+// ----------------------------------------
+// REVIEW CARD
+// ----------------------------------------
+
+.rc__card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  background: colors.$color-bg-secondary;
+  border: 1px solid colors.$color-border-light;
+  height: 100%;
+
+  @include md {
+    padding: 2rem;
+  }
+}
+
+// Rating
+.rc__rating {
+  display: flex;
+  gap: 0.125rem;
+  margin-bottom: 1rem;
+}
+
+.rc__star {
+  width: 1rem;
+  height: 1rem;
+  color: #fbbf24; // Amber/gold color for stars
+
+  &--filled {
+    fill: currentColor;
+  }
+}
+
+// Quote
+.rc__quote {
+  flex: 1;
+  margin: 0 0 1.5rem 0;
+
+  p {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: colors.$color-text-primary;
+    margin: 0;
+
+    @include md {
+      font-size: 1rem;
+    }
+  }
+}
+
+// Author
+.rc__author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rc__avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.rc__author-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.rc__author-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: colors.$color-text-primary;
+}
+
+.rc__author-role,
+.rc__author-location {
+  font-size: 0.75rem;
+  color: colors.$color-text-muted;
+}
+
+// Meta
+.rc__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid colors.$color-border-light;
+}
+
+.rc__meta-tag {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: colors.$color-text-secondary;
+  background: colors.$color-bg-secondary;
+  padding: 0.25rem 0.5rem;
+}
+
+.rc__meta-source {
+  font-size: 0.75rem;
+  color: colors.$color-text-muted;
+  margin-left: auto;
+}
+
+// ----------------------------------------
+// DOTS NAVIGATION
+// ----------------------------------------
+
+.rc__dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+
+  @include md {
+    display: none;
+  }
+}
+
+.rc__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  border: none;
+  background: colors.$color-bg-secondary;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    background: colors.$color-bg-secondary;
+  }
+
+  &--active {
+    background: colors.$color-bg-secondary;
+    transform: scale(1.25);
+  }
+}
+
+// ----------------------------------------
+// MOBILE CTA
+// ----------------------------------------
+
+.rc__mobile-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+
+  @include md {
+    display: none;
+  }
+}
+
+.rc__mobile-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 2rem;
+  background: colors.$color-bg-secondary;
+  color: colors.$color-text-light;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    background: colors.$color-bg-secondary;
+    transform: translateY(-1px);
+  }
+}

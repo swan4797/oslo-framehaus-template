@@ -1,0 +1,48 @@
+---
+// ========================================
+// TEAM MEMBER CARD COMPONENT
+// Simple vertical card with portrait image, name, and title
+// Clean minimal design
+// ========================================
+
+import type { TeamMember } from '../../../types/database'
+
+interface Props {
+  member: TeamMember
+  featured?: boolean
+}
+
+const { member, featured = false } = Astro.props
+
+// Default avatar if no photo
+const avatarUrl = member.profile_photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.full_name)}&size=400&background=F5F5F5&color=6B7280`
+---
+
+<article
+  class:list={[
+    'team-card',
+    { 'team-card--featured': featured }
+  ]}
+>
+  <!-- Portrait Image -->
+  <div class="team-card__image-wrap">
+    <img
+      src={avatarUrl}
+      alt={member.full_name}
+      class="team-card__image"
+      loading="lazy"
+    />
+  </div>
+
+  <!-- Info -->
+  <div class="team-card__info">
+    <h3 class="team-card__name">{member.full_name}</h3>
+    {member.job_title && (
+      <p class="team-card__title">{member.job_title}</p>
+    )}
+  </div>
+</article>
+
+<style lang="scss">
+  @use '../../../styles/pages/team/team-cards';
+</style>

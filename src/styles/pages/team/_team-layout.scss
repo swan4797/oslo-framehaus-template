@@ -1,0 +1,459 @@
+// ========================================
+// TEAM PAGE STYLES
+// Clean grid layout for simple team member cards
+// ========================================
+
+// Import centralized tokens
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+
+// ========================================
+// LOCAL DESIGN TOKENS
+// ========================================
+
+$accent-color: colors.$color-primary;
+$accent-color-hover: colors.$color-primary-dark;
+$text-primary: colors.$color-text-primary;
+$text-secondary: colors.$color-text-secondary;
+$text-muted: colors.$color-text-muted;
+$bg-white: colors.$color-bg-primary;
+$bg-cream: colors.$color-bg-secondary;
+$bg-light: colors.$color-bg-tertiary;
+$border-light: colors.$color-border-light;
+
+$font-serif: typography.$font-family-heading;
+$font-sans: typography.$font-family-base;
+
+$page-max-width: 95%;
+$content-max-width: 680px;
+$section-spacing: 5rem;
+$section-spacing-mobile: 3.5rem;
+$grid-gap: 1.5rem;
+
+$radius-sm: effects.$radius-sm;
+$radius-md: effects.$radius-md;
+$radius-lg: effects.$radius-lg;
+$radius-xl: effects.$radius-xl;
+
+$shadow-sm: effects.$shadow-sm;
+$shadow-md: effects.$shadow-md;
+$shadow-lg: effects.$shadow-lg;
+
+$transition-fast: effects.$transition-fast;
+$transition-base: effects.$transition-base;
+
+// ========================================
+// TEAM GRID
+// ========================================
+
+.team-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  align-items: center;
+  width: 100%;
+}
+
+// ----------------------------------------
+// FEATURED GRID
+// ----------------------------------------
+
+.team-grid__featured {
+  display: grid;
+  width: 100%;
+  margin: 0 auto;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $grid-gap;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 580px) {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+  }
+}
+
+// ----------------------------------------
+// REGULAR GRID
+// ----------------------------------------
+
+.team-grid__regular {
+  display: grid;
+  width: 100%;
+  margin: 0 auto;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $grid-gap;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 580px) {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+  }
+}
+
+// ----------------------------------------
+// COLUMN VARIANTS
+// ----------------------------------------
+
+.team-grid__featured--cols-2,
+.team-grid__regular--cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.team-grid__featured--cols-3,
+.team-grid__regular--cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.team-grid__featured--cols-4,
+.team-grid__regular--cols-4 {
+  grid-template-columns: repeat(3, 1fr);
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 580px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ----------------------------------------
+// GAP VARIANTS
+// ----------------------------------------
+
+.team-grid__featured--gap-sm,
+.team-grid__regular--gap-sm {
+  gap: 1rem;
+}
+
+.team-grid__featured--gap-md,
+.team-grid__regular--gap-md {
+  gap: 1.5rem;
+}
+
+.team-grid__featured--gap-lg,
+.team-grid__regular--gap-lg {
+  gap: 2rem;
+}
+
+// ----------------------------------------
+// EMPTY STATE
+// ----------------------------------------
+
+.team-grid__empty {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: colors.$color-bg-secondary;
+  border-radius: $radius-lg;
+  width: 100%;
+
+  p {
+    margin: 0;
+    font-size: 1rem;
+    color: $text-muted;
+  }
+}
+
+// ========================================
+// PAGE LAYOUT
+// ========================================
+
+.team-page {
+  background: colors.$color-bg-secondary;
+  font-family: $font-sans;
+  min-height: 100vh;
+}
+
+// ========================================
+// HERO SECTION
+// Left-aligned with large bold title
+// ========================================
+
+.team-hero {
+  padding: 8rem 1.5rem 3rem;
+  text-align: left;
+  background: colors.$color-bg-secondary;
+
+  @media (max-width: 768px) {
+    padding: 7rem 1.25rem 2.5rem;
+  }
+}
+
+.team-hero__container {
+  max-width: $page-max-width;
+  margin: 0 auto;
+}
+
+.team-hero__title {
+  font-family: $font-sans;
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 900;
+  color: $text-primary;
+  margin: 0 0 1.5rem 0;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.team-hero__subtitle {
+  font-family: $font-sans;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 500;
+  color: $text-primary;
+  margin: 0;
+  line-height: 1.4;
+  max-width: 320px;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
+.team-hero__divider {
+  display: none;
+}
+
+.team-hero__icon {
+  display: none;
+}
+
+// ========================================
+// TEAM SECTION
+// ========================================
+
+.team-section {
+  padding: $section-spacing 1.5rem;
+  background: colors.$color-bg-secondary;
+
+  @media (max-width: 768px) {
+    padding: $section-spacing-mobile 1.25rem;
+  }
+}
+
+.team-section__container {
+  max-width: $page-max-width;
+  margin: 0 auto;
+}
+
+// ========================================
+// EDITORIAL GRID WRAPPER
+// ========================================
+
+.team-grid--editorial {
+  :global(.team-grid) {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  :global(.team-grid__featured),
+  :global(.team-grid__regular) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $grid-gap;
+    max-width: 100% !important;
+
+    @media (max-width: 900px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 580px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+// ========================================
+// CONTACT CTA SECTION
+// ========================================
+
+.team-contact {
+  padding: $section-spacing 1.5rem;
+  background: colors.$color-bg-secondary;
+
+  @media (max-width: 768px) {
+    padding: $section-spacing-mobile 1.25rem;
+  }
+}
+
+.team-contact__container {
+  max-width: $content-max-width;
+  margin: 0 auto;
+}
+
+.team-contact__content {
+  text-align: center;
+}
+
+.team-contact__label {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: $accent-color;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 1rem;
+}
+
+.team-contact__title {
+  font-family: $font-serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 400;
+  color: $text-primary;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.02em;
+}
+
+.team-contact__text {
+  font-size: 1rem;
+  color: $text-secondary;
+  line-height: 1.7;
+  margin: 0 0 2rem 0;
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.team-contact__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+
+  @media (min-width: 480px) {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+  }
+}
+
+.team-contact__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 3.25rem;
+  padding: 0 2rem;
+  font-family: $font-sans;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: $radius-sm;
+  transition: all $transition-fast;
+
+  @media (max-width: 479px) {
+    width: 100%;
+  }
+
+  &--primary {
+    background: $accent-color;
+    color: $bg-white;
+
+    &:hover {
+      background: $accent-color-hover;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(255, 90, 95, 0.3);
+    }
+  }
+
+  &--secondary {
+    background: $bg-white;
+    color: $text-primary;
+    border: 1.5px solid $border-light;
+
+    &:hover {
+      border-color: $accent-color;
+      color: $accent-color;
+    }
+  }
+}
+
+// ========================================
+// LEGACY SUPPORT
+// ========================================
+
+.team-header {
+  @extend .team-hero;
+}
+
+.team-header__content {
+  @extend .team-hero__container;
+}
+
+.team-header__title {
+  @extend .team-hero__title;
+}
+
+.team-header__subtitle {
+  @extend .team-hero__subtitle;
+}
+
+.team-stats {
+  display: none;
+}
+
+.stat-card,
+.stat-item {
+  display: none;
+}
+
+.team-cta {
+  @extend .team-contact;
+}
+
+.team-cta__container {
+  @extend .team-contact__container;
+}
+
+.team-cta__content {
+  @extend .team-contact__content;
+}
+
+.team-cta__title {
+  @extend .team-contact__title;
+}
+
+.team-cta__text {
+  @extend .team-contact__text;
+}
+
+.team-cta__actions {
+  @extend .team-contact__actions;
+}
+
+.team-cta__btn {
+  @extend .team-contact__btn;
+
+  &--primary {
+    @extend .team-contact__btn--primary;
+  }
+
+  &--secondary {
+    @extend .team-contact__btn--secondary;
+  }
+}
+
+.team-section__header,
+.team-section__title,
+.team-section__subtitle {
+  display: none;
+}

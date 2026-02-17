@@ -1,0 +1,206 @@
+---
+// ========================================
+// BLOG ARTICLE DETAIL PAGE
+// Clean, modern article page aligned with template design
+// ========================================
+
+// Server-render this page (dynamic API data)
+export const prerender = false;
+
+import Layout from '../../layouts/Layout.astro'
+import ArticleHero from '../../components/blog/details/ArticleHero.astro'
+import ArticleTags from '../../components/blog/details/ArticleTags.astro'
+import ArticleShare from '../../components/blog/details/ArticleShare.astro'
+import RelatedArticles from '../../components/blog/details/RelatedArticles.astro'
+import { getBlogArticle, getBlogArticles } from '../../lib/api'
+import { fetchBrandSettings } from '../../lib/brand'
+
+// Get slug from URL params
+const { slug } = Astro.params
+
+if (!slug) {
+  return Astro.redirect('/blog')
+}
+
+// Fetch brand settings
+const brand = await fetchBrandSettings()
+
+// Fetch article
+const article = await getBlogArticle(slug)
+
+// Handle not found
+if (!article) {
+  return Astro.redirect('/blog')
+}
+
+// Fetch related articles (same category or recent)
+const relatedResponse = await getBlogArticles({ limit: 3 })
+const relatedArticles = (relatedResponse?.articles || [])
+  .filter(a => a.article_id !== article.article_id)
+  .slice(0, 3)
+
+// Calculate reading time (estimated 200 words per minute)
+const wordCount = (article.content || '').split(/\s+/).length
+const readingTime = Math.ceil(wordCount / 200)
+
+// Default images
+const imageUrl = article.featured_image_url || 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1200&h=600&fit=crop'
+const authorImage = article.author?.profile_photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(article.author?.full_name || 'Author')}&size=160&background=FF5A5F&color=fff`
+
+// SEO
+const pageTitle = article.meta_title || `${article.title} | ${brand.business_name}`
+const pageDescription = article.meta_description || article.excerpt || `Read ${article.title} on the ${brand.business_name} blog.`
+const ogImage = article.og_image_url || article.featured_image_url
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <article class="article-page">
+
+    <!-- Hero Section -->
+    <ArticleHero
+      title={article.title}
+      imageUrl={imageUrl}
+      imageAlt={article.featured_image_alt}
+      categories={article.categories}
+      author={article.author}
+      publishedAt={article.published_at}
+      readingTime={readingTime}
+      viewCount={article.view_count}
+    />
+
+    <!-- Article Content -->
+    <div class="article-body">
+      <div class="article-body__container">
+        <div class="article-body__wrapper">
+          <!-- Main Content -->
+          <div class="article-content" set:html={article.content} />
+
+          <!-- Tags -->
+          <ArticleTags tags={article.tags || []} />
+
+          <!-- Share Buttons -->
+          <ArticleShare title={article.title} url={Astro.url.href} />
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Articles -->
+    <RelatedArticles articles={relatedArticles} />
+
+  </article>
+</Layout>
+
+<style lang="scss" is:global>
+  @use '../../styles/pages/blog/article';
+</style>
+
+<!-- Store article data for client-side tracking -->
+<div
+  id="article-tracking-data"
+  data-article-id={article.article_id}
+  data-article-title={article.title}
+  data-categories={JSON.stringify(article.categories?.map(c => c.name) || [])}
+  style="display: none;"
+></div>
+
+<script>
+  import { createTracker } from '../../lib/stratos-tracker'
+
+  // ========================================
+  // BLOG ANALYTICS TRACKING
+  // ========================================
+
+  // Get article data from hidden element
+  const trackingData = document.getElementById('article-tracking-data')
+  const articleId = trackingData?.dataset.articleId || ''
+  const articleTitle = trackingData?.dataset.articleTitle || ''
+  const categoryNames = JSON.parse(trackingData?.dataset.categories || '[]')
+
+  // Initialize tracker
+  const tracker = createTracker({
+    apiUrl: import.meta.env.PUBLIC_SUPABASE_URL,
+    apiKey: import.meta.env.PUBLIC_WEBSITE_API_KEY,
+    debug: import.meta.env.DEV,
+  })
+
+  // Track blog view with article metadata
+  if (articleId) {
+    tracker.trackBlogView(articleId, {
+      title: articleTitle,
+      categories: categoryNames,
+    })
+
+    // Set up automatic duration and scroll depth tracking
+    tracker.setupBlogDurationTracking(articleId)
+  }
+
+  // ========================================
+  // SHARE BUTTON TRACKING
+  // ========================================
+
+  // Track share button clicks
+  document.querySelectorAll('.article-share__btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!articleId) return
+
+      const shareMethod = btn.classList.contains('article-share__btn--twitter') ? 'twitter'
+        : btn.classList.contains('article-share__btn--facebook') ? 'facebook'
+        : btn.classList.contains('article-share__btn--linkedin') ? 'linkedin'
+        : btn.classList.contains('article-share__btn--copy') ? 'copy_link'
+        : 'unknown'
+
+      tracker.trackBlogShare(articleId, shareMethod)
+    })
+  })
+
+  // ========================================
+  // COPY LINK FUNCTIONALITY
+  // ========================================
+
+  document.querySelectorAll('.article-share__btn--copy').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const url = (btn as HTMLElement).dataset.url
+      if (url) {
+        try {
+          await navigator.clipboard.writeText(url)
+          // Show feedback
+          const originalContent = btn.innerHTML
+          btn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          `
+          ;(btn as HTMLElement).style.background = '#10b981'
+          ;(btn as HTMLElement).style.borderColor = '#10b981'
+          ;(btn as HTMLElement).style.color = 'white'
+
+          setTimeout(() => {
+            btn.innerHTML = originalContent
+            ;(btn as HTMLElement).style.background = ''
+            ;(btn as HTMLElement).style.borderColor = ''
+            ;(btn as HTMLElement).style.color = ''
+          }, 2000)
+        } catch (err) {
+          console.error('Failed to copy:', err)
+        }
+      }
+    })
+  })
+
+  // ========================================
+  // RELATED ARTICLE CLICK TRACKING
+  // ========================================
+
+  document.querySelectorAll('.related-section__grid a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (!articleId) return
+
+      const href = link.getAttribute('href')
+      // Extract article slug from href
+      if (href) {
+        const relatedSlug = href.replace('/blog/', '')
+        tracker.trackRelatedArticleClick(articleId, relatedSlug)
+      }
+    })
+  })
+</script>

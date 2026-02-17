@@ -1,0 +1,112 @@
+---
+// ========================================
+// BUYERS PAGE
+// Services page for property buyers
+// Dynamic content from Stratos CRM
+// ========================================
+
+import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
+import IntroSection from '../components/static-page/layouts/IntroSection.astro'
+import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
+import CTABanner from '../components/static-page/layouts/CTABanner.astro'
+
+// Page content utilities
+import { getPageContent, hasSection } from '../lib/pages'
+
+const pageTitle = 'Buying a Property'
+const pageDescription = 'Find your perfect home with our expert guidance. We make buying a property simple and stress-free.'
+
+// Fetch buyers page content from Stratos CRM
+const pageContent = await getPageContent('buyers')
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Hero Section -->
+  <Hero
+    headline="Find Your Perfect Home"
+    description="We make buying a property simple and stress-free. Let our expert team guide you to your dream home."
+    ctaText="Start Your Search"
+    ctaLink="/search?listing_type=sale"
+    backgroundType="image"
+    backgroundSrc="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80"
+    overlayOpacity="dark"
+    showPhoneButton={false}
+  />
+
+  <!-- Intro Section -->
+  <IntroSection
+    title="Expert Buyer Support"
+    subtitle="Your Journey"
+    description="Whether you're a first-time buyer or looking to move up the ladder, we're here to help. Our team provides personalised guidance through every step of the buying process, from initial search to picking up the keys."
+    ctaText="View properties"
+    ctaLink="/search?listing_type=sale"
+    leftImageSrc="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800"
+    leftImageAlt="Modern living room interior"
+    rightImageSrc="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=800"
+    rightImageAlt="Elegant home exterior"
+  />
+
+  <!-- Content Blocks - Alternating Layout -->
+  <ContentBlock
+    blockKey="buyer_services"
+    pageContent={pageContent}
+    mediaSrc="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80"
+    mediaAlt="Buyer services"
+    secondaryMediaSrc="https://images.pexels.com/photos/1571468/pexels-photo-1571468.jpeg?auto=compress&cs=tinysrgb&w=800"
+    secondaryMediaAlt="Home interior detail"
+    title="Expert Buyer Support"
+    subtitle="Your Journey"
+    description="Whether you're a first-time buyer or looking to move up the ladder, we're here to help. Our team provides personalised guidance through every step of the buying process, from initial search to picking up the keys."
+    ctaText="View properties"
+    ctaLink="/search?listing_type=sale"
+    imagePosition="right"
+    overlayStrength="light"
+    serviceItems={["Property Search", "Viewings & Guidance", "Offer Negotiation"]}
+  />
+
+  <ContentBlock
+    blockKey="buying_process"
+    pageContent={pageContent}
+    mediaSrc="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=1200&q=80"
+    mediaAlt="The buying process"
+    secondaryMediaSrc="https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=800"
+    secondaryMediaAlt="Property viewing"
+    title="The Buying Process"
+    subtitle="Made Simple"
+    description="We'll arrange viewings that suit your schedule, provide detailed information about each property, and guide you through making an offer. Our experienced negotiators work to get you the best deal."
+    ctaText="Book a viewing"
+    ctaLink="/contact"
+    imagePosition="left"
+    overlayStrength="light"
+    serviceItems={["Flexible Viewings", "Market Analysis", "Price Negotiation"]}
+  />
+
+  
+  <!-- CTA Banner -->
+  <CTABanner
+    title="Ready to Find Your Dream Home?"
+    subtitle="Browse our available properties or get in touch to discuss your requirements. Our team is ready to help you find the perfect property."
+    primaryCtaText="Search Properties"
+    primaryCtaLink="/search?listing_type=sale"
+    secondaryCtaText="Contact Us"
+    secondaryCtaLink="/contact"
+  />
+
+  <ContentBlock
+    blockKey="first_time_buyers"
+    pageContent={pageContent}
+    mediaSrc="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=80"
+    mediaAlt="First time buyers"
+    secondaryMediaSrc="https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=800"
+    secondaryMediaAlt="New home keys"
+    title="First-Time Buyers"
+    subtitle="We're Here to Help"
+    description="Buying your first home is exciting but can feel overwhelming. We specialise in helping first-time buyers navigate the process with clear advice, patience, and support every step of the way."
+    ctaText="Get started"
+    ctaLink="/contact"
+    imagePosition="right"
+    overlayStrength="light"
+    serviceItems={["Mortgage Guidance", "Step-by-Step Support", "Legal Assistance"]}
+  />
+</Layout>

@@ -1,0 +1,29 @@
+---
+// ========================================
+// ARTICLE TAGS COMPONENT
+// Tag links for blog articles
+// ========================================
+
+interface Tag {
+  tag_id: string
+  name: string
+}
+
+interface Props {
+  tags: Tag[]
+  label?: string
+}
+
+const { tags, label = 'Tags:' } = Astro.props
+---
+
+{tags && tags.length > 0 && (
+  <div class="article-tags">
+    <span class="article-tags__label">{label}</span>
+    {tags.map(tag => (
+      <a href={`/blog?tag=${tag.tag_id}`} class="article-tags__link">
+        #{tag.name}
+      </a>
+    ))}
+  </div>
+)}

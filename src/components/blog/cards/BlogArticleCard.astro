@@ -1,0 +1,159 @@
+---
+// ========================================
+// BLOG ARTICLE CARD COMPONENT
+// Clean, modern blog card matching template design
+// ========================================
+
+// Minimal article type for card display - flexible for various data sources
+interface ArticleCardData {
+  article_id: string
+  title: string
+  slug: string
+  excerpt?: string | null
+  content?: string | null
+  featured_image_url?: string | null
+  featured_image_alt?: string | null
+  published_at?: string | null
+  is_featured?: boolean
+  view_count?: number
+  categories?: Array<{ category_id?: string; name: string }> | null
+  author?: {
+    full_name: string
+    job_title?: string | null
+    profile_photo_url?: string | null
+  } | null
+}
+
+interface Props {
+  article: ArticleCardData
+  featured?: boolean
+}
+
+const { article, featured = false } = Astro.props
+
+// Format date
+const formatDate = (dateString: string | null | undefined) => {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  return date.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  })
+}
+
+// Default image if no featured image
+const imageUrl = article.featured_image_url || 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=500&fit=crop'
+const authorImage = article.author?.profile_photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(article.author?.full_name || 'Author')}&size=80&background=FF5A5F&color=fff`
+
+// Calculate reading time
+const readingTime = Math.ceil((article.content?.length || 0) / 1500)
+---
+
+<article
+  class:list={[
+    'blog-card',
+    { 'blog-card--featured': featured || article.is_featured }
+  ]}
+  data-article-id={article.article_id}
+>
+  <a href={`/blog/${article.slug}`} class="blog-card__link">
+    <!-- Image Container -->
+    <div class="blog-card__image-container">
+      <img
+        src={imageUrl}
+        alt={article.featured_image_alt || article.title}
+        class="blog-card__image"
+        loading="lazy"
+      />
+
+      <!-- Featured Badge -->
+      {(featured || article.is_featured) && (
+        <div class="blog-card__badge">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          Featured
+        </div>
+      )}
+
+      <!-- Categories -->
+      {article.categories && article.categories.length > 0 && (
+        <div class="blog-card__categories">
+          {article.categories.slice(0, 2).map(cat => (
+            <span class="blog-card__category">{cat.name}</span>
+          ))}
+        </div>
+      )}
+
+      <!-- Reading Time -->
+      <div class="blog-card__reading-time">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        {readingTime} min
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="blog-card__content">
+      <!-- Meta Info -->
+      <div class="blog-card__meta">
+        <time datetime={article.published_at || ''} class="blog-card__date">
+          {formatDate(article.published_at)}
+        </time>
+        {(article.view_count ?? 0) > 0 && (
+          <span class="blog-card__views">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            {article.view_count}
+          </span>
+        )}
+      </div>
+
+      <!-- Title -->
+      <h3 class="blog-card__title">{article.title}</h3>
+
+      <!-- Excerpt -->
+      {article.excerpt && (
+        <p class="blog-card__excerpt">{article.excerpt}</p>
+      )}
+
+      <!-- Footer -->
+      <div class="blog-card__footer">
+        <!-- Author -->
+        {article.author && (
+          <div class="blog-card__author">
+            <img
+              src={authorImage}
+              alt={article.author.full_name}
+              class="blog-card__author-avatar"
+              loading="lazy"
+            />
+            <div class="blog-card__author-details">
+              <span class="blog-card__author-name">{article.author.full_name}</span>
+              {article.author.job_title && (
+                <span class="blog-card__author-title">{article.author.job_title}</span>
+              )}
+            </div>
+          </div>
+        )}
+
+        <span class="blog-card__read-more">
+          Read Article
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" x2="19" y1="12" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </span>
+      </div>
+    </div>
+  </a>
+</article>
+
+<style lang="scss">
+  @use '../../../styles/components/blog/blog-article-card';
+</style>

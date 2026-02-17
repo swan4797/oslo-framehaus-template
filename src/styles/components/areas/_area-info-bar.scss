@@ -1,0 +1,34 @@
+// ========================================
+// AREA INFO BAR STYLES
+// Location and postcodes info bar for area guide pages
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/spacing' as spacing;
+
+.area-info-bar {
+  background: colors.$color-bg-secondary;
+  color: colors.$color-text-light;
+  padding: spacing.$space-4 0;
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 40px);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: spacing.$space-6 spacing.$space-12;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: spacing.$space-2;
+    font-size: 0.9375rem;
+
+    svg {
+      opacity: 0.8;
+    }
+  }
+}

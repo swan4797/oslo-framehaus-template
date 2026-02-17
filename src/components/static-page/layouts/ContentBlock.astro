@@ -1,0 +1,182 @@
+---
+// ========================================
+// CONTENT BLOCK COMPONENT
+// Editorial-style 50/50 split layout
+// Supports image/video with reversible positioning
+// Integrates with Stratos CRM via blockKey
+// ========================================
+
+import type { PageContent } from '../../../lib/pages'
+import { getSectionTitle, getSectionContent, getSectionImage } from '../../../lib/pages'
+
+type MediaType = 'image' | 'video'
+type ImagePosition = 'left' | 'right'
+type OverlayStrength = 'none' | 'light' | 'medium' | 'dark'
+
+interface Props {
+  // CMS Integration
+  blockKey?: string
+  pageContent?: PageContent | null
+
+  // Media (fallback if no CMS content)
+  mediaType?: MediaType
+  mediaSrc?: string
+  mediaAlt?: string
+  mediaPoster?: string
+
+  // Secondary Media (for stacked/overlapping layout)
+  secondaryMediaSrc?: string
+  secondaryMediaAlt?: string
+
+  // Content (fallback if no CMS content)
+  title?: string
+  subtitle?: string
+  description?: string
+  ctaText?: string
+  ctaLink?: string
+
+  // Service list items (displayed at bottom of text)
+  serviceItems?: string[]
+
+  // Layout
+  imagePosition?: ImagePosition
+  overlayStrength?: OverlayStrength
+
+  // Styling
+  textBackground?: string
+  accentColor?: string
+}
+
+const {
+  // CMS props
+  blockKey = '',
+  pageContent = null,
+  // Media props
+  mediaType = 'image',
+  mediaSrc = '',
+  mediaAlt = '',
+  mediaPoster = '',
+  // Secondary media props
+  secondaryMediaSrc = '',
+  secondaryMediaAlt = '',
+  // Content props
+  title = '',
+  subtitle = '',
+  description = '',
+  ctaText = '',
+  ctaLink = '',
+  // Service list
+  serviceItems = [],
+  // Layout props
+  imagePosition = 'left',
+  overlayStrength = 'none',
+  // Styling props
+  textBackground = '#ffffff',
+  accentColor = '',
+} = Astro.props
+
+// Check for dual images layout
+const hasDualImages = !!secondaryMediaSrc
+
+// ========================================
+// CMS CONTENT RESOLUTION
+// If blockKey is provided, fetch from Stratos CMS
+// Otherwise, use static props as fallback
+// ========================================
+
+const cmsTitle = blockKey && pageContent ? getSectionTitle(pageContent, blockKey, title) : title
+const cmsContent = blockKey && pageContent ? getSectionContent(pageContent, blockKey, description) : description
+const cmsImage = blockKey && pageContent ? getSectionImage(pageContent, blockKey) : null
+
+// Resolve final values (CMS takes priority)
+const finalMediaSrc = cmsImage?.url || mediaSrc
+const finalMediaAlt = cmsImage?.alt || mediaAlt
+const finalTitle = cmsTitle || title
+const finalDescription = cmsContent || description
+
+const sectionClasses = [
+  'content-block',
+  `content-block--media-${imagePosition}`,
+  hasDualImages && 'content-block--dual-images',
+].filter(Boolean).join(' ')
+---
+
+<section class={sectionClasses}>
+  <!-- Media Column -->
+  {finalMediaSrc && (
+    <div class="content-block__media">
+      {hasDualImages ? (
+        <!-- Dual Images Layout -->
+        <div class="content-block__dual-images">
+          <div class="content-block__image-primary">
+            <img src={finalMediaSrc} alt={finalMediaAlt} loading="lazy" />
+          </div>
+          <div class="content-block__image-secondary">
+            <img src={secondaryMediaSrc} alt={secondaryMediaAlt} loading="lazy" />
+          </div>
+        </div>
+      ) : mediaType === 'video' ? (
+        <video
+          class="content-block__video"
+          autoplay
+          muted
+          loop
+          playsinline
+          poster={mediaPoster}
+        >
+          <source src={finalMediaSrc} type="video/mp4" />
+        </video>
+      ) : (
+        <div
+          class="content-block__image"
+          style={`background-image: url('${finalMediaSrc}')`}
+          role="img"
+          aria-label={finalMediaAlt}
+        />
+      )}
+      {overlayStrength !== 'none' && !hasDualImages && (
+        <div class={`content-block__overlay content-block__overlay--${overlayStrength}`}></div>
+      )}
+    </div>
+  )}
+
+  <!-- Text Column -->
+  <div class="content-block__text" style={`background-color: ${textBackground}`}>
+    <div class="content-block__text-inner">
+      {subtitle && (
+        <span class="content-block__subtitle" style={accentColor ? `color: ${accentColor}` : ''}>
+          {subtitle}
+        </span>
+      )}
+
+      {finalTitle && (
+        <h2 class="content-block__title" set:html={finalTitle} />
+      )}
+
+      {finalDescription && (
+        <div class="content-block__description" set:html={finalDescription} />
+      )}
+
+      {ctaText && ctaLink && (
+        <a href={ctaLink} class="content-block__cta" style={accentColor ? `color: ${accentColor}; border-color: ${accentColor}` : ''}>
+          {ctaText}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      )}
+
+      {serviceItems && serviceItems.length > 0 && (
+        <ul class="content-block__services">
+          {serviceItems.map((item) => (
+            <li class="content-block__service-item">{item}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../../styles/components/content-block';
+</style>

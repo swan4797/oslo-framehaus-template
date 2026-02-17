@@ -1,0 +1,197 @@
+---
+// ========================================
+// PAGINATION COMPONENT
+// Production-ready page navigation for search results
+// ========================================
+
+import { buildSearchUrl } from '../../lib/utils'
+import type { PropertySearchParams } from '../../types/database'
+
+interface Props {
+  currentPage: number
+  totalPages: number
+  totalResults: number
+  searchParams: PropertySearchParams
+  class?: string
+}
+
+const {
+  currentPage,
+  totalPages,
+  totalResults,
+  searchParams,
+  class: className = '',
+} = Astro.props
+
+// ----------------------------------------
+// URL GENERATION
+// ----------------------------------------
+
+function getPageUrl(page: number): string {
+  return buildSearchUrl({ ...searchParams, page })
+}
+
+// ----------------------------------------
+// PAGE RANGE CALCULATION
+// ----------------------------------------
+
+const maxPagesToShow = 5
+const halfRange = Math.floor(maxPagesToShow / 2)
+
+let startPage = Math.max(1, currentPage - halfRange)
+let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1)
+
+// Adjust start if we're near the end
+if (endPage - startPage < maxPagesToShow - 1) {
+  startPage = Math.max(1, endPage - maxPagesToShow + 1)
+}
+
+const pages = Array.from(
+  { length: endPage - startPage + 1 },
+  (_, i) => startPage + i
+)
+
+// ----------------------------------------
+// NAVIGATION STATE
+// ----------------------------------------
+
+const hasNext = currentPage < totalPages
+const hasPrev = currentPage > 1
+const showFirstPage = startPage > 1
+const showLastPage = endPage < totalPages
+const showFirstEllipsis = startPage > 2
+const showLastEllipsis = endPage < totalPages - 1
+
+// ----------------------------------------
+// RESULTS RANGE
+// ----------------------------------------
+
+const limit = searchParams.limit || 20
+const startResult = (currentPage - 1) * limit + 1
+const endResult = Math.min(currentPage * limit, totalResults)
+---
+
+{totalPages > 1 && (
+  <nav
+    class:list={['pagination', className]}
+    aria-label="Search results pagination"
+    role="navigation"
+  >
+    <!-- Results Summary -->
+    <div class="pagination__info">
+      <span class="pagination__info-text">
+        Showing <strong>{startResult.toLocaleString()}</strong> - <strong>{endResult.toLocaleString()}</strong> of <strong>{totalResults.toLocaleString()}</strong>
+      </span>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="pagination__controls">
+      <!-- Previous Button -->
+      {hasPrev ? (
+        <a
+          href={getPageUrl(currentPage - 1)}
+          class="pagination__btn pagination__btn--prev"
+          aria-label="Go to previous page"
+        >
+          <svg class="pagination__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          <span class="pagination__btn-text">Previous</span>
+        </a>
+      ) : (
+        <span class="pagination__btn pagination__btn--prev pagination__btn--disabled" aria-disabled="true">
+          <svg class="pagination__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          <span class="pagination__btn-text">Previous</span>
+        </span>
+      )}
+
+      <!-- Page Numbers -->
+      <div class="pagination__pages">
+        <!-- First Page -->
+        {showFirstPage && (
+          <>
+            <a
+              href={getPageUrl(1)}
+              class="pagination__page"
+              aria-label="Go to page 1"
+            >
+              1
+            </a>
+            {showFirstEllipsis && (
+              <span class="pagination__ellipsis" aria-hidden="true">...</span>
+            )}
+          </>
+        )}
+
+        <!-- Page Range -->
+        {pages.map(page => (
+          page === currentPage ? (
+            <span
+              class="pagination__page pagination__page--current"
+              aria-label={`Page ${page}, current page`}
+              aria-current="page"
+            >
+              {page}
+            </span>
+          ) : (
+            <a
+              href={getPageUrl(page)}
+              class="pagination__page"
+              aria-label={`Go to page ${page}`}
+            >
+              {page}
+            </a>
+          )
+        ))}
+
+        <!-- Last Page -->
+        {showLastPage && (
+          <>
+            {showLastEllipsis && (
+              <span class="pagination__ellipsis" aria-hidden="true">...</span>
+            )}
+            <a
+              href={getPageUrl(totalPages)}
+              class="pagination__page"
+              aria-label={`Go to page ${totalPages}`}
+            >
+              {totalPages}
+            </a>
+          </>
+        )}
+      </div>
+
+      <!-- Next Button -->
+      {hasNext ? (
+        <a
+          href={getPageUrl(currentPage + 1)}
+          class="pagination__btn pagination__btn--next"
+          aria-label="Go to next page"
+        >
+          <span class="pagination__btn-text">Next</span>
+          <svg class="pagination__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </a>
+      ) : (
+        <span class="pagination__btn pagination__btn--next pagination__btn--disabled" aria-disabled="true">
+          <span class="pagination__btn-text">Next</span>
+          <svg class="pagination__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </span>
+      )}
+    </div>
+
+    <!-- Mobile Page Indicator -->
+    <div class="pagination__mobile-info">
+      Page {currentPage} of {totalPages}
+    </div>
+  </nav>
+)}
+
+<style lang="scss">
+  @use '../../styles/components/pagination';
+</style>

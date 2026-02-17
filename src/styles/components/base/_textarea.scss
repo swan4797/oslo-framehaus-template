@@ -1,0 +1,145 @@
+// ========================================
+// TEXTAREA COMPONENT STYLES
+// Reusable textarea with label
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/effects' as effects;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+
+.textarea-group {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$space-1-5;
+  width: 100%;
+  position: relative;
+}
+
+// ----------------------------------------
+// LABEL
+// ----------------------------------------
+
+.textarea-group__label {
+  display: flex;
+  align-items: center;
+  gap: spacing.$space-1;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+}
+
+.textarea-group__required {
+  color: colors.$color-primary;
+}
+
+// ----------------------------------------
+// TEXTAREA
+// ----------------------------------------
+
+.textarea-group__textarea {
+  width: 100%;
+  padding: spacing.$space-3 spacing.$space-4;
+  font-family: typography.$font-family-body;
+  font-size: 0.9375rem;
+  color: colors.$color-text-primary;
+  background-color: transparent;
+  border: 1.5px solid colors.$color-border-light;
+  border-radius: effects.$radius-md;
+  line-height: typography.$line-height-relaxed;
+  transition:
+    border-color effects.$transition-fast,
+    box-shadow effects.$transition-fast;
+
+  &::placeholder {
+    color: colors.$color-text-muted;
+  }
+
+  &:hover:not(:disabled):not(:focus) {
+    border-color: colors.$color-border-medium;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: colors.$color-primary;
+    box-shadow: 0 0 0 3px colors.$color-primary-10;
+  }
+
+  &:disabled {
+    background-color: transparent;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  &:read-only {
+    background-color: transparent;
+  }
+
+  // Resize options
+  &--resize-none {
+    resize: none;
+  }
+
+  &--resize-vertical {
+    resize: vertical;
+  }
+
+  &--resize-horizontal {
+    resize: horizontal;
+  }
+
+  &--resize-both {
+    resize: both;
+  }
+}
+
+// ----------------------------------------
+// ERROR STATE
+// ----------------------------------------
+
+.textarea-group--error .textarea-group__textarea {
+  border-color: colors.$color-error;
+
+  &:focus {
+    border-color: colors.$color-error;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+  }
+}
+
+// ----------------------------------------
+// CHARACTER COUNTER
+// ----------------------------------------
+
+.textarea-group__counter {
+  position: absolute;
+  bottom: spacing.$space-2;
+  right: spacing.$space-3;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-xs;
+  color: colors.$color-text-muted;
+  pointer-events: none;
+}
+
+.textarea-group--error .textarea-group__counter {
+  bottom: 2rem;
+}
+
+// ----------------------------------------
+// HINT & ERROR TEXT
+// ----------------------------------------
+
+.textarea-group__hint {
+  font-family: typography.$font-family-base;
+  font-size: 0.8125rem;
+  color: colors.$color-text-muted;
+  margin: 0;
+}
+
+.textarea-group__error {
+  font-family: typography.$font-family-base;
+  font-size: 0.8125rem;
+  color: colors.$color-error;
+  margin: 0;
+}

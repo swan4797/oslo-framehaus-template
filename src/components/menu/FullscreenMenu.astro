@@ -1,0 +1,118 @@
+---
+// ========================================
+// FULLSCREEN MENU COMPONENT
+// Full-screen navigation overlay with topbar, nav links, and tagline
+// ========================================
+
+import type { FullscreenMenuProps as Props } from './types'
+
+const {
+  businessName,
+  logoUrl,
+  hasValidLogo,
+  navItems,
+  navDescriptions,
+  defaultTagline
+} = Astro.props
+---
+
+<nav class="header__nav" aria-label="Main navigation">
+  <!-- Top Bar: Links, Logo, Close -->
+  <div class="header__nav-topbar">
+    <div class="header__nav-topbar-left">
+      <a href="/valuation" class="header__nav-topbar-link">Valuation</a>
+      <a href="/search" class="header__nav-topbar-link">Search</a>
+    </div>
+
+    <a href="/" class="header__nav-topbar-logo" aria-label={`${businessName} - Home`}>
+      {hasValidLogo ? (
+        <img
+          src={logoUrl}
+          alt={businessName}
+          class="header__nav-topbar-logo-img"
+          width="140"
+          height="50"
+        />
+      ) : (
+        <div class="header__nav-topbar-logo-stack">
+          <span class="header__nav-topbar-logo-text">{businessName}</span>
+          <span class="header__nav-topbar-logo-tagline">Design</span>
+        </div>
+      )}
+    </a>
+
+    <div class="header__nav-topbar-right">
+      <button
+        type="button"
+        class="header__nav-close"
+        id="nav-close-btn"
+        aria-label="Close menu"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="header__nav-fullscreen">
+    <!-- Left Column: Navigation Links -->
+    <div class="header__nav-column header__nav-column--left">
+      <ul class="header__nav-list" role="menubar">
+        {navItems.map((item) => (
+          <li
+            class={`header__nav-item ${item.dropdown ? 'header__nav-item--has-dropdown' : ''} ${item.highlight ? 'header__nav-item--highlight' : ''}`}
+            role="none"
+            data-nav-description={navDescriptions[item.label] || ''}
+          >
+            {item.dropdown ? (
+              <>
+                <button
+                  type="button"
+                  class="header__nav-link header__nav-link--dropdown"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  role="menuitem"
+                >
+                  {item.label}
+                  <svg class="header__dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+                <div class="header__dropdown" role="menu">
+                  <div class="header__dropdown-content">
+                    {item.dropdown.map((subItem) => (
+                      <a href={subItem.href} class="header__dropdown-link" role="menuitem" data-nav-description={subItem.description || ''}>
+                        <span class="header__dropdown-label">{subItem.label}</span>
+                        {subItem.description && (
+                          <span class="header__dropdown-desc">{subItem.description}</span>
+                        )}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <a href={item.href} class={`header__nav-link ${item.highlight ? 'header__nav-link--highlight' : ''}`} role="menuitem">
+                {item.label}
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Right Column: Dynamic Tagline -->
+    <div class="header__nav-column header__nav-column--right">
+      <div class="header__nav-tagline-wrapper" id="nav-tagline-wrapper" data-default-tagline={defaultTagline}>
+        <p class="header__nav-tagline header__nav-tagline--active" id="nav-tagline-default">
+          The Club<br />
+          that makes your life<br />
+          richer.
+        </p>
+        <p class="header__nav-tagline header__nav-tagline--hover" id="nav-tagline-hover" aria-hidden="true"></p>
+      </div>
+    </div>
+  </div>
+</nav>

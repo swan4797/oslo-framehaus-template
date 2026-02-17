@@ -1,0 +1,17 @@
+// ========================================
+// SEARCH RESULTS LIST STYLES
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../mixins' as *;
+
+.search-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  @include md {
+    gap: 1.5rem;
+  }
+}

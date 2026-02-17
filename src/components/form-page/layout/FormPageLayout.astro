@@ -1,0 +1,33 @@
+---
+// ========================================
+// FORM PAGE LAYOUT
+// Wrapper component for form pages
+// Full-width background image with overlay
+// ========================================
+
+interface Props {
+  class?: string
+  backgroundImage?: string
+}
+
+const {
+  class: className = '',
+  backgroundImage = 'https://images.pexels.com/photos/5098531/pexels-photo-5098531.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=2'
+} = Astro.props
+---
+
+<div class:list={['form-page', className]}>
+  <div
+    class="form-page__background"
+    style={`background-image: url('${backgroundImage}');`}
+  ></div>
+  <div class="form-page__overlay"></div>
+  <div class="form-page__content">
+    <slot />
+  </div>
+</div>
+
+<style lang="scss">
+  @use '../../../styles/pages/form-page/layout';
+</style>
+

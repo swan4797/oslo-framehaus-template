@@ -1,0 +1,48 @@
+// ========================================
+// FORM PAGE LAYOUT STYLES
+// Base layout for form pages
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+@use '../../mixins' as *;
+
+.form-page {
+  position: relative;
+  font-family: typography.$font-family-base;
+  min-height: 100vh;
+}
+
+.form-page__background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+.form-page__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(colors.$color-bg-primary, 0.85);
+  z-index: 1;
+}
+
+.form-page__content {
+  position: relative;
+  z-index: 2;
+  padding-bottom: spacing.$space-20;
+
+  @include mobile-only {
+    padding-bottom: spacing.$space-12;
+  }
+}

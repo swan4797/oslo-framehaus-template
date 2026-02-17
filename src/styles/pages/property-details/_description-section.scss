@@ -1,0 +1,77 @@
+// ========================================
+// DESCRIPTION SECTION STYLES
+// Clean left-aligned layout matching design
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/spacing' as spacing;
+@use '../../mixins' as *;
+
+.description-section {
+  // Section container - no extra padding, grid handles it
+  width: 100%;
+
+  // ----------------------------------------
+  // HEADING
+  // ----------------------------------------
+  &__heading {
+    font-family: typography.$font-family-heading;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: typography.$font-weight-medium;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: colors.$color-text-primary;
+    margin: 0 0 spacing.$spacing-6 0;
+  }
+
+  // ----------------------------------------
+  // CONTENT
+  // ----------------------------------------
+  &__content {
+    width: 100%;
+  }
+
+  // ----------------------------------------
+  // TEXT CONTENT
+  // ----------------------------------------
+  &__text {
+    font-family: typography.$font-family-base;
+    font-size: typography.$font-size-sm;
+    line-height: 1.8;
+    color: colors.$color-text-secondary;
+
+    // Paragraph styling
+    p {
+      margin: 0 0 spacing.$spacing-4 0;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    // Bold text for list item titles (from design)
+    strong,
+    b {
+      font-weight: typography.$font-weight-semibold;
+      color: colors.$color-text-primary;
+    }
+
+    // Bulleted list styling
+    ul {
+      list-style: disc;
+      padding-left: spacing.$spacing-5;
+      margin: spacing.$spacing-4 0;
+
+      li {
+        margin-bottom: spacing.$spacing-3;
+        padding-left: spacing.$spacing-1;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}

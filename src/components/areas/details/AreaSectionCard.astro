@@ -1,0 +1,36 @@
+---
+// ========================================
+// AREA SECTION CARD COMPONENT
+// Individual info card for area guide sections
+// ========================================
+
+interface Props {
+  title: string
+  content?: string | null
+  icon: 'amenities' | 'schools' | 'transport' | 'demographics'
+}
+
+const { title, content, icon } = Astro.props
+
+// Icon SVG paths
+const icons = {
+  amenities: `<path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/><path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"/><path d="M12 3v6"/>`,
+  schools: `<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>`,
+  transport: `<rect width="16" height="16" x="4" y="3" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-2 3"/><path d="m18 22-2-3"/><path d="M8 15h0"/><path d="M16 15h0"/>`,
+  demographics: `<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>`
+}
+---
+
+<div class="area-section-card">
+  <div class="area-section-card__icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <Fragment set:html={icons[icon]} />
+    </svg>
+  </div>
+  <h3 class="area-section-card__title">{title}</h3>
+  <div class="area-section-card__content" set:html={content} />
+</div>
+
+<style lang="scss">
+  @use '../../../styles/components/areas/area-section-card';
+</style>

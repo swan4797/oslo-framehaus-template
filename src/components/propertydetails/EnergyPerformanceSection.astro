@@ -1,0 +1,154 @@
+---
+// ========================================
+// ENERGY PERFORMANCE SECTION COMPONENT
+// Premium layered two-column composition
+// Styles in: src/styles/pages/property-details/_epc-section.scss
+// ========================================
+
+interface EpcMedia {
+  file_url: string
+  alt_text?: string
+  media_type?: string
+}
+
+interface Props {
+  epcRating?: string
+  epcCurrentScore?: number
+  epcPotentialScore?: number
+  epcImages: EpcMedia[]
+  propertyAddress: string
+}
+
+const {
+  epcRating,
+  epcCurrentScore,
+  epcPotentialScore,
+  epcImages,
+  propertyAddress,
+} = Astro.props
+
+// Check if we have any EPC data to display
+const hasEpcData = epcRating || epcCurrentScore || epcImages.length > 0
+
+// EPC color mapping
+const getEpcColor = (rating: string): string => {
+  const colors: Record<string, string> = {
+    A: '#008054',
+    B: '#19b459',
+    C: '#8dce46',
+    D: '#ffd500',
+    E: '#fcaa65',
+    F: '#ef8023',
+    G: '#e9153b',
+  }
+  return colors[rating.toUpperCase()] || '#8A8A8A'
+}
+
+// Check if EPC rating needs dark text
+const needsDarkText = (rating: string): boolean => ['D', 'E'].includes(rating.toUpperCase())
+---
+
+{hasEpcData && (
+  <section class="epc-section">
+    <!-- Two-Column Layered Layout (Reversed) -->
+    <div class="epc-section__layout">
+      <!-- Left Column - EPC Content (Overlapping) -->
+      <div class="epc-section__epc-column">
+        <div class="epc-section__epc-card">
+          <!-- EPC Summary Row -->
+          {(epcRating || epcCurrentScore || epcPotentialScore) && (
+            <div class={`epc-section__summary ${epcImages.length > 0 ? 'epc-section__summary--with-images' : ''}`}>
+              <!-- EPC Rating Badge -->
+              {epcRating && (
+                <div class="epc-section__rating">
+                  <div
+                    class="epc-section__rating-badge"
+                    style={`background-color: ${getEpcColor(epcRating)}; color: ${needsDarkText(epcRating) ? '#1A1A1A' : '#FFFFFF'};`}
+                  >
+                    {epcRating}
+                  </div>
+                  <span class="epc-section__rating-label">
+                    Current Rating
+                  </span>
+                </div>
+              )}
+
+              <!-- Current Score -->
+              {epcCurrentScore && (
+                <div class="epc-section__score-card">
+                  <span class="epc-section__score-value">
+                    {epcCurrentScore}
+                  </span>
+                  <span class="epc-section__score-label">
+                    Current Score
+                  </span>
+                </div>
+              )}
+
+              <!-- Potential Score -->
+              {epcPotentialScore && (
+                <div class="epc-section__score-card epc-section__score-card--potential">
+                  <span class="epc-section__score-value epc-section__score-value--potential">
+                    {epcPotentialScore}
+                  </span>
+                  <span class="epc-section__score-label">
+                    Potential Score
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+
+          <!-- EPC Certificate Images -->
+          {epcImages.length > 0 && (
+            <div class={`epc-section__certificates ${epcImages.length === 1 ? 'epc-section__certificates--single' : 'epc-section__certificates--multiple'}`}>
+              {epcImages.map((media) => (
+                <a
+                  href={media.file_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="epc-section__certificate-link"
+                >
+                  <img
+                    src={media.file_url}
+                    alt={media.alt_text || `EPC Certificate for ${propertyAddress}`}
+                    loading="lazy"
+                  />
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <!-- Right Column - Colored Panel -->
+      <div class="epc-section__panel-column">
+        <!-- Panel Content -->
+        <div class="epc-section__content">
+          <!-- Eyebrow Label -->
+          <span class="epc-section__eyebrow">
+            Sustainability
+          </span>
+
+          <!-- Primary Heading -->
+          <h2 class="epc-section__heading">
+            Energy<br />Performance
+          </h2>
+
+          <!-- Body Text -->
+          <p class="epc-section__text">
+            Energy efficiency rating and potential improvements for this property.
+          </p>
+
+          <!-- Info Badge -->
+          <div class="epc-section__badge">
+            <svg viewBox="0 0 24 24">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+            </svg>
+            <span>EPC Certificate</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+)}

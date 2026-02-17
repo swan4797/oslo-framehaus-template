@@ -1,0 +1,98 @@
+---
+// ========================================
+// TEAM GRID COMPONENT
+// Configurable team member grid
+// ========================================
+
+import type { TeamMember } from '../../../types/database'
+import type { TeamConfig, TeamCardConfig } from '../../../config/team'
+import { teamConfigs, getCardConfig, filterByDepartment } from '../../../config/team'
+import TeamMemberCard from '../cards/TeamMemberCard.astro'
+
+export interface Props {
+  members: TeamMember[]
+  configId?: string
+  config?: Partial<TeamConfig>
+  cardConfig?: Partial<TeamCardConfig>
+  department?: string | null
+  showFeatured?: boolean
+  emptyMessage?: string
+  class?: string
+}
+
+const {
+  members,
+  configId = 'fullPage',
+  config: configOverride,
+  cardConfig: cardConfigOverride,
+  department = null,
+  showFeatured = true,
+  emptyMessage = 'No team members found',
+  class: className,
+} = Astro.props
+
+// Merge configs
+const baseConfig = teamConfigs[configId] || teamConfigs.fullPage
+const config = { ...baseConfig, ...configOverride }
+const cardConfig = getCardConfig({ ...config.grid.cardConfig, ...cardConfigOverride })
+
+// Filter by department if specified
+const filteredMembers = department ? filterByDepartment(members, department) : members
+
+// Separate featured and regular members
+const featuredMembers = showFeatured && config.showFeaturedSection
+  ? filteredMembers.filter(m => m.is_featured)
+  : []
+const regularMembers = showFeatured && config.showFeaturedSection
+  ? filteredMembers.filter(m => !m.is_featured)
+  : filteredMembers
+
+const hasMembers = filteredMembers && filteredMembers.length > 0
+const gridColumns = config.grid.columns
+const gridGap = config.grid.gap
+---
+
+{hasMembers ? (
+  <div class:list={['team-grid', className]}>
+    {/* Featured Members */}
+    {featuredMembers.length > 0 && (
+      <div
+        class:list={[
+          'team-grid__featured',
+          `team-grid__featured--cols-${config.featuredColumns}`,
+          `team-grid__featured--gap-${gridGap}`,
+        ]}
+        style={`max-width: ${config.featuredMaxWidth}`}
+      >
+        {featuredMembers.map((member) => (
+          <TeamMemberCard member={member} featured />
+        ))}
+      </div>
+    )}
+
+    {/* Regular Members */}
+    {regularMembers.length > 0 && (
+      <div
+        class:list={[
+          'team-grid__regular',
+          `team-grid__regular--cols-${gridColumns}`,
+          `team-grid__regular--gap-${gridGap}`,
+        ]}
+        style={`max-width: ${config.maxWidth}`}
+      >
+        {regularMembers.map((member) => (
+          <TeamMemberCard member={member} />
+        ))}
+      </div>
+    )}
+  </div>
+) : (
+  <div class="team-grid__empty">
+    <p>{emptyMessage}</p>
+  </div>
+)}
+
+<style lang="scss">
+  @use '../../../styles/pages/team/team-layout';
+</style>
+

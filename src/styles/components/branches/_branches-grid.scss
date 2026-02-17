@@ -1,0 +1,50 @@
+// ========================================
+// BRANCHES GRID STYLES
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/effects' as effects;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+
+.branches-section {
+  padding: clamp(60px, 8vw, 100px) 0;
+  background: colors.$color-bg-secondary;
+}
+
+.branches-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 40px);
+}
+
+.branches-empty {
+  text-align: center;
+  padding: 80px 20px;
+  background: colors.$color-bg-secondary;
+  border-radius: effects.$radius-xl;
+
+  svg {
+    color: colors.$color-text-muted;
+    margin-bottom: spacing.$space-5;
+  }
+
+  h3 {
+    font-size: typography.$font-size-xl;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+    margin: 0 0 spacing.$space-2;
+  }
+
+  p {
+    font-size: typography.$font-size-base;
+    color: colors.$color-text-muted;
+    margin: 0;
+  }
+}
+
+.branches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: clamp(20px, 3vw, 30px);
+}

@@ -1,0 +1,311 @@
+// ========================================
+// BLOG ARTICLE CARD STYLES
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/effects' as effects;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+
+.blog-card {
+  position: relative;
+  background: colors.$color-bg-secondary;
+  border-radius: effects.$radius-lg;
+  overflow: hidden;
+  box-shadow: effects.$shadow-card;
+  transition: transform effects.$transition-base, box-shadow effects.$transition-base;
+  font-family: typography.$font-family-body;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: effects.$shadow-card-hover;
+
+    .blog-card__image {
+      transform: scale(1.05);
+    }
+
+    .blog-card__title {
+      color: colors.$color-primary;
+    }
+
+    .blog-card__read-more {
+      gap: 10px;
+
+      svg {
+        transform: translateX(2px);
+      }
+    }
+  }
+
+  &--featured {
+    box-shadow: 0 4px 16px colors.$color-primary-20;
+
+    &:hover {
+      box-shadow: 0 12px 36px colors.$color-primary-20;
+    }
+  }
+
+  &__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  // ----------------------------------------
+  // IMAGE SECTION
+  // ----------------------------------------
+
+  &__image-container {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: colors.$color-bg-secondary;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform effects.$transition-smooth;
+  }
+
+  // ----------------------------------------
+  // FEATURED BADGE
+  // ----------------------------------------
+
+  &__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: colors.$color-bg-secondary;
+    color: colors.$color-bg-primary;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px colors.$color-primary-50;
+    z-index: 10;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  // ----------------------------------------
+  // CATEGORIES
+  // ----------------------------------------
+
+  &__categories {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  &__category {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    background: colors.$color-bg-secondary;
+    color: colors.$color-bg-primary;
+    border-radius: effects.$radius-full;
+  }
+
+  // ----------------------------------------
+  // READING TIME
+  // ----------------------------------------
+
+  &__reading-time {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    background: colors.$color-bg-secondary;
+    color: colors.$color-bg-primary;
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  // ----------------------------------------
+  // CONTENT SECTION
+  // ----------------------------------------
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    padding: spacing.$space-5;
+    flex: 1;
+  }
+
+  // ----------------------------------------
+  // META INFO
+  // ----------------------------------------
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: spacing.$space-4;
+    font-size: 0.8125rem;
+    color: colors.$color-text-muted;
+    margin-bottom: spacing.$space-3;
+  }
+
+  &__date {
+    font-weight: 500;
+  }
+
+  &__views {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  // ----------------------------------------
+  // TITLE
+  // ----------------------------------------
+
+  &__title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: colors.$color-text-primary;
+    line-height: 1.4;
+    margin: 0 0 spacing.$space-3 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    letter-spacing: -0.01em;
+    transition: color effects.$transition-fast;
+  }
+
+  // ----------------------------------------
+  // EXCERPT
+  // ----------------------------------------
+
+  &__excerpt {
+    font-size: 0.875rem;
+    color: colors.$color-text-secondary;
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  // ----------------------------------------
+  // FOOTER
+  // ----------------------------------------
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: spacing.$space-4;
+    border-top: 1px solid colors.$color-border-light;
+    margin-top: auto;
+  }
+
+  // ----------------------------------------
+  // AUTHOR
+  // ----------------------------------------
+
+  &__author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__author-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__author-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__author-name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: colors.$color-text-primary;
+    line-height: 1.2;
+  }
+
+  &__author-title {
+    font-size: 0.6875rem;
+    color: colors.$color-text-muted;
+    line-height: 1.2;
+  }
+
+  // ----------------------------------------
+  // READ MORE
+  // ----------------------------------------
+
+  &__read-more {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: colors.$color-primary;
+    transition: gap effects.$transition-fast;
+
+    svg {
+      width: 14px;
+      height: 14px;
+      transition: transform effects.$transition-fast;
+    }
+  }
+
+  // ----------------------------------------
+  // RESPONSIVE
+  // ----------------------------------------
+
+  @media (max-width: 640px) {
+    &__image-container {
+      aspect-ratio: 16 / 9;
+    }
+
+    &__content {
+      padding: spacing.$space-4;
+    }
+
+    &__title {
+      font-size: 1rem;
+    }
+
+    &__author-avatar {
+      width: 28px;
+      height: 28px;
+    }
+  }
+}

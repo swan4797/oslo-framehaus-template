@@ -1,0 +1,147 @@
+// ========================================
+// CONTACT PAGE STYLES
+// Modern, sharp form design - no border-radius
+// Uses shared form-page mixins
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+@use '../form-page/shared' as *;
+
+// ----------------------------------------
+// FORM LAYOUT
+// ----------------------------------------
+
+.contact-form {
+  @include form-layout;
+}
+
+.contact-form__section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.contact-form__row {
+  @include form-row;
+}
+
+// ----------------------------------------
+// FORM GROUP
+// ----------------------------------------
+
+.contact-form__group {
+  @include form-group;
+}
+
+// ----------------------------------------
+// LABELS
+// ----------------------------------------
+
+.contact-form__label {
+  @include form-label;
+}
+
+.contact-form__required {
+  @include form-required;
+}
+
+.contact-form__optional {
+  @include form-optional;
+}
+
+// ----------------------------------------
+// INPUTS
+// ----------------------------------------
+
+.contact-form__input {
+  @include form-input;
+}
+
+.contact-form__select {
+  @include form-select;
+}
+
+.contact-form__textarea {
+  @include form-textarea(9rem);
+}
+
+// ----------------------------------------
+// FORM FOOTER
+// ----------------------------------------
+
+.contact-form__footer {
+  @include form-footer;
+}
+
+// ----------------------------------------
+// CHECKBOX
+// ----------------------------------------
+
+.contact-form__checkbox {
+  @include form-checkbox;
+}
+
+.contact-form__checkbox-input {
+  @include form-checkbox-input;
+}
+
+.contact-form__checkbox-label {
+  @include form-checkbox-label;
+}
+
+// ----------------------------------------
+// SUBMIT BUTTON
+// ----------------------------------------
+
+.contact-form__actions {
+  padding-top: 0.25rem;
+}
+
+.contact-form__submit {
+  @include form-submit;
+}
+
+// ----------------------------------------
+// PRIVACY NOTICE
+// ----------------------------------------
+
+.contact-form__privacy {
+  @include form-privacy;
+}
+
+// ----------------------------------------
+// SUCCESS / ERROR MESSAGES
+// ----------------------------------------
+
+.contact-message {
+  @include form-message;
+}
+
+.contact-message--success {
+  @include form-message-success;
+}
+
+.contact-message--error {
+  @include form-message-error;
+}
+
+.contact-message__icon {
+  @include form-message-icon;
+}
+
+.contact-message__content {
+  @include form-message-content;
+}
+
+.contact-message__title {
+  @include form-message-title;
+}
+
+.contact-message__text {
+  @include form-message-text;
+}

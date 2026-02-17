@@ -1,0 +1,246 @@
+// ========================================
+// VALUATION PAGE STYLES
+// Modern, sharp form design - no border-radius
+// Uses shared form-page mixins
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+@use '../form-page/shared' as *;
+
+// ----------------------------------------
+// FORM LAYOUT
+// ----------------------------------------
+
+.valuation-form {
+  @include form-layout(2.5rem);
+}
+
+// ----------------------------------------
+// FORM SECTIONS (with numbered headers)
+// ----------------------------------------
+
+.valuation-form__section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.valuation-form__section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid colors.$color-border-light;
+}
+
+.valuation-form__section-number {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: colors.$color-text-light;
+  background: colors.$color-bg-secondary;
+  border-radius: 0;
+
+  @include md {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.9375rem;
+  }
+}
+
+.valuation-form__section-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.valuation-form__section-title {
+  font-family: typography.$font-family-heading;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: colors.$color-text-primary;
+  margin: 0;
+  letter-spacing: -0.01em;
+
+  @include md {
+    font-size: 1.25rem;
+  }
+}
+
+.valuation-form__section-subtitle {
+  font-size: 0.875rem;
+  color: colors.$color-text-muted;
+  margin: 0.25rem 0 0 0;
+  line-height: 1.5;
+}
+
+// ----------------------------------------
+// FORM FIELDS CONTAINER
+// ----------------------------------------
+
+.valuation-form__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.valuation-form__row {
+  @include form-row;
+}
+
+// ----------------------------------------
+// FORM GROUP
+// ----------------------------------------
+
+.valuation-form__group {
+  @include form-group;
+}
+
+// ----------------------------------------
+// LABELS
+// ----------------------------------------
+
+.valuation-form__label {
+  @include form-label;
+}
+
+.valuation-form__required {
+  @include form-required;
+}
+
+.valuation-form__optional {
+  @include form-optional;
+}
+
+// ----------------------------------------
+// INPUTS
+// ----------------------------------------
+
+.valuation-form__input {
+  @include form-input;
+}
+
+.valuation-form__select {
+  @include form-select;
+}
+
+.valuation-form__textarea {
+  @include form-textarea(7.5rem);
+}
+
+// ----------------------------------------
+// INPUT WITH PREFIX
+// ----------------------------------------
+
+.valuation-form__input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.valuation-form__input-prefix {
+  position: absolute;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 500;
+  color: colors.$color-text-secondary;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.valuation-form__input--has-prefix {
+  padding-left: 2rem;
+}
+
+// ----------------------------------------
+// FORM FOOTER
+// ----------------------------------------
+
+.valuation-form__footer {
+  @include form-footer(true);
+}
+
+// ----------------------------------------
+// CHECKBOX
+// ----------------------------------------
+
+.valuation-form__checkbox {
+  @include form-checkbox;
+}
+
+.valuation-form__checkbox-input {
+  @include form-checkbox-input;
+}
+
+.valuation-form__checkbox-label {
+  @include form-checkbox-label;
+}
+
+// ----------------------------------------
+// SUBMIT BUTTON
+// ----------------------------------------
+
+.valuation-form__actions {
+  padding-top: 0.25rem;
+}
+
+.valuation-form__submit {
+  @include form-submit(3.5rem, 3.75rem);
+
+  @include md {
+    font-size: 1.0625rem;
+    padding: 0 2.5rem;
+  }
+}
+
+// ----------------------------------------
+// PRIVACY NOTICE
+// ----------------------------------------
+
+.valuation-form__privacy {
+  @include form-privacy;
+}
+
+// ----------------------------------------
+// SUCCESS / ERROR MESSAGES
+// ----------------------------------------
+
+.valuation-message {
+  @include form-message;
+}
+
+.valuation-message--success {
+  @include form-message-success;
+}
+
+.valuation-message--error {
+  @include form-message-error;
+}
+
+.valuation-message__icon {
+  @include form-message-icon;
+}
+
+.valuation-message__content {
+  @include form-message-content;
+}
+
+.valuation-message__title {
+  @include form-message-title;
+}
+
+.valuation-message__text {
+  @include form-message-text;
+}

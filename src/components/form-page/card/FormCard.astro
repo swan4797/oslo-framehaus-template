@@ -1,0 +1,35 @@
+---
+// ========================================
+// FORM CARD COMPONENT
+// Reusable card container for form pages
+// ========================================
+
+interface Props {
+  /** Optional CSS class override */
+  class?: string
+  /** Max width of the card (default: 60rem) */
+  maxWidth?: string
+}
+
+const { class: className, maxWidth } = Astro.props
+const style = maxWidth ? `--form-card-max-width: ${maxWidth}` : undefined
+---
+
+<section class:list={["form-card-section", className]}>
+  <div class="form-card" style={style}>
+    <slot />
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../../styles/pages/form-page/shared' as *;
+
+  .form-card-section {
+    @include form-section;
+  }
+
+  .form-card {
+    @include form-card;
+    max-width: var(--form-card-max-width, 60rem);
+  }
+</style>

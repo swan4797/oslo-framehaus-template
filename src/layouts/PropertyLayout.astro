@@ -1,0 +1,208 @@
+---
+// ========================================
+// PROPERTY LAYOUT
+// Specialized layout for property detail pages
+// Disables auto page tracking to allow manual property_view tracking
+// ========================================
+
+import { siteConfig, apiConfig } from '../lib/config'
+import CookieConsent from '../components/CookieConsent.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+
+import "../styles/global.css";
+import '../styles/global/_layouts.scss';
+
+interface Props {
+  title?: string
+  description?: string
+  ogImage?: string
+  canonicalUrl?: string
+  noIndex?: boolean
+  propertyId: string  // ✅ Required for property pages
+}
+
+const {
+  title = siteConfig.name,
+  description = siteConfig.description,
+  ogImage = '/images/og-default.jpg',
+  canonicalUrl = Astro.url.href,
+  noIndex = false,
+  propertyId, // ✅ Extract property ID
+} = Astro.props
+
+const fullTitle = title === siteConfig.name ? title : `${title} | ${siteConfig.name}`
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- SEO Meta Tags -->
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta property="twitter:title" content={fullTitle} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={ogImage} />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="min-h-screen flex flex-col bg-gray-50">
+    <!-- Navigation -->
+    <Header variant="solid" />
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <Footer />
+
+    <!-- Mobile Menu Toggle Script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const button = document.getElementById('mobile-menu-button')
+        const menu = document.getElementById('mobile-menu')
+
+        if (button && menu) {
+          button.addEventListener('click', () => {
+            const isHidden = menu.classList.contains('hidden')
+            if (isHidden) {
+              menu.classList.remove('hidden')
+              button.setAttribute('aria-expanded', 'true')
+            } else {
+              menu.classList.add('hidden')
+              button.setAttribute('aria-expanded', 'false')
+            }
+          })
+        }
+      })
+    </script>
+
+    <!-- ========================================
+         PROPERTY TRACKING (NO AUTO PAGE VIEW)
+         ======================================== -->
+    <!-- Session Management & Tracker Initialization -->
+    <script>
+      import { StratosTracker } from '../lib/stratos-tracker';
+      import { initSession } from '../lib/session';
+      
+      // Initialize session management
+      initSession();
+      
+      // Create tracker instance
+      const tracker = new StratosTracker({
+        apiUrl: import.meta.env.PUBLIC_SUPABASE_URL,
+        apiKey: import.meta.env.PUBLIC_WEBSITE_API_KEY,
+        trackingEnabled: true,
+        debug: import.meta.env.DEV, // Debug in development only
+      });
+      
+      // Initialize tracker
+      tracker.init();
+      
+      // ❌ DO NOT track page view here - property pages handle their own tracking
+      // tracker.trackPageView(); // ← Removed!
+      
+      // Make tracker globally available
+      window.StratosTracker = tracker;
+      
+      console.log('✅ Stratos Tracker initialized (Property Layout - No auto page tracking)');
+    </script>
+
+    <!-- Property-Specific Tracking -->
+
+    <script define:vars={{ propertyId }}>
+      // Track which property has been tracked to prevent duplicates
+      const TRACKED_KEY = '__stratos_tracked_property';
+
+      // Wait for tracker to be ready
+      const trackProperty = () => {
+        // Prevent duplicate tracking for the same property
+        if (window[TRACKED_KEY] === propertyId) {
+          console.log('🔄 Property already tracked:', propertyId);
+          return;
+        }
+
+        if (window.StratosTracker) {
+          console.log('🏠 Tracking property view:', propertyId);
+
+          // Mark this property as tracked
+          window[TRACKED_KEY] = propertyId;
+
+          // Track property view (not page view!)
+          window.StratosTracker.trackPropertyView(propertyId);
+
+          // Setup duration tracking
+          window.StratosTracker.setupPropertyDurationTracking(propertyId);
+
+          console.log('✅ Property tracking initialized');
+        } else {
+          console.error('❌ StratosTracker not found');
+        }
+      };
+
+      // Initialize on page load
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', trackProperty);
+      } else {
+        trackProperty();
+      }
+
+      // Handle Astro View Transitions - reset tracking for new properties
+      document.addEventListener('astro:page-load', () => {
+        // Clear the tracked property when navigating to a new page
+        // This allows tracking if the user navigates to a different property
+        const currentPath = window.location.pathname;
+        if (!currentPath.includes(propertyId)) {
+          window[TRACKED_KEY] = null;
+        }
+        trackProperty();
+      });
+    </script>
+
+    <!-- Cookie Consent -->
+    <CookieConsent />
+  </body>
+</html>
+
+<style is:global>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+</style>
+

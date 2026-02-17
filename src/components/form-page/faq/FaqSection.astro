@@ -1,0 +1,99 @@
+---
+// ========================================
+// FAQ SECTION
+// Accordion-style FAQ with accessible markup
+// ========================================
+
+import type { FaqSectionProps } from '../types'
+
+interface Props extends FaqSectionProps {}
+
+const {
+  title = 'Frequently Asked Questions',
+  subtitle = '',
+  items = [],
+  class: className = '',
+} = Astro.props
+
+// Generate unique ID prefix for this instance
+const instanceId = Math.random().toString(36).substring(2, 9)
+---
+
+<section class:list={['faq-section', className]}>
+  <div class="faq-section__header">
+    <h2 class="faq-section__title">{title}</h2>
+    {subtitle && <p class="faq-section__subtitle">{subtitle}</p>}
+  </div>
+
+  <div class="faq-accordion">
+    {items.map((item, index) => (
+      <div class="faq-item" data-faq-item>
+        <button
+          class="faq-item__trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls={`faq-content-${instanceId}-${index}`}
+        >
+          <span class="faq-item__question">{item.question}</span>
+          <svg class="faq-item__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div
+          class="faq-item__content"
+          id={`faq-content-${instanceId}-${index}`}
+          aria-hidden="true"
+        >
+          <p class="faq-item__answer">{item.answer}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+
+
+
+<style lang="scss">
+  @use '../../../styles/pages/form-page/faq';
+</style>
+
+
+<script>
+  // ========================================
+  // FAQ ACCORDION BEHAVIOR
+  // ========================================
+
+  const faqItems = document.querySelectorAll('[data-faq-item]');
+
+  faqItems.forEach(item => {
+    const trigger = item.querySelector('.faq-item__trigger') as HTMLButtonElement;
+
+    trigger?.addEventListener('click', () => {
+      const isOpen = item.classList.contains('is-open');
+      const content = item.querySelector('.faq-item__content');
+
+      // Close all other items
+      faqItems.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.classList.remove('is-open');
+          const otherTrigger = otherItem.querySelector('.faq-item__trigger');
+          const otherContent = otherItem.querySelector('.faq-item__content');
+          otherTrigger?.setAttribute('aria-expanded', 'false');
+          otherContent?.setAttribute('aria-hidden', 'true');
+        }
+      });
+
+      // Toggle current item
+      if (isOpen) {
+        item.classList.remove('is-open');
+        trigger.setAttribute('aria-expanded', 'false');
+        content?.setAttribute('aria-hidden', 'true');
+      } else {
+        item.classList.add('is-open');
+        trigger.setAttribute('aria-expanded', 'true');
+        content?.setAttribute('aria-hidden', 'false');
+      }
+    });
+  });
+</script>

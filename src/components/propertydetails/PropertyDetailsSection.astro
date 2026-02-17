@@ -1,0 +1,91 @@
+---
+// ========================================
+// PROPERTY DETAILS SECTION COMPONENT
+// Clean grid layout for property attributes
+// Styles in: src/styles/pages/property-details/_details-section.scss
+// ========================================
+
+interface Props {
+  propertyType: string
+  bedrooms: number
+  bathrooms?: number
+  receptions?: number
+  tenure?: string
+  epcRating?: string
+  listedDate?: string | null
+  listingType?: string
+  displayPrice?: string
+}
+
+const {
+  propertyType,
+  bedrooms,
+  bathrooms,
+  receptions,
+  tenure,
+  epcRating,
+  listedDate,
+  listingType,
+  displayPrice,
+} = Astro.props
+
+// EPC color mapping
+const getEpcColor = (rating: string): string => {
+  const colors: Record<string, string> = {
+    A: '#008054',
+    B: '#19b459',
+    C: '#8dce46',
+    D: '#ffd500',
+    E: '#fcaa65',
+    F: '#ef8023',
+    G: '#e9153b',
+  }
+  return colors[rating.toUpperCase()] || '#8A8A8A'
+}
+
+// Check if EPC rating needs dark text
+const needsDarkText = (rating: string): boolean => ['D', 'E'].includes(rating.toUpperCase())
+
+// Build details array
+type DetailItem = { label: string; value: string; isEpc?: boolean }
+const details: DetailItem[] = [
+  { label: 'Property Type', value: propertyType },
+  { label: 'Bedrooms', value: bedrooms.toString() },
+  ...(bathrooms && bathrooms > 0 ? [{ label: 'Bathrooms', value: bathrooms.toString() }] : []),
+  ...(receptions && receptions > 0 ? [{ label: 'Reception Rooms', value: receptions.toString() }] : []),
+  ...(tenure ? [{ label: 'Tenure', value: tenure }] : []),
+  ...(epcRating ? [{ label: 'EPC Rating', value: epcRating, isEpc: true }] : []),
+  ...(listedDate ? [{ label: 'Date Listed', value: listedDate }] : []),
+]
+---
+
+<section class="details-section">
+  <!-- Price Display -->
+  {displayPrice && (
+    <div class="details-section__price">
+      <span class="details-section__price-label">
+        {listingType === 'sale' ? 'Guide Price' : 'Per Calendar Month'}
+      </span>
+      <span class="details-section__price-value">{displayPrice}</span>
+    </div>
+  )}
+
+  <!-- Details Grid -->
+  <div class="details-section__grid">
+    {details.map((detail) => (
+      <div class="details-section__item">
+        <span class="details-section__item-label">{detail.label}</span>
+        {detail.isEpc ? (
+          <span
+            class="details-section__epc-badge"
+            style={`background-color: ${getEpcColor(detail.value)}; color: ${needsDarkText(detail.value) ? '#1A1A1A' : '#FFFFFF'};`}
+          >
+            {detail.value}
+          </span>
+        ) : (
+          <span class="details-section__item-value">{detail.value}</span>
+        )}
+      </div>
+    ))}
+  </div>
+</section>

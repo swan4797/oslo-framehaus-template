@@ -1,0 +1,468 @@
+// ========================================
+// FAVOURITE BUTTON COMPONENT
+// Modern heart button with delightful animations
+// Using centralized color tokens from tokens/_colors.scss
+// ========================================
+
+@use '../variables' as *;
+@use '../mixins' as *;
+@use '../tokens/colors' as colors;
+
+// ----------------------------------------
+// COMPONENT VARIABLES
+// ----------------------------------------
+
+$btn-bg: colors.$color-bg-primary-98;
+$btn-bg-hover: colors.$color-bg-primary;
+$btn-bg-active: colors.$color-error-lighter;
+$btn-border: colors.$color-black-10;
+$btn-border-active: colors.$color-error-border;
+$btn-shadow: 0 2px 8px colors.$color-black-10;
+$btn-shadow-hover: 0 4px 16px colors.$color-black-20;
+$btn-shadow-active: 0 4px 16px rgba(var(--color-error-rgb, 239, 68, 68), 0.25);
+
+$heart-color: colors.$color-text-muted;
+$heart-color-hover: colors.$color-error;
+$heart-color-active: colors.$color-error;
+
+// Size variants
+$sizes: (
+  sm: (button: 36px, icon: 18px),
+  md: (button: 44px, icon: 22px),
+  lg: (button: 52px, icon: 26px)
+);
+
+// ----------------------------------------
+// BUTTON BASE
+// ----------------------------------------
+
+.favourite-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: colors.$color-bg-secondary;
+  border: 1px solid $btn-border;
+  border-radius: 50%;
+  box-shadow: $btn-shadow;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  outline: none;
+
+  // Default size (md)
+  width: 44px;
+  height: 44px;
+
+  &:hover {
+    background: colors.$color-bg-secondary;
+    box-shadow: $btn-shadow-hover;
+    transform: scale(1.08);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus-visible {
+    box-shadow: $btn-shadow, 0 0 0 3px rgba($heart-color-active, 0.3);
+  }
+
+  // Disabled state
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+// ----------------------------------------
+// SIZE VARIANTS
+// ----------------------------------------
+
+.favourite-btn--sm {
+  width: 36px;
+  height: 36px;
+}
+
+.favourite-btn--lg {
+  width: 52px;
+  height: 52px;
+}
+
+// ----------------------------------------
+// HEART ICONS
+// ----------------------------------------
+
+.favourite-btn__icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition:
+    opacity 0.2s ease,
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 0.2s ease;
+}
+
+.favourite-btn__icon--outline {
+  color: $heart-color;
+  width: 22px;
+  height: 22px;
+
+  .favourite-btn--sm & {
+    width: 18px;
+    height: 18px;
+  }
+
+  .favourite-btn--lg & {
+    width: 26px;
+    height: 26px;
+  }
+
+  .favourite-btn:hover & {
+    color: $heart-color-hover;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  // Hidden when favourited
+  .favourite-btn.is-favourited & {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+}
+
+.favourite-btn__icon--filled {
+  color: $heart-color-active;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
+  width: 22px;
+  height: 22px;
+
+  .favourite-btn--sm & {
+    width: 18px;
+    height: 18px;
+  }
+
+  .favourite-btn--lg & {
+    width: 26px;
+    height: 26px;
+  }
+
+  // Visible when favourited
+  .favourite-btn.is-favourited & {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+// ----------------------------------------
+// FAVOURITED STATE
+// ----------------------------------------
+
+.favourite-btn.is-favourited {
+  background: colors.$color-bg-secondary;
+  border-color: $btn-border-active;
+  box-shadow: $btn-shadow-active;
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(var(--color-error-rgb, 239, 68, 68), 0.3);
+  }
+}
+
+// ----------------------------------------
+// LOADING SPINNER
+// ----------------------------------------
+
+.favourite-btn__spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  width: 20px;
+  height: 20px;
+
+  .favourite-btn--sm & {
+    width: 16px;
+    height: 16px;
+  }
+
+  .favourite-btn--lg & {
+    width: 24px;
+    height: 24px;
+  }
+
+  .favourite-btn.is-loading & {
+    opacity: 1;
+    animation: spin 0.8s linear infinite;
+  }
+}
+
+.favourite-btn.is-loading {
+  .favourite-btn__icon--outline,
+  .favourite-btn__icon--filled {
+    opacity: 0 !important;
+  }
+}
+
+// ----------------------------------------
+// PULSE ANIMATION (on toggle)
+// ----------------------------------------
+
+.favourite-btn.is-animating {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: colors.$color-bg-secondary;
+    animation: pulse-ring 0.6s ease-out forwards;
+  }
+}
+
+// ----------------------------------------
+// VARIANT: ICON (default)
+// ----------------------------------------
+
+.favourite-btn--icon {
+  // Default circular button - styles already applied in base
+}
+
+// ----------------------------------------
+// VARIANT: TEXT (text-only button)
+// ----------------------------------------
+
+.favourite-btn--text {
+  border-radius: 100px;
+  padding: $spacing-2 $spacing-4;
+  width: auto;
+  height: auto;
+  min-height: 36px;
+  background: transparent;
+  border: 1px solid $btn-border;
+  box-shadow: none;
+
+  &:hover {
+    background: rgba($heart-color-hover, 0.08);
+    border-color: rgba($heart-color-hover, 0.3);
+    box-shadow: none;
+    transform: none;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &.is-favourited {
+    background: rgba($heart-color-active, 0.08);
+    border-color: rgba($heart-color-active, 0.3);
+    box-shadow: none;
+
+    &:hover {
+      background: rgba($heart-color-active, 0.12);
+    }
+  }
+
+  .favourite-btn__label {
+    margin-left: 0;
+  }
+
+  .favourite-btn__spinner--inline {
+    width: 16px;
+    height: 16px;
+    margin-right: $spacing-2;
+    opacity: 0;
+    display: none;
+  }
+
+  &.is-loading {
+    .favourite-btn__label {
+      opacity: 0.5;
+    }
+
+    .favourite-btn__spinner--inline {
+      display: block;
+      opacity: 1;
+      animation: spin-inline 0.8s linear infinite;
+    }
+  }
+}
+
+// ----------------------------------------
+// VARIANT: ICON-TEXT (icon with label)
+// ----------------------------------------
+
+.favourite-btn--icon-text {
+  border-radius: 100px;
+  padding: 0 $spacing-4;
+  width: auto;
+  gap: $spacing-2;
+
+  .favourite-btn__icon {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    flex-shrink: 0;
+  }
+
+  .favourite-btn__icon--outline {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  }
+
+  &:hover .favourite-btn__icon--outline {
+    transform: scale(1.1);
+  }
+
+  &.is-favourited .favourite-btn__icon--outline {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  .favourite-btn__icon--filled {
+    position: absolute;
+    left: $spacing-4;
+    top: 50%;
+    transform: translateY(-50%) scale(0.5);
+    opacity: 0;
+  }
+
+  &.is-favourited .favourite-btn__icon--filled {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+// ----------------------------------------
+// LABEL (shared styles)
+// ----------------------------------------
+
+.favourite-btn__label {
+  margin-left: $spacing-2;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $text-secondary;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+
+  .favourite-btn.is-favourited & {
+    color: $heart-color-active;
+  }
+}
+
+// ----------------------------------------
+// BACKWARD COMPATIBILITY NOTE
+// ----------------------------------------
+// The legacy `showLabel` prop now maps to variant="icon-text"
+// in the component, so --with-label class is no longer generated.
+// The --icon-text variant handles all icon+text presentations.
+
+// ----------------------------------------
+// ANIMATIONS
+// ----------------------------------------
+
+@keyframes spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes spin-inline {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes heart-pop {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.favourite-btn.is-favourited .favourite-btn__icon--filled {
+  animation: heart-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+// ----------------------------------------
+// TOAST NOTIFICATIONS
+// ----------------------------------------
+
+.favourite-toast {
+  position: fixed;
+  bottom: $spacing-6;
+  right: $spacing-6;
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-4 $spacing-5;
+  background: colors.$color-bg-secondary;
+  color: $bg-white;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  border-radius: $radius-lg;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  animation: toast-in 0.3s ease-out;
+
+  &.is-hiding {
+    animation: toast-out 0.3s ease-out forwards;
+  }
+}
+
+.favourite-toast__icon {
+  font-size: 1.25rem;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toast-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.95);
+  }
+}
+

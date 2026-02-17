@@ -1,0 +1,48 @@
+---
+// ========================================
+// FORM HERO
+// Centered hero section for form pages
+// Supports CMS content injection via blockKey
+// ========================================
+
+import type { FormHeroProps } from '../types'
+import { getSectionTitle, getSectionContent, hasSection } from '../../../lib/pages'
+
+interface Props extends FormHeroProps {
+  class?: string
+}
+
+const {
+  title,
+  subtitle,
+  blockKey,
+  pageContent,
+  class: className = '',
+} = Astro.props
+
+// Get CMS content if blockKey and pageContent are provided
+const cmsTitle = blockKey && pageContent ? getSectionTitle(pageContent, blockKey, title) : title
+const cmsContent = blockKey && pageContent ? getSectionContent(pageContent, blockKey, '') : null
+const hasCmsContent = blockKey && pageContent ? hasSection(pageContent, blockKey) : false
+
+// Use CMS content or fallback to subtitle prop
+const displaySubtitle = hasCmsContent && cmsContent ? cmsContent : subtitle
+---
+
+<section class:list={['form-hero', className]}>
+  <div class="form-hero__content">
+    <h1 class="form-hero__title">{cmsTitle}</h1>
+    {displaySubtitle && (
+      hasCmsContent && cmsContent ? (
+        <div class="form-hero__subtitle" set:html={displaySubtitle} />
+      ) : (
+        <p class="form-hero__subtitle">{displaySubtitle}</p>
+      )
+    )}
+  </div>
+</section>
+
+
+<style lang="scss">
+  @use '../../../styles/pages/form-page/formhero';
+</style>

@@ -1,0 +1,64 @@
+---
+// ========================================
+// ARTICLE GRID COMPONENT
+// Configurable blog article grid
+// ========================================
+
+import type { BlogArticle } from '../../../types/database'
+import type { BlogConfig, BlogCardConfig } from '../../../config/blog'
+import { blogConfigs, getCardConfig } from '../../../config/blog'
+import BlogArticleCard from '../cards/BlogArticleCard.astro'
+
+export interface Props {
+  articles: BlogArticle[]
+  configId?: string
+  config?: Partial<BlogConfig>
+  cardConfig?: Partial<BlogCardConfig>
+  emptyMessage?: string
+  class?: string
+}
+
+const {
+  articles,
+  configId = 'listing',
+  config: configOverride,
+  cardConfig: cardConfigOverride,
+  emptyMessage = 'No articles found',
+  class: className,
+} = Astro.props
+
+// Merge configs
+const baseConfig = blogConfigs[configId] || blogConfigs.listing
+const config = { ...baseConfig, ...configOverride }
+const cardConfig = getCardConfig({ ...config.grid.cardConfig, ...cardConfigOverride })
+
+const hasArticles = articles && articles.length > 0
+const gridColumns = config.grid.columns
+const gridGap = config.grid.gap
+---
+
+{hasArticles ? (
+  <div
+    class:list={[
+      'article-grid',
+      `article-grid--cols-${gridColumns}`,
+      `article-grid--gap-${gridGap}`,
+      className,
+    ]}
+  >
+    {articles.map((article, index) => (
+      <BlogArticleCard
+        article={article}
+        featured={index === 0 && config.showFeaturedSection}
+      />
+    ))}
+  </div>
+) : (
+  <div class="article-grid__empty">
+    <p>{emptyMessage}</p>
+  </div>
+)}
+
+<style lang="scss">
+  @use '../../../styles/components/blog/article-grid';
+</style>

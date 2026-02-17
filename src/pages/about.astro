@@ -1,0 +1,111 @@
+---
+// ========================================
+// ABOUT PAGE
+// Company information and team page
+// Dynamic content from Stratos CRM
+// ========================================
+
+import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
+import IntroSection from '../components/static-page/layouts/IntroSection.astro'
+import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
+import CTABanner from '../components/static-page/layouts/CTABanner.astro'
+
+// Page content utilities
+import { getPageContent, hasSection } from '../lib/pages'
+
+const pageTitle = 'About Us'
+const pageDescription = 'Learn more about our team and our commitment to helping you find your perfect property.'
+
+// Fetch about page content from Stratos CRM
+const pageContent = await getPageContent('about')
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Hero Section -->
+  <Hero
+    headline="Your Trusted Property Partner"
+    description="With years of local expertise and a passion for property, we're here to help you every step of the way."
+    ctaText="Get in Touch"
+    ctaLink="/contact"
+    backgroundType="image"
+    backgroundSrc="https://images.pexels.com/photos/5644365/pexels-photo-5644365.jpeg"
+    overlayOpacity="dark"
+    showPhoneButton={false}
+  />
+
+  <!-- Intro Section -->
+  <IntroSection
+    title="Your Trusted Local Estate Agent"
+    subtitle="Who We Are"
+    description="What started as a small family business has grown into a thriving agency with a reputation for excellence. Our commitment to outstanding service and local expertise has earned us the trust of thousands of clients over the years."
+    ctaText="Get in touch"
+    ctaLink="/contact"
+    leftImageSrc="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800"
+    leftImageAlt="Our team at work"
+    rightImageSrc="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800"
+    rightImageAlt="Team collaboration"
+  />
+
+  <!-- Content Blocks - Alternating Layout -->
+  <ContentBlock
+    blockKey="our_story"
+    pageContent={pageContent}
+    mediaSrc="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80"
+    mediaAlt="Our story"
+    secondaryMediaSrc="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=800"
+    secondaryMediaAlt="Our journey"
+    title="Our Story"
+    subtitle="Who We Are"
+    description="What started as a small family business has grown into a thriving agency with a reputation for excellence. Our commitment to outstanding service and local expertise has earned us the trust of thousands of clients over the years."
+    ctaText="Meet the team"
+    ctaLink="/contact"
+    imagePosition="left"
+    overlayStrength="light"
+    serviceItems={["Family Business", "Local Expertise", "Trusted Service"]}
+  />
+
+  <ContentBlock
+    blockKey="our_values"
+    pageContent={pageContent}
+    mediaSrc="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=1200&q=80"
+    mediaAlt="Our values"
+    secondaryMediaSrc="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=800"
+    secondaryMediaAlt="Team values"
+    title="Our Values"
+    subtitle="What We Stand For"
+    description="Integrity, excellence, and client focus are at the heart of everything we do. We believe in transparent communication, honest advice, and going the extra mile to ensure every client achieves their property goals."
+    ctaText="Our services"
+    ctaLink="/sellers"
+    imagePosition="right"
+    overlayStrength="light"
+    serviceItems={["Integrity", "Excellence", "Client Focus"]}
+  />
+
+  <ContentBlock
+    blockKey="meet_the_team"
+    pageContent={pageContent}
+    mediaSrc="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80"
+    mediaAlt="Meet the team"
+    secondaryMediaSrc="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=800"
+    secondaryMediaAlt="Expert team"
+    title="Meet The Team"
+    subtitle="Expert Guidance"
+    description="Our experienced team brings together decades of local property knowledge. From first-time buyers to seasoned investors, we have the expertise to guide you through every step of your property journey."
+    ctaText="Contact us"
+    ctaLink="/contact"
+    imagePosition="left"
+    overlayStrength="light"
+    serviceItems={["Local Knowledge", "Property Experts", "Dedicated Support"]}
+  />
+
+  <!-- CTA Banner -->
+  <CTABanner
+    title="Ready to Find Your Perfect Property?"
+    subtitle="Whether you're buying, selling, or renting, we're here to help every step of the way. Get in touch today to start your property journey."
+    primaryCtaText="Get Started"
+    primaryCtaLink="/contact"
+    secondaryCtaText="Free Valuation"
+    secondaryCtaLink="/valuation"
+  />
+</Layout>

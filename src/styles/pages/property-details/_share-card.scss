@@ -1,0 +1,27 @@
+// ========================================
+// SHARE CARD STYLES
+// Standalone share buttons component
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../mixins' as *;
+
+
+/* Standalone variant (without card wrapper) */
+.share-buttons-standalone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.share-buttons-standalone__title {
+  font-family: typography.$font-family-heading;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: colors.$color-accent;
+  margin: 0;
+  text-align: center;
+}

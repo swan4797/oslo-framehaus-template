@@ -1,0 +1,53 @@
+---
+// ========================================
+// BRANCH CARD COMPONENT
+// Individual card for displaying a branch microsite
+// ========================================
+
+import type { BranchMicrosite } from '../../../lib/microsites'
+
+interface Props {
+  branch: BranchMicrosite
+  linkText?: string
+}
+
+const { branch, linkText = 'View Branch' } = Astro.props
+
+const displayName = branch.display_name || branch.branch_name
+const href = `/branches/${branch.page_slug}`
+---
+
+<a href={href} class="branch-card">
+  {branch.hero_image_url ? (
+    <img
+      src={branch.hero_image_url}
+      alt={displayName}
+      class="branch-card__image"
+      loading="lazy"
+    />
+  ) : (
+    <div class="branch-card__placeholder">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </div>
+  )}
+  <div class="branch-card__content">
+    <h3 class="branch-card__name">{displayName}</h3>
+    {branch.description && (
+      <p class="branch-card__description">{branch.description}</p>
+    )}
+    <span class="branch-card__link">
+      {linkText}
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14"/>
+        <path d="m12 5 7 7-7 7"/>
+      </svg>
+    </span>
+  </div>
+</a>
+
+<style lang="scss">
+  @use '../../../styles/components/branches/branch-card';
+</style>

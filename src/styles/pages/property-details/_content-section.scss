@@ -1,0 +1,73 @@
+// ========================================
+// CONTENT SECTION STYLES
+// Base styles for content sections
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+
+.content-section {
+  background: colors.$color-bg-secondary;
+  border-radius: 0;
+  padding: 2rem;
+  box-shadow: effects.$shadow-sm;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
+
+  &--map {
+    padding-bottom: 1.5rem;
+  }
+
+  &__title {
+    font-family: typography.$font-family-heading;
+    font-size: 1.375rem;
+    font-weight: 500;
+    color: colors.$color-text-primary;
+    margin: 0 0 1.5rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid colors.$color-border-light;
+    letter-spacing: -0.01em;
+  }
+
+  &__subtitle {
+    font-size: 0.9375rem;
+    color: colors.$color-text-muted;
+    margin: -0.75rem 0 1.5rem 0;
+  }
+
+  &__body {
+    font-size: 1rem;
+    color: colors.$color-text-secondary;
+    line-height: 1.75;
+  }
+}
+
+.prose {
+  white-space: pre-line;
+}
+
+.property-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+
+  &__value {
+    font-family: typography.$font-family-heading;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 600;
+    color: colors.$color-text-primary;
+    letter-spacing: -0.02em;
+  }
+
+  &__suffix {
+    font-size: 1rem;
+    font-weight: 500;
+    color: colors.$color-text-muted;
+  }
+}

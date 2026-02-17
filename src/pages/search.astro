@@ -1,0 +1,163 @@
+---
+// ========================================
+// SEARCH PAGE
+// Property search results with sidebar filters
+// ========================================
+
+export const prerender = false
+
+import Layout from '../layouts/Layout.astro'
+import { searchProperties } from '../lib/api'
+
+import Pagination from '../components/search/Pagination.astro'
+
+// Search Page Components
+import SearchPageLayout from '../components/search-page/layout/SearchPageLayout.astro'
+import SearchPageGrid from '../components/search-page/layout/SearchPageGrid.astro'
+import SearchHero from '../components/search-page/hero/SearchHero.astro'
+import SearchSidebar from '../components/search-page/sidebar/SearchSidebar.astro'
+import SearchResultsHeader from '../components/search-page/results/SearchResultsHeader.astro'
+import SearchResultsGrid from '../components/search-page/results/SearchResultsGrid.astro'
+import SearchResultsList from '../components/search-page/results/SearchResultsList.astro'
+import SearchErrorState from '../components/search-page/states/SearchErrorState.astro'
+import SearchEmptyState from '../components/search-page/states/SearchEmptyState.astro'
+
+// Property Card for Featured Section
+import PropertyListCard from '../components/properties/cards/PropertyListCard.astro'
+
+// Utilities and Config
+import {
+  parseSearchParams,
+  computeSearchValues,
+  defaultSortOptions,
+} from '../components/search-page'
+
+// ----------------------------------------
+// PARSE SEARCH PARAMETERS
+// ----------------------------------------
+
+const searchParams = parseSearchParams(Astro.url)
+
+// ----------------------------------------
+// FETCH PROPERTIES
+// ----------------------------------------
+
+const searchResponse = await searchProperties(searchParams)
+
+// ----------------------------------------
+// COMPUTED VALUES
+// ----------------------------------------
+
+const {
+  hasError,
+  properties,
+  total,
+  totalPages,
+  activeFiltersCount,
+  pageTitle,
+  metaDescription,
+} = computeSearchValues(searchParams, searchResponse)
+
+// ----------------------------------------
+// FEATURED PROPERTY EXTRACTION
+// Extract featured property for prominent display
+// ----------------------------------------
+
+const featuredProperty = properties.find(p => p.is_featured) || (properties.length > 0 ? properties[0] : null)
+const remainingProperties = featuredProperty
+  ? properties.filter(p => p.id !== featuredProperty.id)
+  : properties
+const showFeaturedSection = featuredProperty && properties.length > 1
+---
+
+<Layout title={pageTitle} description={metaDescription} headerVariant="solid">
+  <SearchPageLayout>
+    <SearchHero />
+
+    <SearchPageGrid>
+      <SearchSidebar
+        slot="sidebar"
+        currentParams={searchParams},
+      />
+
+      <main slot="results" class="search-results">
+        {hasError ? (
+          <SearchErrorState />
+        ) : (
+          <>
+            <SearchResultsHeader
+              total={total}
+              location={searchParams.location}
+              activeFiltersCount={activeFiltersCount}
+              currentSortBy={searchParams.sort_by || 'newest'}
+              sortOptions={defaultSortOptions}
+            />
+
+            {properties.length === 0 ? (
+              <SearchEmptyState />
+            ) : (
+              <>
+                {/* Featured Property Section */}
+                {showFeaturedSection && featuredProperty && (
+                  <section class="featured-property-section">
+                    <div class="featured-property-header">
+                      <span class="featured-property-label">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                        </svg>
+                        Featured Property
+                      </span>
+                    </div>
+                    <div class="featured-property-card">
+                      <PropertyListCard
+                        property={featuredProperty}
+                        featured={true}
+                        source="search_featured"
+                      />
+                    </div>
+                  </section>
+                )}
+
+                {/* Results Section - Grid & List Views */}
+                <section class="results-section" data-results-section>
+                  {showFeaturedSection && (
+                    <div class="results-section__header">
+                      <span class="results-section__label">More Properties</span>
+                    </div>
+                  )}
+
+                  {/* Grid View (default) */}
+                  <div class="results-view results-view--grid" data-view-container="grid">
+                    <SearchResultsGrid properties={showFeaturedSection ? remainingProperties : properties} />
+                  </div>
+
+                  {/* List View */}
+                  <div class="results-view results-view--list results-view--hidden" data-view-container="list">
+                    <SearchResultsList properties={showFeaturedSection ? remainingProperties : properties} />
+                  </div>
+                </section>
+
+                <div class="search-pagination">
+                  <Pagination
+                    currentPage={searchParams.page || 1}
+                    totalPages={totalPages}
+                    totalResults={total}
+                    searchParams={searchParams}
+                  />
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </main>
+    </SearchPageGrid>
+  </SearchPageLayout>
+</Layout>
+
+<style lang="scss">
+  @use '../styles/pages/search/page';
+</style>
+
+<script>
+  import '../components/search-page/scripts/search-page-client'
+</script>

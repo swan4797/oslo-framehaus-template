@@ -1,0 +1,20 @@
+---
+// ========================================
+// SEARCH PAGE LAYOUT
+// Main wrapper for the search page
+// ========================================
+
+interface Props {
+  class?: string
+}
+
+const { class: className = '' } = Astro.props
+---
+
+<div class:list={['search-page', className]}>
+  <slot />
+</div>
+
+<style lang="scss">
+  @use '../../../styles/pages/search/layout';
+</style>

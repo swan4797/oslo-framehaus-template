@@ -1,0 +1,248 @@
+// ========================================
+// CTA BANNER COMPONENT
+// Full-width background with overlaid text
+// Using centralized design tokens
+// ========================================
+
+@use '../tokens/colors' as colors;
+@use '../tokens/typography' as typography;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/effects' as effects;
+@use '../mixins' as *;
+
+// ========================================
+// BASE SECTION
+// ========================================
+
+.cta-banner {
+  position: relative;
+  min-height: 320px;
+  background: colors.$color-bg-tertiary;
+  overflow: hidden;
+
+  @include md {
+    min-height: 380px;
+  }
+
+  @include lg {
+    min-height: 420px;
+  }
+
+  // When has background media
+  &--has-background {
+    background: colors.$color-bg-tertiary;
+  }
+}
+
+// ========================================
+// BACKGROUND MEDIA
+// ========================================
+
+.cta-banner__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.cta-banner__background-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.cta-banner__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  &--light {
+    background: linear-gradient(
+      to right,
+      rgba(colors.$color-white, 0.85) 0%,
+      rgba(colors.$color-white, 0.6) 40%,
+      rgba(colors.$color-white, 0) 70%
+    );
+  }
+
+  &--medium {
+    background: linear-gradient(
+      to right,
+      rgba(colors.$color-white, 0.92) 0%,
+      rgba(colors.$color-white, 0.7) 40%,
+      rgba(colors.$color-white, 0) 70%
+    );
+  }
+
+  &--dark {
+    background: linear-gradient(
+      to right,
+      rgba(colors.$color-white, 0.95) 0%,
+      rgba(colors.$color-white, 0.8) 40%,
+      rgba(colors.$color-white, 0) 70%
+    );
+  }
+}
+
+// ========================================
+// CONTAINER
+// ========================================
+
+.cta-banner__container {
+  @include container;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  min-height: inherit;
+  padding-top: spacing.$spacing-10;
+  padding-bottom: spacing.$spacing-10;
+
+  @include md {
+    padding-top: spacing.$spacing-12;
+    padding-bottom: spacing.$spacing-12;
+  }
+
+  @include lg {
+    padding-top: spacing.$spacing-16;
+    padding-bottom: spacing.$spacing-16;
+  }
+}
+
+// ========================================
+// CONTENT
+// ========================================
+
+.cta-banner__content {
+  max-width: 480px;
+  width: 100%;
+
+  @include lg {
+    max-width: 520px;
+  }
+}
+
+.cta-banner__title {
+  font-family: typography.$font-family-heading;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: typography.$font-weight-regular;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: colors.$color-text-primary;
+  margin: 0 0 spacing.$spacing-5;
+
+  @include md {
+    margin-bottom: spacing.$spacing-6;
+  }
+}
+
+.cta-banner__subtitle {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-regular;
+  line-height: 1.7;
+  color: colors.$color-text-secondary;
+  margin: 0 0 spacing.$spacing-8;
+  max-width: 400px;
+
+  @include md {
+    font-size: typography.$font-size-base;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+// ========================================
+// ACTIONS
+// ========================================
+
+.cta-banner__actions {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-3;
+
+  @include sm {
+    flex-direction: row;
+    gap: spacing.$spacing-4;
+  }
+}
+
+.cta-banner__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.$spacing-2;
+  padding: spacing.$spacing-3 spacing.$spacing-6;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
+  text-decoration: none;
+  border-radius: effects.$radius-sm;
+  cursor: pointer;
+  transition: all effects.$transition-base;
+  white-space: nowrap;
+
+  @include md {
+    padding: spacing.$spacing-4 spacing.$spacing-8;
+  }
+
+  &--primary {
+    background: colors.$color-text-primary;
+    color: colors.$color-text-light;
+    border: none;
+
+    &:hover {
+      background: colors.$color-text-secondary;
+      transform: translateY(-1px);
+    }
+  }
+
+  &--secondary {
+    background: transparent;
+    color: colors.$color-text-primary;
+    border: 1px solid colors.$color-border-medium;
+
+    &:hover {
+      background: colors.$color-bg-secondary;
+      border-color: colors.$color-text-primary;
+    }
+  }
+}
+
+// ========================================
+// RESPONSIVE ADJUSTMENTS
+// ========================================
+
+@media (max-width: 767px) {
+  .cta-banner__overlay {
+    &--light,
+    &--medium,
+    &--dark {
+      background: linear-gradient(
+        to bottom,
+        rgba(colors.$color-white, 0.92) 0%,
+        rgba(colors.$color-white, 0.8) 60%,
+        rgba(colors.$color-white, 0.5) 100%
+      );
+    }
+  }
+
+  .cta-banner__content {
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .cta-banner__subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-banner__actions {
+    justify-content: center;
+  }
+}

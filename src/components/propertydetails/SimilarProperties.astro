@@ -1,0 +1,174 @@
+---
+// ========================================
+// SIMILAR PROPERTIES COMPONENT
+// Displays properties similar to the current one
+// Server-side rendered for optimal performance
+// ========================================
+
+import { getSimilarProperties, type SimilarProperty } from '../../lib/api'
+
+interface Props {
+  propertyId: string
+  listingType: string
+  limit?: number
+}
+
+const { propertyId, listingType, limit = 4 } = Astro.props
+
+// Normalize listing type for display logic
+const isSale = listingType === 'sale' || listingType === 'for-sale'
+
+// Helper to generate SEO-friendly property URL
+function getPropertyUrl(property: SimilarProperty): string {
+  if (property.url_slug) {
+    return `/properties/${property.url_slug}`
+  }
+
+  const parts: string[] = []
+
+  if (property.bedrooms === 0) {
+    parts.push('studio')
+  } else if (property.bedrooms && property.bedrooms > 0) {
+    parts.push(`${property.bedrooms}-bed`)
+  }
+
+  if (property.property_type && property.property_type !== 'other') {
+    parts.push(property.property_type.toLowerCase().replace(/\s+/g, '-'))
+  }
+
+  if (property.display_address) {
+    const streetPart = property.display_address.split(',')[0]
+      .replace(/^(flat|unit|apartment)\s*\d+[a-z]?\s*/i, '')
+      .replace(/^\d+[a-z]?\s+/i, '')
+    const locationSlug = streetPart
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .substring(0, 50)
+    if (locationSlug) parts.push(locationSlug)
+  }
+
+  if (parts.length === 0) parts.push('property')
+
+  return `/properties/${parts.join('-')}`
+}
+
+// Helper to format price
+function formatPrice(property: SimilarProperty): string {
+  const price = isSale ? property.asking_price : property.rent_amount
+  if (!price) return 'Price on application'
+  return `£${price.toLocaleString()}${!isSale ? ' pcm' : ''}`
+}
+
+// Fetch similar properties server-side
+let properties: SimilarProperty[] = []
+let modeDescription = ''
+
+try {
+  const result = await getSimilarProperties(propertyId, undefined, limit)
+  if (result && result.properties) {
+    properties = result.properties
+    modeDescription = result.mode_description || ''
+  }
+} catch (err) {
+  console.error('[SimilarProperties] Error fetching:', err)
+}
+
+const hasProperties = properties.length > 0
+---
+
+{hasProperties && (
+  <section class="similar-section">
+    <div class="similar-section__container">
+      <!-- Header -->
+      <div class="similar-section__header">
+        <span class="similar-section__eyebrow">Recommendations</span>
+        <h2 class="similar-section__heading">Similar Properties</h2>
+        <p class="similar-section__text">
+          {modeDescription || 'Explore properties that match your preferences based on location, price, and features.'}
+        </p>
+
+        <!-- Property Count & View All -->
+        <div class="similar-section__actions">
+          <div class="similar-section__count">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            <span>{properties.length} {properties.length === 1 ? 'Property' : 'Properties'} Found</span>
+          </div>
+
+          <a href={`/search?listing_type=${listingType}`} class="similar-section__view-all">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.35-4.35" />
+            </svg>
+            View All Properties
+          </a>
+        </div>
+      </div>
+
+      <!-- Property Cards Grid -->
+      <div class="similar-section__grid">
+        {properties.map((property) => (
+          <a href={getPropertyUrl(property)} class="similar-section__card">
+            <!-- Image -->
+            <div class="similar-section__card-image">
+              {property.main_image_url ? (
+                <img
+                  src={property.main_image_url}
+                  alt={property.display_address}
+                  loading="lazy"
+                />
+              ) : (
+                <div class="similar-section__card-placeholder">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                  </svg>
+                </div>
+              )}
+
+              {/* Featured badge */}
+              {property.is_featured && (
+                <span class="similar-section__badge similar-section__badge--featured">
+                  Featured
+                </span>
+              )}
+
+              {/* Similarity score badge */}
+              <span class="similar-section__badge similar-section__badge--match">
+                {property.similarity_score}% match
+              </span>
+            </div>
+
+            <!-- Details -->
+            <div class="similar-section__card-content">
+              <div class="similar-section__card-price">
+                {formatPrice(property)}
+              </div>
+
+              <div class="similar-section__card-specs">
+                <span class="similar-section__spec">{property.bedrooms} bed</span>
+                {property.bathrooms && (
+                  <span class="similar-section__spec">{property.bathrooms} bath</span>
+                )}
+                <span class="similar-section__spec similar-section__spec--type">
+                  {property.property_type}
+                </span>
+              </div>
+
+              <div class="similar-section__card-address">
+                {property.display_address}
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<style lang="scss">
+  @use '../../styles/pages/property-details/similar';
+</style>

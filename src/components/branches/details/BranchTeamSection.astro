@@ -1,0 +1,44 @@
+---
+// ========================================
+// BRANCH TEAM SECTION COMPONENT
+// Team members grid section for branch pages
+// ========================================
+
+import BranchTeamMemberCard from './BranchTeamMemberCard.astro'
+
+interface TeamMember {
+  first_name: string
+  last_name: string
+  job_title?: string | null
+  email?: string | null
+  phone?: string | null
+  profile_image_url?: string | null
+}
+
+interface Props {
+  branchName: string
+  teamMembers: TeamMember[]
+  label?: string
+}
+
+const { branchName, teamMembers, label = 'Our Team' } = Astro.props
+---
+
+<section class="branch-team">
+  <div class="branch-team__container">
+    <div class="branch-team__header">
+      <span class="branch-team__label">{label}</span>
+      <h2 class="branch-team__title">Meet the {branchName} Team</h2>
+    </div>
+
+    <div class="branch-team__grid">
+      {teamMembers.map((member) => (
+        <BranchTeamMemberCard member={member} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../../styles/components/branches/branch-team-section';
+</style>

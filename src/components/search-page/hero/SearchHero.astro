@@ -1,0 +1,36 @@
+---
+// ========================================
+// SEARCH HERO
+// Hero section with title and subtitle
+// ========================================
+
+import type { SearchHeroProps } from '../types'
+import { defaultHeroConfig } from '../config'
+
+interface Props extends SearchHeroProps {
+  class?: string
+}
+
+const {
+  title = defaultHeroConfig.title,
+  subtitle = defaultHeroConfig.subtitle,
+  class: className = '',
+} = Astro.props
+---
+
+<div class:list={['search-hero', className]}>
+  <div class="search-hero__background"></div>
+  <div class="search-hero__content">
+    <div class="search-hero__container">
+      <h1 class="search-hero__title">{title}</h1>
+      {subtitle && (
+        <p class="search-hero__subtitle">{subtitle}</p>
+      )}
+      <slot />
+    </div>
+  </div>
+</div>
+
+<style lang="scss">
+  @use '../../../styles/pages/search/hero';
+</style>

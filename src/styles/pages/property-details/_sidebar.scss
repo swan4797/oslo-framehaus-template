@@ -1,0 +1,68 @@
+// ========================================
+// SIDEBAR STYLES
+// Sidebar layout and cards
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+
+.property-sidebar {
+  @media (max-width: 1023px) {
+    order: -1;
+  }
+}
+
+.sidebar-sticky {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  @media (min-width: 1024px) {
+    position: sticky;
+    top: 6rem;
+  }
+}
+
+.sidebar-card {
+  background: colors.$color-bg-secondary;
+  border-radius: 0;
+  padding: 1.5rem;
+  box-shadow: effects.$shadow-sm;
+
+  &--form {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  &--share {
+    padding: 1.25rem;
+  }
+
+  &__title {
+    font-family: typography.$font-family-heading;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: colors.$color-text-primary;
+    margin: 0 0 0.375rem 0;
+
+    &--center {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__subtitle {
+    font-size: 0.875rem;
+    color: colors.$color-text-muted;
+    margin: 0 0 1.25rem 0;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}

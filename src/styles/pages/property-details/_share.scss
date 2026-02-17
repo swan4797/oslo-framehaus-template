@@ -1,0 +1,71 @@
+// ========================================
+// SHARE BUTTONS STYLES
+// Social sharing buttons
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+
+.share-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.625rem;
+}
+
+.share-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0;
+  background: colors.$color-bg-secondary;
+  border: 1px solid colors.$color-border-light;
+  color: colors.$color-text-secondary;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all effects.$transition-fast;
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &:hover {
+    background: colors.$color-bg-secondary;
+    border-color: colors.$color-primary;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  &.copied {
+    background: colors.$color-bg-secondary;
+    border-color: colors.$color-success;
+    color: white;
+
+    .share-btn__tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+
+  &__tooltip {
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    left: 50%;
+    transform: translateX(-50%) translateY(0.25rem);
+    padding: 0.375rem 0.75rem;
+    background: colors.$color-bg-secondary;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 0;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all effects.$transition-fast;
+  }
+}

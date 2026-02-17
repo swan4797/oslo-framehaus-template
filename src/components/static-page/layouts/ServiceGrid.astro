@@ -1,0 +1,159 @@
+---
+// ========================================
+// SERVICE GRID COMPONENT
+// Modular, reusable grid section
+// Supports standard grid and asymmetric layouts
+// ========================================
+
+type BackgroundType = 'video' | 'image' | 'none'
+type OverlayOpacity = 'none' | 'light' | 'medium' | 'dark'
+type CardMediaType = 'video' | 'image'
+type LayoutType = 'grid' | 'asymmetric' | 'cards'
+
+interface GridItem {
+  id: string
+  title: string
+  description?: string
+  href: string
+  ctaText?: string
+  mediaType?: CardMediaType
+  mediaSrc: string
+  mediaPoster?: string
+  overlayOpacity?: OverlayOpacity
+}
+
+interface Props {
+  title: string
+  subtitle?: string
+  ctaText?: string
+  ctaLink?: string
+  backgroundType?: BackgroundType
+  backgroundSrc?: string
+  backgroundAlt?: string
+  backgroundPoster?: string
+  overlayOpacity?: OverlayOpacity
+  items: GridItem[]
+  layout?: LayoutType
+  columns?: 2 | 3 | 4
+  aspectRatio?: 'square' | 'landscape' | 'portrait'
+}
+
+const {
+  title,
+  subtitle = '',
+  ctaText = '',
+  ctaLink = '',
+  backgroundType = 'none',
+  backgroundSrc = '',
+  backgroundAlt = 'Section background',
+  backgroundPoster = '',
+  overlayOpacity = 'none',
+  items = [],
+  layout = 'grid',
+  columns = 3,
+  aspectRatio = 'landscape',
+} = Astro.props
+
+const sectionClasses = [
+  'service-grid',
+  backgroundType !== 'none' ? 'service-grid--has-background' : '',
+  layout === 'cards' ? 'service-grid--cards-layout' : '',
+].filter(Boolean).join(' ')
+
+const gridClasses = layout === 'asymmetric'
+  ? 'service-grid__cards service-grid__cards--asymmetric'
+  : layout === 'cards'
+  ? 'service-grid__cards service-grid__cards--cards-layout'
+  : `service-grid__cards service-grid__cards--cols-${columns} service-grid__cards--${aspectRatio}`
+---
+
+<section class={sectionClasses}>
+  {backgroundType !== 'none' && (
+    <div class="service-grid__background">
+      {backgroundType === 'video' ? (
+        <video class="service-grid__background-video" autoplay muted loop playsinline poster={backgroundPoster}>
+          <source src={backgroundSrc} type="video/mp4" />
+        </video>
+      ) : (
+        <div class="service-grid__background-image" style={`background-image: url('${backgroundSrc}')`} role="img" aria-label={backgroundAlt} />
+      )}
+      {overlayOpacity !== 'none' && (
+        <div class={`service-grid__background-overlay service-grid__background-overlay--${overlayOpacity}`}></div>
+      )}
+    </div>
+  )}
+
+  <div class="service-grid__container">
+    <header class="service-grid__header">
+      <div class="service-grid__header-left">
+        <h2 class="service-grid__title">{title}</h2>
+      </div>
+      {(subtitle || ctaText) && (
+        <div class="service-grid__header-right">
+          {subtitle && <p class="service-grid__subtitle">{subtitle}</p>}
+          {ctaText && ctaLink && (
+            <a href={ctaLink} class="service-grid__cta">
+              {ctaText}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          )}
+        </div>
+      )}
+    </header>
+
+    <div class={gridClasses}>
+      {items.map((item, index) => (
+        layout === 'cards' ? (
+          <!-- Cards Layout - Image on top, content below -->
+          <div class="service-grid__service-card" data-card-id={item.id}>
+            <div class="service-grid__service-card-image">
+              {item.mediaType === 'video' ? (
+                <video autoplay muted loop playsinline poster={item.mediaPoster || ''}>
+                  <source src={item.mediaSrc} type="video/mp4" />
+                </video>
+              ) : (
+                <img src={item.mediaSrc} alt={item.title} loading="lazy" />
+              )}
+            </div>
+            <div class="service-grid__service-card-content">
+              <span class="service-grid__service-card-label">Service {String(index + 1).padStart(2, '0')}</span>
+              <p class="service-grid__service-card-description">{item.description}</p>
+              {item.href && (
+                <a href={item.href} class="service-grid__service-card-cta">
+                  {item.ctaText || 'Learn More'}
+                </a>
+              )}
+            </div>
+          </div>
+        ) : (
+          <!-- Standard/Asymmetric Layout -->
+          <a
+            href={item.href}
+            class={`service-grid__card ${layout === 'asymmetric' && index === 2 ? 'service-grid__card--featured' : ''}`}
+            data-card-id={item.id}
+          >
+            <div class="service-grid__card-media">
+              {item.mediaType === 'video' ? (
+                <video class="service-grid__card-video" autoplay muted loop playsinline poster={item.mediaPoster || ''}>
+                  <source src={item.mediaSrc} type="video/mp4" />
+                </video>
+              ) : (
+                <div class="service-grid__card-image" style={`background-image: url('${item.mediaSrc}')`} />
+              )}
+              <div class={`service-grid__card-overlay service-grid__card-overlay--${item.overlayOpacity || 'medium'}`}></div>
+            </div>
+            <div class="service-grid__card-content">
+              <h3 class="service-grid__card-title">{item.title}</h3>
+            </div>
+          </a>
+        )
+      ))}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../../styles/components/service-grid';
+</style>

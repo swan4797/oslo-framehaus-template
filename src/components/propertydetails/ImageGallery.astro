@@ -1,0 +1,585 @@
+---
+// ========================================
+// IMAGE GALLERY COMPONENT
+// Single large image slider with lightbox
+// Smooth transitions & navigation
+// ========================================
+
+import type { PropertyMedia } from '../../types/database'
+
+interface Props {
+  images: PropertyMedia[]
+  propertyAddress: string
+  propertyId?: string
+}
+
+const { images, propertyAddress, propertyId } = Astro.props
+
+// Sort by display order
+const sortedImages = [...images]
+  .filter(img => img.media_type === 'image')
+  .sort((a, b) => a.display_order - b.display_order)
+
+const hasImages = sortedImages.length > 0
+const primaryImage = sortedImages[0]
+const remainingCount = sortedImages.length - 1
+---
+
+<div class="property-gallery" data-property-id={propertyId}>
+  {hasImages ? (
+    <>
+      <!-- Vertical Gallery Layout -->
+      <div class="gallery-bento">
+        <!-- Main Large Image (Top) -->
+        <div class="gallery-bento__main">
+          <button
+            type="button"
+            class="gallery-bento__image-btn gallery-bento__image-btn--main"
+            data-index="0"
+            aria-label="View image 1"
+          >
+            <img
+              src={primaryImage.file_url}
+              alt={primaryImage.alt_text || `${propertyAddress} - Main Image`}
+              class="gallery-bento__image"
+              id="slider-image"
+              data-index="0"
+            />
+            <!-- Mobile: Show all photos button on main image -->
+            {sortedImages.length > 1 && (
+              <div class="gallery-bento__show-all gallery-bento__show-all--mobile">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="7" height="7"/>
+                  <rect x="14" y="3" width="7" height="7"/>
+                  <rect x="14" y="14" width="7" height="7"/>
+                  <rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                <span>Show all photos</span>
+              </div>
+            )}
+          </button>
+        </div>
+
+        <!-- Thumbnail Row (Bottom) - 4 images -->
+        {sortedImages.length > 1 && (
+          <div class="gallery-bento__thumbnails">
+            {sortedImages.slice(1, 5).map((image, index) => {
+              const isLastVisible = index === 3 || index === sortedImages.slice(1, 5).length - 1
+              const hasMorePhotos = sortedImages.length > 5 && isLastVisible
+              return (
+                <div class={`gallery-bento__thumb ${isLastVisible ? 'gallery-bento__thumb--last' : ''}`}>
+                  <button
+                    type="button"
+                    class="gallery-bento__image-btn"
+                    data-index={index + 1}
+                    aria-label={`View image ${index + 2}`}
+                  >
+                    <img
+                      src={image.file_url}
+                      alt={image.alt_text || `${propertyAddress} - Image ${index + 2}`}
+                      class="gallery-bento__image"
+                      loading="lazy"
+                    />
+                    <!-- Show all photos overlay on last thumbnail -->
+                    {isLastVisible && sortedImages.length > 5 && (
+                      <div class="gallery-bento__show-all" id="view-all-photos">
+                        <span>+{sortedImages.length - 5}</span>
+                      </div>
+                    )}
+                  </button>
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
+      <!-- Hidden elements for slider state management -->
+      <div class="gallery-slider" style="display: none;">
+        <span id="current-image">1</span>
+        <button id="slider-prev" aria-label="Previous image"></button>
+        <button id="slider-next" aria-label="Next image"></button>
+      </div>
+
+      <!-- Mobile Gallery Modal (vertical scroll) -->
+      <div id="mobile-gallery" class="mobile-gallery">
+        <div class="mobile-gallery__header">
+          <span class="mobile-gallery__title">{sortedImages.length} Photos</span>
+          <button
+            id="close-mobile-gallery"
+            class="mobile-gallery__close"
+            aria-label="Close gallery"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div class="mobile-gallery__content">
+          {sortedImages.map((image, index) => (
+            <div class="mobile-gallery__item">
+              <img
+                src={image.file_url}
+                alt={image.alt_text || `${propertyAddress} - Image ${index + 1}`}
+                loading={index < 3 ? 'eager' : 'lazy'}
+              />
+              <span class="mobile-gallery__item-count">{index + 1} / {sortedImages.length}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Lightbox Modal -->
+      <div id="lightbox" class="lightbox">
+        <button
+          id="close-lightbox"
+          class="lightbox__close"
+          aria-label="Close lightbox"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <button
+          id="lightbox-prev"
+          class="lightbox__nav lightbox__nav--prev"
+          aria-label="Previous image"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <button
+          id="lightbox-next"
+          class="lightbox__nav lightbox__nav--next"
+          aria-label="Next image"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        <img
+          id="lightbox-image"
+          class="lightbox__image"
+          src=""
+          alt=""
+        />
+
+        <div class="lightbox__counter">
+          <span id="lightbox-counter">1 / {sortedImages.length}</span>
+        </div>
+
+        <!-- Thumbnail Strip in Lightbox -->
+        <div class="lightbox__thumbnails">
+          {sortedImages.map((image, index) => (
+            <button
+              class={`lightbox__thumb ${index === 0 ? 'lightbox__thumb--active' : ''}`}
+              data-index={index}
+              aria-label={`View image ${index + 1}`}
+            >
+              <img
+                src={image.thumbnail_url || image.file_url}
+                alt={image.alt_text || `${propertyAddress} - Thumbnail ${index + 1}`}
+                loading="lazy"
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+    </>
+  ) : (
+    <div class="no-images">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+      <p>No images available</p>
+    </div>
+  )}
+</div>
+
+<script define:vars={{ sortedImages, propertyId }}>
+  // Gallery State
+  let currentIndex = 0
+  let isAnimating = false
+  const images = sortedImages
+  const propId = propertyId
+  const FADE_DURATION = 250 // ms
+
+  // Slider Elements
+  const sliderImage = document.getElementById('slider-image')
+  const currentImageSpan = document.getElementById('current-image')
+  const sliderPrev = document.getElementById('slider-prev')
+  const sliderNext = document.getElementById('slider-next')
+  const sliderDots = document.querySelectorAll('.gallery-slider__dot')
+  const viewAllBtn = document.getElementById('view-all-photos')
+
+  // Lightbox Elements
+  const lightbox = document.getElementById('lightbox')
+  const lightboxImage = document.getElementById('lightbox-image')
+  const lightboxCounter = document.getElementById('lightbox-counter')
+  const closeLightboxBtn = document.getElementById('close-lightbox')
+  const lightboxPrev = document.getElementById('lightbox-prev')
+  const lightboxNext = document.getElementById('lightbox-next')
+  const lightboxThumbs = document.querySelectorAll('.lightbox__thumb')
+
+  // Mobile Gallery Elements
+  const mobileGallery = document.getElementById('mobile-gallery')
+  const closeMobileGalleryBtn = document.getElementById('close-mobile-gallery')
+  const MOBILE_BREAKPOINT = 768
+
+  // Check if we're on mobile
+  function isMobile() {
+    return window.innerWidth <= MOBILE_BREAKPOINT
+  }
+
+  // Track image view
+  function trackImageView(index) {
+    if (window.StratosTracker && propId) {
+      window.StratosTracker.trackEvent('image_gallery_view', {
+        property_id: propId,
+        image_index: index,
+        image_count: images.length,
+      })
+    }
+  }
+
+  // Fade transition helper
+  function fadeTransition(element, newSrc, newAlt, callback) {
+    if (!element) return
+
+    // Fade out
+    element.classList.add('fade-out')
+
+    setTimeout(() => {
+      // Change image
+      element.src = newSrc
+      element.alt = newAlt
+
+      // Wait for image to load, then fade in
+      if (element.complete) {
+        element.classList.remove('fade-out')
+        if (callback) callback()
+      } else {
+        element.onload = () => {
+          element.classList.remove('fade-out')
+          if (callback) callback()
+        }
+      }
+    }, FADE_DURATION)
+  }
+
+  // Update slider dots
+  function updateSliderDots(index) {
+    sliderDots.forEach((dot, i) => {
+      if (i === index) {
+        dot.classList.add('gallery-slider__dot--active')
+      } else {
+        dot.classList.remove('gallery-slider__dot--active')
+      }
+    })
+  }
+
+  // Update counter display
+  function updateCounter() {
+    if (currentImageSpan) {
+      currentImageSpan.textContent = (currentIndex + 1).toString()
+    }
+  }
+
+  // Navigate slider
+  function navigateSlider(direction) {
+    if (isAnimating || images.length <= 1) return
+    isAnimating = true
+
+    const newIndex = direction === 'next'
+      ? (currentIndex + 1) % images.length
+      : (currentIndex - 1 + images.length) % images.length
+    currentIndex = newIndex
+
+    if (sliderImage && images[newIndex]) {
+      fadeTransition(
+        sliderImage,
+        images[newIndex].file_url,
+        images[newIndex].alt_text || `Image ${newIndex + 1}`,
+        () => {
+          isAnimating = false
+        }
+      )
+      updateCounter()
+      updateSliderDots(newIndex)
+      trackImageView(newIndex)
+    }
+  }
+
+  // Go to specific slide
+  function goToSlide(index) {
+    if (isAnimating || currentIndex === index) return
+    isAnimating = true
+    currentIndex = index
+
+    if (sliderImage && images[index]) {
+      fadeTransition(
+        sliderImage,
+        images[index].file_url,
+        images[index].alt_text || `Image ${index + 1}`,
+        () => {
+          isAnimating = false
+        }
+      )
+      updateCounter()
+      updateSliderDots(index)
+      trackImageView(index)
+    }
+  }
+
+  // Update lightbox thumbnails
+  function updateLightboxThumbs(index) {
+    lightboxThumbs.forEach((thumb, i) => {
+      if (i === index) {
+        thumb.classList.add('lightbox__thumb--active')
+        thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+      } else {
+        thumb.classList.remove('lightbox__thumb--active')
+      }
+    })
+  }
+
+  // Open lightbox
+  function openLightbox(index) {
+    currentIndex = index
+    if (lightbox && lightboxImage && images[index]) {
+      lightboxImage.src = images[index].file_url
+      lightboxImage.alt = images[index].alt_text || `Image ${index + 1}`
+      lightbox.classList.add('lightbox--open')
+      updateLightboxCounter()
+      updateLightboxThumbs(index)
+      document.body.style.overflow = 'hidden'
+
+      // Animate in
+      requestAnimationFrame(() => {
+        lightbox.classList.add('lightbox--visible')
+      })
+
+      if (window.StratosTracker && propId) {
+        window.StratosTracker.trackEvent('lightbox_opened', {
+          property_id: propId,
+          image_index: index,
+        })
+      }
+    }
+  }
+
+  // Close lightbox
+  function closeLightbox() {
+    if (lightbox) {
+      lightbox.classList.remove('lightbox--visible')
+      setTimeout(() => {
+        lightbox.classList.remove('lightbox--open')
+        document.body.style.overflow = ''
+        // Sync slider with lightbox position
+        if (sliderImage && images[currentIndex]) {
+          sliderImage.src = images[currentIndex].file_url
+          sliderImage.alt = images[currentIndex].alt_text || `Image ${currentIndex + 1}`
+          updateCounter()
+          updateSliderDots(currentIndex)
+        }
+      }, 300)
+    }
+  }
+
+  // Open mobile gallery (vertical scroll modal)
+  function openMobileGallery() {
+    if (mobileGallery) {
+      mobileGallery.classList.add('mobile-gallery--open')
+      document.body.style.overflow = 'hidden'
+
+      // Animate in
+      requestAnimationFrame(() => {
+        mobileGallery.classList.add('mobile-gallery--visible')
+      })
+
+      if (window.StratosTracker && propId) {
+        window.StratosTracker.trackEvent('mobile_gallery_opened', {
+          property_id: propId,
+          image_count: images.length,
+        })
+      }
+    }
+  }
+
+  // Close mobile gallery
+  function closeMobileGallery() {
+    if (mobileGallery) {
+      mobileGallery.classList.remove('mobile-gallery--visible')
+      setTimeout(() => {
+        mobileGallery.classList.remove('mobile-gallery--open')
+        document.body.style.overflow = ''
+        // Reset scroll position for next open
+        const content = mobileGallery.querySelector('.mobile-gallery__content')
+        if (content) content.scrollTop = 0
+      }, 300)
+    }
+  }
+
+  // Update lightbox counter
+  function updateLightboxCounter() {
+    if (lightboxCounter) {
+      lightboxCounter.textContent = `${currentIndex + 1} / ${images.length}`
+    }
+  }
+
+  // Navigate lightbox with fade
+  function navigateLightbox(direction) {
+    if (isAnimating) return
+    isAnimating = true
+
+    const newIndex = direction === 'next'
+      ? (currentIndex + 1) % images.length
+      : (currentIndex - 1 + images.length) % images.length
+    currentIndex = newIndex
+
+    if (lightboxImage && images[newIndex]) {
+      fadeTransition(
+        lightboxImage,
+        images[newIndex].file_url,
+        images[newIndex].alt_text || `Image ${newIndex + 1}`,
+        () => {
+          isAnimating = false
+        }
+      )
+      updateLightboxCounter()
+      updateLightboxThumbs(newIndex)
+      trackImageView(newIndex)
+    }
+  }
+
+  // Go to specific image in lightbox
+  function goToImage(index) {
+    if (isAnimating || currentIndex === index) return
+    isAnimating = true
+    currentIndex = index
+
+    if (lightboxImage && images[index]) {
+      fadeTransition(
+        lightboxImage,
+        images[index].file_url,
+        images[index].alt_text || `Image ${index + 1}`,
+        () => {
+          isAnimating = false
+        }
+      )
+      updateLightboxCounter()
+      updateLightboxThumbs(index)
+      trackImageView(index)
+    }
+  }
+
+  // Event Listeners - Slider navigation
+  if (sliderPrev) sliderPrev.addEventListener('click', () => navigateSlider('prev'))
+  if (sliderNext) sliderNext.addEventListener('click', () => navigateSlider('next'))
+
+  // Slider dots
+  sliderDots.forEach((dot, index) => {
+    dot.addEventListener('click', () => goToSlide(index))
+  })
+
+  // Click on bento grid images to open gallery (mobile) or lightbox (desktop)
+  const bentoImageBtns = document.querySelectorAll('.gallery-bento__image-btn')
+  bentoImageBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const index = parseInt(btn.getAttribute('data-index') || '0', 10)
+      if (isMobile()) {
+        openMobileGallery()
+      } else {
+        openLightbox(index)
+      }
+    })
+  })
+
+  // View all photos buttons (handles clicks on all "show all photos" overlays)
+  const showAllBtns = document.querySelectorAll('.gallery-bento__show-all')
+  showAllBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation()
+      if (isMobile()) {
+        openMobileGallery()
+      } else {
+        openLightbox(0)
+      }
+    })
+  })
+
+  // Close mobile gallery button
+  if (closeMobileGalleryBtn) {
+    closeMobileGalleryBtn.addEventListener('click', closeMobileGallery)
+  }
+
+  // Lightbox thumbnail clicks
+  lightboxThumbs.forEach((thumb, index) => {
+    thumb.addEventListener('click', () => goToImage(index))
+  })
+
+  // Lightbox controls
+  if (closeLightboxBtn) closeLightboxBtn.addEventListener('click', closeLightbox)
+  if (lightboxPrev) lightboxPrev.addEventListener('click', () => navigateLightbox('prev'))
+  if (lightboxNext) lightboxNext.addEventListener('click', () => navigateLightbox('next'))
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    // Mobile gallery takes priority
+    if (mobileGallery && mobileGallery.classList.contains('mobile-gallery--open')) {
+      if (e.key === 'Escape') closeMobileGallery()
+    } else if (lightbox && lightbox.classList.contains('lightbox--open')) {
+      if (e.key === 'ArrowLeft') navigateLightbox('prev')
+      if (e.key === 'ArrowRight') navigateLightbox('next')
+      if (e.key === 'Escape') closeLightbox()
+    } else {
+      // Slider keyboard nav when modals are closed
+      if (e.key === 'ArrowLeft') navigateSlider('prev')
+      if (e.key === 'ArrowRight') navigateSlider('next')
+    }
+  })
+
+  // Click outside to close lightbox
+  if (lightbox) {
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox()
+    })
+  }
+
+  // Touch/swipe support
+  let touchStartX = 0
+  let touchEndX = 0
+  const SWIPE_THRESHOLD = 50
+
+  function handleSwipe(element, onSwipeLeft, onSwipeRight) {
+    element?.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX
+    }, { passive: true })
+
+    element?.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX
+      const diff = touchStartX - touchEndX
+      if (Math.abs(diff) > SWIPE_THRESHOLD) {
+        if (diff > 0) {
+          onSwipeLeft()
+        } else {
+          onSwipeRight()
+        }
+      }
+    }, { passive: true })
+  }
+
+  // Add swipe to slider
+  handleSwipe(sliderImage, () => navigateSlider('next'), () => navigateSlider('prev'))
+
+  // Add swipe to lightbox
+  handleSwipe(lightboxImage, () => navigateLightbox('next'), () => navigateLightbox('prev'))
+</script>
+
+<style lang="scss">
+  @use '../../styles/components/image-gallery';
+</style>

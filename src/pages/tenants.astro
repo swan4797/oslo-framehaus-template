@@ -1,0 +1,111 @@
+---
+// ========================================
+// TENANTS PAGE
+// Services page for property tenants
+// Dynamic content from Stratos CRM
+// ========================================
+
+import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
+import IntroSection from '../components/static-page/layouts/IntroSection.astro'
+import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
+import CTABanner from '../components/static-page/layouts/CTABanner.astro'
+
+// Page content utilities
+import { getPageContent, hasSection } from '../lib/pages'
+
+const pageTitle = 'Renting a Property'
+const pageDescription = 'Find your perfect rental home with our expert help. Quality properties and excellent tenant support.'
+
+// Fetch tenants page content from Stratos CRM
+const pageContent = await getPageContent('tenants')
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Hero Section -->
+  <Hero
+    headline="Find Your Perfect Rental"
+    description="Discover quality rental properties and enjoy excellent support throughout your tenancy."
+    ctaText="View Rentals"
+    ctaLink="/search?listing_type=let"
+    backgroundType="image"
+    backgroundSrc="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1920&q=80"
+    overlayOpacity="dark"
+    showPhoneButton={false}
+  />
+
+  <!-- Intro Section -->
+  <IntroSection
+    title="Your Rental Journey Starts Here"
+    subtitle="Tenant Services"
+    description="Looking for a rental property should be an exciting experience, not a stressful one. We make the process straightforward, with clear information about every property and a simple, transparent application process."
+    ctaText="Start searching"
+    ctaLink="/search?listing_type=let"
+    leftImageSrc="https://images.pexels.com/photos/1571459/pexels-photo-1571459.jpeg?auto=compress&cs=tinysrgb&w=800"
+    leftImageAlt="Cozy rental interior"
+    rightImageSrc="https://images.pexels.com/photos/2062426/pexels-photo-2062426.jpeg?auto=compress&cs=tinysrgb&w=800"
+    rightImageAlt="Modern rental property"
+  />
+
+  <!-- Content Blocks - Alternating Layout -->
+  <ContentBlock
+    blockKey="how_to_rent"
+    pageContent={pageContent}
+    mediaSrc="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1200&q=80"
+    mediaAlt="How to rent"
+    secondaryMediaSrc="https://images.pexels.com/photos/1571452/pexels-photo-1571452.jpeg?auto=compress&cs=tinysrgb&w=800"
+    secondaryMediaAlt="Rental viewing"
+    title="How To Rent"
+    subtitle="Simple Process"
+    description="Looking for a rental property should be an exciting experience, not a stressful one. We make the process straightforward, with clear information about every property and a simple, transparent application process."
+    ctaText="Start searching"
+    ctaLink="/search?listing_type=let"
+    imagePosition="right"
+    overlayStrength="light"
+    serviceItems={["Browse Properties", "Schedule Viewings", "Easy Application"]}
+  />
+
+  <ContentBlock
+    blockKey="what_you_need"
+    pageContent={pageContent}
+    mediaSrc="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=80"
+    mediaAlt="What you need"
+    secondaryMediaSrc="https://images.pexels.com/photos/1571461/pexels-photo-1571461.jpeg?auto=compress&cs=tinysrgb&w=800"
+    secondaryMediaAlt="Rental preparation"
+    title="What You'll Need"
+    subtitle="Be Prepared"
+    description="Verified, quality properties. Flexible viewing times. Clear, upfront costs. Fast application processing. Dedicated tenant support. 24/7 emergency contact. All our rental properties meet high standards."
+    ctaText="Learn more"
+    ctaLink="/contact"
+    imagePosition="left"
+    overlayStrength="light"
+    serviceItems={["ID Verification", "References", "Deposit Payment"]}
+  />
+
+  <!-- CTA Banner -->
+  <!-- <CTABanner
+    title="Ready to Find Your Rental?"
+    subtitle="Browse our available properties or register with us to be notified when new rentals matching your criteria become available."
+    primaryCtaText="View Rentals"
+    primaryCtaLink="/search?listing_type=let"
+    secondaryCtaText="Register Interest"
+    secondaryCtaLink="/contact"
+  />
+   -->
+  <ContentBlock
+    blockKey="tenant_faqs"
+    pageContent={pageContent}
+    mediaSrc="https://images.pexels.com/photos/1571461/pexels-photo-1571461.jpeg?auto=compress&cs=tinysrgb&w=800"
+    mediaAlt="Tenant support"
+    secondaryMediaSrc="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=80"
+    secondaryMediaAlt="Tenant support team"
+    title="Dedicated Support"
+    subtitle="We're Here For You"
+    description="Once you've found your home, our dedicated team is here to support you throughout your tenancy, responding quickly to any queries or maintenance issues. We've streamlined the rental process to get you into your new home as quickly as possible."
+    ctaText="Contact us"
+    ctaLink="/contact"
+    imagePosition="right"
+    overlayStrength="light"
+    serviceItems={["Quick Response", "Maintenance Support", "24/7 Emergency"]}
+  />
+</Layout>

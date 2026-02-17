@@ -1,0 +1,28 @@
+// ========================================
+// SEARCH PAGE STYLES INDEX
+// Main entry point for all search page styles
+// ========================================
+
+// Layout components
+@use 'layout';
+@use 'grid';
+
+// Page sections
+@use 'hero';
+@use 'sidebar';
+
+// Results components
+@use 'results-header';
+@use 'results-grid';
+@use 'results-list';
+
+// Controls
+@use 'controls';
+@use 'sort';
+@use 'view-toggle';
+
+// States
+@use 'states';
+
+// Page-specific styles
+@use 'page';

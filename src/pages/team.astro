@@ -1,0 +1,61 @@
+---
+// ========================================
+// TEAM PAGE
+// Clean, modern team page aligned with template design
+// Uses configurable TeamGrid component
+// ========================================
+
+import Layout from '../layouts/Layout.astro'
+import TeamGrid from '../components/team/layouts/TeamGrid.astro'
+import { getTeamMembers } from '../lib/api'
+import { fetchBrandSettings, getContactInfo } from '../lib/brand'
+
+// Fetch brand settings
+const brand = await fetchBrandSettings()
+const contact = getContactInfo(brand)
+
+// Fetch team members
+const teamResponse = await getTeamMembers({ limit: 50 })
+const allMembers = teamResponse?.members || []
+
+const pageTitle = `Our Team | ${brand.business_name}`
+const pageDescription = `Meet the dedicated team at ${brand.business_name}. Our experienced property professionals are here to help with all your real estate needs.`
+
+// Stats
+const stats = [
+  { value: allMembers.length.toString(), label: 'Team Members', icon: 'users' },
+  { value: '15+', label: 'Years Experience', icon: 'check' },
+  { value: '98%', label: 'Client Satisfaction', icon: 'star' }
+]
+---
+
+<Layout title={pageTitle} description={pageDescription} headerVariant="solid">
+  <div class="team-page">
+
+    <!-- Hero Section -->
+    <section class="team-hero">
+      <div class="team-hero__container">
+        <h1 class="team-hero__title">The Team</h1>
+        <p class="team-hero__subtitle">
+          Good energy powered<br />by good humans.
+        </p>
+      </div>
+    </section>
+
+    <!-- Team Grid Section -->
+    <section class="team-section">
+      <div class="team-section__container">
+        <TeamGrid
+          members={allMembers}
+          configId="fullPage"
+          showFeatured={true}
+          emptyMessage="No team members yet. Check back soon to meet our team."
+        />
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style lang="scss">
+  @use '../styles/pages/team';
+</style>

@@ -1,0 +1,217 @@
+// ========================================
+// PAGINATION STYLES
+// ========================================
+
+@use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../mixins' as *;
+
+.pagination {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacing.$space-4;
+  padding: spacing.$space-5 spacing.$space-6;
+  background: colors.$color-bg-secondary;
+  border-radius: 0;
+  box-shadow: effects.$shadow-sm;
+  border: 1px solid colors.$color-border-light;
+
+  @include md {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: spacing.$space-6;
+  }
+
+  // ----------------------------------------
+  // RESULTS INFO
+  // ----------------------------------------
+
+  &__info {
+    display: none;
+
+    @include md {
+      display: block;
+      flex-shrink: 0;
+    }
+  }
+
+  &__info-text {
+    font-size: 0.8125rem;
+    color: colors.$color-text-secondary;
+    font-weight: typography.$font-weight-regular;
+
+    strong {
+      color: colors.$color-text-primary;
+      font-weight: typography.$font-weight-semibold;
+    }
+  }
+
+  // ----------------------------------------
+  // CONTROLS CONTAINER
+  // ----------------------------------------
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: spacing.$space-1-5;
+
+    @include md {
+      gap: spacing.$space-2;
+    }
+  }
+
+  // ----------------------------------------
+  // PREV/NEXT BUTTONS
+  // ----------------------------------------
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: spacing.$space-1-5;
+    padding: spacing.$space-2 spacing.$space-3-5;
+    font-size: 0.8125rem;
+    font-weight: typography.$font-weight-medium;
+    color: colors.$color-text-primary;
+    background: colors.$color-bg-secondary;
+    border: 1px solid colors.$color-border-light;
+    border-radius: 0;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      border-color effects.$transition-fast,
+      color effects.$transition-fast,
+      background-color effects.$transition-fast,
+      transform 0.1s ease;
+    white-space: nowrap;
+
+    &:hover:not(.pagination__btn--disabled) {
+      border-color: colors.$color-primary;
+      color: colors.$color-primary;
+      background: colors.$color-bg-secondary;
+    }
+
+    &:focus:not(.pagination__btn--disabled) {
+      outline: none;
+      border-color: colors.$color-primary;
+      box-shadow: 0 0 0 2px colors.$color-primary-10;
+    }
+
+    &:active:not(.pagination__btn--disabled) {
+      transform: translateY(1px);
+    }
+
+    &--disabled {
+      color: colors.$color-text-muted;
+      background: colors.$color-bg-secondary;
+      border-color: colors.$color-border-light;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+
+  &__btn-text {
+    display: none;
+
+    @include sm {
+      display: inline;
+    }
+  }
+
+  &__icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
+
+  // ----------------------------------------
+  // PAGE NUMBERS
+  // ----------------------------------------
+
+  &__pages {
+    display: flex;
+    align-items: center;
+    gap: spacing.$space-1;
+  }
+
+  &__page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.25rem;
+    height: 2.25rem;
+    padding: 0 spacing.$space-2-5;
+    font-size: 0.8125rem;
+    font-weight: typography.$font-weight-medium;
+    color: colors.$color-text-primary;
+    background: colors.$color-bg-secondary;
+    border: 1px solid colors.$color-border-light;
+    border-radius: 0;
+    text-decoration: none;
+    transition:
+      border-color effects.$transition-fast,
+      color effects.$transition-fast,
+      background-color effects.$transition-fast;
+
+    &:hover:not(.pagination__page--current) {
+      border-color: colors.$color-primary;
+      color: colors.$color-primary;
+      background: colors.$color-bg-secondary;
+    }
+
+    &:focus:not(.pagination__page--current) {
+      outline: none;
+      border-color: colors.$color-primary;
+      box-shadow: 0 0 0 2px colors.$color-primary-10;
+    }
+
+    // Hide some pages on mobile
+    @media (max-width: 480px) {
+      &:not(.pagination__page--current):not(:first-child):not(:last-child) {
+        display: none;
+      }
+    }
+
+    &--current {
+      color: colors.$color-bg-secondary;
+      background: colors.$color-bg-secondary;
+      border-color: colors.$color-primary;
+      cursor: default;
+      font-weight: typography.$font-weight-semibold;
+      box-shadow: 0 2px 6px colors.$color-primary-20;
+    }
+  }
+
+  &__ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.75rem;
+    height: 2.25rem;
+    font-size: 0.8125rem;
+    color: colors.$color-text-muted;
+    letter-spacing: 1px;
+
+    @media (max-width: 480px) {
+      display: none;
+    }
+  }
+
+  // ----------------------------------------
+  // MOBILE INFO
+  // ----------------------------------------
+
+  &__mobile-info {
+    display: block;
+    font-size: 0.8125rem;
+    color: colors.$color-text-secondary;
+    font-weight: typography.$font-weight-medium;
+
+    @include md {
+      display: none;
+    }
+  }
+}

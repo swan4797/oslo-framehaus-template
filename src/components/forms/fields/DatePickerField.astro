@@ -1,0 +1,249 @@
+---
+// ========================================
+// DATE PICKER FIELD
+// Flatpickr-powered date selection
+// ========================================
+
+interface Props {
+  name: string
+  label?: string
+  placeholder?: string
+  required?: boolean
+  minDate?: string
+  class?: string
+}
+
+const {
+  name,
+  label,
+  placeholder = 'Select a date',
+  required = false,
+  minDate = 'today',
+  class: className,
+} = Astro.props
+
+const fieldId = `date-${name}`
+---
+
+<div class:list={['date-field', className]}>
+  {label && (
+    <label for={fieldId} class="date-field__label">
+      {label}
+      {required && <span class="date-field__required">*</span>}
+    </label>
+  )}
+
+  <div class="date-field__wrapper">
+    <input
+      type="text"
+      id={fieldId}
+      name={name}
+      placeholder={placeholder}
+      class="date-field__input"
+      data-datepicker
+      data-min-date={minDate}
+      readonly
+    />
+    <svg class="date-field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+      <line x1="16" x2="16" y1="2" y2="6" />
+      <line x1="8" x2="8" y1="2" y2="6" />
+      <line x1="3" x2="21" y1="10" y2="10" />
+    </svg>
+  </div>
+</div>
+
+<style>
+  .date-field {
+    width: 100%;
+  }
+
+  .date-field__label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-primary, #1a1a1a);
+  }
+
+  .date-field__required {
+    color: var(--color-error, #dc2626);
+    margin-left: 0.125rem;
+  }
+
+  .date-field__wrapper {
+    position: relative;
+  }
+
+  .date-field__icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--color-text-muted, #8a8a8a);
+    pointer-events: none;
+    z-index: 1;
+  }
+</style>
+
+<style is:global>
+  /* Input styles need to be global because flatpickr creates a dynamic altInput element */
+  .date-field__wrapper input,
+  .date-field__input {
+    width: 100%;
+    height: 3rem;
+    padding: 0 2.75rem 0 1rem;
+    font-family: var(--font-family-body, system-ui, sans-serif);
+    font-size: 0.9375rem;
+    color: var(--color-text-primary, #1a1a1a);
+    background: #fafafa;
+    border: 1px solid transparent;
+    border-radius: 0;
+    transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    cursor: pointer;
+  }
+
+  .date-field__wrapper input::placeholder,
+  .date-field__input::placeholder {
+    color: var(--color-text-muted, #999);
+    opacity: 0.7;
+  }
+
+  .date-field__wrapper input:hover,
+  .date-field__input:hover {
+    background: #f5f5f5;
+  }
+
+  .date-field__wrapper input:focus,
+  .date-field__input:focus {
+    outline: none;
+    background: #fff;
+    border-color: var(--color-primary, #3c5b4b);
+    box-shadow: 0 0 0 3px rgba(60, 91, 75, 0.12);
+  }
+</style>
+
+<style is:global>
+  @import 'flatpickr/dist/flatpickr.min.css';
+
+  /* Flatpickr Calendar Popup */
+  .flatpickr-calendar {
+    font-family: var(--font-family-body, system-ui, sans-serif);
+    border-radius: 0;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e8e6e3;
+    padding: 0.5rem;
+    width: 285px;
+  }
+
+  .flatpickr-months {
+    padding: 0.5rem 0.25rem;
+  }
+
+  .flatpickr-current-month {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-text-primary, #1a1a1a);
+  }
+
+  .flatpickr-months .flatpickr-prev-month,
+  .flatpickr-months .flatpickr-next-month {
+    padding: 0.5rem;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+
+    svg {
+      fill: var(--color-text-secondary, #666);
+    }
+  }
+
+  span.flatpickr-weekday {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted, #8a8a8a);
+  }
+
+  .flatpickr-day {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-primary, #1a1a1a);
+    border-radius: 0;
+    border: none;
+    max-width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: #f5f5f5;
+      border: none;
+    }
+
+    &.today {
+      border: none;
+      background: transparent;
+      color: var(--color-primary, #3c5b4b);
+      font-weight: 700;
+    }
+
+    &.selected,
+    &.selected:hover {
+      background: var(--color-primary, #3c5b4b);
+      border: none;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    &.flatpickr-disabled {
+      color: #ccc;
+      background: transparent;
+      cursor: not-allowed;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .flatpickr-calendar {
+      width: calc(100vw - 2rem);
+      max-width: 320px;
+    }
+  }
+</style>
+
+<script>
+  import flatpickr from 'flatpickr'
+
+  function initDatePickers() {
+    document.querySelectorAll('[data-datepicker]').forEach((input) => {
+      // Skip if already initialized
+      if ((input as any)._flatpickr) return
+
+      const minDate = (input as HTMLElement).dataset.minDate || 'today'
+
+      flatpickr(input as HTMLElement, {
+        dateFormat: 'D, d M Y',
+        altInput: true,
+        altFormat: 'D, d M Y',
+        minDate: minDate,
+        disableMobile: false,
+        animate: true,
+      })
+    })
+  }
+
+  // Initialize on initial page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDatePickers)
+  } else {
+    initDatePickers()
+  }
+
+  // Re-initialize on Astro page navigation (View Transitions)
+  document.addEventListener('astro:page-load', initDatePickers)
+</script>

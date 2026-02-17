@@ -1,0 +1,957 @@
+// ========================================
+// HOMEPAGE STYLES
+// Clean, modern marketplace aesthetic
+// Using centralized design tokens
+// ========================================
+
+// Import centralized tokens
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+
+// ----------------------------------------
+// HERO SECTION
+// Split layout: Text + CTA | Image Grid
+// ----------------------------------------
+
+.hero {
+  background: colors.$color-bg-secondary;
+  padding: spacing.$spacing-12 0 spacing.$spacing-16;
+
+  @include md {
+    padding: spacing.$spacing-16 0 spacing.$spacing-20;
+  }
+
+  &__container {
+    @include container;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: spacing.$spacing-10;
+    align-items: center;
+
+    @include lg {
+      grid-template-columns: 1fr 1.2fr;
+      gap: spacing.$spacing-12;
+    }
+  }
+
+  &__content {
+    text-align: center;
+
+    @include lg {
+      text-align: left;
+      padding-right: spacing.$spacing-8;
+    }
+  }
+
+  &__headline {
+    @include heading-xl;
+    margin-bottom: spacing.$spacing-5;
+  }
+
+  &__description {
+    @include body-lg;
+    margin-bottom: spacing.$spacing-8;
+    max-width: 480px;
+
+    @include lg {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  &__cta {
+    @include btn-primary;
+    padding: spacing.$spacing-4 spacing.$spacing-8;
+    font-size: typography.$font-size-lg;
+    border-radius: effects.$radius-md;
+  }
+
+  // Image Grid (2x2)
+  &__images {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: spacing.$spacing-4;
+
+    @include sm {
+      gap: spacing.$spacing-5;
+    }
+  }
+
+  &__image-item {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: effects.$radius-lg;
+    overflow: hidden;
+    background: colors.$color-bg-secondary;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform effects.$transition-slow;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+}
+
+// ----------------------------------------
+// SEARCH BAR
+// Horizontal filter bar with accent CTA
+// ----------------------------------------
+
+.search-bar {
+  background: colors.$color-bg-secondary;
+  padding: spacing.$spacing-8 0;
+  border-top: 1px solid colors.$color-border-light;
+  border-bottom: 1px solid colors.$color-border-light;
+
+  &__container {
+    @include container;
+  }
+
+  &__wrapper {
+    background: colors.$color-bg-secondary;
+    border-radius: effects.$radius-lg;
+    padding: spacing.$spacing-5;
+    box-shadow: effects.$shadow-md;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: spacing.$spacing-4;
+
+    @include md {
+      grid-template-columns: 2fr repeat(2, 1fr) auto;
+      padding: spacing.$spacing-5 spacing.$spacing-6;
+    }
+
+    @include lg {
+      grid-template-columns: 2fr repeat(3, 1fr) auto;
+    }
+  }
+
+  &__input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__icon {
+    position: absolute;
+    left: spacing.$spacing-4;
+    width: 20px;
+    height: 20px;
+    color: colors.$color-text-muted;
+    pointer-events: none;
+  }
+
+  &__input {
+    @include input-base;
+    padding-left: spacing.$spacing-12;
+  }
+
+  &__select {
+    @include input-base;
+    padding-right: spacing.$spacing-10;
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right spacing.$spacing-3 center;
+  }
+
+  &__submit {
+    @include btn-primary;
+    padding: spacing.$spacing-4 spacing.$spacing-8;
+    border-radius: effects.$radius-md;
+
+    @include mobile-only {
+      width: 100%;
+    }
+  }
+}
+
+// ----------------------------------------
+// PROPERTY SECTIONS
+// Featured, For Sale, To Rent
+// ----------------------------------------
+
+.property-section {
+  @include section-padding;
+  background: colors.$color-bg-secondary;
+
+  &--alt {
+    background: colors.$color-bg-secondary;
+  }
+
+  &__container {
+    @include container;
+  }
+
+  &__header {
+    @include flex-between;
+    margin-bottom: spacing.$spacing-10;
+    flex-wrap: wrap;
+    gap: spacing.$spacing-4;
+  }
+
+  &__title-group {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    @include heading-lg;
+    margin-bottom: spacing.$spacing-2;
+  }
+
+  &__subtitle {
+    @include body-base;
+  }
+
+  &__link {
+    display: none;
+    align-items: center;
+    gap: spacing.$spacing-2;
+    font-size: typography.$font-size-base;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-accent;
+    text-decoration: none;
+    transition: gap effects.$transition-fast;
+
+    @include md {
+      display: inline-flex;
+    }
+
+    &:hover {
+      gap: spacing.$spacing-3;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+      transition: transform effects.$transition-fast;
+    }
+
+    &:hover svg {
+      transform: translateX(4px);
+    }
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: spacing.$spacing-4;
+  }
+
+  &__grid {
+    @include property-grid;
+  }
+
+  &__mobile-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: spacing.$spacing-10;
+
+    @include md {
+      display: none;
+    }
+  }
+}
+
+// ----------------------------------------
+// PROPERTY SLIDER
+// Horizontal scrolling property cards
+// ----------------------------------------
+
+.property-slider {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  margin: 0 -#{spacing.$spacing-4};
+  padding: 0 spacing.$spacing-4;
+
+  @include md {
+    margin: 0 -#{spacing.$spacing-6};
+    padding: 0 spacing.$spacing-6;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &__track {
+    display: flex;
+    gap: spacing.$spacing-6;
+  }
+
+  &__item {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
+
+    @include sm {
+      flex: 0 0 320px;
+    }
+
+    @include md {
+      flex: 0 0 calc(33.333% - #{spacing.$spacing-4});
+    }
+  }
+}
+
+// ----------------------------------------
+// SLIDER NAVIGATION
+// ----------------------------------------
+
+.slider-nav {
+  display: none;
+  align-items: center;
+  gap: spacing.$spacing-2;
+
+  @include md {
+    display: flex;
+  }
+
+  &__btn {
+    @include flex-center;
+    width: 40px;
+    height: 40px;
+    border-radius: effects.$radius-full;
+    border: 1px solid colors.$color-border-light;
+    background: colors.$color-bg-secondary;
+    color: colors.$color-text-primary;
+    cursor: pointer;
+    transition: all effects.$transition-fast;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover:not(.slider-nav__btn--disabled) {
+      border-color: colors.$color-accent;
+      color: colors.$color-accent;
+      background: colors.$color-bg-secondary;
+    }
+
+    &--disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// ----------------------------------------
+// PROPERTY CARD (Refined)
+// ----------------------------------------
+
+.property-card {
+  @include card;
+  display: flex;
+  flex-direction: column;
+
+  &__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  // Image
+  &__image-wrapper {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: colors.$color-bg-secondary;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform effects.$transition-slow;
+
+    .property-card:hover & {
+      transform: scale(1.05);
+    }
+  }
+
+  // Favourite Button
+  &__favourite {
+    position: absolute;
+    top: spacing.$spacing-3;
+    right: spacing.$spacing-3;
+    z-index: 10;
+  }
+
+  // Badges
+  &__badges {
+    position: absolute;
+    bottom: spacing.$spacing-3;
+    left: spacing.$spacing-3;
+    display: flex;
+    gap: spacing.$spacing-2;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: spacing.$spacing-1;
+    padding: spacing.$spacing-1 spacing.$spacing-3;
+    font-size: typography.$font-size-xs;
+    font-weight: typography.$font-weight-semibold;
+    border-radius: effects.$radius-sm;
+    backdrop-filter: blur(8px);
+  }
+
+  &__badge--type {
+    background: colors.$color-bg-secondary;
+    color: colors.$color-text-light;
+  }
+
+  &__badge--featured {
+    background: colors.$color-bg-secondary;
+    color: colors.$color-text-light;
+  }
+
+  // Content
+  &__content {
+    padding: spacing.$spacing-5;
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-3;
+    flex: 1;
+  }
+
+  // Price
+  &__price {
+    display: flex;
+    align-items: baseline;
+    gap: spacing.$spacing-1;
+  }
+
+  &__price-value {
+    font-size: typography.$font-size-2xl;
+    font-weight: typography.$font-weight-bold;
+    color: colors.$color-text-primary;
+    letter-spacing: -0.02em;
+  }
+
+  &__price-suffix {
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-medium;
+    color: colors.$color-text-secondary;
+  }
+
+  // Address
+  &__address {
+    font-size: typography.$font-size-base;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+    margin: 0;
+    @include truncate;
+    transition: color effects.$transition-fast;
+
+    .property-card:hover & {
+      color: colors.$color-primary;
+    }
+  }
+
+  // Property Type
+  &__type {
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-medium;
+    color: colors.$color-text-secondary;
+    margin: 0;
+  }
+
+  // Features
+  &__features {
+    display: flex;
+    align-items: center;
+    gap: spacing.$spacing-4;
+    padding: spacing.$spacing-4 0;
+    border-top: 1px solid colors.$color-border-light;
+    border-bottom: 1px solid colors.$color-border-light;
+  }
+
+  &__feature {
+    display: flex;
+    align-items: center;
+    gap: spacing.$spacing-2;
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-medium;
+    color: colors.$color-text-secondary;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      color: colors.$color-text-muted;
+    }
+  }
+
+  // Summary
+  &__summary {
+    font-size: typography.$font-size-sm;
+    color: colors.$color-text-secondary;
+    line-height: typography.$line-height-relaxed;
+    margin: 0;
+    @include line-clamp(2);
+  }
+
+  // Footer
+  &__footer {
+    @include flex-between;
+    padding-top: spacing.$spacing-3;
+    margin-top: auto;
+  }
+
+  &__date {
+    display: flex;
+    align-items: center;
+    gap: spacing.$spacing-1;
+    font-size: typography.$font-size-xs;
+    color: colors.$color-text-muted;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  &__view-link {
+    display: flex;
+    align-items: center;
+    gap: spacing.$spacing-1;
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-primary;
+    transition: gap effects.$transition-fast;
+
+    svg {
+      width: 14px;
+      height: 14px;
+      transition: transform effects.$transition-fast;
+    }
+
+    .property-card:hover & {
+      gap: spacing.$spacing-2;
+
+      svg {
+        transform: translateX(3px);
+      }
+    }
+  }
+}
+
+// ----------------------------------------
+// WHY CHOOSE US SECTION
+// ----------------------------------------
+
+.why-us {
+  @include section-padding;
+  background: colors.$color-bg-secondary;
+
+  &__container {
+    @include container;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: spacing.$spacing-12;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &__label {
+    display: inline-block;
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-medium;
+    color: colors.$color-accent;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: spacing.$spacing-3;
+  }
+
+  &__title {
+    font-size: typography.$font-size-2xl;
+    font-weight: typography.$font-weight-semibold;
+    margin-bottom: spacing.$spacing-4;
+    color: colors.$color-text-primary;
+
+    @include md {
+      font-size: typography.$font-size-3xl;
+    }
+  }
+
+  &__subtitle {
+    font-size: typography.$font-size-base;
+    color: colors.$color-text-secondary;
+    line-height: typography.$line-height-relaxed;
+
+    @include md {
+      font-size: typography.$font-size-lg;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: spacing.$spacing-6;
+
+    @include sm {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include lg {
+      grid-template-columns: repeat(4, 1fr);
+      gap: spacing.$spacing-8;
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    gap: spacing.$spacing-4;
+    padding: spacing.$spacing-5;
+    background: colors.$color-bg-secondary;
+    border-radius: effects.$radius-lg;
+    border: 1px solid colors.$color-border-light;
+    transition: border-color effects.$transition-fast, box-shadow effects.$transition-fast;
+
+    @include lg {
+      flex-direction: column;
+      text-align: center;
+      align-items: center;
+      padding: spacing.$spacing-6;
+    }
+
+    &:hover {
+      border-color: colors.$color-border-medium;
+      box-shadow: effects.$shadow-sm;
+    }
+  }
+
+  &__icon {
+    @include flex-center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: effects.$radius-md;
+    background: colors.$color-bg-secondary;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      color: colors.$color-accent;
+    }
+  }
+
+  &__item-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__item-title {
+    font-size: typography.$font-size-base;
+    font-weight: typography.$font-weight-semibold;
+    margin-bottom: spacing.$spacing-1;
+    color: colors.$color-text-primary;
+  }
+
+  &__item-desc {
+    font-size: typography.$font-size-sm;
+    color: colors.$color-text-secondary;
+    line-height: typography.$line-height-relaxed;
+  }
+}
+
+// ----------------------------------------
+// ABOUT SECTION
+// ----------------------------------------
+
+.about-section {
+  @include section-padding;
+  background: colors.$color-bg-secondary;
+
+  &__container {
+    @include container;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: spacing.$spacing-12;
+    align-items: center;
+
+    @include lg {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  &__content {
+    // Text content
+  }
+
+  &__title {
+    @include heading-lg;
+    margin-bottom: spacing.$spacing-6;
+  }
+
+  &__text {
+    @include body-lg;
+    margin-bottom: spacing.$spacing-8;
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: spacing.$spacing-6;
+    margin-bottom: spacing.$spacing-8;
+  }
+
+  &__stat {
+    padding-left: spacing.$spacing-4;
+    border-left: 4px solid colors.$color-primary;
+  }
+
+  &__stat-value {
+    font-size: typography.$font-size-3xl;
+    font-weight: typography.$font-weight-bold;
+    color: colors.$color-text-primary;
+    margin-bottom: spacing.$spacing-1;
+  }
+
+  &__stat-label {
+    font-size: typography.$font-size-sm;
+    color: colors.$color-text-secondary;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: spacing.$spacing-2;
+    font-size: typography.$font-size-base;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-primary;
+    text-decoration: none;
+
+    &:hover {
+      gap: spacing.$spacing-3;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+      transition: transform effects.$transition-fast;
+    }
+
+    &:hover svg {
+      transform: translateX(4px);
+    }
+  }
+
+  &__image-wrapper {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -24px;
+      right: -24px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: colors.$color-bg-secondary;
+      z-index: -1;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: effects.$radius-xl;
+    box-shadow: effects.$shadow-lg;
+
+    &--placeholder {
+      @include flex-center;
+      background: colors.$color-bg-secondary;
+
+      svg {
+        width: 80px;
+        height: 80px;
+        color: colors.$color-text-muted;
+      }
+    }
+  }
+}
+
+// ----------------------------------------
+// CTA BANNER
+// Valuation / Contact CTA
+// ----------------------------------------
+
+.cta-banner {
+  padding: spacing.$spacing-10 0;
+  background: colors.$color-bg-secondary;
+
+  @include md {
+    padding: spacing.$spacing-12 0;
+  }
+
+  &__container {
+    @include container;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: spacing.$spacing-6;
+    text-align: center;
+
+    @include md {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+      gap: spacing.$spacing-8;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    font-size: typography.$font-size-xl;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-bg-primary;
+    margin-bottom: spacing.$spacing-2;
+
+    @include md {
+      font-size: typography.$font-size-2xl;
+    }
+  }
+
+  &__subtitle {
+    font-size: typography.$font-size-base;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 480px;
+
+    @include md {
+      font-size: typography.$font-size-base;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-3;
+    flex-shrink: 0;
+    width: 100%;
+
+    @include sm {
+      flex-direction: row;
+      width: auto;
+    }
+  }
+
+  &__btn-primary {
+    @include btn-base;
+    background: colors.$color-bg-secondary;
+    color: colors.$color-bg-primary;
+    padding: spacing.$spacing-3 spacing.$spacing-6;
+    font-size: typography.$font-size-base;
+    border-radius: effects.$radius-md;
+
+    &:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  &__btn-secondary {
+    @include btn-base;
+    background: colors.$color-bg-secondary;
+    color: colors.$color-bg-primary;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: spacing.$spacing-3 spacing.$spacing-6;
+    font-size: typography.$font-size-base;
+    border-radius: effects.$radius-md;
+
+    &:hover {
+      background: colors.$color-bg-secondary;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+// ----------------------------------------
+// NEWSLETTER SECTION
+// ----------------------------------------
+
+.newsletter {
+  @include section-padding-sm;
+  background: colors.$color-bg-secondary;
+
+  &__container {
+    @include container;
+    max-width: 640px;
+    text-align: center;
+  }
+
+  &__title {
+    @include heading-md;
+    margin-bottom: spacing.$spacing-4;
+  }
+
+  &__text {
+    @include body-base;
+    margin-bottom: spacing.$spacing-8;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-3;
+
+    @include sm {
+      flex-direction: row;
+    }
+  }
+
+  &__input {
+    @include input-base;
+    flex: 1;
+  }
+
+  &__submit {
+    @include btn-primary;
+    padding: spacing.$spacing-4 spacing.$spacing-8;
+  }
+
+  &__disclaimer {
+    font-size: typography.$font-size-sm;
+    color: colors.$color-text-muted;
+    margin-top: spacing.$spacing-4;
+  }
+}

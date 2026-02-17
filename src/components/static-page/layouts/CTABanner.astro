@@ -1,0 +1,141 @@
+---
+// ========================================
+// CTA BANNER COMPONENT
+// Flexible call-to-action banner with
+// optional image/video background
+// Integrates with Stratos CRM via blockKey
+// ========================================
+
+import type { PageContent } from '../../../lib/pages'
+import { getSectionTitle, getSectionContent, getSectionImage } from '../../../lib/pages'
+
+type BackgroundType = 'image' | 'video' | 'none'
+type OverlayOpacity = 'none' | 'light' | 'medium' | 'dark'
+
+interface Props {
+  // CMS Integration
+  blockKey?: string
+  pageContent?: PageContent | null
+
+  // Content (fallback if no CMS content)
+  title?: string
+  subtitle?: string
+
+  // Primary CTA
+  primaryCtaText?: string
+  primaryCtaLink?: string
+
+  // Secondary CTA
+  secondaryCtaText?: string
+  secondaryCtaLink?: string
+
+  // Background Media (fallback if no CMS content)
+  backgroundType?: BackgroundType
+  backgroundSrc?: string
+  backgroundPoster?: string
+  overlayOpacity?: OverlayOpacity
+}
+
+const {
+  // CMS props
+  blockKey = '',
+  pageContent = null,
+  // Content props
+  title = '',
+  subtitle = '',
+  // CTA props
+  primaryCtaText = '',
+  primaryCtaLink = '',
+  secondaryCtaText = '',
+  secondaryCtaLink = '',
+  // Background props
+  backgroundType = 'none',
+  backgroundSrc = '',
+  backgroundPoster = '',
+  overlayOpacity = 'medium',
+} = Astro.props
+
+// ========================================
+// CMS CONTENT RESOLUTION
+// If blockKey is provided, fetch from Stratos CMS
+// Otherwise, use static props as fallback
+// ========================================
+
+const cmsTitle = blockKey && pageContent ? getSectionTitle(pageContent, blockKey, title) : title
+const cmsSubtitle = blockKey && pageContent ? getSectionContent(pageContent, blockKey, subtitle) : subtitle
+const cmsImage = blockKey && pageContent ? getSectionImage(pageContent, blockKey) : null
+
+// Resolve final values (CMS takes priority)
+const finalTitle = cmsTitle || title
+const finalSubtitle = cmsSubtitle || subtitle
+const finalBackgroundSrc = cmsImage?.url || backgroundSrc
+
+const hasBackground = backgroundType !== 'none' && finalBackgroundSrc
+const sectionClasses = [
+  'cta-banner',
+  hasBackground ? 'cta-banner--has-background' : '',
+].filter(Boolean).join(' ')
+---
+
+<section class={sectionClasses}>
+  <!-- Background Image/Video -->
+  {hasBackground && (
+    <div class="cta-banner__background">
+      {backgroundType === 'video' ? (
+        <video
+          class="cta-banner__background-media"
+          autoplay
+          muted
+          loop
+          playsinline
+          poster={backgroundPoster}
+        >
+          <source src={finalBackgroundSrc} type="video/mp4" />
+        </video>
+      ) : (
+        <img
+          class="cta-banner__background-media"
+          src={finalBackgroundSrc}
+          alt=""
+          loading="lazy"
+        />
+      )}
+      {overlayOpacity !== 'none' && (
+        <div class={`cta-banner__overlay cta-banner__overlay--${overlayOpacity}`}></div>
+      )}
+    </div>
+  )}
+
+  <!-- Content Overlay -->
+  <div class="cta-banner__container">
+    <div class="cta-banner__content">
+      {finalTitle && (
+        <h2 class="cta-banner__title">{finalTitle}</h2>
+      )}
+      {finalSubtitle && (
+        <div class="cta-banner__subtitle" set:html={finalSubtitle} />
+      )}
+
+      {(primaryCtaText || secondaryCtaText) && (
+        <div class="cta-banner__actions">
+          {primaryCtaText && primaryCtaLink && (
+            <a href={primaryCtaLink} class="cta-banner__btn cta-banner__btn--primary">
+              {primaryCtaText}
+            </a>
+          )}
+          {secondaryCtaText && secondaryCtaLink && (
+            <a href={secondaryCtaLink} class="cta-banner__btn cta-banner__btn--secondary">
+              {secondaryCtaText}
+            </a>
+          )}
+        </div>
+      )}
+
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../../styles/components/cta-banner';
+</style>

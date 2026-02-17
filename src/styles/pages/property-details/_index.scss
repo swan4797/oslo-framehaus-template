@@ -1,0 +1,63 @@
+// ========================================
+// PROPERTY DETAILS PAGE STYLES
+// Premium Luxury Aesthetic
+// Using centralized design tokens
+// ========================================
+//
+// This file imports all modular stylesheets for
+// the property details page. Each section uses
+// centralized design tokens from src/styles/tokens.
+// ========================================
+
+@use '../../mixins' as *;
+
+// Base page layout and structure
+@use 'base';
+
+// Navigation breadcrumbs
+@use 'breadcrumbs';
+
+// Property header (title, price, stats)
+@use 'header';
+
+// Image gallery section
+@use 'gallery';
+
+// Content section base styles
+@use 'content-section';
+
+// Key features list
+@use 'features';
+
+// Property details grid
+@use 'details';
+
+// Floorplan images
+@use 'floorplan';
+
+// Location map
+@use 'map';
+
+// Sidebar and cards
+@use 'sidebar';
+
+// Action buttons
+@use 'buttons';
+
+// Share buttons
+@use 'share';
+
+// Similar properties section
+@use 'similar';
+
+// Premium two-column section components
+@use 'description-section';
+@use 'key-features-section';
+@use 'details-section';
+@use 'epc-section';
+
+// Contact card styles
+@use 'contact-card';
+
+// Share card styles
+@use 'share-card';

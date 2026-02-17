@@ -1,0 +1,202 @@
+// ========================================
+// ENQUIRY FORM STYLES
+// Compact contact form for property enquiries
+// Using centralized design tokens
+// ========================================
+
+@use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../mixins' as *;
+
+// ========================================
+// FORM CONTAINER
+// ========================================
+
+.enquiry-form-container {
+  width: 100%;
+  max-width: 310px;
+}
+
+.enquiry-form-card {
+  background: colors.$color-bg-secondary;
+  border-radius: effects.$radius-md;
+  box-shadow: effects.$shadow-sm;
+  border: 1px solid colors.$color-border-light;
+  overflow: hidden;
+}
+
+// ========================================
+// HEADER
+// ========================================
+
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: spacing.$space-2;
+  padding: spacing.$space-3;
+  background: colors.$color-bg-secondary;
+  color: colors.$color-text-light;
+}
+
+.form-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.form-title {
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-bold;
+  margin: 0;
+  line-height: typography.$line-height-tight;
+}
+
+.form-subtitle {
+  font-size: typography.$font-size-xs;
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1;
+}
+
+// ========================================
+// FORM BODY
+// ========================================
+
+.enquiry-form {
+  padding: spacing.$space-3;
+}
+
+.form-group {
+  margin-bottom: spacing.$space-2-5;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+// ========================================
+// FORM INPUTS
+// ========================================
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: spacing.$space-2-5;
+  font-size: typography.$font-size-sm;
+  border: 1px solid colors.$color-border-light;
+  border-radius: effects.$radius-sm;
+  transition: all effects.$transition-fast;
+  font-family: inherit;
+  background: colors.$color-bg-secondary;
+
+  &:focus {
+    outline: none;
+    border-color: colors.$color-primary;
+    box-shadow: 0 0 0 3px colors.$color-primary-10;
+  }
+
+  &::placeholder {
+    color: colors.$color-text-muted;
+  }
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+// ========================================
+// SUBMIT BUTTON
+// ========================================
+
+.submit-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.$space-2;
+  padding: spacing.$space-2-5;
+  margin-top: spacing.$space-3;
+  background: colors.$color-bg-secondary;
+  color: colors.$color-text-light;
+  border: none;
+  border-radius: effects.$radius-sm;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-semibold;
+  cursor: pointer;
+  transition: all effects.$transition-fast;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+}
+
+// ========================================
+// STATUS MESSAGES
+// ========================================
+
+.message {
+  display: none;
+  align-items: center;
+  gap: spacing.$space-2;
+  padding: spacing.$space-3;
+  margin: spacing.$space-3;
+  border-radius: effects.$radius-sm;
+  font-size: 0.8125rem;
+  line-height: typography.$line-height-base;
+
+  &.show {
+    display: flex;
+  }
+
+  p {
+    margin: 0;
+    flex: 1;
+  }
+}
+
+.message-icon {
+  flex-shrink: 0;
+}
+
+.message-success {
+  background: colors.$color-bg-secondary;
+  color: colors.$color-success-dark;
+  border: 1px solid colors.$color-success-border;
+
+  .message-icon {
+    color: colors.$color-success;
+  }
+}
+
+.message-error {
+  background: colors.$color-bg-secondary;
+  color: colors.$color-error-dark;
+  border: 1px solid colors.$color-error-border;
+
+  .message-icon {
+    color: colors.$color-error;
+  }
+}
+
+// ========================================
+// RESPONSIVE
+// ========================================
+
+@media (max-width: 640px) {
+  .enquiry-form-container {
+    max-width: 100%;
+  }
+}

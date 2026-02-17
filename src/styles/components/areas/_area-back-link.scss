@@ -1,0 +1,44 @@
+// ========================================
+// AREA BACK LINK STYLES
+// Back to area guides navigation link
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/effects' as effects;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+
+.area-back {
+  padding: clamp(40px, 6vw, 60px) 0;
+  background: colors.$color-bg-secondary;
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 40px);
+    text-align: center;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: spacing.$space-2;
+    font-size: typography.$font-size-base;
+    font-weight: typography.$font-weight-medium;
+    color: colors.$color-text-muted;
+    text-decoration: none;
+    transition: effects.$transition-fast;
+
+    &:hover {
+      color: colors.$color-primary;
+
+      svg {
+        transform: translateX(-4px);
+      }
+    }
+
+    svg {
+      transition: effects.$transition-fast;
+    }
+  }
+}

@@ -1,0 +1,493 @@
+// ========================================
+// SEARCH BAR VARIANT STYLES
+// Layout variants for different contexts
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/effects' as effects;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+@use '../../mixins' as *;
+
+// ----------------------------------------
+// SEARCH BAR VARIANTS
+// ----------------------------------------
+
+.search-bar {
+
+  // ----------------------------------------
+  // VARIANT: SIDEBAR
+  // Horizontal search bar for search pages
+  // Matches new design: toggle + fields row + quick filters
+  // ----------------------------------------
+
+  &--sidebar {
+    .search-bar__form {
+      display: flex;
+      flex-direction: column;
+      background: colors.$color-bg-tertiary;
+      padding: spacing.$space-5 spacing.$space-6;
+      box-shadow: none;
+      border: none;
+      border-radius: effects.$radius-xl;
+      gap: spacing.$space-5;
+
+      @include mobile-only {
+        padding: spacing.$space-4;
+        border-radius: effects.$radius-lg;
+        gap: spacing.$space-4;
+      }
+    }
+
+    // ----------------------------------------
+    // ROW 1: Toggle buttons - pill style
+    // ----------------------------------------
+    .search-bar__toggle-group {
+      margin-bottom: 0;
+      order: 1;
+    }
+
+    .search-bar__toggle-buttons {
+      display: inline-flex;
+      gap: 0;
+      padding: spacing.$space-1;
+      background: colors.$color-bg-secondary;
+      border-radius: 100px;
+      width: auto;
+    }
+
+    .search-bar__toggle-btn {
+      flex: none;
+
+      &[data-active="true"] {
+        .search-bar__toggle-content {
+          background: colors.$color-text-primary;
+          color: colors.$color-text-light;
+          box-shadow: none;
+        }
+      }
+
+      &[data-active="false"] {
+        .search-bar__toggle-content {
+          background: transparent;
+          color: colors.$color-text-secondary;
+          box-shadow: none;
+        }
+      }
+    }
+
+    .search-bar__toggle-content {
+      padding: spacing.$space-2 spacing.$space-5;
+      border-radius: 100px;
+      font-size: typography.$font-size-sm;
+      font-weight: typography.$font-weight-medium;
+    }
+
+    .search-bar__toggle-icon {
+      display: none;
+    }
+
+    // ----------------------------------------
+    // ROW 2: Main fields - horizontal grid layout
+    // ----------------------------------------
+    .search-bar__main-fields {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: spacing.$space-4;
+      order: 2;
+
+      @include md {
+        grid-template-columns: 1.5fr 1fr 1.5fr 1fr auto;
+        gap: spacing.$space-3;
+        align-items: end;
+      }
+
+      @include lg {
+        grid-template-columns: 400px 170px 1fr 1fr auto;
+        gap: spacing.$space-4;
+      }
+    }
+
+    // Field groups - labels above
+    .search-bar__field-group {
+      display: flex;
+      flex-direction: column;
+      gap: spacing.$space-1;
+
+      &--location {
+        @include md {
+          grid-column: 1;
+        }
+      }
+
+      &--submit {
+        @include md {
+          min-width: 110px;
+        }
+      }
+    }
+
+    .search-bar__label {
+      font-size: typography.$font-size-xs;
+      font-weight: typography.$font-weight-medium;
+      color: colors.$color-text-secondary;
+      text-transform: none;
+      letter-spacing: 0;
+
+      &--spacer {
+        @include mobile-only {
+          display: none;
+        }
+      }
+    }
+
+    .search-bar__label-icon {
+      display: none;
+    }
+
+    // Inline search button for sidebar
+    .search-bar__btn--inline {
+      height: 44px;
+      padding: spacing.$space-3 spacing.$space-5;
+      background: colors.$color-text-primary;
+      color: colors.$color-text-light;
+      border: none;
+      border-radius: effects.$radius-md;
+      font-size: typography.$font-size-sm;
+      font-weight: typography.$font-weight-medium;
+      white-space: nowrap;
+
+      &:hover {
+        background: colors.$color-text-secondary;
+      }
+
+      @include mobile-only {
+        width: 100%;
+        margin-top: spacing.$space-2;
+      }
+    }
+
+    // Inputs and selects - cleaner style
+    .search-bar__input,
+    .search-bar__select {
+      height: 44px;
+      padding: spacing.$space-3 spacing.$space-4;
+      background: transparent;
+      border: 1px solid colors.$color-border-light;
+      border-radius: effects.$radius-md;
+      font-size: typography.$font-size-sm;
+
+      &:focus {
+        border-color: colors.$color-text-primary;
+        box-shadow: none;
+      }
+    }
+
+    // Price/Area fields row - inline min/max
+    .search-bar__field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: spacing.$space-2;
+
+      @include md {
+        gap: spacing.$space-3;
+      }
+    }
+
+    // ----------------------------------------
+    // ROW 3: Quick filters row
+    // Contains checkbox chips + "All Filters" button
+    // ----------------------------------------
+    .search-bar__quick-filters {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: spacing.$space-3;
+      order: 3;
+    }
+
+    // Advanced toggle - "All Filters" pill button
+    .search-bar__advanced-toggle {
+      display: inline-flex;
+      align-items: center;
+      width: auto;
+      padding: spacing.$space-2 spacing.$space-4;
+      background: colors.$color-text-primary;
+      border: none;
+      border-radius: 100px;
+      color: colors.$color-text-light;
+      font-size: typography.$font-size-xs;
+      font-weight: typography.$font-weight-medium;
+      gap: spacing.$space-2;
+      order: 4;
+      flex-shrink: 0;
+
+      &:hover {
+        background: colors.$color-text-secondary;
+        border-color: transparent;
+      }
+
+      &.is-active {
+        background: colors.$color-text-primary;
+      }
+    }
+
+    .search-bar__advanced-toggle-icon {
+      width: 14px;
+      height: 14px;
+      order: -1;
+    }
+
+    .search-bar__chevron-icon {
+      display: none;
+    }
+
+    // ----------------------------------------
+    // ROW 4: Advanced panel (expandable)
+    // ----------------------------------------
+    .search-bar__advanced-panel {
+      padding-top: spacing.$space-5;
+      border-top: 1px solid colors.$color-border-light;
+      order: 5;
+
+      &:not(.is-open) {
+        display: none;
+      }
+    }
+
+    // Hide default actions in sidebar
+    .search-bar__actions {
+      display: none;
+    }
+
+    // ----------------------------------------
+    // Checkbox chips - horizontal pill style
+    // ----------------------------------------
+    .search-bar__checkbox-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: spacing.$space-2;
+    }
+
+    .search-bar__checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: spacing.$space-2;
+      padding: spacing.$space-2 spacing.$space-4;
+      background: colors.$color-bg-secondary;
+      border: 1px solid colors.$color-border-light;
+      border-radius: 100px;
+      font-size: typography.$font-size-xs;
+      cursor: pointer;
+      transition: all 0.15s ease;
+
+      &:hover {
+        background: colors.$color-bg-secondary;
+        border-color: colors.$color-border-medium;
+      }
+    }
+
+    .search-bar__checkbox-input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+
+      &:checked ~ .search-bar__checkbox-text {
+        color: colors.$color-text-primary;
+        font-weight: typography.$font-weight-semibold;
+      }
+    }
+
+    .search-bar__checkbox-input:checked + .search-bar__checkbox-box {
+      background: colors.$color-text-primary;
+      border-color: colors.$color-text-primary;
+    }
+
+    .search-bar__checkbox-box {
+      width: 16px;
+      height: 16px;
+      border-radius: effects.$radius-xs;
+      flex-shrink: 0;
+    }
+
+    .search-bar__checkbox-text {
+      font-size: typography.$font-size-xs;
+      font-weight: typography.$font-weight-medium;
+      white-space: nowrap;
+    }
+  }
+
+  // ----------------------------------------
+  // VARIANT: HERO
+  // Compact horizontal layout for homepages
+  // ----------------------------------------
+
+  &--hero {
+    .search-bar__form {
+      background: colors.$color-bg-secondary;
+      padding: spacing.$space-3;
+      border-radius: effects.$radius-xl;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+    }
+
+    .search-bar__main-fields {
+      @include md {
+        display: grid;
+        grid-template-columns: 400px 170px 1fr 1fr auto;
+        gap: spacing.$space-3;
+      }
+
+      @include lg {
+        grid-template-columns: 400px 170px 1fr 1fr auto;
+      }
+
+      @include mobile-only {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .search-bar__label {
+      display: none;
+    }
+
+    .search-bar__input,
+    .search-bar__select {
+      height: 56px;
+      font-size: typography.$font-size-base;
+    }
+
+    .search-bar__btn {
+      height: 56px;
+      font-size: typography.$font-size-base;
+    }
+
+    .search-bar__field-row {
+      @include md {
+        grid-template-columns: 1fr;
+        gap: spacing.$space-3;
+      }
+    }
+
+    .search-bar__actions {
+      padding-top: 0;
+
+      @include md {
+        flex-direction: row;
+      }
+    }
+  }
+
+  // ----------------------------------------
+  // VARIANT: COMPACT
+  // Smaller version for widgets/cards
+  // ----------------------------------------
+
+  &--compact {
+    .search-bar__form {
+      background: colors.$color-bg-secondary;
+      padding: spacing.$space-4;
+      border-radius: effects.$radius-lg;
+      box-shadow: effects.$shadow-md;
+    }
+
+    .search-bar__main-fields {
+      gap: spacing.$space-3;
+
+      @include sm {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      }
+    }
+
+    .search-bar__input,
+    .search-bar__select {
+      height: 44px;
+      font-size: typography.$font-size-sm;
+    }
+
+    .search-bar__btn {
+      padding: spacing.$space-3 spacing.$space-5;
+    }
+
+    .search-bar__actions {
+      padding-top: spacing.$space-1;
+    }
+  }
+
+  // ----------------------------------------
+  // VARIANT: INLINE
+  // No container styling, inherits parent
+  // ----------------------------------------
+
+  &--inline {
+    .search-bar__form {
+      padding: 0;
+      background: colors.$color-bg-secondary;
+      box-shadow: none;
+      border: none;
+    }
+
+    .search-bar__actions {
+      flex-direction: column;
+    }
+  }
+
+  // ----------------------------------------
+  // VARIANT: MINIMAL
+  // Very simple, just fields
+  // ----------------------------------------
+
+  &--minimal {
+    .search-bar__form {
+      padding: 0;
+      background: colors.$color-bg-secondary;
+      box-shadow: none;
+      border: none;
+      gap: spacing.$space-3;
+    }
+
+    .search-bar__toggle-group {
+      margin-bottom: 0;
+    }
+
+    .search-bar__actions {
+      padding-top: 0;
+    }
+  }
+
+  // ----------------------------------------
+  // VARIANT: FLOATING
+  // For overlaying on hero images
+  // ----------------------------------------
+
+  &--floating {
+    .search-bar__form {
+      background: colors.$color-bg-secondary;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: spacing.$space-6;
+      border-radius: effects.$radius-xl;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  // ----------------------------------------
+  // VARIANT: CARD
+  // For use inside card components
+  // ----------------------------------------
+
+  &--card {
+    .search-bar__form {
+      background: colors.$color-bg-secondary;
+      padding: spacing.$space-5;
+      border: 1px solid colors.$color-border-light;
+      border-radius: effects.$radius-lg;
+    }
+
+    .search-bar__input,
+    .search-bar__select {
+      background: colors.$color-bg-secondary;
+    }
+  }
+}

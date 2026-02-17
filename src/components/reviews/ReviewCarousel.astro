@@ -1,0 +1,530 @@
+---
+// ========================================
+// REVIEW CAROUSEL
+// Carousel-based testimonial/review section
+// Fully reusable with configurable props
+// ========================================
+
+// ----------------------------------------
+// TYPES
+// ----------------------------------------
+
+export interface Review {
+  id?: string
+  quote: string
+  author: {
+    name: string
+    role?: string
+    location?: string
+    avatar?: string
+  }
+  rating?: number           // 1-5 star rating
+  date?: string            // Review date
+  source?: string          // e.g., "Google", "Trustpilot"
+  propertyType?: string    // e.g., "3 Bed Semi-Detached"
+  transactionType?: string // e.g., "Sale", "Purchase", "Let"
+}
+
+interface Props {
+  // Content
+  title?: string
+  subtitle?: string
+  ctaText?: string
+  ctaLink?: string
+
+  // Data
+  reviews: Review[]
+
+  // Background
+  backgroundType?: 'none' | 'image' | 'video' | 'color'
+  backgroundSrc?: string
+  backgroundColor?: string
+  overlayStrength?: 'none' | 'light' | 'medium' | 'heavy'
+
+  // Layout
+  layout?: 'carousel' | 'grid'
+  columns?: 2 | 3
+  showNavigation?: boolean
+  showDots?: boolean
+  autoplay?: boolean
+  autoplayInterval?: number
+
+  // Styling
+  sectionId?: string
+  class?: string
+  variant?: 'default' | 'alt' | 'dark'
+  showRating?: boolean
+  showSource?: boolean
+  showMobileCta?: boolean
+}
+
+const {
+  // Content
+  title = 'What Our Clients Say',
+  subtitle,
+  ctaText,
+  ctaLink,
+
+  // Data
+  reviews = [],
+
+  // Background
+  backgroundType = 'none',
+  backgroundSrc,
+  backgroundColor,
+  overlayStrength = 'none',
+
+  // Layout
+  layout = 'carousel',
+  columns = 3,
+  showNavigation = true,
+  showDots = true,
+  autoplay = false,
+  autoplayInterval = 5000,
+
+  // Styling
+  sectionId,
+  class: className = '',
+  variant = 'default',
+  showRating = true,
+  showSource = true,
+  showMobileCta = true,
+} = Astro.props
+
+// Generate unique ID for carousel
+const carouselId = sectionId || `review-carousel-${Math.random().toString(36).substr(2, 9)}`
+
+// Overlay opacity mapping
+const overlayOpacities = {
+  none: 0,
+  light: 0.3,
+  medium: 0.5,
+  heavy: 0.7,
+}
+const overlayOpacity = overlayOpacities[overlayStrength]
+
+// Has background media
+const hasBackgroundMedia = backgroundType === 'image' || backgroundType === 'video'
+
+// Star rating helper
+const renderStars = (rating: number) => {
+  const stars = []
+  for (let i = 1; i <= 5; i++) {
+    stars.push(i <= rating ? 'filled' : 'empty')
+  }
+  return stars
+}
+---
+
+{reviews.length > 0 && (
+  <section
+    class:list={[
+      'rc',
+      `rc--${variant}`,
+      `rc--layout-${layout}`,
+      { 'rc--has-bg': hasBackgroundMedia || backgroundType === 'color' },
+      className,
+    ]}
+    id={sectionId}
+    data-review-carousel
+    data-autoplay={autoplay ? 'true' : 'false'}
+    data-autoplay-interval={autoplayInterval}
+  >
+    {/* Background Media */}
+    {hasBackgroundMedia && (
+      <div class="rc__background">
+        {backgroundType === 'video' ? (
+          <video
+            class="rc__bg-media"
+            autoplay
+            muted
+            loop
+            playsinline
+            poster={backgroundSrc?.replace(/\.[^.]+$/, '.jpg')}
+          >
+            <source src={backgroundSrc} type="video/mp4" />
+          </video>
+        ) : (
+          <img
+            class="rc__bg-media"
+            src={backgroundSrc}
+            alt=""
+            loading="lazy"
+          />
+        )}
+        {overlayStrength !== 'none' && (
+          <div class="rc__bg-overlay" style={`opacity: ${overlayOpacity}`}></div>
+        )}
+      </div>
+    )}
+
+    {/* Color Background */}
+    {backgroundType === 'color' && backgroundColor && (
+      <div class="rc__background rc__background--color" style={`background-color: ${backgroundColor}`}></div>
+    )}
+
+    <div class="rc__container">
+      {/* Header */}
+      <div class="rc__header">
+        <div class="rc__title-group">
+          {title && <h2 class="rc__title">{title}</h2>}
+          {subtitle && <p class="rc__subtitle">{subtitle}</p>}
+        </div>
+
+        <div class="rc__controls">
+          {/* Carousel Navigation */}
+          {layout === 'carousel' && showNavigation && (
+            <div class="rc__nav" data-carousel-nav={carouselId}>
+              <button
+                type="button"
+                class="rc__nav-btn rc__nav-btn--prev"
+                data-carousel-prev
+                aria-label="Previous review"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+              </button>
+              <button
+                type="button"
+                class="rc__nav-btn rc__nav-btn--next"
+                data-carousel-next
+                aria-label="Next review"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </div>
+          )}
+
+          {/* CTA Link */}
+          {ctaText && ctaLink && (
+            <a href={ctaLink} class="rc__link">
+              {ctaText}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          )}
+        </div>
+      </div>
+
+      {/* Carousel Layout */}
+      {layout === 'carousel' && (
+        <div class="rc__carousel" id={carouselId} data-carousel-container>
+          <div class="rc__carousel-track">
+            {reviews.map((review, index) => (
+              <div class="rc__carousel-item" data-review-index={index}>
+                <article class="rc__card">
+                  {/* Rating */}
+                  {showRating && review.rating && (
+                    <div class="rc__rating">
+                      {renderStars(review.rating).map((star) => (
+                        <svg
+                          class:list={['rc__star', { 'rc__star--filled': star === 'filled' }]}
+                          viewBox="0 0 24 24"
+                          fill={star === 'filled' ? 'currentColor' : 'none'}
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                        </svg>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Quote */}
+                  <blockquote class="rc__quote">
+                    <p>"{review.quote}"</p>
+                  </blockquote>
+
+                  {/* Author */}
+                  <div class="rc__author">
+                    {review.author.avatar && (
+                      <img
+                        src={review.author.avatar}
+                        alt={review.author.name}
+                        class="rc__avatar"
+                        loading="lazy"
+                      />
+                    )}
+                    <div class="rc__author-info">
+                      <span class="rc__author-name">{review.author.name}</span>
+                      {review.author.role && (
+                        <span class="rc__author-role">{review.author.role}</span>
+                      )}
+                      {review.author.location && (
+                        <span class="rc__author-location">{review.author.location}</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Meta */}
+                  {(review.transactionType || review.propertyType || (showSource && review.source)) && (
+                    <div class="rc__meta">
+                      {review.transactionType && (
+                        <span class="rc__meta-tag">{review.transactionType}</span>
+                      )}
+                      {review.propertyType && (
+                        <span class="rc__meta-tag">{review.propertyType}</span>
+                      )}
+                      {showSource && review.source && (
+                        <span class="rc__meta-source">via {review.source}</span>
+                      )}
+                    </div>
+                  )}
+                </article>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Grid Layout */}
+      {layout === 'grid' && (
+        <div class:list={['rc__grid', `rc__grid--cols-${columns}`]}>
+          {reviews.map((review) => (
+            <article class="rc__card">
+              {/* Rating */}
+              {showRating && review.rating && (
+                <div class="rc__rating">
+                  {renderStars(review.rating).map((star) => (
+                    <svg
+                      class:list={['rc__star', { 'rc__star--filled': star === 'filled' }]}
+                      viewBox="0 0 24 24"
+                      fill={star === 'filled' ? 'currentColor' : 'none'}
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                  ))}
+                </div>
+              )}
+
+              {/* Quote */}
+              <blockquote class="rc__quote">
+                <p>"{review.quote}"</p>
+              </blockquote>
+
+              {/* Author */}
+              <div class="rc__author">
+                {review.author.avatar && (
+                  <img
+                    src={review.author.avatar}
+                    alt={review.author.name}
+                    class="rc__avatar"
+                    loading="lazy"
+                  />
+                )}
+                <div class="rc__author-info">
+                  <span class="rc__author-name">{review.author.name}</span>
+                  {review.author.role && (
+                    <span class="rc__author-role">{review.author.role}</span>
+                  )}
+                  {review.author.location && (
+                    <span class="rc__author-location">{review.author.location}</span>
+                  )}
+                </div>
+              </div>
+
+              {/* Meta */}
+              {(review.transactionType || review.propertyType || (showSource && review.source)) && (
+                <div class="rc__meta">
+                  {review.transactionType && (
+                    <span class="rc__meta-tag">{review.transactionType}</span>
+                  )}
+                  {review.propertyType && (
+                    <span class="rc__meta-tag">{review.propertyType}</span>
+                  )}
+                  {showSource && review.source && (
+                    <span class="rc__meta-source">via {review.source}</span>
+                  )}
+                </div>
+              )}
+            </article>
+          ))}
+        </div>
+      )}
+
+      {/* Dots Navigation */}
+      {layout === 'carousel' && showDots && reviews.length > 1 && (
+        <div class="rc__dots" data-carousel-dots>
+          {reviews.map((_, index) => (
+            <button
+              type="button"
+              class:list={['rc__dot', { 'rc__dot--active': index === 0 }]}
+              data-dot-index={index}
+              aria-label={`Go to review ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Mobile CTA */}
+      {showMobileCta && ctaText && ctaLink && (
+        <div class="rc__mobile-cta">
+          <a href={ctaLink} class="rc__mobile-btn">
+            {ctaText}
+          </a>
+        </div>
+      )}
+    </div>
+  </section>
+)}
+
+<style lang="scss">
+  @use '../../styles/components/reviews/carousel';
+</style>
+
+
+<script>
+  // ========================================
+  // REVIEW CAROUSEL - SLIDER LOGIC
+  // ========================================
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const carousels = document.querySelectorAll('[data-review-carousel]')
+
+    carousels.forEach(section => {
+      const carousel = section.querySelector('[data-carousel-container]') as HTMLElement | null
+      const nav = section.querySelector('[data-carousel-nav]')
+      const dotsContainer = section.querySelector('[data-carousel-dots]')
+
+      if (!carousel) return
+
+      const track = carousel.querySelector('.rc__carousel-track') as HTMLElement | null
+      const items = carousel.querySelectorAll('.rc__carousel-item')
+      const dots = dotsContainer?.querySelectorAll('.rc__dot')
+
+      if (!track || !items.length) return
+
+      const prevBtn = nav?.querySelector('[data-carousel-prev]') as HTMLButtonElement | null
+      const nextBtn = nav?.querySelector('[data-carousel-next]') as HTMLButtonElement | null
+
+      // Autoplay settings
+      const autoplay = section.getAttribute('data-autoplay') === 'true'
+      const autoplayInterval = parseInt(section.getAttribute('data-autoplay-interval') || '5000')
+      let autoplayTimer: ReturnType<typeof setInterval> | null = null
+
+      // Current index tracking
+      let currentIndex = 0
+
+      // Calculate scroll amount
+      const getScrollAmount = (): number => {
+        const item = items[0] as HTMLElement
+        const style = window.getComputedStyle(track)
+        const gap = parseInt(style.gap) || 24
+        return item.offsetWidth + gap
+      }
+
+      // Get current index from scroll position
+      const getCurrentIndex = (): number => {
+        const scrollAmount = getScrollAmount()
+        return Math.round(carousel.scrollLeft / scrollAmount)
+      }
+
+      // Update button states
+      const updateButtons = (): void => {
+        const isAtStart = carousel.scrollLeft <= 0
+        const isAtEnd = carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth - 10
+
+        if (prevBtn) {
+          prevBtn.classList.toggle('rc__nav-btn--disabled', isAtStart)
+        }
+        if (nextBtn) {
+          nextBtn.classList.toggle('rc__nav-btn--disabled', isAtEnd)
+        }
+      }
+
+      // Update dots
+      const updateDots = (): void => {
+        if (!dots) return
+        currentIndex = getCurrentIndex()
+
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('rc__dot--active', index === currentIndex)
+        })
+      }
+
+      // Go to specific slide
+      const goToSlide = (index: number): void => {
+        const scrollAmount = getScrollAmount()
+        carousel.scrollTo({
+          left: scrollAmount * index,
+          behavior: 'smooth'
+        })
+      }
+
+      // Navigation event listeners
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          carousel.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' })
+          resetAutoplay()
+        })
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          carousel.scrollBy({ left: getScrollAmount(), behavior: 'smooth' })
+          resetAutoplay()
+        })
+      }
+
+      // Dots event listeners
+      if (dots) {
+        dots.forEach((dot, index) => {
+          dot.addEventListener('click', () => {
+            goToSlide(index)
+            resetAutoplay()
+          })
+        })
+      }
+
+      // Scroll event listener
+      carousel.addEventListener('scroll', () => {
+        updateButtons()
+        updateDots()
+      })
+
+      // Autoplay functions
+      const startAutoplay = (): void => {
+        if (!autoplay) return
+
+        autoplayTimer = setInterval(() => {
+          const isAtEnd = carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth - 10
+          if (isAtEnd) {
+            carousel.scrollTo({ left: 0, behavior: 'smooth' })
+          } else {
+            carousel.scrollBy({ left: getScrollAmount(), behavior: 'smooth' })
+          }
+        }, autoplayInterval)
+      }
+
+      const resetAutoplay = (): void => {
+        if (autoplayTimer) {
+          clearInterval(autoplayTimer)
+          startAutoplay()
+        }
+      }
+
+      // Pause autoplay on hover
+      section.addEventListener('mouseenter', () => {
+        if (autoplayTimer) {
+          clearInterval(autoplayTimer)
+          autoplayTimer = null
+        }
+      })
+
+      section.addEventListener('mouseleave', () => {
+        startAutoplay()
+      })
+
+      // Initial state
+      updateButtons()
+      updateDots()
+      startAutoplay()
+    })
+  })
+</script>

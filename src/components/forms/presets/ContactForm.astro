@@ -1,0 +1,24 @@
+---
+// ========================================
+// CONTACT FORM PRESET
+// Ready-to-use general contact/enquiry form
+// ========================================
+
+import Form from '../core/Form.astro'
+import { contactFormConfig } from '../configs'
+
+interface Props {
+  /** Custom CSS class */
+  class?: string
+  /** Form variant */
+  variant?: 'default' | 'compact'
+  /** Override success redirect URL */
+  successRedirect?: string
+  /** Additional hidden fields */
+  hiddenFields?: Record<string, string>
+}
+
+const { class: className, ...props } = Astro.props
+---
+
+<Form config={contactFormConfig} class={className} {...props} />

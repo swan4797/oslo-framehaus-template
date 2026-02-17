@@ -1,0 +1,336 @@
+// ========================================
+// INTRO SECTION STYLES
+// ========================================
+
+@use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../tokens/layout' as layout;
+@use '../mixins' as *;
+
+.intro-section {
+  position: relative;
+  padding: spacing.$space-16 layout.$container-padding-mobile;
+  overflow: hidden;
+
+  @include md {
+    padding: spacing.$space-20 layout.$container-padding;
+  }
+
+  @include lg {
+    padding: spacing.$space-24 layout.$container-padding;
+  }
+
+  // ----------------------------------------
+  // WITH SIDE IMAGES VARIANT
+  // ----------------------------------------
+
+  &--with-images {
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @include lg {
+      min-height: 700px;
+    }
+  }
+
+  // ----------------------------------------
+  // SIDE IMAGES
+  // ----------------------------------------
+
+  &__side-image {
+    display: none;
+    position: absolute;
+    z-index: 1;
+
+    @include md {
+      display: block;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &--left {
+      left: 0;
+      bottom: 5%;
+      width: 22%;
+      max-width: 280px;
+      height: 55%;
+      max-height: 450px;
+
+      @include lg {
+        width: 18%;
+        max-width: 320px;
+        height: 60%;
+        max-height: 500px;
+      }
+    }
+
+    &--right {
+      right: 0;
+      top: 5%;
+      width: 22%;
+      max-width: 280px;
+      height: 55%;
+      max-height: 450px;
+
+      @include lg {
+        width: 18%;
+        max-width: 320px;
+        height: 60%;
+        max-height: 500px;
+      }
+    }
+  }
+
+  // ----------------------------------------
+  // PADDING VARIANTS
+  // ----------------------------------------
+
+  &--no-top-padding {
+    padding-top: 0;
+  }
+
+  &--no-bottom-padding {
+    padding-bottom: 0;
+  }
+
+  // ----------------------------------------
+  // BACKGROUND VARIANTS
+  // ----------------------------------------
+
+  &--bg-white {
+    // background-color: colors.$color-bg-tertiary;
+  }
+
+  &--bg-light {
+    // background-color: colors.$color-bg-tertiary;
+  }
+
+  &--bg-dark {
+    // background-color: colors.$color-bg-secondary;
+
+    .intro-section__subtitle {
+      color: colors.$color-primary-light;
+    }
+
+    .intro-section__title {
+      color: colors.$color-text-light;
+    }
+
+    .intro-section__description {
+      color: colors.$color-white-85;
+    }
+
+    .intro-section__btn--secondary {
+      color: colors.$color-text-light;
+      border-color: colors.$color-white-35;
+
+      &:hover {
+        border-color: colors.$color-white-55;
+        background-color: colors.$color-bg-secondary;
+      }
+    }
+  }
+
+  // ----------------------------------------
+  // CONTAINER
+  // ----------------------------------------
+
+  &__container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: var(--intro-max-width, 48rem);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  // ----------------------------------------
+  // ALIGNMENT VARIANTS
+  // ----------------------------------------
+
+  &--center {
+    .intro-section__container {
+      text-align: center;
+    }
+
+    .intro-section__description {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .intro-section__actions {
+      justify-content: center;
+    }
+  }
+
+  &--left {
+    .intro-section__container {
+      text-align: left;
+      max-width: 100%;
+    }
+
+    .intro-section__title,
+    .intro-section__description {
+      max-width: var(--intro-max-width, 48rem);
+    }
+
+    .intro-section__actions {
+      justify-content: flex-start;
+    }
+  }
+
+  // ----------------------------------------
+  // SUBTITLE
+  // ----------------------------------------
+
+  &__subtitle {
+    display: inline-block;
+    font-family: typography.$font-family-body;
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-primary;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: spacing.$space-4;
+  }
+
+  // ----------------------------------------
+  // TITLE
+  // ----------------------------------------
+
+  &__title {
+    font-family: typography.$font-family-heading;
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: typography.$font-weight-regular;
+    color: colors.$color-text-primary;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin: 0 0 spacing.$space-6 0;
+
+    // Support for italic emphasis within title
+    :global(em), :global(i) {
+      font-style: italic;
+      font-weight: inherit;
+    }
+
+    @include md {
+      font-size: clamp(2rem, 4vw, 3rem);
+    }
+
+    @include lg {
+      font-size: clamp(2.25rem, 4vw, 3.25rem);
+      margin-bottom: spacing.$space-8;
+    }
+  }
+
+  // ----------------------------------------
+  // DESCRIPTION
+  // ----------------------------------------
+
+  &__description {
+    font-family: typography.$font-family-body;
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
+    font-weight: typography.$font-weight-regular;
+    color: colors.$color-text-secondary;
+    line-height: 1.7;
+    max-width: 36rem;
+    margin: 0;
+
+    // Handle CMS HTML content
+    :global(p) {
+      margin: 0 0 spacing.$space-4 0;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    :global(strong) {
+      color: colors.$color-text-primary;
+      font-weight: typography.$font-weight-semibold;
+    }
+
+    :global(a) {
+      color: colors.$color-primary;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: color effects.$transition-fast;
+
+      &:hover {
+        color: colors.$color-primary-dark;
+      }
+    }
+  }
+
+  // ----------------------------------------
+  // ACTIONS
+  // ----------------------------------------
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing.$space-4;
+    margin-top: spacing.$space-10;
+
+    @include mobile-only {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
+  // ----------------------------------------
+  // BUTTONS
+  // ----------------------------------------
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: spacing.$space-4 spacing.$space-10;
+    font-family: typography.$font-family-body;
+    font-size: 0.75rem;
+    font-weight: typography.$font-weight-medium;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition:
+      background-color effects.$transition-fast,
+      border-color effects.$transition-fast,
+      color effects.$transition-fast;
+    cursor: pointer;
+
+    @include mobile-only {
+      width: 100%;
+      padding: spacing.$space-4 spacing.$space-6;
+    }
+
+    &--primary {
+      background-color: transparent;
+      color: colors.$color-text-primary;
+      border: 1px solid colors.$color-text-primary;
+
+      &:hover {
+        background-color: colors.$color-text-primary;
+        color: colors.$color-text-light;
+      }
+    }
+
+    &--secondary {
+      background-color: transparent;
+      color: colors.$color-text-primary;
+      border: 1px solid colors.$color-border-medium;
+
+      &:hover {
+        border-color: colors.$color-text-primary;
+      }
+    }
+  }
+}

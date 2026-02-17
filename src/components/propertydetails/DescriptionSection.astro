@@ -1,0 +1,49 @@
+---
+// ========================================
+// DESCRIPTION SECTION COMPONENT
+// Clean left-aligned layout matching design
+// Styles in: src/styles/pages/property-details/_description-section.scss
+// ========================================
+
+interface Props {
+  description?: string
+}
+
+const { description } = Astro.props
+
+// Decode HTML entities
+const decodeHtmlEntities = (text: string): string => {
+  const entities: Record<string, string> = {
+    '&lt;': '<',
+    '&gt;': '>',
+    '&amp;': '&',
+    '&quot;': '"',
+    '&#39;': "'",
+    '&nbsp;': ' ',
+  }
+  return text.replace(/&lt;|&gt;|&amp;|&quot;|&#39;|&nbsp;/g, (match) => entities[match] || match)
+}
+
+// Clean up HTML description text
+const cleanDescription = (html: string): string => {
+  let decoded = decodeHtmlEntities(html)
+  return decoded
+    .replace(/<br\s*\/?>/gi, '<br />')
+    .replace(/(<br\s*\/?>\s*){2,}/gi, '</p><p>')
+    .trim()
+}
+
+const cleanedDescription = description ? cleanDescription(description) : null
+---
+
+{cleanedDescription && (
+  <section class="description-section">
+    <!-- Section Header -->
+    <h2 class="description-section__heading">About property</h2>
+
+    <!-- Description Content -->
+    <div class="description-section__content">
+      <div class="description-section__text" set:html={cleanedDescription} />
+    </div>
+  </section>
+)}

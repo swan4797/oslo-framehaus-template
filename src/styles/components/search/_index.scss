@@ -1,0 +1,25 @@
+// ========================================
+// SEARCH BAR STYLES
+// Main entry point for search component styles
+// ========================================
+//
+// USAGE:
+// @use 'styles/components/search' in your Astro component
+//
+// STRUCTURE:
+// - _base.scss      : Core structural styles
+// - _fields.scss    : Form field styles
+// - _variants.scss  : Layout variant styles
+//
+// All styles use centralized design tokens from:
+// - ../../tokens/colors
+// - ../../tokens/effects
+// - ../../tokens/spacing
+// - ../../tokens/typography
+//
+// ========================================
+
+// Core styles
+@use 'base';
+@use 'fields';
+@use 'variants';

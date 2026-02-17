@@ -1,0 +1,451 @@
+// ========================================
+// HERO COMPONENT STYLES
+// Premium landing-style hero with full-viewport background
+// Using centralized color tokens from tokens/_colors.scss
+// ========================================
+
+// Import design system
+@use '../variables' as *;
+@use '../mixins' as *;
+@use '../tokens/colors' as colors;
+
+// ========================================
+// HERO BASE
+// ========================================
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  margin-top: -4.5em;
+}
+
+// ========================================
+// BACKGROUND & OVERLAY
+// ========================================
+
+.hero__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+// Shared background media styles
+%hero-background-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  // Animation: Progressive clip-path unveil
+  clip-path: inset(0 0 100% 0);
+  animation: hero-bg-reveal 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 0.2s;
+}
+
+.hero__background-image {
+  @extend %hero-background-media;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero__background-video {
+  @extend %hero-background-media;
+}
+
+// ========================================
+// OVERLAY VARIANTS
+// ========================================
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: hero-overlay-fade 1.2s ease forwards;
+  animation-delay: 1.4s;
+
+  // Default medium overlay
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.2) 40%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+
+  // Light overlay variant
+  &--light {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.25) 0%,
+      rgba(0, 0, 0, 0.1) 40%,
+      rgba(0, 0, 0, 0.2) 100%
+    );
+  }
+
+  // Medium overlay variant (default)
+  &--medium {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.4) 0%,
+      rgba(0, 0, 0, 0.2) 40%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+  }
+
+  // Dark overlay variant
+  &--dark {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.6) 0%,
+      rgba(0, 0, 0, 0.4) 40%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+  }
+}
+
+// ========================================
+// HERO CONTENT
+// ========================================
+
+.hero__content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 900px;
+  padding: 0 $spacing-6;
+
+  @include md {
+    padding: 0 $spacing-10;
+  }
+}
+
+.hero__headline {
+  font-family: $font-family-heading;
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  font-weight: $font-weight-regular;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: colors.$color-text-light;
+  margin-bottom: $spacing-6;
+
+  // Animation: Slide up and fade in
+  opacity: 0;
+  transform: translateY(40px);
+  animation: hero-content-reveal 1s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  animation-delay: 1.8s;
+
+  // Support for italic emphasis within headline
+  em, i {
+    font-style: italic;
+    font-weight: inherit;
+  }
+
+  @include md {
+    line-height: 1.25;
+    margin-bottom: $spacing-8;
+  }
+}
+
+.hero__description {
+  font-family: $font-family-base;
+  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+  font-weight: $font-weight-regular;
+  line-height: 1.8;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(var(--color-text-light-rgb, 255, 255, 255), 0.9);
+  max-width: 500px;
+  margin: 0 auto;
+
+  // Animation: Slide up and fade in (staggered)
+  opacity: 0;
+  transform: translateY(30px);
+  animation: hero-content-reveal 1s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  animation-delay: 2.1s;
+
+  @include md {
+    margin-bottom: $spacing-12;
+  }
+}
+
+.hero__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-4 $spacing-10;
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+  color: colors.$color-text-light;
+  background: transparent;
+  border: 2px solid colors.$color-text-light;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+
+  // Animation: Fade in (staggered)
+  opacity: 0;
+  transform: translateY(20px);
+  animation: hero-content-reveal 1s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  animation-delay: 2.4s;
+
+  &:hover {
+    background: colors.$color-bg-secondary;
+    color: colors.$color-text-primary;
+  }
+
+  @include md {
+    padding: $spacing-5 $spacing-12;
+    font-size: $font-size-sm;
+  }
+}
+
+// ========================================
+// FLOATING UTILITIES
+// ========================================
+
+.hero__chat-btn {
+  position: absolute;
+  bottom: $spacing-8;
+  left: $spacing-6;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: colors.$color-bg-secondary;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+  // Animation
+  opacity: 0;
+  transform: scale(0.8);
+  animation: hero-float-reveal 0.8s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  animation-delay: 2.8s;
+
+  svg {
+    color: colors.$color-text-light;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  @include md {
+    bottom: $spacing-10;
+    left: $spacing-10;
+    width: 64px;
+    height: 64px;
+  }
+}
+
+.hero__phone-btn {
+  position: absolute;
+  bottom: $spacing-8;
+  right: $spacing-6;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  padding: $spacing-3 $spacing-5;
+  background: colors.$color-bg-secondary;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(var(--color-text-light-rgb, 255, 255, 255), 0.3);
+  border-radius: $radius-full;
+  text-decoration: none;
+  transition: all 0.3s ease;
+
+  // Animation
+  opacity: 0;
+  transform: translateY(20px);
+  animation: hero-content-reveal 0.8s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  animation-delay: 2.9s;
+
+  svg {
+    color: colors.$color-text-light;
+    flex-shrink: 0;
+  }
+
+  span {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: colors.$color-text-light;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    background: colors.$color-bg-secondary;
+    border-color: rgba(var(--color-text-light-rgb, 255, 255, 255), 0.5);
+  }
+
+  @include md {
+    bottom: $spacing-10;
+    right: $spacing-10;
+    padding: $spacing-4 $spacing-6;
+  }
+}
+
+// ========================================
+// SCROLL INDICATOR
+// ========================================
+
+.hero__scroll-indicator {
+  position: absolute;
+  bottom: $spacing-10;
+  left: 48%;
+  transform: translateX(-50%);
+  z-index: 5;
+
+  // Animation
+  opacity: 0;
+  animation: hero-content-reveal 0.8s ease forwards;
+  animation-delay: 3.1s;
+
+  @include md {
+    bottom: $spacing-12;
+  }
+}
+
+.hero__scroll-circle {
+  // Reset button styles
+  appearance: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  outline: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: hero-scroll-bounce 2s ease-in-out infinite;
+  animation-delay: 3.3s;
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+  }
+
+  &:focus-visible {
+    border-color: rgba(255, 255, 255, 1);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  @include md {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+// Legacy support for line-style indicator
+.hero__scroll-line {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: hero-scroll-pulse 2s ease-in-out infinite;
+  animation-delay: 3.3s;
+
+  @include md {
+    height: 80px;
+  }
+}
+
+// ========================================
+// ANIMATIONS
+// ========================================
+
+@keyframes hero-bg-reveal {
+  0% {
+    clip-path: inset(0 0 100% 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes hero-overlay-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hero-content-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-float-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-scroll-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scaleY(0.8);
+  }
+}
+
+@keyframes hero-scroll-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}

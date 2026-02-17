@@ -1,0 +1,63 @@
+// ========================================
+// BRANCH CONTACT SECTION STYLES
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/effects' as effects;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+
+.branch-contact {
+  padding: clamp(40px, 6vw, 60px) 0;
+  background: colors.$color-bg-secondary;
+
+  &__container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 40px);
+  }
+
+  &__card {
+    background: colors.$color-bg-secondary;
+    border-radius: effects.$radius-xl;
+    padding: clamp(24px, 4vw, 40px);
+    text-align: center;
+  }
+
+  &__title {
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+    margin: 0 0 spacing.$space-6;
+  }
+
+  &__items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: spacing.$space-6 spacing.$space-10;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: spacing.$space-3;
+    font-size: typography.$font-size-base;
+    color: colors.$color-text-muted;
+
+    svg {
+      color: colors.$color-primary;
+      flex-shrink: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: effects.$transition-fast;
+
+      &:hover {
+        color: colors.$color-primary;
+      }
+    }
+  }
+}

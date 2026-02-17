@@ -1,0 +1,103 @@
+// ========================================
+// PROPERTY DETAILS SECTION STYLES
+// Clean grid layout for property attributes
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+
+.details-section {
+  // Section container - no extra padding, grid handles it
+  width: 100%;
+
+  // ----------------------------------------
+  // PRICE DISPLAY
+  // ----------------------------------------
+  &__price {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: spacing.$spacing-6;
+  }
+
+  &__price-label {
+    font-family: typography.$font-family-base;
+    font-size: typography.$font-size-xs;
+    font-weight: typography.$font-weight-medium;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: colors.$color-text-muted;
+    margin-bottom: spacing.$spacing-1;
+  }
+
+  &__price-value {
+    font-family: typography.$font-family-heading;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+    letter-spacing: -0.02em;
+  }
+
+  // ----------------------------------------
+  // DETAILS GRID
+  // ----------------------------------------
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: spacing.$spacing-3;
+
+    @media (max-width: 480px) {
+      gap: spacing.$spacing-2;
+    }
+  }
+
+  // ----------------------------------------
+  // DETAIL ITEM
+  // ----------------------------------------
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-1;
+    padding: spacing.$spacing-4;
+    background: colors.$color-bg-tertiary;
+    border-radius: effects.$radius-md;
+
+    @media (max-width: 480px) {
+      padding: spacing.$spacing-3;
+    }
+  }
+
+  &__item-label {
+    font-family: typography.$font-family-base;
+    font-size: typography.$font-size-xs;
+    font-weight: typography.$font-weight-medium;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: colors.$color-text-muted;
+  }
+
+  &__item-value {
+    font-family: typography.$font-family-base;
+    font-size: typography.$font-size-base;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+  }
+
+  // ----------------------------------------
+  // EPC BADGE
+  // ----------------------------------------
+  &__epc-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    font-family: typography.$font-family-base;
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-bold;
+    border-radius: effects.$radius-sm;
+  }
+}

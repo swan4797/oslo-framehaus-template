@@ -1,0 +1,35 @@
+---
+// ========================================
+// SEARCH RESULTS LIST
+// Property cards in list/horizontal layout
+// ========================================
+
+import type { Property } from '../../../types/database'
+import PropertyListCard from '../../properties/cards/PropertyListCard.astro'
+
+interface Props {
+  properties: Property[]
+  source?: string
+  class?: string
+}
+
+const {
+  properties,
+  source = 'search_results',
+  class: className = '',
+} = Astro.props
+---
+
+<div class:list={['search-results-list', className]}>
+  {properties.map(property => (
+    <PropertyListCard
+      property={property}
+      featured={property.is_featured}
+      source={source}
+    />
+  ))}
+</div>
+
+<style lang="scss">
+  @use '../../../styles/pages/search/results-list';
+</style>

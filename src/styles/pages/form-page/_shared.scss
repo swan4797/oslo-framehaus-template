@@ -1,0 +1,458 @@
+// ========================================
+// SHARED FORM PAGE STYLES
+// Common design tokens and mixins for form pages
+// (contact, valuation, etc.)
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/effects' as effects;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+@use '../../mixins' as *;
+
+// ----------------------------------------
+// DESIGN TOKENS
+// Using centralized color tokens from tokens/_colors.scss
+// ----------------------------------------
+
+$form-shadow-card: 0 4px 24px rgba(0, 0, 0, 0.15), 0 12px 48px rgba(0, 0, 0, 0.1);
+$form-shadow-input: 0 1px 2px rgba(0, 0, 0, 0.04);
+
+$form-transition-fast: 150ms ease;
+$form-transition-base: 200ms ease;
+$form-transition-smooth: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+// Form input colors - Reference centralized tokens
+$form-input-bg: colors.$color-bg-secondary;
+$form-input-bg-hover: colors.$color-bg-tertiary;
+$form-input-bg-focus: colors.$color-bg-primary;
+$form-input-border: colors.$color-border-light;
+$form-input-border-hover: colors.$color-border-medium;
+
+// ----------------------------------------
+// FORM SECTION MIXIN
+// ----------------------------------------
+
+@mixin form-section($margin-bottom: 5rem, $mobile-margin-bottom: 3rem) {
+  padding: 0 spacing.$space-6;
+  margin-bottom: $margin-bottom;
+
+  @include mobile-only {
+    padding: 0 spacing.$space-4;
+    margin-bottom: $mobile-margin-bottom;
+  }
+}
+
+// ----------------------------------------
+// FORM CARD MIXIN
+// ----------------------------------------
+
+@mixin form-card($max-width: 60rem) {
+  max-width: $max-width;
+  margin: 0 auto;
+  background: colors.$color-bg-secondary;
+  backdrop-filter: blur(8px);
+  box-shadow: $form-shadow-card;
+  padding: spacing.$space-10;
+  border-radius: 0;
+
+  @include md {
+    padding: spacing.$space-12;
+  }
+
+  @media (max-width: 480px) {
+    padding: spacing.$space-7 spacing.$space-6;
+  }
+}
+
+// ----------------------------------------
+// FORM HEADER MIXIN
+// ----------------------------------------
+
+@mixin form-header {
+  margin-bottom: spacing.$space-8;
+  padding-bottom: spacing.$space-6;
+  border-bottom: 1px solid colors.$color-border-light;
+}
+
+@mixin form-header-title {
+  font-family: typography.$font-family-heading;
+  font-size: 1.5rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+  margin: 0 0 spacing.$space-2 0;
+  letter-spacing: -0.02em;
+
+  @include md {
+    font-size: 1.75rem;
+  }
+}
+
+@mixin form-header-subtitle {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  color: colors.$color-text-secondary;
+  margin: 0;
+  line-height: typography.$line-height-relaxed;
+}
+
+// ----------------------------------------
+// FORM LAYOUT MIXINS
+// ----------------------------------------
+
+@mixin form-layout($gap: 1.5rem) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+}
+
+@mixin form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing.$space-5;
+
+  @include sm {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@mixin form-group {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$space-2;
+}
+
+// ----------------------------------------
+// FORM LABEL MIXINS
+// ----------------------------------------
+
+@mixin form-label {
+  display: flex;
+  align-items: baseline;
+  gap: spacing.$space-1;
+  font-family: typography.$font-family-base;
+  font-size: 0.9375rem;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+  line-height: 1.4;
+}
+
+@mixin form-required {
+  color: colors.$color-primary;
+  font-weight: typography.$font-weight-medium;
+}
+
+@mixin form-optional {
+  font-size: 0.8125rem;
+  font-weight: typography.$font-weight-regular;
+  color: colors.$color-text-muted;
+  margin-left: 0.125rem;
+}
+
+// ----------------------------------------
+// FORM INPUT MIXINS
+// ----------------------------------------
+
+@mixin form-input-base {
+  width: 100%;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  color: colors.$color-text-primary;
+  background: transparent;
+  border: 1px solid $form-input-border;
+  border-radius: 0;
+  transition:
+    background-color $form-transition-fast,
+    border-color $form-transition-fast,
+    box-shadow $form-transition-fast;
+
+  &::placeholder {
+    color: colors.$color-text-muted;
+    opacity: 0.8;
+  }
+
+  &:hover:not(:focus):not(:disabled) {
+    background: transparent;
+    border-color: $form-input-border-hover;
+  }
+
+  &:focus {
+    outline: none;
+    background: transparent;
+    border-color: colors.$color-primary;
+    box-shadow: 0 0 0 3px colors.$color-primary-15;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: transparent;
+  }
+}
+
+@mixin form-input {
+  @include form-input-base;
+  height: 3.25rem;
+  padding: 0 spacing.$space-4;
+
+  @include md {
+    height: 3.5rem;
+    padding: 0 spacing.$space-4-5;
+  }
+}
+
+@mixin form-select {
+  @include form-input-base;
+  height: 3.25rem;
+  padding: 0 spacing.$space-4;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right spacing.$space-4 center;
+  background-size: 1rem;
+  padding-right: 2.75rem;
+
+  @include md {
+    height: 3.5rem;
+    padding: 0 spacing.$space-4-5;
+    padding-right: 3rem;
+  }
+}
+
+@mixin form-textarea($min-height: 9rem) {
+  @include form-input-base;
+  min-height: $min-height;
+  padding: spacing.$space-4;
+  resize: vertical;
+  line-height: typography.$line-height-relaxed;
+
+  @include md {
+    min-height: $min-height + 1rem;
+    padding: spacing.$space-4-5;
+  }
+}
+
+// ----------------------------------------
+// FORM FOOTER MIXIN
+// ----------------------------------------
+
+@mixin form-footer($has-border: false) {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$space-5;
+
+  @if $has-border {
+    padding-top: spacing.$space-4;
+    border-top: 1px solid colors.$color-border-light;
+  } @else {
+    padding-top: spacing.$space-2;
+  }
+}
+
+// ----------------------------------------
+// FORM CHECKBOX MIXINS
+// ----------------------------------------
+
+@mixin form-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: spacing.$space-3;
+}
+
+@mixin form-checkbox-input {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.125rem;
+  cursor: pointer;
+  accent-color: colors.$color-primary;
+  border-radius: 0;
+
+  &:focus {
+    outline: 2px solid colors.$color-primary;
+    outline-offset: 2px;
+  }
+}
+
+@mixin form-checkbox-label {
+  font-family: typography.$font-family-base;
+  font-size: 0.9375rem;
+  color: colors.$color-text-secondary;
+  line-height: typography.$line-height-base;
+  cursor: pointer;
+  user-select: none;
+}
+
+// ----------------------------------------
+// FORM SUBMIT BUTTON MIXIN
+// ----------------------------------------
+
+@mixin form-submit($height: 3.25rem, $md-height: 3.5rem) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.$space-2-5;
+  height: $height;
+  padding: 0 spacing.$space-8;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-light;
+  background: colors.$color-bg-secondary;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition:
+    background-color $form-transition-fast,
+    transform $form-transition-fast,
+    box-shadow $form-transition-fast;
+
+  @include md {
+    height: $md-height;
+    padding: 0 spacing.$space-9;
+  }
+
+  &:hover:not(:disabled) {
+    background: colors.$color-bg-secondary;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: 2px solid colors.$color-primary;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex-shrink: 0;
+  }
+}
+
+// ----------------------------------------
+// FORM PRIVACY NOTICE MIXIN
+// ----------------------------------------
+
+@mixin form-privacy {
+  font-family: typography.$font-family-base;
+  font-size: 0.8125rem;
+  color: colors.$color-text-muted;
+  line-height: typography.$line-height-relaxed;
+  margin: 0;
+
+  a {
+    color: colors.$color-text-secondary;
+    text-decoration: underline;
+    transition: color $form-transition-fast;
+
+    &:hover {
+      color: colors.$color-primary;
+    }
+  }
+}
+
+// ----------------------------------------
+// FORM MESSAGE MIXINS
+// ----------------------------------------
+
+@mixin form-message {
+  display: none;
+  align-items: flex-start;
+  gap: spacing.$space-4;
+  padding: spacing.$space-5 spacing.$space-6;
+  border-radius: 0;
+
+  &.is-visible {
+    display: flex;
+  }
+}
+
+@mixin form-message-success {
+  background: colors.$color-bg-secondary;
+  border: 1px solid colors.$color-success;
+  color: colors.$color-success-dark;
+}
+
+@mixin form-message-error {
+  background: colors.$color-bg-secondary;
+  border: 1px solid colors.$color-error;
+  color: colors.$color-error-dark;
+}
+
+@mixin form-message-icon {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.125rem;
+}
+
+@mixin form-message-content {
+  flex: 1;
+  min-width: 0;
+}
+
+@mixin form-message-title {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-semibold;
+  margin: 0 0 spacing.$space-1 0;
+}
+
+@mixin form-message-text {
+  font-family: typography.$font-family-base;
+  font-size: 0.9375rem;
+  margin: 0;
+  line-height: typography.$line-height-base;
+  opacity: 0.9;
+
+  a {
+    color: inherit;
+    font-weight: typography.$font-weight-semibold;
+    text-decoration: underline;
+  }
+}
+
+// ----------------------------------------
+// CONTACT ALTERNATIVE MIXIN
+// ----------------------------------------
+
+@mixin contact-alternative {
+  margin-top: spacing.$space-8;
+  padding: spacing.$space-5 spacing.$space-6;
+  background: colors.$color-bg-secondary;
+  border-radius: 0;
+  text-align: center;
+}
+
+@mixin contact-alternative-text {
+  font-family: typography.$font-family-base;
+  font-size: 0.9375rem;
+  color: colors.$color-text-secondary;
+  margin: 0;
+  line-height: typography.$line-height-relaxed;
+
+  a {
+    color: colors.$color-primary;
+    font-weight: typography.$font-weight-semibold;
+    text-decoration: none;
+    transition: color $form-transition-fast;
+
+    &:hover {
+      color: colors.$color-primary-dark;
+      text-decoration: underline;
+    }
+  }
+}

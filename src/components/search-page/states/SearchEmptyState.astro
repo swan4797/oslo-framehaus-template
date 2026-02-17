@@ -1,0 +1,47 @@
+---
+// ========================================
+// SEARCH EMPTY STATE
+// Displayed when no properties match the search
+// ========================================
+
+import type { SearchEmptyStateProps } from '../types'
+import { defaultStatesConfig } from '../config'
+
+interface Props extends SearchEmptyStateProps {
+  class?: string
+}
+
+const {
+  title = defaultStatesConfig.empty.title,
+  message = defaultStatesConfig.empty.message,
+  suggestions = defaultStatesConfig.empty.suggestions,
+  resetHref = '/search',
+  resetText = defaultStatesConfig.empty.resetText,
+  class: className = '',
+} = Astro.props
+---
+
+<div class:list={['search-state', 'search-state--empty', className]}>
+  <svg class="search-state__icon search-state__icon--empty" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+  </svg>
+  <h3 class="search-state__title">{title}</h3>
+  <p class="search-state__message">{message}</p>
+
+  {suggestions && suggestions.length > 0 && (
+    <div class="search-state__suggestions">
+      <p class="search-state__suggestions-title">Suggestions:</p>
+      <ul class="search-state__suggestions-list">
+        {suggestions.map(suggestion => (
+          <li>{suggestion}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  <a href={resetHref} class="search-state__button">{resetText}</a>
+</div>
+
+<style lang="scss">
+  @use '../../../styles/pages/search/states';
+</style>

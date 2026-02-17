@@ -1,0 +1,374 @@
+// ========================================
+// VALUATION REQUEST FORM STYLES
+// Lead generation form for property valuations
+// Using centralized design tokens
+// ========================================
+
+@use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../mixins' as *;
+
+// ========================================
+// FORM CONTAINER
+// ========================================
+
+.valuation-form-container {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.valuation-form-card {
+  background: colors.$color-bg-secondary;
+  border-radius: effects.$radius-lg;
+  box-shadow: effects.$shadow-card;
+  border: 1px solid colors.$color-border-light;
+  overflow: hidden;
+}
+
+// ========================================
+// HEADER
+// ========================================
+
+.valuation-form-card .form-header {
+  display: flex;
+  align-items: center;
+  gap: spacing.$space-3-5;
+  padding: spacing.$space-6 spacing.$space-8;
+  background: colors.$color-bg-secondary;
+  color: colors.$color-text-light;
+}
+
+.valuation-form-card .form-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.valuation-form-card .form-title {
+  font-family: typography.$font-family-base;
+  font-size: 1.375rem;
+  font-weight: typography.$font-weight-bold;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.valuation-form-card .form-subtitle {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  margin: spacing.$space-1 0 0 0;
+  opacity: 0.9;
+  line-height: typography.$line-height-base;
+}
+
+// ========================================
+// FORM BODY
+// ========================================
+
+.valuation-form {
+  padding: spacing.$space-8;
+}
+
+.form-section {
+  margin-bottom: spacing.$space-8;
+  padding-bottom: spacing.$space-8;
+  border-bottom: 1px solid colors.$color-border-light;
+
+  &:last-of-type {
+    border-bottom: none;
+    margin-bottom: spacing.$space-6;
+    padding-bottom: 0;
+  }
+}
+
+.section-title {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-lg;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
+  margin: 0 0 spacing.$space-5 0;
+}
+
+// ========================================
+// FORM FIELDS
+// ========================================
+
+.valuation-form-card .form-group {
+  margin-bottom: spacing.$space-4-5;
+  flex: 1;
+}
+
+.form-row {
+  display: flex;
+  gap: spacing.$space-4;
+  margin-bottom: 0;
+
+  .form-group {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.form-label {
+  display: block;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-secondary;
+  margin-bottom: spacing.$space-2;
+}
+
+.valuation-form-card .form-input,
+.valuation-form-card .form-textarea {
+  width: 100%;
+  height: 65px;
+  padding: spacing.$space-3 spacing.$space-4;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  border: 1.5px solid colors.$color-border-light;
+  border-radius: effects.$radius-md;
+  transition: all effects.$transition-fast;
+  background: colors.$color-bg-secondary;
+  color: colors.$color-text-primary;
+
+  &:focus {
+    outline: none;
+    border-color: colors.$color-primary;
+    box-shadow: 0 0 0 3px colors.$color-primary-10;
+  }
+
+  &::placeholder {
+    color: colors.$color-text-muted;
+  }
+}
+
+.valuation-form-card .form-textarea {
+  height: auto;
+  resize: vertical;
+  min-height: 90px;
+}
+
+// ========================================
+// INPUT WITH PREFIX
+// ========================================
+
+.input-with-prefix {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-prefix {
+  position: absolute;
+  left: spacing.$space-4;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-muted;
+  pointer-events: none;
+}
+
+.form-input.with-prefix {
+  padding-left: spacing.$space-8;
+}
+
+.field-hint {
+  font-family: typography.$font-family-base;
+  font-size: 0.8125rem;
+  color: colors.$color-text-muted;
+  margin: spacing.$space-1-5 0 0 0;
+  line-height: typography.$line-height-base;
+}
+
+// ========================================
+// CHECKBOX
+// ========================================
+
+.form-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: spacing.$space-2-5;
+  margin-bottom: spacing.$space-6;
+}
+
+.checkbox-input {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid colors.$color-border-medium;
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+
+  &:checked {
+    background: colors.$color-bg-secondary;
+    border-color: colors.$color-primary;
+  }
+}
+
+.checkbox-label {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-text-muted;
+  line-height: typography.$line-height-relaxed;
+  cursor: pointer;
+}
+
+// ========================================
+// SUBMIT BUTTON
+// ========================================
+
+.valuation-form-card .submit-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.$space-2-5;
+  padding: spacing.$space-4 spacing.$space-6;
+  background: colors.$color-bg-secondary;
+  color: colors.$color-text-light;
+  border: none;
+  border-radius: effects.$radius-md;
+  font-family: typography.$font-family-base;
+  font-size: 1.0625rem;
+  font-weight: typography.$font-weight-semibold;
+  cursor: pointer;
+  transition: all effects.$transition-fast;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px colors.$color-primary-25;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.valuation-form-card .btn-icon {
+  width: 18px;
+  height: 18px;
+}
+
+// ========================================
+// PRIVACY NOTICE
+// ========================================
+
+.privacy-notice {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-xs;
+  color: colors.$color-text-muted;
+  text-align: center;
+  margin-top: spacing.$space-4;
+  margin-bottom: 0;
+  line-height: typography.$line-height-relaxed;
+}
+
+// ========================================
+// STATUS MESSAGES
+// ========================================
+
+.valuation-form-card .message {
+  display: none;
+  align-items: flex-start;
+  gap: spacing.$space-3;
+  padding: spacing.$space-6 spacing.$space-8;
+  margin: spacing.$space-8;
+  border-radius: effects.$radius-md;
+  font-family: typography.$font-family-base;
+
+  &.show {
+    display: flex;
+  }
+}
+
+.valuation-form-card .message-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.message-title {
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-semibold;
+  margin: 0 0 spacing.$space-1-5 0;
+  line-height: typography.$line-height-base;
+}
+
+.message-text {
+  font-size: typography.$font-size-base;
+  margin: 0;
+  line-height: typography.$line-height-relaxed;
+  opacity: 0.9;
+}
+
+.valuation-form-card .message-success {
+  background: colors.$color-bg-secondary;
+  color: colors.$color-success-dark;
+  border: 1.5px solid colors.$color-success-border;
+
+  .message-icon {
+    color: colors.$color-success;
+  }
+}
+
+.valuation-form-card .message-error {
+  background: colors.$color-bg-secondary;
+  color: colors.$color-error-dark;
+  border: 1.5px solid colors.$color-error-border;
+
+  .message-icon {
+    color: colors.$color-error;
+  }
+}
+
+// ========================================
+// RESPONSIVE
+// ========================================
+
+@media (max-width: 640px) {
+  .valuation-form-container {
+    max-width: 100%;
+  }
+
+  .valuation-form-card .form-header {
+    padding: spacing.$space-5 spacing.$space-6;
+  }
+
+  .valuation-form-card .form-title {
+    font-size: typography.$font-size-lg;
+  }
+
+  .valuation-form-card .form-subtitle {
+    font-size: typography.$font-size-sm;
+  }
+
+  .valuation-form {
+    padding: spacing.$space-6;
+  }
+
+  .form-section {
+    margin-bottom: spacing.$space-6;
+    padding-bottom: spacing.$space-6;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .valuation-form-card .form-input {
+    height: 50px;
+  }
+
+  .valuation-form-card .message {
+    margin: spacing.$space-6;
+    padding: spacing.$space-5 spacing.$space-6;
+  }
+}

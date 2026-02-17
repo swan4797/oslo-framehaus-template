@@ -1,0 +1,108 @@
+// ========================================
+// AREA CARD STYLES
+// Individual card for displaying an area guide
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/effects' as effects;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+
+.area-card {
+  display: flex;
+  flex-direction: column;
+  background: colors.$color-bg-secondary;
+  border-radius: effects.$radius-xl;
+  overflow: hidden;
+  box-shadow: effects.$shadow-sm;
+  text-decoration: none;
+  transition: effects.$transition-base;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: effects.$shadow-lg;
+
+    .area-card__image {
+      transform: scale(1.05);
+    }
+
+    .area-card__link {
+      color: colors.$color-primary;
+
+      svg {
+        transform: translateX(4px);
+      }
+    }
+  }
+
+  &__image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: effects.$transition-smooth;
+  }
+
+  &__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: colors.$color-bg-secondary;
+    color: colors.$color-text-muted;
+  }
+
+  &__content {
+    padding: clamp(20px, 3vw, 28px);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+    margin: 0 0 spacing.$space-2;
+  }
+
+  &__location {
+    font-size: typography.$font-size-sm;
+    color: colors.$color-primary;
+    font-weight: typography.$font-weight-medium;
+    margin: 0 0 spacing.$space-3;
+  }
+
+  &__description {
+    font-size: 0.9375rem;
+    color: colors.$color-text-muted;
+    line-height: 1.6;
+    margin: 0 0 spacing.$space-4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: spacing.$space-2;
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-muted;
+    margin-top: auto;
+    transition: effects.$transition-fast;
+
+    svg {
+      transition: effects.$transition-fast;
+    }
+  }
+}

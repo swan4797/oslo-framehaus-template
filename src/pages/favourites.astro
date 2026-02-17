@@ -1,0 +1,58 @@
+---
+// ========================================
+// FAVOURITES PAGE
+// Display user's shortlisted properties
+// ========================================
+
+import Layout from '../layouts/Layout.astro'
+
+// Layout Components
+import FavouritesPageLayout from '../components/favourites-page/layout/FavouritesPageLayout.astro'
+import FavouritesContainer from '../components/favourites-page/layout/FavouritesContainer.astro'
+
+// Hero Component
+import FavouritesHero from '../components/favourites-page/hero/FavouritesHero.astro'
+
+// State Components
+import FavouritesLoadingState from '../components/favourites-page/states/FavouritesLoadingState.astro'
+import FavouritesEmptyState from '../components/favourites-page/states/FavouritesEmptyState.astro'
+
+// Content Components
+import FavouritesHeader from '../components/favourites-page/header/FavouritesHeader.astro'
+import FavouritesGrid from '../components/favourites-page/grid/FavouritesGrid.astro'
+---
+
+<Layout
+  title="Your Favourites"
+  description="View your saved properties"
+>
+  <FavouritesPageLayout>
+    <!-- Hero Section -->
+    <FavouritesHero />
+
+    <!-- Main Content -->
+    <FavouritesContainer>
+      <!-- Loading State -->
+      <FavouritesLoadingState />
+
+      <!-- Empty State -->
+      <FavouritesEmptyState />
+
+      <!-- Header (shown when favourites exist) -->
+      <FavouritesHeader />
+
+      <!-- Grid (populated by client-side script) -->
+      <FavouritesGrid />
+    </FavouritesContainer>
+  </FavouritesPageLayout>
+</Layout>
+
+<!-- Global styles for JS-rendered cards -->
+<style lang="scss" is:global>
+  @use '../styles/components/favourite-card';
+</style>
+
+<!-- Client-side functionality -->
+<script>
+  import '../components/favourites-page/scripts/favourites-page-client'
+</script>

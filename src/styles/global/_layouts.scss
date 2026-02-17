@@ -1,0 +1,87 @@
+// ========================================
+// GLOBAL LAYOUTS
+// Base layout structure and resets
+// Uses CSS custom properties set by BrandProvider
+// ========================================
+
+@use '../tokens/colors' as colors;
+
+// ========================================
+// GLOBAL RESETS
+// ========================================
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family-body);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-base);
+}
+
+// ========================================
+// LAYOUT STRUCTURE
+// ========================================
+
+.body_wrapper {
+  margin: 0 !important;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--header-height);
+  
+
+  @media (max-width: 768px) {
+    padding-top: var(--header-height-mobile);
+  }
+}
+
+.main_content {
+  flex-grow: 1;
+  width: 100%;
+}
+
+// ========================================
+// TYPOGRAPHY DEFAULTS
+// ========================================
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-heading);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+
+  &:hover {
+    color: var(--color-primary-dark);
+  }
+}
+
+// ========================================
+// FOCUS STYLES (Accessibility)
+// ========================================
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+// ========================================
+// SELECTION STYLES
+// ========================================
+
+::selection {
+  background: colors.$color-bg-secondary;
+  color: var(--color-text-light);
+}

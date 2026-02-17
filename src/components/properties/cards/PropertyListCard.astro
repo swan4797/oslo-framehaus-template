@@ -1,0 +1,481 @@
+---
+// ========================================
+// PROPERTY LIST CARD COMPONENT
+// Horizontal list view for property listings
+// Includes click tracking & favourite button
+// ========================================
+
+import type { Property } from '../../../types/database'
+import FavouriteButton from '../../FavouriteButton.astro'
+import {
+  getPropertyUrl,
+  getDisplayPrice,
+  getThumbnailUrl,
+  formatPropertyType,
+} from '../../../lib/utils'
+
+interface Props {
+  property: Property
+  featured?: boolean
+  source?: string
+}
+
+const { property, featured = false, source = 'search_results' } = Astro.props
+
+// Computed values
+const propertyUrl = getPropertyUrl(property)
+const displayPrice = getDisplayPrice(property)
+const thumbnailUrl = getThumbnailUrl(property)
+const propertyType = formatPropertyType(property.property_type)
+
+// Truncate text helper - clean truncation without breaking words
+const truncateText = (text: string, maxLength: number): string => {
+  if (!text || text.length <= maxLength) return text
+
+  // Find the last space within the limit to avoid breaking words
+  const truncated = text.substring(0, maxLength)
+  const lastSpace = truncated.lastIndexOf(' ')
+
+  // If there's a space, truncate at the word boundary; otherwise use the full limit
+  const cleanTruncated = lastSpace > maxLength * 0.7 ? truncated.substring(0, lastSpace) : truncated
+
+  return `${cleanTruncated.trim()}...`
+}
+
+// Build description from property data
+// Note: Search API may only return 'summary', not full 'description'
+// Property detail pages will have the full 'description' field
+const buildDescription = (): string => {
+  // Debug: Log available description fields (remove in production)
+  // console.log('[PropertyListCard] Description fields:', {
+  //   id: property.id,
+  //   description: property.description?.substring(0, 50),
+  //   summary: property.summary?.substring(0, 50),
+  // })
+
+  // Priority: description > summary > key_features > fallback
+  let rawDescription = ''
+
+  if (property.description && property.description.trim()) {
+    rawDescription = property.description
+  } else if (property.summary && property.summary.trim()) {
+    rawDescription = property.summary
+  } else if (property.key_features && property.key_features.length > 0) {
+    // Use key features as description if no description/summary
+    rawDescription = property.key_features.slice(0, 3).join('. ') + '.'
+  }
+
+  if (rawDescription) {
+    // Strip HTML tags if present and truncate
+    const cleanText = rawDescription.replace(/<[^>]*>/g, '').trim()
+    return truncateText(cleanText, 180)
+  }
+
+  // Fallback: build a basic description from property details
+  const parts: string[] = []
+
+  if (property.bedrooms) {
+    parts.push(`${property.bedrooms} bedroom`)
+  }
+
+  if (propertyType) {
+    parts.push(propertyType.toLowerCase())
+  }
+
+  if (property.city) {
+    parts.push(`in ${property.city}`)
+  } else if (property.display_address) {
+    parts.push(`in ${property.display_address}`)
+  }
+
+  return parts.length > 0 ? `A ${parts.join(' ')}.` : ''
+}
+
+const description = buildDescription()
+
+// Get images for thumbnail gallery
+// Uses property_media if available, falls back to thumbnailUrl
+const getGalleryInfo = (): { images: Array<{ url: string; alt: string }>; totalCount: number } => {
+  // If property_media exists and has images, use those
+  if (property.property_media && property.property_media.length > 0) {
+    const allImages = property.property_media
+      // Filter for images only (if media_type exists), or include all if no media_type
+      .filter(media => !media.media_type || media.media_type === 'image')
+      .sort((a, b) => {
+        // Primary images first
+        if (a.is_primary && !b.is_primary) return -1
+        if (!a.is_primary && b.is_primary) return 1
+        // Then by display_order
+        return (a.display_order || 0) - (b.display_order || 0)
+      })
+
+    const totalCount = allImages.length
+    const images = allImages
+      .slice(0, 5)
+      .map((media, index) => ({
+        url: media.thumbnail_url || media.file_url,
+        alt: media.alt_text || `${property.display_address} - Image ${index + 1}`
+      }))
+
+    if (images.length > 0) return { images, totalCount }
+  }
+
+  // Fallback: always show the main thumbnail (thumbnailUrl is always defined)
+  return {
+    images: [{ url: thumbnailUrl, alt: property.display_address || 'Property image' }],
+    totalCount: 1
+  }
+}
+
+const { images: galleryImages, totalCount: totalImageCount } = getGalleryInfo()
+// Show gallery if we have multiple images
+const hasGallery = galleryImages.length > 0
+// Show "more photos" placeholder if there are more than 5 images
+const hasMorePhotos = totalImageCount > 5
+const remainingPhotosCount = totalImageCount - 5
+---
+
+<article
+  class:list={['list-card', { 'list-card--featured': featured }]}
+  data-property-id={property.id}
+  data-source={source}
+  data-slider-card
+>
+  <a href={propertyUrl} class="list-card__link" data-property-url={propertyUrl}>
+
+    <!-- Full-width Image Section -->
+    <div class="list-card__image-container" data-slider-container>
+      <!-- Image Wrapper - contains all images stacked -->
+      <div class="list-card__image-wrapper">
+        {galleryImages.map((image, index) => (
+          <img
+            src={image.url}
+            alt={image.alt}
+            class:list={[
+              'list-card__image',
+              { 'list-card__image--active': index === 0 }
+            ]}
+            data-slide-index={index}
+            loading={index === 0 ? 'eager' : 'lazy'}
+          />
+        ))}
+        {/* "View More" Slide Placeholder */}
+        {hasMorePhotos && (
+          <div
+            class="list-card__image list-card__more-slide"
+            data-slide-index={galleryImages.length}
+            data-more-slide
+          >
+            <div class="list-card__more-slide-content">
+              <div class="list-card__more-slide-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                  <polyline points="21 15 16 10 5 21"/>
+                </svg>
+              </div>
+              <span class="list-card__more-slide-count">+{remainingPhotosCount}</span>
+              <span class="list-card__more-slide-text">more photos</span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <!-- Slider Navigation Arrows (only show if multiple images) -->
+      {galleryImages.length > 1 && (
+        <div class="list-card__slider-nav" data-slider-nav>
+          <button
+            type="button"
+            class="list-card__slider-arrow list-card__slider-arrow--prev"
+            data-slider-prev
+            aria-label="Previous image"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="list-card__slider-arrow list-card__slider-arrow--next"
+            data-slider-next
+            aria-label="Next image"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+      )}
+
+      <!-- Glassmorphism Content Overlay -->
+      <div class="list-card__content">
+        <!-- Tags Row -->
+        <div class="list-card__tags">
+          <span class="list-card__tag">
+            {property.listing_type === 'sale' ? 'For Sale' : 'To Rent'}
+          </span>
+          {propertyType && (
+            <span class="list-card__tag">{propertyType}</span>
+          )}
+          {featured && (
+            <span class="list-card__tag list-card__tag--featured">Featured</span>
+          )}
+        </div>
+
+        <!-- Circular Thumbnail -->
+        <div class="list-card__thumbnail-circle">
+          <img src={thumbnailUrl} alt={property.display_address || 'Property'} />
+        </div>
+
+        <!-- Title -->
+        <h3 class="list-card__title">{property.display_address}</h3>
+
+        <!-- Description -->
+        {description && (
+          <p class="list-card__description">{description}</p>
+        )}
+
+        <!-- CTA Actions -->
+        <div class="list-card__actions">
+          <div class="list-card__cta">
+            View Property
+          </div>
+          <div class="list-card__favourite" onclick="event.preventDefault(); event.stopPropagation();">
+            <FavouriteButton
+              propertyId={property.id}
+              variant="text"
+              labelText="Add to Favourites"
+              labelTextActive="Remove from Favourites"
+            />
+          </div>
+        </div>
+
+        <!-- Bottom: Price & Specs -->
+        <div class="list-card__footer">
+          <div class="list-card__price">
+            <span class="list-card__price-value">{displayPrice}</span>
+            {property.listing_type === 'let' && (
+              <span class="list-card__price-suffix">/mo</span>
+            )}
+          </div>
+          <div class="list-card__specs">
+            {property.bedrooms !== undefined && property.bedrooms !== null && (
+              <span class="list-card__spec">{property.bedrooms} Bed</span>
+            )}
+            {property.bathrooms !== undefined && property.bathrooms !== null && (
+              <span class="list-card__spec">{property.bathrooms} Bath</span>
+            )}
+            {property.floor_area && (
+              <span class="list-card__spec">{property.floor_area} sqft</span>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+</article>
+
+<style lang="scss">
+  @use '../../../styles/components/properties/cards/property-list';
+</style>
+
+<script>
+  // ========================================
+  // IMAGE SLIDER & CLICK TRACKING
+  // Handles image slider navigation and property view tracking
+  // ========================================
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // ----------------------------------------
+    // IMAGE SLIDER FUNCTIONALITY
+    // ----------------------------------------
+
+    const sliderCards = document.querySelectorAll('[data-slider-card]')
+
+    sliderCards.forEach((card) => {
+      const container = card.querySelector('[data-slider-container]')
+      if (!container) return
+
+      const images = container.querySelectorAll('.list-card__image')
+      const thumbnails = card.querySelectorAll('[data-thumbnail-btn]')
+      const prevBtn = container.querySelector('[data-slider-prev]')
+      const nextBtn = container.querySelector('[data-slider-next]')
+      const counterEl = container.querySelector('[data-current-index]')
+
+      if (images.length <= 1) return
+
+      let currentIndex = 0
+      const totalSlides = images.length
+      const hasMoreSlide = container.querySelector('[data-more-slide]') !== null
+      const lastImageIndex = hasMoreSlide ? totalSlides - 1 : totalSlides - 1
+
+      // Update navigation button states
+      const updateNavButtons = () => {
+        if (prevBtn) {
+          const isFirst = currentIndex === 0
+          prevBtn.classList.toggle('list-card__slider-arrow--disabled', isFirst)
+          ;(prevBtn as HTMLButtonElement).disabled = isFirst
+        }
+        if (nextBtn) {
+          const isLast = currentIndex === lastImageIndex
+          nextBtn.classList.toggle('list-card__slider-arrow--disabled', isLast)
+          ;(nextBtn as HTMLButtonElement).disabled = isLast
+        }
+      }
+
+      // Update active slide
+      const goToSlide = (index: number) => {
+        // Clamp to valid range (no wrap-around)
+        if (index < 0) index = 0
+        if (index > lastImageIndex) index = lastImageIndex
+
+        currentIndex = index
+
+        // Update images
+        images.forEach((img, i) => {
+          img.classList.toggle('list-card__image--active', i === currentIndex)
+        })
+
+        // Update thumbnails
+        thumbnails.forEach((thumb, i) => {
+          thumb.classList.toggle('list-card__thumbnail--active', i === currentIndex)
+        })
+
+        // Update counter
+        if (counterEl) {
+          counterEl.textContent = String(currentIndex + 1)
+        }
+
+        // Update nav button states
+        updateNavButtons()
+
+        // Scroll active thumbnail into view
+        const activeThumbnail = thumbnails[currentIndex] as HTMLElement
+        if (activeThumbnail) {
+          activeThumbnail.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center'
+          })
+        }
+      }
+
+      // Initialize nav button states
+      updateNavButtons()
+
+      // Previous button
+      if (prevBtn) {
+        prevBtn.addEventListener('click', (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          goToSlide(currentIndex - 1)
+        })
+      }
+
+      // Next button
+      if (nextBtn) {
+        nextBtn.addEventListener('click', (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          goToSlide(currentIndex + 1)
+        })
+      }
+
+      // Thumbnail clicks
+      thumbnails.forEach((thumb, index) => {
+        thumb.addEventListener('click', (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          goToSlide(index)
+        })
+      })
+
+      // Cast container to HTMLElement for proper event typing
+      const htmlContainer = container as HTMLElement
+
+      // Keyboard navigation when hovering over image
+      htmlContainer.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault()
+          goToSlide(currentIndex - 1)
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault()
+          goToSlide(currentIndex + 1)
+        }
+      })
+
+      // Make container focusable for keyboard nav
+      htmlContainer.setAttribute('tabindex', '0')
+
+      // Touch swipe support
+      let touchStartX = 0
+      let touchEndX = 0
+      const minSwipeDistance = 50
+
+      htmlContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX
+      }, { passive: true })
+
+      htmlContainer.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX
+        const swipeDistance = touchEndX - touchStartX
+
+        if (Math.abs(swipeDistance) > minSwipeDistance) {
+          if (swipeDistance > 0 && currentIndex > 0) {
+            // Swipe right - go to previous (only if not at first slide)
+            goToSlide(currentIndex - 1)
+          } else if (swipeDistance < 0 && currentIndex < lastImageIndex) {
+            // Swipe left - go to next (only if not at last slide)
+            goToSlide(currentIndex + 1)
+          }
+        }
+      }, { passive: true })
+    })
+
+    // ----------------------------------------
+    // CLICK TRACKING
+    // ----------------------------------------
+
+    // Key to mark property as tracked (shared with property page)
+    const TRACKED_PROPERTY_KEY = '__stratos_tracked_property'
+
+    const cardLinks = document.querySelectorAll('.list-card__link')
+
+    cardLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        const card = link.closest('.list-card')
+        if (!card) return
+
+        const propertyId = (card as HTMLElement).dataset.propertyId
+        const source = (card as HTMLElement).dataset.source || 'unknown'
+        const propertyUrl = (link as HTMLElement).dataset.propertyUrl
+
+        if (!propertyId) return
+
+        if (window.StratosTracker) {
+          try {
+            // Mark this property as tracked so the page won't track again
+            ;(window as any)[TRACKED_PROPERTY_KEY] = propertyId
+
+            window.StratosTracker.trackPropertyView(propertyId, {
+              source: source,
+              clicked_from: window.location.pathname,
+              referrer: document.referrer || 'direct',
+              timestamp: new Date().toISOString()
+            })
+
+            console.log('[PropertyListCard] Click tracked:', {
+              property_id: propertyId,
+              source: source,
+              url: propertyUrl
+            })
+          } catch (error) {
+            console.error('[PropertyListCard] Tracking error:', error)
+          }
+        }
+      })
+    })
+
+    console.log(`[PropertyListCard] Initialized ${sliderCards.length} sliders, ${cardLinks.length} cards`)
+  })
+</script>

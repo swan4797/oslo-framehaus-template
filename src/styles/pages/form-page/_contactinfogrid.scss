@@ -1,0 +1,130 @@
+// ========================================
+// CONTACT INFO GRID STYLES
+// Contact information cards for form pages
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/effects' as effects;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+@use '../../mixins' as *;
+
+.contact-info-section {
+  padding: 0 spacing.$space-6;
+  margin-bottom: spacing.$space-12;
+
+  @include mobile-only {
+    padding: 0 spacing.$space-4;
+    margin-bottom: spacing.$space-8;
+  }
+}
+
+.contact-info-grid {
+  max-width: 60rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: spacing.$space-4;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.contact-info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: spacing.$space-4;
+  padding: spacing.$space-5 spacing.$space-6;
+  background: colors.$color-bg-secondary;
+  backdrop-filter: blur(8px);
+  border-radius: 0;
+  box-shadow: effects.$shadow-card;
+  text-decoration: none;
+  transition: box-shadow effects.$transition-base, transform effects.$transition-base;
+
+  &:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Clickable cards (email, phone) - anchor variant
+a.contact-info-card {
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.contact-info-card__icon {
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: colors.$color-bg-secondary;
+  border-radius: 0;
+  color: colors.$color-primary;
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+.contact-info-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$space-1;
+  min-width: 0;
+}
+
+.contact-info-card__label {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-xs;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.contact-info-card__value {
+  font-family: typography.$font-family-base;
+  font-size: 0.9375rem;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+  line-height: typography.$line-height-base;
+  word-break: break-word;
+}
+
+// Social links inside card
+.contact-social-links {
+  display: flex;
+  gap: spacing.$space-2-5;
+  margin-top: spacing.$space-1;
+}
+
+.contact-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: colors.$color-bg-secondary;
+  border-radius: 0;
+  color: colors.$color-text-secondary;
+  transition: background effects.$transition-fast, color effects.$transition-fast;
+
+  svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  &:hover {
+    background: colors.$color-bg-secondary;
+    color: colors.$color-text-light;
+  }
+}

@@ -1,0 +1,82 @@
+// ========================================
+// BRANCH CARD STYLES
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/effects' as effects;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+
+.branch-card {
+  display: block;
+  background: colors.$color-bg-secondary;
+  border-radius: effects.$radius-xl;
+  overflow: hidden;
+  text-decoration: none;
+  box-shadow: effects.$shadow-sm;
+  transition: effects.$transition-base;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: effects.$shadow-lg;
+
+    .branch-card__link {
+      color: colors.$color-primary;
+
+      svg {
+        transform: translateX(4px);
+      }
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  &__placeholder {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: colors.$color-bg-secondary;
+    color: colors.$color-text-muted;
+  }
+
+  &__content {
+    padding: clamp(20px, 3vw, 28px);
+  }
+
+  &__name {
+    font-size: clamp(1.125rem, 2vw, 1.25rem);
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+    margin: 0 0 spacing.$space-2;
+  }
+
+  &__description {
+    font-size: 0.9375rem;
+    color: colors.$color-text-muted;
+    margin: 0 0 spacing.$space-4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: spacing.$space-1;
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-medium;
+    color: colors.$color-text-primary;
+    transition: effects.$transition-fast;
+
+    svg {
+      transition: effects.$transition-fast;
+    }
+  }
+}

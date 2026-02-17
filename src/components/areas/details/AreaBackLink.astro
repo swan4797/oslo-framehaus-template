@@ -1,0 +1,29 @@
+---
+// ========================================
+// AREA BACK LINK COMPONENT
+// Back to area guides navigation link
+// ========================================
+
+interface Props {
+  href?: string
+  text?: string
+}
+
+const { href = '/areas', text = 'View All Area Guides' } = Astro.props
+---
+
+<section class="area-back">
+  <div class="area-back__container">
+    <a href={href} class="area-back__link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m12 19-7-7 7-7"/>
+        <path d="M19 12H5"/>
+      </svg>
+      {text}
+    </a>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../../styles/components/areas/area-back-link';
+</style>

@@ -1,0 +1,135 @@
+// ========================================
+// SEARCH PAGE STYLES
+// Styles for search.astro page content
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../mixins' as *;
+
+.search-results {
+  min-height: 500px;
+  z-index: 1;
+}
+
+// ----------------------------------------
+// FEATURED PROPERTY SECTION
+// ----------------------------------------
+
+.featured-property-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid colors.$color-border-light;
+
+  @include mobile-only {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+
+.featured-property-header {
+  margin-bottom: 1.25rem;
+
+  @include mobile-only {
+    margin-bottom: 1rem;
+  }
+}
+
+.featured-property-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: colors.$color-primary;
+  background: colors.$color-bg-secondary;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+
+  @include mobile-only {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.625rem;
+  }
+
+  svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    fill: currentColor;
+
+    @include mobile-only {
+      width: 0.75rem;
+      height: 0.75rem;
+    }
+  }
+}
+
+.featured-property-card {
+  // Card styling handled by PropertyListCard
+  // This wrapper ensures proper spacing
+}
+
+// ----------------------------------------
+// RESULTS SECTION
+// ----------------------------------------
+
+.results-section {
+  // Main results area
+}
+
+.results-section__header {
+  margin-bottom: 1.5rem;
+
+  @include mobile-only {
+    margin-bottom: 1.25rem;
+  }
+}
+
+.results-section__label {
+  font-family: typography.$font-family-heading;
+  font-size: 1rem;
+  font-weight: 500;
+  color: colors.$color-text-primary;
+  letter-spacing: -0.01em;
+
+  @include mobile-only {
+    font-size: 0.9375rem;
+  }
+}
+
+// ----------------------------------------
+// VIEW CONTAINERS
+// ----------------------------------------
+
+.results-view {
+  transition: opacity 0.25s ease;
+
+  &--hidden {
+    display: none;
+  }
+}
+
+.results-view--grid {
+  // Grid view styles handled by SearchResultsGrid
+}
+
+.results-view--list {
+  // List view styles handled by SearchResultsList
+}
+
+// ----------------------------------------
+// PAGINATION
+// ----------------------------------------
+
+.search-pagination {
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid colors.$color-border-light;
+
+  @include mobile-only {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+  }
+}

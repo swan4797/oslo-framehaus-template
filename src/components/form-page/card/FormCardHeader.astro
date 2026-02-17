@@ -1,0 +1,38 @@
+---
+// ========================================
+// FORM CARD HEADER COMPONENT
+// Title and subtitle for form cards
+// ========================================
+
+interface Props {
+  /** Card header title */
+  title: string
+  /** Optional subtitle text */
+  subtitle?: string
+  /** Optional CSS class override */
+  class?: string
+}
+
+const { title, subtitle, class: className } = Astro.props
+---
+
+<div class:list={["form-card-header", className]}>
+  <h2 class="form-card-header__title">{title}</h2>
+  {subtitle && <p class="form-card-header__subtitle">{subtitle}</p>}
+</div>
+
+<style lang="scss">
+  @use '../../../styles/pages/form-page/shared' as *;
+
+  .form-card-header {
+    @include form-header;
+  }
+
+  .form-card-header__title {
+    @include form-header-title;
+  }
+
+  .form-card-header__subtitle {
+    @include form-header-subtitle;
+  }
+</style>

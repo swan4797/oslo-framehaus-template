@@ -1,0 +1,271 @@
+---
+// ========================================
+// HEADER COMPONENT
+// Modular, configurable navigation header
+// Supports multiple variants for different page contexts
+// ========================================
+
+import { siteConfig } from '../lib/config'
+import { fetchBrandSettings } from '../lib/brand'
+import type { BrandSettings } from '../types/brand'
+import FullscreenMenu from './menu/FullscreenMenu.astro'
+
+// Import types and config from menu module
+import type {
+  HeaderVariant,
+  HeaderVariantConfig,
+  HeaderProps as Props,
+} from './menu/types'
+import {
+  variantPresets,
+  defaultNavItems,
+  navDescriptions,
+  defaultTagline,
+} from './menu/config'
+
+// Re-export types for external use
+export type { HeaderVariant, HeaderVariantConfig } from './menu/types'
+export type { NavDropdownItem, NavItem, HeaderConfig } from './menu/types'
+
+// ========================================
+// PROPS DESTRUCTURING WITH DEFAULTS
+// ========================================
+
+const {
+  // Core variant
+  variant = 'transparent',
+  variantConfig,
+
+  // CTA configuration
+  showCta = true,
+  ctaText = 'Get a Valuation',
+  ctaHref = '/valuation',
+
+  // Search configuration
+  showSearch = true,
+
+  // Navigation
+  navItems = defaultNavItems,
+
+  // Behavior
+  enableScrollBehavior = true,
+  enableScrollAppearance = true,
+  sticky = true,
+
+  // Deprecated props (backward compatibility)
+  backgroundColor,
+  forceLightLogo,
+} = Astro.props
+
+// ========================================
+// COMPUTED VARIANT CONFIG
+// Merge preset with custom overrides
+// ========================================
+
+const basePreset = variantPresets[variant] || variantPresets.transparent
+
+// Handle deprecated props
+const deprecatedOverrides: Partial<HeaderVariantConfig> = {}
+if (backgroundColor) {
+  deprecatedOverrides.background = backgroundColor
+}
+if (forceLightLogo !== undefined) {
+  deprecatedOverrides.lightLogo = forceLightLogo
+}
+
+// Final merged configuration
+const finalVariantConfig: HeaderVariantConfig = {
+  ...basePreset,
+  ...deprecatedOverrides,
+  ...variantConfig,
+}
+
+// ========================================
+// BRAND SETTINGS
+// ========================================
+
+let brand: BrandSettings
+try {
+  brand = await fetchBrandSettings()
+} catch (error) {
+  console.error('[Header] Error fetching brand settings:', error)
+  brand = await fetchBrandSettings()
+}
+
+const businessName = brand.business_name || siteConfig.name
+
+const hasValidLogo = brand.logo_main_url &&
+  brand.logo_main_url.trim() !== '' &&
+  !brand.logo_main_url.startsWith('blob:')
+
+// ========================================
+// COMPUTED VALUES
+// ========================================
+
+// Build header classes
+const headerClasses = [
+  'site-header',
+  `site-header--${variant}`,
+  finalVariantConfig.lightLogo ? 'site-header--light-logo' : '',
+  sticky ? 'site-header--sticky' : '',
+  enableScrollAppearance ? 'site-header--scroll-appearance' : '',
+].filter(Boolean).join(' ')
+
+// Custom CSS properties for variant
+const headerStyles = [
+  `--header-bg: ${finalVariantConfig.background}`,
+  `--header-text-color: ${finalVariantConfig.textColor}`,
+  `--header-text-hover: ${finalVariantConfig.textHover}`,
+  `--header-border: ${finalVariantConfig.borderColor}`,
+  `--header-scrolled-bg: ${finalVariantConfig.scrolledBackground}`,
+].filter(Boolean).join('; ')
+
+// Data attributes for JavaScript
+const headerData = {
+  'data-variant': variant,
+  'data-scroll-behavior': enableScrollBehavior.toString(),
+  'data-scroll-appearance': enableScrollAppearance.toString(),
+  'data-scrolled-blur': finalVariantConfig.scrolledBlur?.toString() || 'false',
+}
+---
+
+<header
+  class={headerClasses}
+  id="site-header"
+  style={headerStyles}
+  {...headerData}
+>
+  <div class="header__container">
+    <!-- Left Navigation -->
+    <div class="header__left-nav">
+      <a href="/valuation" class="header__left-link">Valuation</a>
+      <a href="/search" class="header__left-link">Search</a>
+    </div>
+
+    <!-- Centered Logo -->
+    <a href="/" class="header__logo" aria-label={`${businessName} - Home`}>
+      {hasValidLogo ? (
+        <img
+          src={brand.logo_main_url}
+          alt={businessName}
+          class="header__logo-img"
+          width="140"
+          height="50"
+        />
+      ) : (
+        <div class="header__logo-stack">
+          <span class="header__logo-text">{businessName}</span>
+          <span class="header__logo-tagline">Design</span>
+        </div>
+      )}
+    </a>
+
+    <!-- Right Actions -->
+    <div class="header__actions">
+      {showSearch && (
+        <a
+          href="/search"
+          class="header__search-btn"
+          aria-label="Search properties"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" x2="16.65" y1="21" y2="16.65"></line>
+          </svg>
+        </a>
+      )}
+
+      {showCta && (
+        <a href={ctaHref} class="header__cta">
+          {ctaText}
+        </a>
+      )}
+
+      <!-- Menu Toggle -->
+      <button
+        type="button"
+        class="header__mobile-toggle"
+        id="mobile-menu-toggle"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open menu"
+      >
+        <span class="header__hamburger" aria-hidden="true">
+          <span class="header__hamburger-line"></span>
+          <span class="header__hamburger-line"></span>
+        </span>
+      </button>
+    </div>
+
+    <!-- Full-screen Navigation Menu -->
+    <FullscreenMenu
+      businessName={businessName}
+      logoUrl={brand.logo_main_url}
+      hasValidLogo={hasValidLogo}
+      navItems={navItems}
+      navDescriptions={navDescriptions}
+      defaultTagline={defaultTagline}
+    />
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="header__mobile-menu" id="mobile-menu" aria-hidden="true">
+    <nav class="header__mobile-nav" aria-label="Mobile navigation">
+      <ul class="header__mobile-list">
+        {navItems.map((item) => (
+          <li class={`header__mobile-item ${item.dropdown ? 'header__mobile-item--has-dropdown' : ''}`}>
+            {item.dropdown ? (
+              <>
+                <button
+                  type="button"
+                  class="header__mobile-link header__mobile-link--dropdown"
+                  aria-expanded="false"
+                >
+                  {item.label}
+                  <svg class="header__mobile-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+                <ul class="header__mobile-dropdown">
+                  {item.dropdown.map((subItem) => (
+                    <li>
+                      <a href={subItem.href} class="header__mobile-dropdown-link">
+                        {subItem.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <a href={item.href} class="header__mobile-link">
+                {item.label}
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      {showCta && (
+        <a href={ctaHref} class="header__mobile-cta">
+          {ctaText}
+        </a>
+      )}
+    </nav>
+  </div>
+</header>
+
+<style lang="scss" is:global>
+  @use '../styles/components/header';
+</style>
+
+<script>
+  import { initHeaderController } from './menu/scripts'
+
+  // Initialize controller
+  initHeaderController()
+
+  // Re-initialize on Astro page transitions
+  document.addEventListener('astro:page-load', () => {
+    initHeaderController()
+  })
+</script>

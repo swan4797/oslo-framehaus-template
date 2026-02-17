@@ -1,0 +1,171 @@
+// ========================================
+// SEARCH BAR BASE STYLES
+// Core structural styles for search components
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/effects' as effects;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+@use '../../mixins' as *;
+
+// ----------------------------------------
+// SEARCH BAR CONTAINER
+// ----------------------------------------
+
+.search-bar {
+  width: 100%;
+
+  // ----------------------------------------
+  // FORM
+  // ----------------------------------------
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$space-5;
+  }
+
+  // ----------------------------------------
+  // LISTING TYPE TOGGLE
+  // ----------------------------------------
+
+  &__toggle-group {
+    margin-bottom: spacing.$space-2;
+  }
+
+  &__toggle-buttons {
+    display: flex;
+    gap: spacing.$space-2;
+    padding: spacing.$space-2;
+    background: colors.$color-bg-secondary;
+    border-radius: effects.$radius-lg;
+  }
+
+  &__toggle-btn {
+    flex: 1;
+    cursor: pointer;
+
+    &[data-active="true"] {
+      .search-bar__toggle-content {
+        background: colors.$color-bg-secondary;
+        color: colors.$color-primary;
+        box-shadow: effects.$shadow-md;
+      }
+    }
+  }
+
+  &__toggle-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &__toggle-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: spacing.$space-2;
+    padding: spacing.$space-3 spacing.$space-6;
+    background: colors.$color-bg-secondary;
+    border-radius: effects.$radius-md;
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-secondary;
+    transition: all effects.$transition-base;
+  }
+
+  &__toggle-icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+
+  // ----------------------------------------
+  // MAIN FIELDS CONTAINER
+  // ----------------------------------------
+
+  &__main-fields {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$space-4;
+  }
+
+  // ----------------------------------------
+  // ADVANCED TOGGLE
+  // ----------------------------------------
+
+  &__advanced-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: spacing.$space-2;
+    width: 100%;
+    padding: spacing.$space-4 spacing.$space-6;
+    background: colors.$color-bg-secondary;
+    border: 1px solid colors.$color-border-light;
+    border-radius: effects.$radius-lg;
+    color: colors.$color-primary;
+    font-family: typography.$font-family-body;
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-semibold;
+    cursor: pointer;
+    transition: background effects.$transition-fast, border-color effects.$transition-fast;
+
+    &:hover {
+      background: colors.$color-bg-secondary;
+      border-color: colors.$color-primary;
+    }
+
+    &.is-active {
+      .search-bar__chevron-icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &__advanced-toggle-icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+
+  &__chevron-icon {
+    width: 1rem;
+    height: 1rem;
+    transition: transform effects.$transition-base;
+  }
+
+  // ----------------------------------------
+  // ADVANCED PANEL
+  // ----------------------------------------
+
+  &__advanced-panel {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$space-5;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+
+    &.is-open {
+      max-height: 2000px;
+      opacity: 1;
+    }
+  }
+
+  // ----------------------------------------
+  // ACTION BUTTONS CONTAINER
+  // ----------------------------------------
+
+  &__actions {
+    display: flex;
+    gap: spacing.$space-3;
+    padding-top: spacing.$space-2;
+
+    @include mobile-only {
+      flex-direction: column;
+    }
+  }
+}

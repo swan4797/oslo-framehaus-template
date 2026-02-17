@@ -1,0 +1,293 @@
+---
+// ========================================
+// FORM COMPONENT
+// Configuration-driven form with submit handling
+// ========================================
+
+import type { FormConfig, FieldConfig } from '../configs/types'
+import FormField from './FormField.astro'
+
+interface Props {
+  /** Form configuration object */
+  config: FormConfig
+  /** Property ID for property-related forms */
+  propertyId?: string
+  /** Additional hidden fields */
+  hiddenFields?: Record<string, string>
+  /** Custom CSS class */
+  class?: string
+  /** Override success redirect URL */
+  successRedirect?: string
+  /** Variant: 'default' | 'compact' */
+  variant?: 'default' | 'compact'
+}
+
+const {
+  config,
+  propertyId,
+  hiddenFields = {},
+  class: className,
+  successRedirect,
+  variant = 'default',
+} = Astro.props
+
+const formId = config.id
+const hasHoneypot = config.honeypot !== false
+const finalRedirect = successRedirect || config.redirectUrl
+---
+
+<div
+  class:list={['form-wrapper', `form-wrapper--${variant}`, className]}
+  data-form-wrapper={formId}
+>
+  <form
+    id={formId}
+    class="form"
+    data-form
+    data-enquiry-type={config.enquiryType}
+    data-success-title={config.successTitle || 'Success!'}
+    data-success-message={config.successMessage}
+    data-error-message={config.errorMessage || 'Something went wrong. Please try again.'}
+    data-redirect={finalRedirect}
+  >
+    {/* Honeypot field for spam prevention */}
+    {hasHoneypot && (
+      <input
+        type="text"
+        name="website"
+        tabindex="-1"
+        autocomplete="off"
+        class="form__honeypot"
+      />
+    )}
+
+    {/* Property ID if provided */}
+    {propertyId && (
+      <input type="hidden" name="property_id" value={propertyId} />
+    )}
+
+    {/* Additional hidden fields */}
+    {Object.entries(hiddenFields).map(([key, value]) => (
+      <input type="hidden" name={key} value={value} />
+    ))}
+
+    {/* Form fields grid */}
+    <div class="form__fields">
+      {config.fields.map((field) => (
+        <FormField {...field} />
+      ))}
+    </div>
+
+    {/* Submit button */}
+    <div class="form__actions">
+      <button type="submit" class="form__submit">
+        <span class="form__submit-text">{config.submitText}</span>
+        <span class="form__submit-loading">
+          <svg class="form__spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+          </svg>
+          {config.submittingText || 'Sending...'}
+        </span>
+      </button>
+    </div>
+
+    {/* Privacy notice */}
+    <p class="form__privacy">
+      By submitting, you agree to our <a href="/privacy">privacy policy</a>.
+    </p>
+  </form>
+
+  {/* Success message */}
+  <div class="form__message form__message--success" data-success-message>
+    <div class="form__message-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+        <polyline points="22 4 12 14.01 9 11.01" />
+      </svg>
+    </div>
+    <div class="form__message-content">
+      <p class="form__message-title">{config.successTitle || 'Success!'}</p>
+      <p class="form__message-text">{config.successMessage}</p>
+    </div>
+  </div>
+
+  {/* Error message */}
+  <div class="form__message form__message--error" data-error-message>
+    <div class="form__message-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" x2="12" y1="8" y2="12" />
+        <line x1="12" x2="12.01" y1="16" y2="16" />
+      </svg>
+    </div>
+    <div class="form__message-content">
+      <p class="form__message-title">Something went wrong</p>
+      <p class="form__message-text">{config.errorMessage || 'Please try again or call us directly.'}</p>
+    </div>
+  </div>
+</div>
+
+<style lang="scss" is:global>
+  @use '../../../styles/forms/base';
+</style>
+
+
+<script>
+  import { getSessionId } from '../../../lib/session'
+
+  // Initialize all form instances
+  document.querySelectorAll('[data-form-wrapper]').forEach((wrapper) => {
+    const form = wrapper.querySelector('[data-form]') as HTMLFormElement
+    const successMessage = wrapper.querySelector('[data-success-message]')
+    const errorMessage = wrapper.querySelector('[data-error-message]')
+
+    if (!form) return
+
+    const enquiryType = form.dataset.enquiryType || 'general_enquiry'
+    const errorText = form.dataset.errorMessage || 'Something went wrong. Please try again.'
+    const redirectUrl = form.dataset.redirect
+
+    // Track form start
+    let formStarted = false
+    const trackFormStart = async () => {
+      if (formStarted) return
+      formStarted = true
+
+      const sessionId = getSessionId()
+      const propertyId = (form.querySelector('[name="property_id"]') as HTMLInputElement)?.value
+
+      try {
+        await fetch(`${import.meta.env.PUBLIC_SUPABASE_URL}/functions/v1/track-event`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': import.meta.env.PUBLIC_WEBSITE_API_KEY,
+          },
+          body: JSON.stringify({
+            session_id: sessionId,
+            event_type: 'enquiry_started',
+            property_id: propertyId || null,
+            event_data: { enquiry_type: enquiryType },
+          }),
+        })
+      } catch (err) {
+        console.error('Failed to track form start:', err)
+      }
+    }
+
+    // Add focus listeners to track form interaction
+    form.querySelectorAll('input, textarea, select').forEach((el) => {
+      el.addEventListener('focus', trackFormStart, { once: true })
+    })
+
+    // Handle form submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      const formData = new FormData(form)
+      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement
+
+      // Check honeypot
+      const honeypotField = form.querySelector('input[name="website"]') as HTMLInputElement
+      if (honeypotField && honeypotField.value) {
+        // Bot detected - fake success
+        form.classList.add('is-success')
+        return
+      }
+
+      // Set loading state
+      form.classList.add('is-loading')
+      form.classList.remove('is-error')
+      if (submitBtn) submitBtn.disabled = true
+
+      try {
+        const sessionId = getSessionId()
+        const propertyId = formData.get('property_id') as string | null
+
+        // Build request body
+        const body: Record<string, any> = {
+          session_id: sessionId,
+          enquiry_type: enquiryType,
+        }
+
+        // Add form data
+        formData.forEach((value, key) => {
+          if (key !== 'website') {
+            body[key] = value
+          }
+        })
+
+        // Map common field names
+        if (body.name) body.contact_name = body.name
+        if (body.email) body.contact_email = body.email
+        if (body.phone) body.contact_phone = body.phone
+        if (body.marketing_opt_in) body.marketing_opt_in = body.marketing_opt_in === 'on'
+
+        // Submit to API
+        const endpoint = `${import.meta.env.PUBLIC_SUPABASE_URL}/functions/v1/submit-enquiry`
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': import.meta.env.PUBLIC_WEBSITE_API_KEY,
+          },
+          body: JSON.stringify(body),
+        })
+
+        const result = await response.json()
+
+        if (result.success) {
+          form.classList.add('is-success')
+
+          // Track successful submission
+          try {
+            await fetch(`${import.meta.env.PUBLIC_SUPABASE_URL}/functions/v1/track-event`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': import.meta.env.PUBLIC_WEBSITE_API_KEY,
+              },
+              body: JSON.stringify({
+                session_id: sessionId,
+                event_type: 'enquiry_submitted',
+                property_id: propertyId || null,
+                event_data: {
+                  enquiry_type: enquiryType,
+                  enquiry_id: result.data?.enquiry_id,
+                },
+              }),
+            })
+          } catch (trackErr) {
+            console.error('Failed to track submission:', trackErr)
+          }
+
+          // Redirect if specified
+          if (redirectUrl) {
+            setTimeout(() => {
+              window.location.href = redirectUrl
+            }, 2000)
+          }
+        } else {
+          throw new Error(result.message || errorText)
+        }
+      } catch (error) {
+        console.error('Form submission error:', error)
+        form.classList.add('is-error')
+
+        // Update error message text
+        const errorTextEl = errorMessage?.querySelector('.form__message-text')
+        if (errorTextEl) {
+          errorTextEl.textContent = error instanceof Error ? error.message : errorText
+        }
+
+        // Auto-hide error after 5 seconds
+        setTimeout(() => {
+          form.classList.remove('is-error')
+        }, 5000)
+      } finally {
+        form.classList.remove('is-loading')
+        if (submitBtn) submitBtn.disabled = false
+      }
+    })
+  })
+</script>

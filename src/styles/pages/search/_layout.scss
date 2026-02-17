@@ -1,0 +1,14 @@
+// ========================================
+// SEARCH PAGE LAYOUT STYLES
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../mixins' as *;
+
+.search-page {
+  min-height: 100vh;
+  background: colors.$color-bg-secondary;
+  font-family: typography.$font-family-base;
+}

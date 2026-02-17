@@ -1,0 +1,951 @@
+---
+// ========================================
+// UNIVERSAL SEARCH BAR
+// Built on SearchBarCore - comprehensive property search
+// ========================================
+//
+// USAGE:
+// Basic:     <UniversalSearchBar showLocation showBedrooms />
+// Preset:    <UniversalSearchBar {...SEARCH_PRESETS.sidebar} />
+// Custom:    <UniversalSearchBar variant="hero" showLocation showMaxPrice />
+//
+// EXTENDING:
+// 1. Import types from ./config
+// 2. Create child component with custom defaults
+// 3. Override styles via CSS custom properties
+//
+// ========================================
+
+import SearchBarCore, { type SearchBarConfig } from './SearchBarCore.astro'
+import type { PropertySearchParams } from '../../types/database'
+import {
+  EPC_RATINGS,
+  COUNCIL_TAX_BANDS,
+  PARKING_TYPES,
+  TENURE_TYPES,
+  FURNISHING_TYPES,
+  LISTING_STATUS_OPTIONS
+} from '../../types/database'
+
+import {
+  type SearchBarProps,
+  DEFAULT_SEARCH_PROPS,
+  BEDROOM_OPTIONS,
+  BATHROOM_OPTIONS,
+  RECEPTION_OPTIONS,
+  PROPERTY_TYPE_OPTIONS,
+  SORT_OPTIONS,
+  SALE_PRICES,
+  RENT_PRICES,
+  getPriceOptions,
+  isOptionSelected,
+} from './config'
+
+// ----------------------------------------
+// PROPS
+// ----------------------------------------
+
+type Props = SearchBarProps
+
+const props = Astro.props
+const mergedProps = { ...DEFAULT_SEARCH_PROPS, ...props }
+
+const {
+  currentParams = {},
+  variant,
+  theme,
+  className,
+  // Fields
+  showListingTypeToggle,
+  showListingStatus,
+  showLocation,
+  showMinPrice,
+  showMaxPrice,
+  showBedrooms,
+  showBathrooms,
+  showReceptions,
+  showPropertyType,
+  showMinArea,
+  showMaxArea,
+  showEPCRating,
+  showCouncilTaxBand,
+  showParking,
+  showTenure,
+  showMinLeaseYears,
+  showMaxServiceCharge,
+  showGarden,
+  showNewBuild,
+  showRecentlyReduced,
+  showSoldSTC,
+  showFurnishing,
+  // Advanced
+  showAdvancedToggle,
+  advancedDefaultOpen,
+  showSortBy,
+  // UI
+  locationPlaceholder,
+  submitButtonText,
+  showSearchIcon,
+  showResetButton,
+  resetButtonText,
+  advancedToggleText,
+  // Behavior
+  redirectUrl,
+} = mergedProps
+
+// ----------------------------------------
+// SEARCH BAR CORE CONFIG
+// ----------------------------------------
+
+const searchConfig: SearchBarConfig = {
+  fields: {
+    listingType: showListingTypeToggle,
+    listingStatus: showListingStatus,
+    location: showLocation,
+    minPrice: showMinPrice,
+    maxPrice: showMaxPrice,
+    bedrooms: showBedrooms,
+    bathrooms: showBathrooms,
+    propertyType: showPropertyType,
+    epcRating: showEPCRating,
+    councilTaxBand: showCouncilTaxBand,
+    parking: showParking,
+    tenure: showTenure,
+    minLeaseYears: showMinLeaseYears,
+    maxServiceCharge: showMaxServiceCharge,
+    minArea: showMinArea,
+    maxArea: showMaxArea,
+    garden: showGarden,
+    newBuild: showNewBuild,
+    furnishing: showFurnishing,
+  },
+  redirectUrl: redirectUrl,
+  currentParams: currentParams,
+  placeholders: {
+    location: locationPlaceholder,
+  },
+}
+
+// ----------------------------------------
+// COMPUTED VALUES
+// ----------------------------------------
+
+const listingType = currentParams.listing_type || 'sale'
+const priceOptions = getPriceOptions(listingType)
+
+// Filter listing status options based on current listing type
+const filteredStatusOptions = LISTING_STATUS_OPTIONS.filter(
+  status => listingType === 'let' ? status.forLet : status.forSale
+)
+
+const hasAdvancedFields =
+  showBathrooms || showReceptions ||
+  showMinArea || showMaxArea ||
+  showEPCRating || showCouncilTaxBand ||
+  showParking ||
+  showTenure || showMinLeaseYears || showMaxServiceCharge ||
+  showGarden || showNewBuild || showRecentlyReduced ||
+  showFurnishing
+
+// Build CSS classes
+const containerClasses = [
+  'search-bar',
+  `search-bar--${variant}`,
+  theme === 'dark' ? 'search-bar--dark' : '',
+  className
+].filter(Boolean).join(' ')
+
+// ----------------------------------------
+// ICONS
+// ----------------------------------------
+
+const icons = {
+  home: `<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>`,
+  key: `<rect width="18" height="18" x="3" y="3" rx="2"></rect>`,
+  location: `<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle>`,
+  filter: `<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>`,
+  chevron: `<path d="m6 9 6 6 6-6"></path>`,
+  search: `<circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path>`,
+  reset: `<path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>`,
+  check: `<polyline points="20 6 9 17 4 12"></polyline>`,
+}
+---
+
+<SearchBarCore config={searchConfig}>
+  <div class={containerClasses} data-search-bar>
+    <form class="search-bar__form" id="universal-search-form" data-search-form data-redirect-url={redirectUrl}>
+
+      <!-- Listing Type Toggle -->
+      {showListingTypeToggle && (
+        <div class="search-bar__toggle-group">
+          <div class="search-bar__toggle-buttons">
+            <label class="search-bar__toggle-btn" data-active={listingType === 'sale'}>
+              <input
+                type="radio"
+                name="listing_type"
+                value="sale"
+                checked={listingType === 'sale'}
+                class="search-bar__toggle-input"
+              />
+              <span class="search-bar__toggle-content">
+                <svg class="search-bar__toggle-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" set:html={icons.home} />
+                <span>Buy</span>
+              </span>
+            </label>
+            <label class="search-bar__toggle-btn" data-active={listingType === 'let'}>
+              <input
+                type="radio"
+                name="listing_type"
+                value="let"
+                checked={listingType === 'let'}
+                class="search-bar__toggle-input"
+              />
+              <span class="search-bar__toggle-content">
+                <svg class="search-bar__toggle-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" set:html={icons.key} />
+                <span>Rent</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      )}
+
+      <!-- Main Fields -->
+      <div class="search-bar__main-fields">
+
+        <!-- Location (first for sidebar variant) -->
+        {variant === 'sidebar' && showLocation && (
+          <div class="search-bar__field-group search-bar__field-group--location">
+            <label for="location" class="search-bar__label">
+              Location
+            </label>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              value={currentParams.location || ''}
+              placeholder={locationPlaceholder}
+              class="search-bar__input"
+              autocomplete="off"
+            />
+          </div>
+        )}
+
+        <!-- Property Type (after location for sidebar variant) -->
+        {variant === 'sidebar' && showPropertyType && (
+          <div class="search-bar__field-group">
+            <label for="property_type" class="search-bar__label">Property Type</label>
+            <select id="property_type" name="property_type" class="search-bar__select">
+              {PROPERTY_TYPE_OPTIONS.map(t => (
+                <option value={t.value} selected={currentParams.property_type === t.value}>
+                  {t.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        <!-- Price Fields -->
+        {(showMinPrice || showMaxPrice) && (
+          <div class="search-bar__field-group search-bar__field-group--price">
+            <label class="search-bar__label">{listingType === 'let' ? 'Rate per month' : 'Price Range'}</label>
+            <div class="search-bar__field-row">
+              {showMinPrice && (
+                <select
+                  id="min_price"
+                  name="min_price"
+                  class="search-bar__select"
+                  data-price-select="min"
+                  data-sale-prices={JSON.stringify(SALE_PRICES)}
+                  data-rent-prices={JSON.stringify(RENT_PRICES)}
+                  aria-label="Minimum price"
+                >
+                  {priceOptions.map(p => (
+                    <option value={p.value} selected={isOptionSelected(p.value, currentParams.min_price)}>
+                      {p.label}
+                    </option>
+                  ))}
+                </select>
+              )}
+              {showMaxPrice && (
+                <select
+                  id="max_price"
+                  name="max_price"
+                  class="search-bar__select"
+                  data-price-select="max"
+                  data-sale-prices={JSON.stringify(SALE_PRICES)}
+                  data-rent-prices={JSON.stringify(RENT_PRICES)}
+                  aria-label="Maximum price"
+                >
+                  {priceOptions.map(p => (
+                    <option value={p.value} selected={isOptionSelected(p.value, currentParams.max_price)}>
+                      {p.label}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
+          </div>
+        )}
+
+        <!-- Area Fields (in main row for sidebar variant) -->
+        {variant === 'sidebar' && (showMinArea || showMaxArea) && (
+          <div class="search-bar__field-group search-bar__field-group--area">
+            <label class="search-bar__label">Area (sqft)</label>
+            <div class="search-bar__field-row">
+              {showMinArea && (
+                <input
+                  type="number"
+                  id="min_area_main"
+                  name="min_area"
+                  value={currentParams.min_area || ''}
+                  placeholder="Min"
+                  class="search-bar__input"
+                  aria-label="Minimum area"
+                />
+              )}
+              {showMaxArea && (
+                <input
+                  type="number"
+                  id="max_area_main"
+                  name="max_area"
+                  value={currentParams.max_area || ''}
+                  placeholder="Max"
+                  class="search-bar__input"
+                  aria-label="Maximum area"
+                />
+              )}
+            </div>
+          </div>
+        )}
+
+        <!-- Search Button (inline for sidebar variant) -->
+        {variant === 'sidebar' && (
+          <div class="search-bar__field-group search-bar__field-group--submit">
+            <label class="search-bar__label search-bar__label--spacer">&nbsp;</label>
+            <button type="submit" class="search-bar__btn search-bar__btn--primary search-bar__btn--inline">
+              <svg class="search-bar__btn-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" set:html={icons.search} />
+              <span>Search</span>
+            </button>
+          </div>
+        )}
+
+        <!-- Location (non-sidebar variants) -->
+        {variant !== 'sidebar' && showLocation && (
+          <div class="search-bar__field-group">
+            <label for="location" class="search-bar__label">
+              <svg class="search-bar__label-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" set:html={icons.location} />
+              Location
+            </label>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              value={currentParams.location || ''}
+              placeholder={locationPlaceholder}
+              class="search-bar__input"
+              autocomplete="off"
+            />
+          </div>
+        )}
+
+        <!-- Bedrooms (hidden in sidebar main row - can be in advanced) -->
+        {variant !== 'sidebar' && showBedrooms && (
+          <div class="search-bar__field-group">
+            <label for="beds" class="search-bar__label">Bedrooms</label>
+            <select id="beds" name="beds" class="search-bar__select">
+              {BEDROOM_OPTIONS.map(b => (
+                <option value={b.value} selected={isOptionSelected(b.value, currentParams.beds)}>
+                  {b.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        <!-- Property Type (non-sidebar variants) -->
+        {variant !== 'sidebar' && showPropertyType && (
+          <div class="search-bar__field-group">
+            <label for="property_type" class="search-bar__label">Property Type</label>
+            <select id="property_type" name="property_type" class="search-bar__select">
+              {PROPERTY_TYPE_OPTIONS.map(t => (
+                <option value={t.value} selected={currentParams.property_type === t.value}>
+                  {t.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        <!-- Sort By -->
+        {showSortBy && (
+          <div class="search-bar__field-group">
+            <label for="sort_by" class="search-bar__label">Sort By</label>
+            <select id="sort_by" name="sort_by" class="search-bar__select">
+              {SORT_OPTIONS.map(s => (
+                <option value={s.value} selected={currentParams.sort_by === s.value}>
+                  {s.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
+
+      <!-- Quick Filters Row (for sidebar variant) -->
+      {variant === 'sidebar' && (showGarden || showNewBuild || showRecentlyReduced || showSoldSTC) && (
+        <div class="search-bar__quick-filters">
+          <div class="search-bar__checkbox-grid">
+            {showGarden && (
+              <label class="search-bar__checkbox-label">
+                <input
+                  type="checkbox"
+                  name="garden"
+                  value="true"
+                  checked={currentParams.garden}
+                  class="search-bar__checkbox-input"
+                />
+                <span class="search-bar__checkbox-box">
+                  <svg class="search-bar__check-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" set:html={icons.check} />
+                </span>
+                <span class="search-bar__checkbox-text">Garden</span>
+              </label>
+            )}
+            {showNewBuild && (
+              <label class="search-bar__checkbox-label">
+                <input
+                  type="checkbox"
+                  name="new_build"
+                  value="true"
+                  checked={currentParams.new_build}
+                  class="search-bar__checkbox-input"
+                />
+                <span class="search-bar__checkbox-box">
+                  <svg class="search-bar__check-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" set:html={icons.check} />
+                </span>
+                <span class="search-bar__checkbox-text">New Build</span>
+              </label>
+            )}
+            {showRecentlyReduced && (
+              <label class="search-bar__checkbox-label">
+                <input
+                  type="checkbox"
+                  name="recently_reduced"
+                  value="true"
+                  checked={currentParams.recently_reduced}
+                  class="search-bar__checkbox-input"
+                />
+                <span class="search-bar__checkbox-box">
+                  <svg class="search-bar__check-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" set:html={icons.check} />
+                </span>
+                <span class="search-bar__checkbox-text">Reduced</span>
+              </label>
+            )}
+            {showSoldSTC && listingType === 'sale' && (
+              <label class="search-bar__checkbox-label">
+                <input
+                  type="checkbox"
+                  name="listing_status"
+                  value="sold_stc"
+                  checked={currentParams.listing_status?.includes('sold_stc')}
+                  class="search-bar__checkbox-input"
+                />
+                <span class="search-bar__checkbox-box">
+                  <svg class="search-bar__check-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" set:html={icons.check} />
+                </span>
+                <span class="search-bar__checkbox-text">Sold STC</span>
+              </label>
+            )}
+          </div>
+
+          <!-- Advanced Toggle (All Filters button) -->
+          {showAdvancedToggle && hasAdvancedFields && (
+            <button
+              type="button"
+              class={`search-bar__advanced-toggle ${advancedDefaultOpen ? 'is-active' : ''}`}
+              data-advanced-toggle
+            >
+              <svg class="search-bar__advanced-toggle-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" set:html={icons.filter} />
+              <span>{advancedToggleText}</span>
+            </button>
+          )}
+        </div>
+      )}
+
+      <!-- Advanced Toggle (non-sidebar variants) -->
+      {variant !== 'sidebar' && showAdvancedToggle && hasAdvancedFields && (
+        <button
+          type="button"
+          class={`search-bar__advanced-toggle ${advancedDefaultOpen ? 'is-active' : ''}`}
+          data-advanced-toggle
+        >
+          <svg class="search-bar__advanced-toggle-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" set:html={icons.filter} />
+          <span>{advancedToggleText}</span>
+          <svg class="search-bar__chevron-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" set:html={icons.chevron} />
+        </button>
+      )}
+
+      <!-- Advanced Panel -->
+      {hasAdvancedFields && (
+        <div
+          class={`search-bar__advanced-panel ${advancedDefaultOpen ? 'is-open' : ''}`}
+          data-advanced-panel
+        >
+          <!-- Bathrooms & Receptions -->
+          {(showBathrooms || showReceptions) && (
+            <div class="search-bar__field-row">
+              {showBathrooms && (
+                <div class="search-bar__field-group">
+                  <label for="min_baths" class="search-bar__label">Bathrooms</label>
+                  <select id="min_baths" name="min_baths" class="search-bar__select">
+                    {BATHROOM_OPTIONS.map(b => (
+                      <option value={b.value} selected={isOptionSelected(b.value, currentParams.min_baths)}>
+                        {b.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              {showReceptions && (
+                <div class="search-bar__field-group">
+                  <label for="min_receptions" class="search-bar__label">Receptions</label>
+                  <select id="min_receptions" name="min_receptions" class="search-bar__select">
+                    {RECEPTION_OPTIONS.map(r => (
+                      <option value={r.value} selected={isOptionSelected(r.value, currentParams.min_receptions)}>
+                        {r.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
+          )}
+
+          <!-- Area Fields (hidden in sidebar - shown in main row) -->
+          {variant !== 'sidebar' && (showMinArea || showMaxArea) && (
+            <div class="search-bar__field-row">
+              {showMinArea && (
+                <div class="search-bar__field-group">
+                  <label for="min_area" class="search-bar__label">Min Area (sqft)</label>
+                  <input
+                    type="number"
+                    id="min_area"
+                    name="min_area"
+                    value={currentParams.min_area || ''}
+                    placeholder="e.g. 1000"
+                    class="search-bar__input"
+                  />
+                </div>
+              )}
+              {showMaxArea && (
+                <div class="search-bar__field-group">
+                  <label for="max_area" class="search-bar__label">Max Area (sqft)</label>
+                  <input
+                    type="number"
+                    id="max_area"
+                    name="max_area"
+                    value={currentParams.max_area || ''}
+                    placeholder="e.g. 2000"
+                    class="search-bar__input"
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
+          <!-- Bedrooms (in advanced for sidebar variant) -->
+          {variant === 'sidebar' && showBedrooms && (
+            <div class="search-bar__field-group">
+              <label for="beds" class="search-bar__label">Bedrooms</label>
+              <select id="beds" name="beds" class="search-bar__select">
+                {BEDROOM_OPTIONS.map(b => (
+                  <option value={b.value} selected={isOptionSelected(b.value, currentParams.beds)}>
+                    {b.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <!-- Energy & Costs -->
+          {(showEPCRating || showCouncilTaxBand) && (
+            <div class="search-bar__field-row">
+              {showEPCRating && (
+                <div class="search-bar__field-group">
+                  <label for="epc_rating" class="search-bar__label">Min EPC Rating</label>
+                  <select id="epc_rating" name="epc_rating" class="search-bar__select">
+                    <option value="">Any</option>
+                    {EPC_RATINGS.map(r => (
+                      <option value={r.value} selected={currentParams.epc_rating === r.value}>
+                        {r.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              {showCouncilTaxBand && (
+                <div class="search-bar__field-group">
+                  <label for="council_tax_band" class="search-bar__label">Max Council Tax</label>
+                  <select id="council_tax_band" name="council_tax_band" class="search-bar__select">
+                    <option value="">Any</option>
+                    {COUNCIL_TAX_BANDS.map(b => (
+                      <option value={b.value} selected={currentParams.council_tax_band === b.value}>
+                        {b.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
+          )}
+
+          <!-- Parking -->
+          {showParking && (
+            <div class="search-bar__field-group">
+              <label for="parking" class="search-bar__label">Parking</label>
+              <select id="parking" name="parking" class="search-bar__select">
+                <option value="">Any</option>
+                {PARKING_TYPES.filter(p => p.value !== 'none').map(t => (
+                  <option value={t.value} selected={currentParams.parking === t.value}>
+                    {t.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <!-- Listing Status -->
+          {showListingStatus && (
+            <div class="search-bar__field-group">
+              <label for="listing_status" class="search-bar__label">Status</label>
+              <select
+                id="listing_status"
+                name="listing_status"
+                class="search-bar__select"
+                data-status-select
+                data-status-options={JSON.stringify(LISTING_STATUS_OPTIONS)}
+              >
+                <option value="">Any Status</option>
+                {filteredStatusOptions.map(s => (
+                  <option
+                    value={s.value}
+                    selected={currentParams.listing_status?.includes(s.value)}
+                  >
+                    {s.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <!-- Tenure -->
+          {(showTenure || showMinLeaseYears) && (
+            <div class="search-bar__field-row">
+              {showTenure && (
+                <div class="search-bar__field-group">
+                  <label for="tenure" class="search-bar__label">Tenure</label>
+                  <select id="tenure" name="tenure" class="search-bar__select">
+                    <option value="">Any</option>
+                    {TENURE_TYPES.map(t => (
+                      <option value={t.value} selected={currentParams.tenure === t.value}>
+                        {t.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              {showMinLeaseYears && (
+                <div class="search-bar__field-group">
+                  <label for="min_lease_years" class="search-bar__label">Min Lease Years</label>
+                  <input
+                    type="number"
+                    id="min_lease_years"
+                    name="min_lease_years"
+                    value={currentParams.min_lease_years || ''}
+                    placeholder="e.g. 80"
+                    class="search-bar__input"
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
+          <!-- Service Charge -->
+          {showMaxServiceCharge && (
+            <div class="search-bar__field-group">
+              <label for="max_service_charge" class="search-bar__label">Max Service Charge (£/year)</label>
+              <input
+                type="number"
+                id="max_service_charge"
+                name="max_service_charge"
+                value={currentParams.max_service_charge || ''}
+                placeholder="e.g. 2000"
+                class="search-bar__input"
+              />
+            </div>
+          )}
+
+          <!-- Furnishing (Rental) -->
+          {showFurnishing && listingType === 'let' && (
+            <div class="search-bar__field-group">
+              <label for="furnishing" class="search-bar__label">Furnishing</label>
+              <select id="furnishing" name="furnishing" class="search-bar__select">
+                <option value="">Any</option>
+                {FURNISHING_TYPES.map(f => (
+                  <option value={f.value} selected={currentParams.furnishing === f.value}>
+                    {f.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <!-- Feature Checkboxes (hidden in sidebar variant - shown in quick filters row instead) -->
+          {variant !== 'sidebar' && (showGarden || showNewBuild || showRecentlyReduced) && (
+            <div class="search-bar__checkbox-grid">
+              {showGarden && (
+                <label class="search-bar__checkbox-label">
+                  <input
+                    type="checkbox"
+                    name="garden"
+                    value="true"
+                    checked={currentParams.garden}
+                    class="search-bar__checkbox-input"
+                  />
+                  <span class="search-bar__checkbox-box">
+                    <svg class="search-bar__check-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" set:html={icons.check} />
+                  </span>
+                  <span class="search-bar__checkbox-text">Garden</span>
+                </label>
+              )}
+              {showNewBuild && (
+                <label class="search-bar__checkbox-label">
+                  <input
+                    type="checkbox"
+                    name="new_build"
+                    value="true"
+                    checked={currentParams.new_build}
+                    class="search-bar__checkbox-input"
+                  />
+                  <span class="search-bar__checkbox-box">
+                    <svg class="search-bar__check-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" set:html={icons.check} />
+                  </span>
+                  <span class="search-bar__checkbox-text">New Build</span>
+                </label>
+              )}
+              {showRecentlyReduced && (
+                <label class="search-bar__checkbox-label">
+                  <input
+                    type="checkbox"
+                    name="recently_reduced"
+                    value="true"
+                    checked={currentParams.recently_reduced}
+                    class="search-bar__checkbox-input"
+                  />
+                  <span class="search-bar__checkbox-box">
+                    <svg class="search-bar__check-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" set:html={icons.check} />
+                  </span>
+                  <span class="search-bar__checkbox-text">Reduced</span>
+                </label>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      <!-- Action Buttons -->
+      <div class="search-bar__actions">
+        <button type="submit" class="search-bar__btn search-bar__btn--primary">
+          {showSearchIcon && (
+            <svg class="search-bar__btn-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" set:html={icons.search} />
+          )}
+          <span>{submitButtonText}</span>
+        </button>
+        {showResetButton && (
+          <a href="/search" class="search-bar__btn search-bar__btn--secondary">
+            <svg class="search-bar__btn-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" set:html={icons.reset} />
+            <span>{resetButtonText}</span>
+          </a>
+        )}
+      </div>
+    </form>
+  </div>
+</SearchBarCore>
+
+<style lang="scss">
+  @use '../../styles/components/search';
+</style>
+
+<script>
+  // ========================================
+  // UNIVERSAL SEARCH BAR - CLIENT SCRIPT
+  // UI interactions (toggle, listing type)
+  // Form submission handled by SearchBarCore
+  // ========================================
+
+  interface SearchBarElements {
+    container: HTMLElement
+    advancedToggle: HTMLButtonElement | null
+    advancedPanel: HTMLElement | null
+    listingTypeInputs: NodeListOf<HTMLInputElement>
+  }
+
+  class UniversalSearchBarController {
+    private elements: SearchBarElements
+
+    constructor(container: HTMLElement) {
+      this.elements = {
+        container,
+        advancedToggle: container.querySelector('[data-advanced-toggle]'),
+        advancedPanel: container.querySelector('[data-advanced-panel]'),
+        listingTypeInputs: container.querySelectorAll('input[name="listing_type"]'),
+      }
+
+      this.init()
+    }
+
+    private init(): void {
+      this.setupAdvancedToggle()
+      this.setupListingTypeToggle()
+    }
+
+    private setupAdvancedToggle(): void {
+      const { advancedToggle, advancedPanel } = this.elements
+      if (!advancedToggle || !advancedPanel) return
+
+      advancedToggle.addEventListener('click', () => {
+        advancedPanel.classList.toggle('is-open')
+        advancedToggle.classList.toggle('is-active')
+      })
+    }
+
+    private setupListingTypeToggle(): void {
+      const { listingTypeInputs, container } = this.elements
+
+      listingTypeInputs.forEach(input => {
+        input.addEventListener('change', (e) => {
+          const target = e.target as HTMLInputElement
+          const listingType = target.value as 'sale' | 'let'
+
+          // Update active state on toggle buttons
+          document.querySelectorAll('.search-bar__toggle-btn').forEach(btn => {
+            btn.setAttribute('data-active', 'false')
+          })
+
+          const parentLabel = target.closest('.search-bar__toggle-btn')
+          if (parentLabel) {
+            parentLabel.setAttribute('data-active', 'true')
+          }
+
+          // Update price dropdowns dynamically
+          this.updatePriceDropdowns(listingType)
+
+          // Update listing status dropdown dynamically
+          this.updateStatusDropdown(listingType)
+
+          // Track event
+          this.trackEvent('filter_change', {
+            filter_name: 'listing_type',
+            filter_value: target.value,
+          })
+        })
+      })
+    }
+
+    private updatePriceDropdowns(listingType: 'sale' | 'let'): void {
+      const { container } = this.elements
+      const priceSelects = container.querySelectorAll('[data-price-select]') as NodeListOf<HTMLSelectElement>
+
+      priceSelects.forEach(select => {
+        const salePricesData = select.dataset.salePrices
+        const rentPricesData = select.dataset.rentPrices
+
+        if (!salePricesData || !rentPricesData) return
+
+        const prices = listingType === 'let'
+          ? JSON.parse(rentPricesData)
+          : JSON.parse(salePricesData)
+
+        // Store current value to check if it's still valid
+        const currentValue = select.value
+
+        // Clear and rebuild options
+        select.innerHTML = ''
+        prices.forEach((opt: { value: string; label: string }) => {
+          const option = document.createElement('option')
+          option.value = opt.value
+          option.textContent = opt.label
+          select.appendChild(option)
+        })
+
+        // Check if current value exists in new options, otherwise reset
+        const valueExists = prices.some((opt: { value: string }) => opt.value === currentValue)
+        if (valueExists && currentValue) {
+          select.value = currentValue
+        } else {
+          select.value = ''
+        }
+      })
+    }
+
+    private updateStatusDropdown(listingType: 'sale' | 'let'): void {
+      const { container } = this.elements
+      const statusSelect = container.querySelector('[data-status-select]') as HTMLSelectElement
+
+      if (!statusSelect) return
+
+      const statusOptionsData = statusSelect.dataset.statusOptions
+      if (!statusOptionsData) return
+
+      const allOptions: { value: string; label: string; forSale: boolean; forLet: boolean }[] = JSON.parse(statusOptionsData)
+      const filteredOptions = allOptions.filter(
+        opt => listingType === 'let' ? opt.forLet : opt.forSale
+      )
+
+      // Store current value
+      const currentValue = statusSelect.value
+
+      // Clear and rebuild options
+      statusSelect.innerHTML = '<option value="">Any Status</option>'
+      filteredOptions.forEach(opt => {
+        const option = document.createElement('option')
+        option.value = opt.value
+        option.textContent = opt.label
+        statusSelect.appendChild(option)
+      })
+
+      // Restore value if still valid
+      const valueExists = filteredOptions.some(opt => opt.value === currentValue)
+      if (valueExists && currentValue) {
+        statusSelect.value = currentValue
+      } else {
+        statusSelect.value = ''
+      }
+    }
+
+    private trackEvent(eventName: string, data: Record<string, unknown>): void {
+      if (window.StratosTracker) {
+        window.StratosTracker.trackEvent(eventName, {
+          ...data,
+          component: 'universal_search_bar',
+        })
+      }
+    }
+  }
+
+  // Initialize all search bars
+  function initUniversalSearchBars(): void {
+    document.querySelectorAll('[data-search-bar]').forEach(container => {
+      try {
+        new UniversalSearchBarController(container as HTMLElement)
+      } catch (error) {
+        console.error('[UniversalSearchBar] Initialization error:', error)
+      }
+    })
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initUniversalSearchBars)
+  } else {
+    initUniversalSearchBars()
+  }
+</script>

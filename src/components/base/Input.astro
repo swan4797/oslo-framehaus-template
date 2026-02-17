@@ -1,0 +1,102 @@
+---
+// ========================================
+// INPUT COMPONENT
+// Reusable text input with label
+// ========================================
+
+export interface Props {
+  type?: 'text' | 'email' | 'tel' | 'number' | 'password' | 'search' | 'url'
+  name: string
+  id?: string
+  label?: string
+  placeholder?: string
+  value?: string | number
+  required?: boolean
+  disabled?: boolean
+  readonly?: boolean
+  error?: string
+  hint?: string
+  size?: 'sm' | 'md' | 'lg'
+  autocomplete?: string
+  pattern?: string
+  minlength?: number
+  maxlength?: number
+  min?: number
+  max?: number
+  class?: string
+  inputClass?: string
+  [key: string]: any
+}
+
+const {
+  type = 'text',
+  name,
+  id = name,
+  label,
+  placeholder,
+  value,
+  required = false,
+  disabled = false,
+  readonly = false,
+  error,
+  hint,
+  size = 'md',
+  autocomplete,
+  pattern,
+  minlength,
+  maxlength,
+  min,
+  max,
+  class: className,
+  inputClass,
+  ...rest
+} = Astro.props
+
+const hasError = Boolean(error)
+const describedBy = [
+  error && `${id}-error`,
+  hint && `${id}-hint`,
+].filter(Boolean).join(' ') || undefined
+---
+
+<div class:list={['input-group', `input-group--${size}`, hasError && 'input-group--error', className]}>
+  {label && (
+    <label for={id} class="input-group__label">
+      {label}
+      {required && <span class="input-group__required" aria-hidden="true">*</span>}
+    </label>
+  )}
+
+  <input
+    type={type}
+    id={id}
+    name={name}
+    placeholder={placeholder}
+    value={value}
+    required={required}
+    disabled={disabled}
+    readonly={readonly}
+    autocomplete={autocomplete}
+    pattern={pattern}
+    minlength={minlength}
+    maxlength={maxlength}
+    min={min}
+    max={max}
+    aria-invalid={hasError}
+    aria-describedby={describedBy}
+    class:list={['input-group__input', inputClass]}
+    {...rest}
+  />
+
+  {hint && !error && (
+    <p id={`${id}-hint`} class="input-group__hint">{hint}</p>
+  )}
+
+  {error && (
+    <p id={`${id}-error`} class="input-group__error" role="alert">{error}</p>
+  )}
+</div>
+
+<style lang="scss" is:global>
+  @use '../../styles/components/base/input';
+</style>

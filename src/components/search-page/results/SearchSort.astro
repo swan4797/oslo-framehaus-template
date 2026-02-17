@@ -1,0 +1,33 @@
+---
+// ========================================
+// SEARCH SORT
+// Sort dropdown component
+// ========================================
+
+import type { SearchSortProps, SortOption } from '../types'
+
+interface Props extends SearchSortProps {
+  class?: string
+}
+
+const {
+  currentSortBy,
+  options,
+  class: className = '',
+} = Astro.props
+---
+
+<div class:list={['search-sort', className]}>
+  <label for="sort_select" class="search-sort__label">Sort:</label>
+  <select id="sort_select" class="search-sort__select">
+    {options.map((option: SortOption) => (
+      <option value={option.value} selected={currentSortBy === option.value}>
+        {option.label}
+      </option>
+    ))}
+  </select>
+</div>
+
+<style lang="scss">
+  @use '../../../styles/pages/search/sort';
+</style>

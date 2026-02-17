@@ -1,0 +1,27 @@
+---
+// ========================================
+// NEWSLETTER FORM PRESET
+// Ready-to-use newsletter signup form
+// ========================================
+
+import Form from '../core/Form.astro'
+import { newsletterFormConfig, newsletterExpandedFormConfig } from '../configs'
+
+interface Props {
+  /** Use expanded version with name field */
+  expanded?: boolean
+  /** Custom CSS class */
+  class?: string
+  /** Form variant */
+  variant?: 'default' | 'compact'
+  /** Override success redirect URL */
+  successRedirect?: string
+  /** Additional hidden fields */
+  hiddenFields?: Record<string, string>
+}
+
+const { expanded = false, class: className, ...props } = Astro.props
+const config = expanded ? newsletterExpandedFormConfig : newsletterFormConfig
+---
+
+<Form config={config} class={className} {...props} />

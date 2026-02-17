@@ -1,0 +1,216 @@
+// ========================================
+// BASE STYLES
+// Page layout and main content area
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/spacing' as spacing;
+@use '../../mixins' as *;
+
+// ========================================
+// LEGACY CONTAINER (backwards compatibility)
+// ========================================
+
+.property__details_container {
+  padding: 1em 3em;
+  background: colors.$color-bg-secondary;
+
+  @media (max-width: 540px) {
+    padding: 0.3em;
+  }
+}
+
+// ========================================
+// NEW LAYOUT STRUCTURE
+// ========================================
+
+.property-details {
+  background: colors.$color-bg-secondary;
+}
+
+// ----------------------------------------
+// TOP GRID: Two Column Layout
+// Details + Viewing on left, Gallery on right
+// ----------------------------------------
+
+.property-details__top-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing.$spacing-6;
+  padding: spacing.$spacing-6;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  @include md {
+    grid-template-columns: 1fr 1fr;
+    gap: spacing.$spacing-8;
+    padding: spacing.$spacing-8;
+  }
+
+  @include lg {
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: spacing.$spacing-10;
+    padding: spacing.$spacing-10 spacing.$spacing-12;
+  }
+
+  @include xl {
+    grid-template-columns: 0.7fr 1.3fr;
+    gap: spacing.$spacing-12;
+    padding: spacing.$spacing-12 spacing.$spacing-16;
+  }
+}
+
+// ----------------------------------------
+// LEFT COLUMN: Details + Viewing
+// ----------------------------------------
+
+.property-details__info-column {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-6;
+  order: 2;
+
+  @include md {
+    order: 1;
+  }
+
+  @include lg {
+    gap: spacing.$spacing-8;
+  }
+}
+
+// ----------------------------------------
+// RIGHT COLUMN: Image Gallery
+// ----------------------------------------
+
+.property-details__gallery-column {
+  min-width: 0; // Prevent grid blowout
+  order: 1;
+
+  @include md {
+    order: 2;
+  }
+}
+
+// ----------------------------------------
+// HEADER ROW: Two Column Layout
+// Property title/location on left, Price/details on right
+// ----------------------------------------
+
+.property-details__header-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing.$spacing-6;
+  padding: spacing.$spacing-6;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  @include md {
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: spacing.$spacing-8;
+    padding: spacing.$spacing-8;
+    align-items: start;
+  }
+
+  @include lg {
+    gap: spacing.$spacing-10;
+    padding: spacing.$spacing-10 spacing.$spacing-12;
+  }
+
+  @include xl {
+    gap: spacing.$spacing-12;
+    padding: spacing.$spacing-12 spacing.$spacing-16;
+  }
+
+  > * {
+    min-width: 0;
+  }
+}
+
+// ----------------------------------------
+// DESCRIPTION ROW: Two Column Layout
+// Description on left, Key Features on right
+// ----------------------------------------
+
+.property-details__description-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing.$spacing-6;
+  padding: spacing.$spacing-6;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  @include md {
+    grid-template-columns: 1fr 1fr;
+    gap: spacing.$spacing-8;
+    padding: spacing.$spacing-8;
+  }
+
+  @include lg {
+    gap: spacing.$spacing-10;
+    padding: spacing.$spacing-10 spacing.$spacing-12;
+  }
+
+  @include xl {
+    gap: spacing.$spacing-12;
+    padding: spacing.$spacing-12 spacing.$spacing-16;
+  }
+
+  > * {
+    min-width: 0;
+  }
+}
+
+// ----------------------------------------
+// BOTTOM SECTION: Full Width Content
+// ----------------------------------------
+
+.property-details__content-sections {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-8;
+  padding: spacing.$spacing-6;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  @include md {
+    gap: spacing.$spacing-10;
+    padding: spacing.$spacing-8;
+  }
+
+  @include lg {
+    gap: spacing.$spacing-12;
+    padding: spacing.$spacing-10 spacing.$spacing-12;
+  }
+
+  @include xl {
+    padding: spacing.$spacing-12 spacing.$spacing-16;
+  }
+
+  // Full-width sections
+  > * {
+    width: 100%;
+  }
+}
+
+// ========================================
+// RESPONSIVE ADJUSTMENTS
+// ========================================
+
+@media (max-width: 767px) {
+  .property-details__top-grid {
+    padding: spacing.$spacing-4;
+  }
+
+  .property-details__content-sections {
+    padding: spacing.$spacing-4;
+    gap: spacing.$spacing-6;
+  }
+
+  .property-details__info-column {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+}

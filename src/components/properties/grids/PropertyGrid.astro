@@ -1,0 +1,349 @@
+---
+// ========================================
+// PROPERTY GRID
+// Grid-based property showcase section with
+// configurable columns and responsive layout
+// Supports configurable filtering via props
+// ========================================
+                                                                                      
+                                                                                  
+  // Usage Examples                                                                       
+                                                                                       
+  // Grid Layout                                                                          
+                                                                                       
+  // import PropertyGrid from '../components/property/grids/PropertyGrid.astro'           
+                                                                                       
+  // <!-- 4-column featured sales -->                                                     
+  // <PropertyGrid                                                                        
+  //   title="Featured Properties"                                                        
+  //   columns={4}                                                                        
+  //   limit={4}                                                                          
+  //   listingType="sale"                                                                 
+  //   listingStatus="available"                                                          
+  // />                                                                                   
+                                                                                       
+  // <!-- 3-column new builds -->                                                         
+  // <PropertyGrid                                                                        
+  //   title="New Developments"                                                           
+  //   columns={3}                                                                        
+  //   limit={6}                                                                          
+  //   newBuild={true}                                                                    
+  //   variant="alt"                                                                      
+  // />                                                                                   
+                                                                                       
+  // Slider Layout                                                                        
+                                                                                       
+  // import PropertyGridSlider from                                                       
+  // '../components/property/grids/PropertyGridSlider.astro'                              
+                                                                                       
+  // <!-- Horizontal slider -->                                                           
+  // <PropertyGridSlider                                                                  
+  //   title="Latest Properties"                                                          
+  //   limit={6}                                                                          
+  //   listingStatus="available"                                                          
+  //   sortBy="newest"                                                                    
+  // />                                                                                   
+                                                                                       
+  
+import type {
+  Property,
+  ListingType,
+  ListingStatus,
+  PropertyType,
+  PropertySearchParams
+} from '../../../types/database'
+import { searchProperties } from '../../../lib/api'
+import PropertyCard from '../../properties/cards/PropertyCard.astro'
+
+// ----------------------------------------
+// PROPS INTERFACE
+// ----------------------------------------
+
+interface Props {
+  // Content
+  title?: string
+  subtitle?: string
+  ctaText?: string
+  ctaLink?: string
+
+  // Data - Either pass properties directly OR use filter props
+  properties?: Property[]
+  source?: string
+
+  // ----------------------------------------
+  // FILTER PROPS (for automatic data fetching)
+  // If properties is not provided, these filters
+  // will be used to fetch data from the API
+  // ----------------------------------------
+
+  // Listing filters
+  listingType?: ListingType                    // 'sale' | 'let'
+  listingStatus?: ListingStatus | ListingStatus[]  // 'available' | 'sold' | 'under_offer' etc.
+
+  // Property type filters
+  propertyType?: PropertyType | PropertyType[] // 'detached' | 'flat' | 'new_build' etc.
+
+  // Feature filters
+  isFeatured?: boolean                         // Only show featured properties
+  newBuild?: boolean                           // Only show new builds
+  recentlyReduced?: boolean                    // Only show recently reduced
+
+  // Room filters
+  minBedrooms?: number
+  maxBedrooms?: number
+  minBathrooms?: number
+
+  // Price filters
+  minPrice?: number
+  maxPrice?: number
+
+  // Location filters
+  location?: string
+  postcode?: string
+
+  // Branch filter (for branch microsites)
+  branchId?: string
+
+  // Pagination/Sorting
+  limit?: number                               // Number of properties to show
+  sortBy?: PropertySearchParams['sort_by']     // 'newest' | 'price_asc' | 'price_desc' etc.
+
+  // Layout
+  columns?: 2 | 3 | 4                          // Number of columns (default: 3)
+
+  // Background
+  backgroundType?: 'none' | 'image' | 'video' | 'color'
+  backgroundSrc?: string
+  backgroundColor?: string
+  overlayStrength?: 'none' | 'light' | 'medium' | 'heavy'
+
+  // Styling
+  sectionId?: string
+  class?: string
+  variant?: 'default' | 'alt'
+  showMobileCta?: boolean
+}
+
+const {
+  // Content
+  title,
+  subtitle,
+  ctaText = 'View all',
+  ctaLink: customCtaLink,
+
+  // Data
+  properties: passedProperties,
+  source = 'property_grid',
+
+  // Filters
+  listingType,
+  listingStatus,
+  propertyType,
+  isFeatured,
+  newBuild,
+  recentlyReduced,
+  minBedrooms,
+  maxBedrooms,
+  minBathrooms,
+  minPrice,
+  maxPrice,
+  location,
+  postcode,
+  branchId,
+  limit = 4,
+  sortBy = 'newest',
+
+  // Layout
+  columns = 3,
+
+  // Background
+  backgroundType = 'none',
+  backgroundSrc,
+  backgroundColor,
+  overlayStrength = 'none',
+
+  // Styling
+  sectionId,
+  class: className = '',
+  variant = 'default',
+  showMobileCta = true,
+} = Astro.props
+
+// ----------------------------------------
+// DATA FETCHING
+// If properties not passed, fetch with filters
+// ----------------------------------------
+
+let properties: Property[] = passedProperties || []
+
+// Check if we need to fetch data (no properties passed)
+if (!passedProperties) {
+  // Build search params from filter props
+  const searchParams: PropertySearchParams = {
+    limit,
+    sort_by: sortBy,
+  }
+
+  // Add filters if provided
+  if (listingType) searchParams.listing_type = listingType
+  if (listingStatus) {
+    searchParams.listing_status = Array.isArray(listingStatus) ? listingStatus : [listingStatus]
+  }
+  if (propertyType) searchParams.property_type = propertyType
+  if (newBuild) searchParams.new_build = newBuild
+  if (recentlyReduced) searchParams.recently_reduced = recentlyReduced
+  if (minBedrooms) searchParams.min_beds = minBedrooms
+  if (maxBedrooms) searchParams.max_beds = maxBedrooms
+  if (minBathrooms) searchParams.min_baths = minBathrooms
+  if (minPrice) searchParams.min_price = minPrice
+  if (maxPrice) searchParams.max_price = maxPrice
+  if (location) searchParams.location = location
+  if (postcode) searchParams.postcode = postcode
+  if (branchId) searchParams.branch_id = branchId
+
+  // Fetch properties
+  const response = await searchProperties(searchParams)
+  properties = response?.properties || []
+
+  // Filter by featured if requested (client-side since API may not support)
+  if (isFeatured) {
+    properties = properties.filter(p => p.is_featured)
+  }
+}
+
+// ----------------------------------------
+// GENERATE CTA LINK WITH FILTERS
+// ----------------------------------------
+
+function buildCtaLink(): string {
+  // Use custom link if provided
+  if (customCtaLink) return customCtaLink
+
+  // Build search URL with applied filters
+  const params = new URLSearchParams()
+
+  if (listingType) params.set('listing_type', listingType)
+  if (listingStatus) {
+    const statuses = Array.isArray(listingStatus) ? listingStatus : [listingStatus]
+    statuses.forEach(s => params.append('listing_status', s))
+  }
+  if (propertyType) {
+    const types = Array.isArray(propertyType) ? propertyType : [propertyType]
+    types.forEach(t => params.append('property_type', t))
+  }
+  if (newBuild) params.set('new_build', 'true')
+  if (minBedrooms) params.set('min_beds', String(minBedrooms))
+  if (maxBedrooms) params.set('max_beds', String(maxBedrooms))
+  if (minPrice) params.set('min_price', String(minPrice))
+  if (maxPrice) params.set('max_price', String(maxPrice))
+  if (location) params.set('location', location)
+
+  const queryString = params.toString()
+  return queryString ? `/search?${queryString}` : '/search'
+}
+
+const ctaLink = buildCtaLink()
+
+// Overlay opacity mapping
+const overlayOpacities = {
+  none: 0,
+  light: 0.3,
+  medium: 0.5,
+  heavy: 0.7,
+}
+const overlayOpacity = overlayOpacities[overlayStrength]
+
+// Has background media
+const hasBackgroundMedia = backgroundType === 'image' || backgroundType === 'video'
+---
+
+{properties.length > 0 && (
+  <section
+    class:list={[
+      'pg',
+      `pg--${variant}`,
+      `pg--cols-${columns}`,
+      { 'pg--has-bg': hasBackgroundMedia || backgroundType === 'color' },
+      className,
+    ]}
+    id={sectionId}
+  >
+    {/* Background Media */}
+    {hasBackgroundMedia && (
+      <div class="pg__background">
+        {backgroundType === 'video' ? (
+          <video
+            class="pg__bg-media"
+            autoplay
+            muted
+            loop
+            playsinline
+            poster={backgroundSrc?.replace(/\.[^.]+$/, '.jpg')}
+          >
+            <source src={backgroundSrc} type="video/mp4" />
+          </video>
+        ) : (
+          <img
+            class="pg__bg-media"
+            src={backgroundSrc}
+            alt=""
+            loading="lazy"
+          />
+        )}
+        {overlayStrength !== 'none' && (
+          <div class="pg__bg-overlay" style={`opacity: ${overlayOpacity}`}></div>
+        )}
+      </div>
+    )}
+
+    {/* Color Background */}
+    {backgroundType === 'color' && backgroundColor && (
+      <div class="pg__background pg__background--color" style={`background-color: ${backgroundColor}`}></div>
+    )}
+
+    <div class="pg__container">
+      {/* Header */}
+      {(title || subtitle || ctaText) && (
+        <div class="pg__header">
+          <div class="pg__title-group">
+            {title && <h2 class="pg__title">{title}</h2>}
+            {subtitle && (
+              <p class="pg__subtitle" set:html={subtitle} />
+            )}
+          </div>
+
+          {/* CTA Link */}
+          {ctaText && ctaLink && (
+            <a href={ctaLink} class="pg__link">
+              {ctaText}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          )}
+        </div>
+      )}
+
+      {/* Grid */}
+      <div class="pg__grid">
+        {properties.map(property => (
+          <div class="pg__grid-item">
+            <PropertyCard property={property} source={source} />
+          </div>
+        ))}
+      </div>
+
+      {/* Mobile CTA */}
+      {showMobileCta && ctaText && ctaLink && (
+        <div class="pg__mobile-cta">
+          <a href={ctaLink} class="pg__mobile-btn">
+            {ctaText}
+          </a>
+        </div>
+      )}
+    </div>
+  </section>
+)}
+<style lang="scss">
+  @use '../../../styles/components/properties/grids/layout-grid';
+</style>

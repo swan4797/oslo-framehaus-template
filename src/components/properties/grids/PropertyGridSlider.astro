@@ -1,0 +1,411 @@
+---
+// ========================================
+// PROPERTY GRID SLIDER
+// Slider-based property showcase section with
+// horizontal scrolling and navigation controls
+// Supports configurable filtering via props
+// ========================================
+
+import type {
+  Property,
+  ListingType,
+  ListingStatus,
+  PropertyType,
+  PropertySearchParams
+} from '../../../types/database'
+import { searchProperties } from '../../../lib/api'
+import PropertyCard from '../../properties/cards/PropertyCard.astro'
+
+// ----------------------------------------
+// PROPS INTERFACE
+// ----------------------------------------
+
+interface Props {
+  // Content
+  title: string
+  subtitle?: string
+  ctaText?: string
+  ctaLink?: string
+
+  // Data - Either pass properties directly OR use filter props
+  properties?: Property[]
+  source?: string
+
+  // ----------------------------------------
+  // FILTER PROPS (for automatic data fetching)
+  // If properties is not provided, these filters
+  // will be used to fetch data from the API
+  // ----------------------------------------
+
+  // Listing filters
+  listingType?: ListingType                    // 'sale' | 'let'
+  listingStatus?: ListingStatus | ListingStatus[]  // 'available' | 'sold' | 'under_offer' etc.
+
+  // Property type filters
+  propertyType?: PropertyType | PropertyType[] // 'detached' | 'flat' | 'new_build' etc.
+
+  // Feature filters
+  isFeatured?: boolean                         // Only show featured properties
+  newBuild?: boolean                           // Only show new builds
+  recentlyReduced?: boolean                    // Only show recently reduced
+
+  // Room filters
+  minBedrooms?: number
+  maxBedrooms?: number
+  minBathrooms?: number
+
+  // Price filters
+  minPrice?: number
+  maxPrice?: number
+
+  // Location filters
+  location?: string
+  postcode?: string
+
+  // Pagination/Sorting
+  limit?: number                               // Number of properties to show
+  sortBy?: PropertySearchParams['sort_by']     // 'newest' | 'price_asc' | 'price_desc' etc.
+
+  // Background
+  backgroundType?: 'none' | 'image' | 'video' | 'color'
+  backgroundSrc?: string
+  backgroundColor?: string
+  overlayStrength?: 'none' | 'light' | 'medium' | 'heavy'
+
+  // Layout
+  layout?: 'slider' | 'grid'
+  columns?: 2 | 3 | 4
+
+  // Styling
+  sectionId?: string
+  class?: string
+  variant?: 'default' | 'alt'
+  showSliderNav?: boolean
+  showMobileCta?: boolean
+}
+
+const {
+  // Content
+  title,
+  subtitle,
+  ctaText = 'View all',
+  ctaLink: customCtaLink,
+
+  // Data
+  properties: passedProperties,
+  source = 'property_section',
+
+  // Filters
+  listingType,
+  listingStatus,
+  propertyType,
+  isFeatured,
+  newBuild,
+  recentlyReduced,
+  minBedrooms,
+  maxBedrooms,
+  minBathrooms,
+  minPrice,
+  maxPrice,
+  location,
+  postcode,
+  limit = 6,
+  sortBy = 'newest',
+
+  // Background
+  backgroundType = 'none',
+  backgroundSrc,
+  backgroundColor,
+  overlayStrength = 'none',
+
+  // Layout
+  layout = 'slider',
+  columns = 3,
+
+  // Styling
+  sectionId,
+  class: className = '',
+  variant = 'default',
+  showSliderNav = true,
+  showMobileCta = true,
+} = Astro.props
+
+// ----------------------------------------
+// DATA FETCHING
+// If properties not passed, fetch with filters
+// ----------------------------------------
+
+let properties: Property[] = passedProperties || []
+
+// Check if we need to fetch data (no properties passed)
+if (!passedProperties) {
+  // Build search params from filter props
+  const searchParams: PropertySearchParams = {
+    limit,
+    sort_by: sortBy,
+  }
+
+  // Add filters if provided
+  if (listingType) searchParams.listing_type = listingType
+  if (listingStatus) {
+    searchParams.listing_status = Array.isArray(listingStatus) ? listingStatus : [listingStatus]
+  }
+  if (propertyType) searchParams.property_type = propertyType
+  if (newBuild) searchParams.new_build = newBuild
+  if (recentlyReduced) searchParams.recently_reduced = recentlyReduced
+  if (minBedrooms) searchParams.min_beds = minBedrooms
+  if (maxBedrooms) searchParams.max_beds = maxBedrooms
+  if (minBathrooms) searchParams.min_baths = minBathrooms
+  if (minPrice) searchParams.min_price = minPrice
+  if (maxPrice) searchParams.max_price = maxPrice
+  if (location) searchParams.location = location
+  if (postcode) searchParams.postcode = postcode
+
+  // Fetch properties
+  const response = await searchProperties(searchParams)
+  properties = response?.properties || []
+
+  // Filter by featured if requested (client-side since API may not support)
+  if (isFeatured) {
+    properties = properties.filter(p => p.is_featured)
+  }
+}
+
+// ----------------------------------------
+// GENERATE CTA LINK WITH FILTERS
+// ----------------------------------------
+
+function buildCtaLink(): string {
+  // Use custom link if provided
+  if (customCtaLink) return customCtaLink
+
+  // Build search URL with applied filters
+  const params = new URLSearchParams()
+
+  if (listingType) params.set('listing_type', listingType)
+  if (listingStatus) {
+    const statuses = Array.isArray(listingStatus) ? listingStatus : [listingStatus]
+    statuses.forEach(s => params.append('listing_status', s))
+  }
+  if (propertyType) {
+    const types = Array.isArray(propertyType) ? propertyType : [propertyType]
+    types.forEach(t => params.append('property_type', t))
+  }
+  if (newBuild) params.set('new_build', 'true')
+  if (minBedrooms) params.set('min_beds', String(minBedrooms))
+  if (maxBedrooms) params.set('max_beds', String(maxBedrooms))
+  if (minPrice) params.set('min_price', String(minPrice))
+  if (maxPrice) params.set('max_price', String(maxPrice))
+  if (location) params.set('location', location)
+
+  const queryString = params.toString()
+  return queryString ? `/search?${queryString}` : '/search'
+}
+
+const ctaLink = buildCtaLink()
+
+// Generate unique ID for slider
+const sliderId = sectionId || `property-slider-${Math.random().toString(36).substr(2, 9)}`
+
+// Overlay opacity mapping
+const overlayOpacities = {
+  none: 0,
+  light: 0.3,
+  medium: 0.5,
+  heavy: 0.7,
+}
+const overlayOpacity = overlayOpacities[overlayStrength]
+
+// Has background media
+const hasBackgroundMedia = backgroundType === 'image' || backgroundType === 'video'
+---
+
+{properties.length > 0 && (
+  <section
+    class:list={[
+      'pgs',
+      `pgs--${variant}`,
+      `pgs--layout-${layout}`,
+      { 'pgs--has-bg': hasBackgroundMedia || backgroundType === 'color' },
+      className,
+    ]}
+    id={sectionId}
+    data-property-grid-section
+  >
+    {/* Background Media */}
+    {hasBackgroundMedia && (
+      <div class="pgs__background">
+        {backgroundType === 'video' ? (
+          <video
+            class="pgs__bg-media"
+            autoplay
+            muted
+            loop
+            playsinline
+            poster={backgroundSrc?.replace(/\.[^.]+$/, '.jpg')}
+          >
+            <source src={backgroundSrc} type="video/mp4" />
+          </video>
+        ) : (
+          <img
+            class="pgs__bg-media"
+            src={backgroundSrc}
+            alt=""
+            loading="lazy"
+          />
+        )}
+        {overlayStrength !== 'none' && (
+          <div class="pgs__bg-overlay" style={`opacity: ${overlayOpacity}`}></div>
+        )}
+      </div>
+    )}
+
+    {/* Color Background */}
+    {backgroundType === 'color' && backgroundColor && (
+      <div class="pgs__background pgs__background--color" style={`background-color: ${backgroundColor}`}></div>
+    )}
+
+    <div class="pgs__container">
+      {/* Header */}
+      <div class="pgs__header">
+        <div class="pgs__title-group">
+          <h2 class="pgs__title">{title}</h2>
+          {subtitle && (
+            <p class="pgs__subtitle" set:html={subtitle} />
+          )}
+        </div>
+
+        <div class="pgs__controls">
+          {/* Slider Navigation */}
+          {layout === 'slider' && showSliderNav && (
+            <div class="pgs__slider-nav" data-slider-nav={sliderId}>
+              <button
+                type="button"
+                class="pgs__nav-btn pgs__nav-btn--prev"
+                data-slider-prev
+                aria-label="Previous"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+              </button>
+              <button
+                type="button"
+                class="pgs__nav-btn pgs__nav-btn--next"
+                data-slider-next
+                aria-label="Next"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </div>
+          )}
+
+          {/* CTA Link */}
+          {ctaText && ctaLink && (
+            <a href={ctaLink} class="pgs__link">
+              {ctaText}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          )}
+        </div>
+      </div>
+
+      {/* Slider Layout */}
+      {layout === 'slider' && (
+        <div class="pgs__slider" id={sliderId} data-slider-container>
+          <div class="pgs__slider-track">
+            {properties.map(property => (
+              <div class="pgs__slider-item">
+                <PropertyCard property={property} source={source} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Grid Layout */}
+      {layout === 'grid' && (
+        <div class:list={['pgs__grid', `pgs__grid--cols-${columns}`]}>
+          {properties.map(property => (
+            <div class="pgs__grid-item">
+              <PropertyCard property={property} source={source} />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Mobile CTA */}
+      {showMobileCta && ctaText && ctaLink && (
+        <div class="pgs__mobile-cta">
+          <a href={ctaLink} class="pgs__mobile-btn">
+            {ctaText}
+          </a>
+        </div>
+      )}
+    </div>
+  </section>
+)}
+
+<style lang="scss">
+  @use '../../../styles/components/properties/grids/grid-slider';
+</style>
+
+
+<script>
+  // ========================================
+  // PROPERTY GRID SECTION - SLIDER LOGIC
+  // ========================================
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const sections = document.querySelectorAll('[data-property-grid-section]')
+
+    sections.forEach(section => {
+      const slider = section.querySelector('[data-slider-container]') as HTMLElement | null
+      const nav = section.querySelector('[data-slider-nav]')
+
+      if (!slider || !nav) return
+
+      const prevBtn = nav.querySelector('[data-slider-prev]') as HTMLButtonElement | null
+      const nextBtn = nav.querySelector('[data-slider-next]') as HTMLButtonElement | null
+      const track = slider.querySelector('.pgs__slider-track') as HTMLElement | null
+      const items = slider.querySelectorAll('.pgs__slider-item')
+
+      if (!prevBtn || !nextBtn || !track || !items.length) return
+
+      // Calculate scroll amount
+      const getScrollAmount = (): number => {
+        const item = items[0] as HTMLElement
+        const style = window.getComputedStyle(track)
+        const gap = parseInt(style.gap) || 24
+        return item.offsetWidth + gap
+      }
+
+      // Update button states
+      const updateButtons = (): void => {
+        const isAtStart = slider.scrollLeft <= 0
+        const isAtEnd = slider.scrollLeft >= slider.scrollWidth - slider.clientWidth - 10
+
+        prevBtn.classList.toggle('pgs__nav-btn--disabled', isAtStart)
+        nextBtn.classList.toggle('pgs__nav-btn--disabled', isAtEnd)
+      }
+
+      // Event listeners
+      prevBtn.addEventListener('click', () => {
+        slider.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' })
+      })
+
+      nextBtn.addEventListener('click', () => {
+        slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' })
+      })
+
+      slider.addEventListener('scroll', updateButtons)
+
+      // Initial state
+      updateButtons()
+    })
+  })
+</script>
