@@ -18,8 +18,7 @@
 .static-hero {
   display: grid;
   grid-template-columns: 1fr;
-  min-height: 100vh;
-  min-height: 100svh;
+  background-color: colors.$color-bg-tertiary;
 
   @include md {
     grid-template-columns: 1fr 1fr;
@@ -51,7 +50,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: colors.$color-bg-tertiary;
   padding: spacing.$space-12 spacing.$space-6;
   min-height: 50vh;
 
@@ -159,8 +157,9 @@
   overflow: hidden;
 
   @include md {
-    min-height: 100vh;
-    min-height: 100svh;
+    max-height: 85vh;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
   }
 }
 
@@ -173,6 +172,11 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  // Animation: Progressive clip-path unveil from top
+  clip-path: inset(0 0 100% 0);
+  animation: static-hero-media-reveal 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 0.1s;
 }
 
 // ========================================
@@ -261,6 +265,16 @@
 // ANIMATIONS
 // ========================================
 
+// Media reveal: Slide down and gradually reveal image
+@keyframes static-hero-media-reveal {
+  0% {
+    clip-path: inset(0 0 100% 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
 @keyframes static-hero-fade-in {
   from {
     opacity: 0;
@@ -321,6 +335,11 @@
 // ========================================
 
 @media (prefers-reduced-motion: reduce) {
+  .static-hero__media {
+    animation: none;
+    clip-path: inset(0 0 0 0);
+  }
+
   .static-hero__title,
   .static-hero__description,
   .static-hero__brand,
