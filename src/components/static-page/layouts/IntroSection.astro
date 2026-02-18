@@ -52,6 +52,7 @@ interface Props {
   featuredMediaAlt?: string
   featuredMediaType?: MediaType
   featuredMediaPoster?: string
+  videoAutoplay?: boolean
 
   // Stat cards
   stats?: StatCard[]
@@ -99,6 +100,7 @@ const {
   featuredMediaAlt = 'Featured media',
   featuredMediaType = 'image',
   featuredMediaPoster,
+  videoAutoplay = false,
 
   // Stat cards
   stats = [],
@@ -213,15 +215,18 @@ const hasCtaButtons = hasPrimaryCta || hasSecondaryCta
                   muted
                   loop
                   playsinline
+                  autoplay={videoAutoplay}
                   id="intro-featured-video"
                 >
                   <source src={featuredMediaSrc} type="video/mp4" />
                 </video>
-                <button type="button" class="intro-section__play-btn" id="intro-play-btn" aria-label="Play video">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
-                </button>
+                {!videoAutoplay && (
+                  <button type="button" class="intro-section__play-btn" id="intro-play-btn" aria-label="Play video">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </button>
+                )}
               </>
             ) : (
               <img

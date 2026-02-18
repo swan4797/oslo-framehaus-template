@@ -158,10 +158,38 @@ const headerData = {
       <nav class="header__desktop-nav" aria-label="Main navigation">
         <ul class="header__desktop-list">
           {navItems.map((item) => (
-            <li class="header__desktop-item">
-              <a href={item.href} class="header__desktop-link">
-                {item.label}
-              </a>
+            <li class={`header__desktop-item ${item.dropdown ? 'header__desktop-item--has-dropdown' : ''}`}>
+              {item.dropdown ? (
+                <>
+                  <button
+                    type="button"
+                    class="header__desktop-link header__desktop-link--dropdown"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                  >
+                    {item.label}
+                    <svg class="header__desktop-dropdown-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </button>
+                  <div class="header__desktop-dropdown">
+                    <div class="header__desktop-dropdown-content">
+                      {item.dropdown.map((subItem) => (
+                        <a href={subItem.href} class="header__desktop-dropdown-link">
+                          <span class="header__desktop-dropdown-label">{subItem.label}</span>
+                          {subItem.description && (
+                            <span class="header__desktop-dropdown-desc">{subItem.description}</span>
+                          )}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <a href={item.href} class="header__desktop-link">
+                  {item.label}
+                </a>
+              )}
             </li>
           ))}
         </ul>

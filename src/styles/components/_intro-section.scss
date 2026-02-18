@@ -168,7 +168,6 @@
 
     @include lg {
       gap: spacing.$space-16;
-      margin-bottom: spacing.$space-16;
     }
   }
 
@@ -182,6 +181,7 @@
     display: flex;
     flex-direction: column;
     gap: spacing.$space-6;
+    align-items: end;
 
     @include md {
       padding-top: spacing.$space-8;
@@ -237,10 +237,6 @@
       text-align: center;
     }
 
-    .intro-section__description {
-      margin-left: auto;
-      margin-right: auto;
-    }
 
     .intro-section__actions {
       justify-content: center;
