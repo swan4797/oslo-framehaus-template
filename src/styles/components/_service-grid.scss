@@ -559,13 +559,13 @@
   text-transform: uppercase;
   text-decoration: none;
   color: colors.$color-text-primary;
-  background: transparent;
-  border: 1px solid colors.$color-text-primary;
+  background: colors.$color-bg-tertiary;
+  border: 1px solid colors.$color-bg-tertiary;
   transition: all 0.3s ease;
 
   &:hover {
-    background-color: colors.$color-text-primary;
-    color: colors.$color-text-light;
+    background-color: colors.$color-bg-secondary;
+    border-color: colors.$color-bg-secondary;
   }
 }
 

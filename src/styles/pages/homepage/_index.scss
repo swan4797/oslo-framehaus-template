@@ -867,14 +867,14 @@
 
   &__btn-primary {
     @include btn-base;
-    background: colors.$color-bg-secondary;
-    color: colors.$color-bg-primary;
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
     padding: spacing.$spacing-3 spacing.$spacing-6;
     font-size: typography.$font-size-base;
     border-radius: effects.$radius-md;
 
     &:hover {
-      opacity: 0.9;
+      background: colors.$color-bg-secondary;
       transform: translateY(-1px);
     }
 
@@ -886,8 +886,8 @@
 
   &__btn-secondary {
     @include btn-base;
-    background: colors.$color-bg-secondary;
-    color: colors.$color-bg-primary;
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
     border: 1px solid rgba(255, 255, 255, 0.3);
     padding: spacing.$spacing-3 spacing.$spacing-6;
     font-size: typography.$font-size-base;

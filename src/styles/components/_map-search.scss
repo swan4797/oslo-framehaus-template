@@ -996,8 +996,8 @@
 
   &--secondary {
     border: 2px solid $border-light;
-    background: colors.$color-bg-secondary;
-    color: $text-secondary;
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
 
     &:hover:not(:disabled) {
       background: colors.$color-bg-secondary;
@@ -1011,8 +1011,8 @@
 
   &--primary {
     border: none;
-    background: colors.$color-bg-secondary;
-    color: $bg-white;
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
 
     &:hover {
       background: colors.$color-bg-secondary;

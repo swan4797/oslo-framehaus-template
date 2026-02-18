@@ -401,22 +401,23 @@
     }
 
     &--primary {
-      background-color: transparent;
+      background-color: colors.$color-bg-tertiary;
       color: colors.$color-text-primary;
-      border: 1px solid colors.$color-text-primary;
+      border: 1px solid colors.$color-bg-tertiary;
 
       &:hover {
-        background-color: colors.$color-text-primary;
-        color: colors.$color-text-light;
+        background-color: colors.$color-bg-secondary;
+        border-color: colors.$color-bg-secondary;
       }
     }
 
     &--secondary {
-      background-color: transparent;
+      background-color: colors.$color-bg-tertiary;
       color: colors.$color-text-primary;
       border: 1px solid colors.$color-border-medium;
 
       &:hover {
+        background-color: colors.$color-bg-secondary;
         border-color: colors.$color-text-primary;
       }
     }

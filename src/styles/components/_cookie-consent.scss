@@ -198,8 +198,8 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
   }
 
   &--primary {
-    background: colors.$color-bg-secondary;
-    color: $text-inverse;
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
     border: none;
 
     &:hover {
@@ -213,14 +213,13 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
   }
 
   &--secondary {
-    background: colors.$color-bg-secondary;
-    color: $text-secondary;
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
     border: 1px solid $border-medium;
 
     &:hover {
       background: colors.$color-bg-secondary;
       border-color: $border-medium;
-      color: $text-primary;
     }
   }
 }
@@ -443,8 +442,8 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
   }
 
   &--primary {
-    background: colors.$color-bg-secondary;
-    color: $text-inverse;
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
     border: none;
     order: 2;
 
@@ -459,15 +458,14 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
   }
 
   &--secondary {
-    background: colors.$color-bg-secondary;
-    color: $text-secondary;
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
     border: 1px solid $border-medium;
     order: 1;
 
     &:hover {
       background: colors.$color-bg-secondary;
       border-color: $border-medium;
-      color: $text-primary;
     }
   }
 }
