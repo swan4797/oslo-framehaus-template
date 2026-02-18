@@ -192,18 +192,18 @@
   }
 
   &--primary {
-    background: colors.$color-text-primary;
-    color: colors.$color-text-light;
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
     border: none;
 
     &:hover {
-      background: colors.$color-text-secondary;
+      background: colors.$color-bg-secondary;
       transform: translateY(-1px);
     }
   }
 
   &--secondary {
-    background: transparent;
+    background: colors.$color-bg-tertiary;
     color: colors.$color-text-primary;
     border: 1px solid colors.$color-border-medium;
 

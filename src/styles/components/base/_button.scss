@@ -65,8 +65,8 @@
   // ----------------------------------------
 
   &--primary {
-    background-color: colors.$color-bg-secondary;
-    color: colors.$color-white;
+    background-color: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
 
     &:hover:not(:disabled) {
       background-color: colors.$color-bg-secondary;
@@ -74,7 +74,7 @@
   }
 
   &--secondary {
-    background-color: colors.$color-bg-secondary;
+    background-color: colors.$color-bg-tertiary;
     color: colors.$color-text-primary;
 
     &:hover:not(:disabled) {

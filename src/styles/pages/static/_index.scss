@@ -693,8 +693,8 @@ $card-amber-bg: #FFF8E1;
   }
 
   &--primary {
-    background: colors.$color-bg-secondary;
-    color: colors.$color-text-light;
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
 
     &:hover {
       background: colors.$color-bg-secondary;
@@ -704,7 +704,7 @@ $card-amber-bg: #FFF8E1;
   }
 
   &--secondary {
-    background: colors.$color-bg-secondary;
+    background: colors.$color-bg-tertiary;
     color: colors.$color-text-primary;
     border: 1.5px solid colors.$color-border-light;
 
@@ -887,8 +887,8 @@ $card-amber-bg: #FFF8E1;
   }
 
   &--primary {
-    background: colors.$color-bg-secondary;
-    color: colors.$color-text-light;
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
 
     &:hover {
       background: colors.$color-bg-secondary;
@@ -898,8 +898,8 @@ $card-amber-bg: #FFF8E1;
   }
 
   &--secondary {
-    background: colors.$color-bg-secondary;
-    color: colors.$color-text-light;
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
     border: 1.5px solid rgba(255, 255, 255, 0.3);
 
     &:hover {

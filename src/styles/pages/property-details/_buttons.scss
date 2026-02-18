@@ -30,23 +30,23 @@
   }
 
   &--primary {
-    background: colors.$color-bg-secondary;
-    color: white;
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
 
     &:hover {
-      filter: brightness(0.9);
+      background: colors.$color-bg-secondary;
       transform: translateY(-1px);
     }
   }
 
   &--secondary {
-    background: colors.$color-bg-secondary;
+    background: colors.$color-bg-tertiary;
     color: colors.$color-text-primary;
     border: 1px solid colors.$color-border-medium;
 
     &:hover {
-      border-color: colors.$color-primary;
-      color: colors.$color-primary;
+      background: colors.$color-bg-secondary;
+      border-color: colors.$color-text-primary;
     }
   }
 }
