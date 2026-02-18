@@ -12,6 +12,12 @@ import { getSectionTitle, getSectionContent, getSectionImage } from '../../../li
 type MediaType = 'image' | 'video'
 type ImagePosition = 'left' | 'right'
 type OverlayStrength = 'none' | 'light' | 'medium' | 'dark'
+type LayoutVariant = 'default' | 'faq'
+
+interface FaqItem {
+  question: string
+  answer: string
+}
 
 interface Props {
   // CMS Integration
@@ -38,7 +44,11 @@ interface Props {
   // Service list items (displayed at bottom of text)
   serviceItems?: string[]
 
+  // FAQ items (for FAQ layout variant)
+  faqItems?: FaqItem[]
+
   // Layout
+  layout?: LayoutVariant
   imagePosition?: ImagePosition
   overlayStrength?: OverlayStrength
 
@@ -67,7 +77,10 @@ const {
   ctaLink = '',
   // Service list
   serviceItems = [],
+  // FAQ items
+  faqItems = [],
   // Layout props
+  layout = 'default',
   imagePosition = 'left',
   overlayStrength = 'none',
   // Styling props
@@ -97,8 +110,12 @@ const finalDescription = cmsContent || description
 const sectionClasses = [
   'content-block',
   `content-block--media-${imagePosition}`,
+  `content-block--${layout}`,
   hasDualImages && 'content-block--dual-images',
 ].filter(Boolean).join(' ')
+
+// Check if FAQ layout with items
+const isFaqLayout = layout === 'faq' && faqItems.length > 0
 ---
 
 <section class={sectionClasses}>
@@ -143,39 +160,134 @@ const sectionClasses = [
   <!-- Text Column -->
   <div class="content-block__text" style={`background-color: ${textBackground}`}>
     <div class="content-block__text-inner">
-      {subtitle && (
-        <span class="content-block__subtitle" style={accentColor ? `color: ${accentColor}` : ''}>
-          {subtitle}
-        </span>
-      )}
+      {/* FAQ Layout */}
+      {isFaqLayout ? (
+        <>
+          {subtitle && (
+            <div class="content-block__label-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+                <rect x="14" y="14" width="7" height="7" rx="1" />
+              </svg>
+              <span>{subtitle}</span>
+            </div>
+          )}
 
-      {finalTitle && (
-        <h2 class="content-block__title" set:html={finalTitle} />
-      )}
+          {finalTitle && (
+            <h2 class="content-block__title content-block__title--faq" set:html={finalTitle} />
+          )}
 
-      {finalDescription && (
-        <div class="content-block__description" set:html={finalDescription} />
-      )}
+          <div class="content-block__faq-list">
+            {faqItems.map((item, index) => (
+              <div class="content-block__faq-item" data-faq-index={index}>
+                <button
+                  type="button"
+                  class="content-block__faq-question"
+                  aria-expanded="false"
+                  aria-controls={`faq-answer-${index}`}
+                >
+                  <span>{item.question}</span>
+                  <svg class="content-block__faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+                <div
+                  id={`faq-answer-${index}`}
+                  class="content-block__faq-answer"
+                  aria-hidden="true"
+                >
+                  <p>{item.answer}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Default Layout */}
+          {subtitle && (
+            <span class="content-block__subtitle" style={accentColor ? `color: ${accentColor}` : ''}>
+              {subtitle}
+            </span>
+          )}
 
-      {ctaText && ctaLink && (
-        <a href={ctaLink} class="content-block__cta" style={accentColor ? `color: ${accentColor}; border-color: ${accentColor}` : ''}>
-          {ctaText}
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </a>
-      )}
+          {finalTitle && (
+            <h2 class="content-block__title" set:html={finalTitle} />
+          )}
 
-      {serviceItems && serviceItems.length > 0 && (
-        <ul class="content-block__services">
-          {serviceItems.map((item) => (
-            <li class="content-block__service-item">{item}</li>
-          ))}
-        </ul>
+          {finalDescription && (
+            <div class="content-block__description" set:html={finalDescription} />
+          )}
+
+          {ctaText && ctaLink && (
+            <a href={ctaLink} class="content-block__cta" style={accentColor ? `color: ${accentColor}; border-color: ${accentColor}` : ''}>
+              {ctaText}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          )}
+
+          {serviceItems && serviceItems.length > 0 && (
+            <ul class="content-block__services">
+              {serviceItems.map((item) => (
+                <li class="content-block__service-item">{item}</li>
+              ))}
+            </ul>
+          )}
+        </>
       )}
     </div>
   </div>
 </section>
+
+<script>
+  // ========================================
+  // FAQ ACCORDION FUNCTIONALITY
+  // ========================================
+
+  function initFaqAccordion() {
+    const faqItems = document.querySelectorAll('.content-block__faq-item')
+    if (!faqItems.length) return
+
+    faqItems.forEach((item) => {
+      const questionBtn = item.querySelector('.content-block__faq-question')
+      const answer = item.querySelector('.content-block__faq-answer')
+
+      if (!questionBtn || !answer) return
+
+      questionBtn.addEventListener('click', () => {
+        const isExpanded = questionBtn.getAttribute('aria-expanded') === 'true'
+
+        // Close all other items
+        faqItems.forEach((otherItem) => {
+          if (otherItem !== item) {
+            const otherBtn = otherItem.querySelector('.content-block__faq-question')
+            const otherAnswer = otherItem.querySelector('.content-block__faq-answer')
+            if (otherBtn && otherAnswer) {
+              otherBtn.setAttribute('aria-expanded', 'false')
+              otherAnswer.setAttribute('aria-hidden', 'true')
+              otherItem.classList.remove('content-block__faq-item--open')
+            }
+          }
+        })
+
+        // Toggle current item
+        questionBtn.setAttribute('aria-expanded', String(!isExpanded))
+        answer.setAttribute('aria-hidden', String(isExpanded))
+        item.classList.toggle('content-block__faq-item--open', !isExpanded)
+      })
+    })
+  }
+
+  // Initialize on page load
+  initFaqAccordion()
+
+  // Re-initialize on Astro page transitions
+  document.addEventListener('astro:page-load', initFaqAccordion)
+</script>
 
 <style lang="scss">
   @use '../../../styles/components/content-block';

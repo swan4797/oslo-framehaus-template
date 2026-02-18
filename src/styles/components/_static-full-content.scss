@@ -1,0 +1,206 @@
+// ========================================
+// STATIC FULL CONTENT COMPONENT
+// Two-column editorial layout with accent title
+// Left: Title with accent highlight, Right: Content + Image
+// ========================================
+
+@use '../variables' as *;
+@use '../mixins' as *;
+@use '../tokens/colors' as colors;
+
+// ========================================
+// BASE LAYOUT
+// ========================================
+
+.static-full-content {
+  padding: $spacing-16 0;
+
+  @include md {
+    padding: $spacing-20 0;
+  }
+
+  @include lg {
+    padding: $spacing-24 0;
+  }
+}
+
+.static-full-content__container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-10;
+
+  @include md {
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-12;
+    padding: 0 $spacing-8;
+  }
+
+  @include lg {
+    grid-template-columns: 2fr 3fr;
+    gap: $spacing-16;
+    padding: 0 $spacing-12;
+  }
+}
+
+// ========================================
+// LEFT COLUMN - TITLE AREA
+// ========================================
+
+.static-full-content__left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  @include md {
+    position: sticky;
+    top: $spacing-24;
+    align-self: start;
+  }
+}
+
+.static-full-content__subtitle {
+  display: inline-block;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: colors.$color-text-secondary;
+  margin-bottom: $spacing-4;
+
+  @include md {
+    font-size: $font-size-sm;
+    margin-bottom: $spacing-5;
+  }
+}
+
+.static-full-content__title {
+  font-family: $font-family-heading;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: $font-weight-regular;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.static-full-content__title-accent {
+  display: block;
+  color: colors.$color-primary;
+  font-style: italic;
+}
+
+.static-full-content__title-main {
+  display: block;
+  color: colors.$color-text-primary;
+  text-transform: uppercase;
+  font-weight: $font-weight-medium;
+  letter-spacing: 0.02em;
+  margin-top: 0.1em;
+}
+
+// ========================================
+// RIGHT COLUMN - CONTENT AREA
+// ========================================
+
+.static-full-content__right {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+
+  @include md {
+    gap: $spacing-10;
+  }
+}
+
+.static-full-content__lead {
+  font-family: $font-family-base;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: $font-weight-regular;
+  line-height: 1.7;
+  color: colors.$color-text-secondary;
+  margin: 0;
+  max-width: 600px;
+}
+
+// ========================================
+// CONTENT BLOCKS
+// ========================================
+
+.static-full-content__blocks {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+  margin-top: $spacing-4;
+
+  @include md {
+    gap: $spacing-10;
+    margin-top: $spacing-6;
+  }
+}
+
+.static-full-content__block {
+  padding-top: $spacing-6;
+  border-top: 1px solid colors.$color-border-light;
+
+  @include md {
+    padding-top: $spacing-8;
+  }
+}
+
+.static-full-content__block-heading {
+  font-family: $font-family-heading;
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  font-weight: $font-weight-medium;
+  line-height: 1.3;
+  color: colors.$color-text-primary;
+  margin: 0 0 $spacing-3;
+
+  @include md {
+    margin-bottom: $spacing-4;
+  }
+}
+
+.static-full-content__block-text {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  font-weight: $font-weight-regular;
+  line-height: 1.7;
+  color: colors.$color-text-secondary;
+  margin: 0;
+}
+
+// ========================================
+// IMAGE
+// ========================================
+
+.static-full-content__image-wrapper {
+  margin-top: $spacing-4;
+  border-radius: $radius-lg;
+  overflow: hidden;
+
+  @include md {
+    margin-top: $spacing-6;
+    border-radius: $radius-xl;
+  }
+}
+
+.static-full-content__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+// ========================================
+// RESPONSIVE ADJUSTMENTS
+// ========================================
+
+@media (max-width: #{$breakpoint-md - 1px}) {
+  .static-full-content__left {
+    text-align: left;
+  }
+
+  .static-full-content__title {
+    font-size: 2rem;
+  }
+}

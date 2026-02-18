@@ -8,7 +8,7 @@
 type BackgroundType = 'video' | 'image' | 'none'
 type OverlayOpacity = 'none' | 'light' | 'medium' | 'dark'
 type CardMediaType = 'video' | 'image'
-type LayoutType = 'grid' | 'asymmetric' | 'cards'
+type LayoutType = 'grid' | 'asymmetric' | 'cards' | 'bento'
 
 interface GridItem {
   id: string
@@ -58,12 +58,15 @@ const sectionClasses = [
   'service-grid',
   backgroundType !== 'none' ? 'service-grid--has-background' : '',
   layout === 'cards' ? 'service-grid--cards-layout' : '',
+  layout === 'bento' ? 'service-grid--bento-layout' : '',
 ].filter(Boolean).join(' ')
 
 const gridClasses = layout === 'asymmetric'
   ? 'service-grid__cards service-grid__cards--asymmetric'
   : layout === 'cards'
   ? 'service-grid__cards service-grid__cards--cards-layout'
+  : layout === 'bento'
+  ? 'service-grid__cards service-grid__cards--bento'
   : `service-grid__cards service-grid__cards--cols-${columns} service-grid__cards--${aspectRatio}`
 ---
 
@@ -86,7 +89,7 @@ const gridClasses = layout === 'asymmetric'
   <div class="service-grid__container">
     <header class="service-grid__header">
       <div class="service-grid__header-left">
-        <h2 class="service-grid__title">{title}</h2>
+        <h2 class="service-grid__title" set:html={title} />
       </div>
       {(subtitle || ctaText) && (
         <div class="service-grid__header-right">
@@ -105,7 +108,32 @@ const gridClasses = layout === 'asymmetric'
 
     <div class={gridClasses}>
       {items.map((item, index) => (
-        layout === 'cards' ? (
+        layout === 'bento' ? (
+          <!-- Bento Layout - Mixed card sizes with content -->
+          <div
+            class={`service-grid__bento-card service-grid__bento-card--${index + 1} ${item.overlayOpacity === 'dark' ? 'service-grid__bento-card--dark' : 'service-grid__bento-card--light'}`}
+            data-card-id={item.id}
+          >
+            {item.mediaSrc && (
+              <div class="service-grid__bento-card-media">
+                {item.mediaType === 'video' ? (
+                  <video autoplay muted loop playsinline poster={item.mediaPoster || ''}>
+                    <source src={item.mediaSrc} type="video/mp4" />
+                  </video>
+                ) : (
+                  <img src={item.mediaSrc} alt={item.title} loading="lazy" />
+                )}
+                <div class={`service-grid__bento-card-overlay service-grid__bento-card-overlay--${item.overlayOpacity || 'medium'}`}></div>
+              </div>
+            )}
+            <div class="service-grid__bento-card-content">
+              <h3 class="service-grid__bento-card-title">{item.title}</h3>
+              {item.description && (
+                <p class="service-grid__bento-card-description">{item.description}</p>
+              )}
+            </div>
+          </div>
+        ) : layout === 'cards' ? (
           <!-- Cards Layout - Image on top, content below -->
           <div class="service-grid__service-card" data-card-id={item.id}>
             <div class="service-grid__service-card-image">

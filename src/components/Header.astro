@@ -135,78 +135,86 @@ const headerData = {
   style={headerStyles}
   {...headerData}
 >
-  <div class="header__container">
-    <!-- Left Navigation -->
-    <div class="header__left-nav">
-      <a href="/valuation" class="header__left-link">Valuation</a>
-      <a href="/search" class="header__left-link">Search</a>
-    </div>
+  <div class="header__outer">
+    <div class="header__container">
+      <!-- Logo (Left) -->
+      <a href="/" class="header__logo" aria-label={`${businessName} - Home`}>
+        {hasValidLogo ? (
+          <img
+            src={brand.logo_main_url}
+            alt={businessName}
+            class="header__logo-img"
+            width="140"
+            height="50"
+          />
+        ) : (
+          <div class="header__logo-stack">
+            <span class="header__logo-text">{businessName}</span>
+          </div>
+        )}
+      </a>
 
-    <!-- Centered Logo -->
-    <a href="/" class="header__logo" aria-label={`${businessName} - Home`}>
-      {hasValidLogo ? (
-        <img
-          src={brand.logo_main_url}
-          alt={businessName}
-          class="header__logo-img"
-          width="140"
-          height="50"
-        />
-      ) : (
-        <div class="header__logo-stack">
-          <span class="header__logo-text">{businessName}</span>
-          <span class="header__logo-tagline">Design</span>
-        </div>
-      )}
-    </a>
+      <!-- Desktop Navigation (Center) -->
+      <nav class="header__desktop-nav" aria-label="Main navigation">
+        <ul class="header__desktop-list">
+          {navItems.map((item) => (
+            <li class="header__desktop-item">
+              <a href={item.href} class="header__desktop-link">
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
-    <!-- Right Actions -->
-    <div class="header__actions">
-      {showSearch && (
-        <a
-          href="/search"
-          class="header__search-btn"
-          aria-label="Search properties"
+      <!-- Right Actions -->
+      <div class="header__actions">
+        {showSearch && (
+          <a
+            href="/search"
+            class="header__search-btn"
+            aria-label="Search properties"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" x2="16.65" y1="21" y2="16.65"></line>
+            </svg>
+          </a>
+        )}
+
+        {showCta && (
+          <a href={ctaHref} class="header__cta">
+            {ctaText}
+          </a>
+        )}
+
+        <!-- Menu Toggle (Mobile) -->
+        <button
+          type="button"
+          class="header__mobile-toggle"
+          id="mobile-menu-toggle"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Open menu"
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" x2="16.65" y1="21" y2="16.65"></line>
-          </svg>
-        </a>
-      )}
-
-      {showCta && (
-        <a href={ctaHref} class="header__cta">
-          {ctaText}
-        </a>
-      )}
-
-      <!-- Menu Toggle -->
-      <button
-        type="button"
-        class="header__mobile-toggle"
-        id="mobile-menu-toggle"
-        aria-expanded="false"
-        aria-controls="mobile-menu"
-        aria-label="Open menu"
-      >
-        <span class="header__hamburger" aria-hidden="true">
-          <span class="header__hamburger-line"></span>
-          <span class="header__hamburger-line"></span>
-        </span>
-      </button>
+          <span class="header__hamburger" aria-hidden="true">
+            <span class="header__hamburger-line"></span>
+            <span class="header__hamburger-line"></span>
+          </span>
+        </button>
+      </div>
     </div>
-
-    <!-- Full-screen Navigation Menu -->
-    <FullscreenMenu
-      businessName={businessName}
-      logoUrl={brand.logo_main_url}
-      hasValidLogo={hasValidLogo}
-      navItems={navItems}
-      navDescriptions={navDescriptions}
-      defaultTagline={defaultTagline}
-    />
   </div>
+
+  <!-- Full-screen Navigation Menu -->
+  <FullscreenMenu
+    businessName={businessName}
+    logoUrl={brand.logo_main_url}
+    hasValidLogo={hasValidLogo}
+    navItems={navItems}
+    navDescriptions={navDescriptions}
+    defaultTagline={defaultTagline}
+  />
 
   <!-- Mobile Menu -->
   <div class="header__mobile-menu" id="mobile-menu" aria-hidden="true">

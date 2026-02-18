@@ -7,6 +7,8 @@
 
 import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
+import StaticHero from '../components/static-page/StaticHero.astro'
+import StaticFullContent from '../components/static-page/StaticFullContent.astro'
 import IntroSection from '../components/static-page/layouts/IntroSection.astro'
 import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
 import CTABanner from '../components/static-page/layouts/CTABanner.astro'
@@ -22,16 +24,15 @@ const pageContent = await getPageContent('buyers')
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-  <!-- Hero Section -->
-  <Hero
-    headline="Find Your Perfect Home"
-    description="We make buying a property simple and stress-free. Let our expert team guide you to your dream home."
-    ctaText="Start Your Search"
-    ctaLink="/search?listing_type=sale"
+  <!-- Static Hero Section -->
+  <StaticHero
+    title="BUYING<br/>YOUR DREAM HOME"
+    description="We make buying a property simple and stress-free. Let our expert team guide you through every step of the process, from initial search to picking up the keys."
+    brandName="Buyer Services"
     backgroundType="image"
     backgroundSrc="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80"
-    overlayOpacity="dark"
-    showPhoneButton={false}
+    categoryLabel="SALES"
+    overlayOpacity="light"
   />
 
   <!-- Intro Section -->
@@ -45,6 +46,32 @@ const pageContent = await getPageContent('buyers')
     leftImageAlt="Modern living room interior"
     rightImageSrc="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=800"
     rightImageAlt="Elegant home exterior"
+  />
+
+  <!-- Static Full Content Section -->
+  <StaticFullContent
+    blockKey="buyer_journey"
+    pageContent={pageContent}
+    subtitle="Your Journey"
+    titleAccent="Finding"
+    titleMain="YOUR PERFECT HOME"
+    leadText="Buying a property is one of life's biggest decisions. We're here to make the process as smooth and stress-free as possible, guiding you every step of the way."
+    contentBlocks={[
+      {
+        heading: "Understanding Your Needs",
+        text: "We start by getting to know you – your lifestyle, your must-haves, and your budget. This helps us identify properties that truly match what you're looking for."
+      },
+      {
+        heading: "Expert Market Knowledge",
+        text: "Our team knows the local market inside out. We can advise on property values, upcoming developments, and which areas offer the best investment potential."
+      },
+      {
+        heading: "Negotiation & Support",
+        text: "When you find the right property, we negotiate on your behalf to secure the best possible deal. We're with you through surveys, legals, and right up to completion."
+      }
+    ]}
+    imageSrc="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1200"
+    imageAlt="Beautiful home interior"
   />
 
   <!-- Content Blocks - Alternating Layout -->
@@ -108,5 +135,23 @@ const pageContent = await getPageContent('buyers')
     imagePosition="right"
     overlayStrength="light"
     serviceItems={["Mortgage Guidance", "Step-by-Step Support", "Legal Assistance"]}
+  />
+
+  <!-- FAQ Section -->
+  <ContentBlock
+    blockKey="buyer_faqs"
+    pageContent={pageContent}
+    layout="faq"
+    mediaSrc="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800"
+    mediaAlt="Buyer support team"
+    title="Frequently Asked Questions"
+    subtitle="FAQS"
+    imagePosition="left"
+    faqItems={[
+      { question: "How long does the buying process typically take?", answer: "The buying process typically takes 8-12 weeks from offer acceptance to completion, though this can vary depending on the chain and any legal complexities involved." },
+      { question: "What costs should I budget for when buying?", answer: "Beyond the property price, you should budget for stamp duty, solicitor fees (£1,000-£2,000), survey costs (£400-£1,500), and mortgage arrangement fees if applicable." },
+      { question: "Do I need a mortgage in principle before viewing?", answer: "While not essential for viewings, having a mortgage in principle shows sellers you're a serious buyer and can speed up the process once you find the right property." },
+      { question: "What happens after my offer is accepted?", answer: "Once accepted, you'll instruct a solicitor, arrange a survey, and your solicitor will handle searches and contract negotiations. We'll guide you through each step." }
+    ]}
   />
 </Layout>

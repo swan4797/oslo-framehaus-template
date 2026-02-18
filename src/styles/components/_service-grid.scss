@@ -569,3 +569,252 @@
     color: colors.$color-text-light;
   }
 }
+
+// ========================================
+// BENTO LAYOUT VARIANT
+// ========================================
+
+.service-grid--bento-layout {
+  background: colors.$color-bg-secondary;
+
+  .service-grid__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: spacing.$space-4;
+    margin-bottom: spacing.$space-10;
+
+    @include md {
+      margin-bottom: spacing.$space-12;
+    }
+  }
+
+  .service-grid__header-left {
+    max-width: 100%;
+  }
+
+  .service-grid__title {
+    font-family: typography.$font-family-heading;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: typography.$font-weight-regular;
+    color: colors.$color-text-primary;
+    letter-spacing: -0.02em;
+
+    em, i {
+      font-style: italic;
+      font-weight: inherit;
+    }
+  }
+
+  .service-grid__header-right {
+    display: none;
+  }
+}
+
+// Bento Grid Layout
+.service-grid__cards--bento {
+  display: grid;
+  gap: spacing.$space-4;
+  grid-template-columns: 1fr;
+
+  @include sm {
+    gap: spacing.$space-5;
+  }
+
+  @include md {
+    gap: spacing.$space-5;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto auto;
+  }
+
+  @include lg {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr 1fr;
+    min-height: 500px;
+  }
+}
+
+// Bento Card Base
+.service-grid__bento-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: spacing.$space-6;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  min-height: 200px;
+
+  @include md {
+    padding: spacing.$space-8;
+    min-height: 220px;
+  }
+
+  // Light variant (default)
+  &--light {
+    background: colors.$color-bg-tertiary;
+
+    .service-grid__bento-card-title {
+      color: colors.$color-text-primary;
+    }
+
+    .service-grid__bento-card-description {
+      color: colors.$color-text-secondary;
+    }
+  }
+
+  // Dark variant
+  &--dark {
+    background: colors.$color-primary;
+
+    .service-grid__bento-card-title {
+      color: colors.$color-text-light;
+    }
+
+    .service-grid__bento-card-description {
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
+
+  // Card 1: Top left
+  &--1 {
+    @include lg {
+      grid-column: 1;
+      grid-row: 1;
+    }
+  }
+
+  // Card 2: Top middle
+  &--2 {
+    @include lg {
+      grid-column: 2;
+      grid-row: 1;
+    }
+  }
+
+  // Card 3: Right tall (spans 2 rows)
+  &--3 {
+    @include md {
+      grid-column: 2;
+      grid-row: 1 / 3;
+    }
+
+    @include lg {
+      grid-column: 3;
+      grid-row: 1 / 3;
+    }
+  }
+
+  // Card 4: Bottom wide (spans 2 columns)
+  &--4 {
+    @include md {
+      grid-column: 1;
+      grid-row: 2 / 4;
+    }
+
+    @include lg {
+      grid-column: 1 / 3;
+      grid-row: 2;
+    }
+  }
+
+  // Card 5: Bottom right
+  &--5 {
+    @include md {
+      grid-column: 2;
+      grid-row: 3;
+    }
+
+    @include lg {
+      grid-column: 3;
+      grid-row: 2;
+      display: none; // Hidden in this layout per design
+    }
+  }
+}
+
+// Bento Card Media (for cards with background images)
+.service-grid__bento-card-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  img, video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  .service-grid__bento-card:hover & {
+    img, video {
+      transform: scale(1.03);
+    }
+  }
+}
+
+.service-grid__bento-card-overlay {
+  position: absolute;
+  inset: 0;
+
+  &--light {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.4) 100%
+    );
+  }
+
+  &--medium {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.2) 0%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+  }
+
+  &--dark {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.6) 100%
+    );
+  }
+}
+
+// Bento Card Content
+.service-grid__bento-card-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.service-grid__bento-card-title {
+  font-family: typography.$font-family-heading;
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  font-weight: typography.$font-weight-semibold;
+  line-height: typography.$line-height-snug;
+  margin: 0 0 spacing.$space-3 0;
+}
+
+.service-grid__bento-card-description {
+  font-family: typography.$font-family-body;
+  font-size: clamp(0.8125rem, 1.2vw, 0.9375rem);
+  font-weight: typography.$font-weight-regular;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 90%;
+}
+
+// Cards with media need content at bottom
+.service-grid__bento-card:has(.service-grid__bento-card-media) {
+  .service-grid__bento-card-content {
+    justify-content: flex-end;
+  }
+
+  .service-grid__bento-card-title,
+  .service-grid__bento-card-description {
+    color: colors.$color-text-light;
+  }
+}

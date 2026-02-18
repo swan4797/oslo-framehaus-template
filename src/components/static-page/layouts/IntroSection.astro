@@ -2,7 +2,7 @@
 // ========================================
 // INTRO SECTION COMPONENT
 // Reusable introductory text block for static pages
-// Centered layout with clean typographic hierarchy
+// Two-column header with featured media and stat cards
 // ========================================
 
 import type { PageContent } from '../../../lib/pages'
@@ -14,6 +14,14 @@ import { getSectionTitle, getSectionContent } from '../../../lib/pages'
 
 type Alignment = 'center' | 'left'
 type BackgroundVariant = 'white' | 'light' | 'dark'
+type MediaType = 'image' | 'video'
+
+interface StatCard {
+  value: string
+  label: string
+  variant?: 'accent' | 'light' | 'image'
+  imageSrc?: string
+}
 
 interface Props {
   // CMS Integration
@@ -33,11 +41,20 @@ interface Props {
   secondaryCtaText?: string
   secondaryCtaLink?: string
 
-  // Side images
+  // Side images (legacy support)
   leftImageSrc?: string
   leftImageAlt?: string
   rightImageSrc?: string
   rightImageAlt?: string
+
+  // Featured media
+  featuredMediaSrc?: string
+  featuredMediaAlt?: string
+  featuredMediaType?: MediaType
+  featuredMediaPoster?: string
+
+  // Stat cards
+  stats?: StatCard[]
 
   // Layout options
   alignment?: Alignment
@@ -71,11 +88,20 @@ const {
   secondaryCtaText,
   secondaryCtaLink,
 
-  // Side images
+  // Side images (legacy support)
   leftImageSrc,
   leftImageAlt = 'Decorative image',
   rightImageSrc,
   rightImageAlt = 'Decorative image',
+
+  // Featured media
+  featuredMediaSrc,
+  featuredMediaAlt = 'Featured media',
+  featuredMediaType = 'image',
+  featuredMediaPoster,
+
+  // Stat cards
+  stats = [],
 
   // Layout
   alignment = 'center',
@@ -87,10 +113,15 @@ const {
   bottomPadding = true,
 } = Astro.props
 
-// Check if we have side images
+// Check if we have side images (legacy)
 const hasLeftImage = !!leftImageSrc
 const hasRightImage = !!rightImageSrc
 const hasSideImages = hasLeftImage || hasRightImage
+
+// Check for new layout features
+const hasFeaturedMedia = !!featuredMediaSrc
+const hasStats = stats && stats.length > 0
+const isModernLayout = hasFeaturedMedia || hasStats
 
 // ----------------------------------------
 // CMS CONTENT RESOLUTION
@@ -111,6 +142,7 @@ const sectionClasses = [
   `intro-section--${alignment}`,
   `intro-section--bg-${backgroundVariant}`,
   hasSideImages && 'intro-section--with-images',
+  isModernLayout && 'intro-section--modern',
   !topPadding && 'intro-section--no-top-padding',
   !bottomPadding && 'intro-section--no-bottom-padding',
 ].filter(Boolean).join(' ')
@@ -122,51 +154,187 @@ const hasCtaButtons = hasPrimaryCta || hasSecondaryCta
 ---
 
 <section class={sectionClasses}>
-  <!-- Left Side Image -->
-  {hasLeftImage && (
-    <div class="intro-section__side-image intro-section__side-image--left">
-      <img src={leftImageSrc} alt={leftImageAlt} loading="lazy" />
-    </div>
-  )}
+  {isModernLayout ? (
+    <>
+      {/* Modern Layout: Two-column header + Featured Media + Stats */}
+      <div class="intro-section__wrapper">
+        {/* Header Row: Two columns */}
+        <div class="intro-section__header">
+          <div class="intro-section__header-left">
+            {subtitle && (
+              <div class="intro-section__label-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="3" width="7" height="7" rx="1" />
+                  <rect x="14" y="3" width="7" height="7" rx="1" />
+                  <rect x="3" y="14" width="7" height="7" rx="1" />
+                  <rect x="14" y="14" width="7" height="7" rx="1" />
+                </svg>
+                <span>{subtitle}</span>
+              </div>
+            )}
+            {finalTitle && (
+              <h2 class="intro-section__title intro-section__title--modern" set:html={finalTitle} />
+            )}
+          </div>
+          <div class="intro-section__header-right">
+            {finalDescription && (
+              <div class="intro-section__description" set:html={finalDescription} />
+            )}
+            {hasCtaButtons && (
+              <div class="intro-section__actions">
+                {hasPrimaryCta && (
+                  <a href={ctaLink} class="intro-section__btn intro-section__btn--modern">
+                    <span>{ctaText}</span>
+                    <span class="intro-section__btn-icon">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                      </svg>
+                    </span>
+                  </a>
+                )}
+                {hasSecondaryCta && (
+                  <a href={secondaryCtaLink} class="intro-section__btn intro-section__btn--secondary">
+                    {secondaryCtaText}
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
 
-  <!-- Center Content -->
-  <div class="intro-section__container" style={`--intro-max-width: ${maxWidth};`}>
-    {subtitle && (
-      <span class="intro-section__subtitle">{subtitle}</span>
-    )}
-
-    {finalTitle && (
-      <h2 class="intro-section__title" set:html={finalTitle} />
-    )}
-
-    {finalDescription && (
-      <div class="intro-section__description" set:html={finalDescription} />
-    )}
-
-    {hasCtaButtons && (
-      <div class="intro-section__actions">
-        {hasPrimaryCta && (
-          <a href={ctaLink} class="intro-section__btn intro-section__btn--primary">
-            {ctaText}
-          </a>
+        {/* Featured Media */}
+        {hasFeaturedMedia && (
+          <div class="intro-section__featured-media">
+            {featuredMediaType === 'video' ? (
+              <>
+                <video
+                  class="intro-section__media-video"
+                  poster={featuredMediaPoster}
+                  muted
+                  loop
+                  playsinline
+                  id="intro-featured-video"
+                >
+                  <source src={featuredMediaSrc} type="video/mp4" />
+                </video>
+                <button type="button" class="intro-section__play-btn" id="intro-play-btn" aria-label="Play video">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </button>
+              </>
+            ) : (
+              <img
+                src={featuredMediaSrc}
+                alt={featuredMediaAlt}
+                class="intro-section__media-image"
+                loading="lazy"
+              />
+            )}
+          </div>
         )}
 
-        {hasSecondaryCta && (
-          <a href={secondaryCtaLink} class="intro-section__btn intro-section__btn--secondary">
-            {secondaryCtaText}
-          </a>
+        {/* Stat Cards */}
+        {hasStats && (
+          <div class="intro-section__stats">
+            {stats.map((stat) => (
+              <div class={`intro-section__stat-card intro-section__stat-card--${stat.variant || 'light'}`}>
+                {stat.variant === 'image' && stat.imageSrc && (
+                  <div
+                    class="intro-section__stat-card-bg"
+                    style={`background-image: url('${stat.imageSrc}')`}
+                  />
+                )}
+                <div class="intro-section__stat-card-content">
+                  <span class="intro-section__stat-value">{stat.value}</span>
+                  <span class="intro-section__stat-label">{stat.label}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </div>
-    )}
-  </div>
+    </>
+  ) : (
+    <>
+      {/* Legacy Layout: Side images with centered content */}
+      {hasLeftImage && (
+        <div class="intro-section__side-image intro-section__side-image--left">
+          <img src={leftImageSrc} alt={leftImageAlt} loading="lazy" />
+        </div>
+      )}
 
-  <!-- Right Side Image -->
-  {hasRightImage && (
-    <div class="intro-section__side-image intro-section__side-image--right">
-      <img src={rightImageSrc} alt={rightImageAlt} loading="lazy" />
-    </div>
+      <div class="intro-section__container" style={`--intro-max-width: ${maxWidth};`}>
+        {subtitle && (
+          <span class="intro-section__subtitle">{subtitle}</span>
+        )}
+
+        {finalTitle && (
+          <h2 class="intro-section__title" set:html={finalTitle} />
+        )}
+
+        {finalDescription && (
+          <div class="intro-section__description" set:html={finalDescription} />
+        )}
+
+        {hasCtaButtons && (
+          <div class="intro-section__actions">
+            {hasPrimaryCta && (
+              <a href={ctaLink} class="intro-section__btn intro-section__btn--primary">
+                {ctaText}
+              </a>
+            )}
+
+            {hasSecondaryCta && (
+              <a href={secondaryCtaLink} class="intro-section__btn intro-section__btn--secondary">
+                {secondaryCtaText}
+              </a>
+            )}
+          </div>
+        )}
+      </div>
+
+      {hasRightImage && (
+        <div class="intro-section__side-image intro-section__side-image--right">
+          <img src={rightImageSrc} alt={rightImageAlt} loading="lazy" />
+        </div>
+      )}
+    </>
   )}
 </section>
+
+<script>
+  // ========================================
+  // VIDEO PLAY FUNCTIONALITY
+  // ========================================
+
+  function initVideoPlayer() {
+    const playBtn = document.getElementById('intro-play-btn')
+    const video = document.getElementById('intro-featured-video') as HTMLVideoElement
+
+    if (!playBtn || !video) return
+
+    playBtn.addEventListener('click', () => {
+      if (video.paused) {
+        video.play()
+        playBtn.classList.add('intro-section__play-btn--playing')
+      } else {
+        video.pause()
+        playBtn.classList.remove('intro-section__play-btn--playing')
+      }
+    })
+
+    video.addEventListener('ended', () => {
+      playBtn.classList.remove('intro-section__play-btn--playing')
+    })
+  }
+
+  // Initialize on page load
+  initVideoPlayer()
+
+  // Re-initialize on Astro page transitions
+  document.addEventListener('astro:page-load', initVideoPlayer)
+</script>
 
 <style lang="scss">
   @use '../../../styles/components/intro-section';

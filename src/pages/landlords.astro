@@ -7,6 +7,8 @@
 
 import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
+import StaticHero from '../components/static-page/StaticHero.astro'
+import StaticFullContent from '../components/static-page/StaticFullContent.astro'
 import IntroSection from '../components/static-page/layouts/IntroSection.astro'
 import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
 import CTABanner from '../components/static-page/layouts/CTABanner.astro'
@@ -22,16 +24,15 @@ const pageContent = await getPageContent('landlords')
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-  <!-- Hero Section -->
-  <Hero
-    headline="Professional Landlord Services"
-    description="From finding quality tenants to full property management, we take the stress out of being a landlord."
-    ctaText="Get a Rental Valuation"
-    ctaLink="/valuation"
+  <!-- Static Hero Section -->
+  <StaticHero
+    title="LANDLORD<br/>SERVICES"
+    description="From finding quality tenants to full property management, we take the stress out of being a landlord. Maximise your rental income with our expert support."
+    brandName="Property Management"
     backgroundType="image"
     backgroundSrc="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=80"
-    overlayOpacity="dark"
-    showPhoneButton={false}
+    categoryLabel="MANAGEMENT"
+    overlayOpacity="light"
   />
 
   <!-- Intro Section -->
@@ -45,6 +46,32 @@ const pageContent = await getPageContent('landlords')
     leftImageAlt="Modern apartment interior"
     rightImageSrc="https://images.pexels.com/photos/2089698/pexels-photo-2089698.jpeg?auto=compress&cs=tinysrgb&w=800"
     rightImageAlt="Rental property exterior"
+  />
+
+  <!-- Static Full Content Section -->
+  <StaticFullContent
+    blockKey="landlord_partnership"
+    pageContent={pageContent}
+    subtitle="Your Partnership"
+    titleAccent="Protecting"
+    titleMain="YOUR INVESTMENT"
+    leadText="Your rental property is a valuable asset. We provide comprehensive letting and management services designed to maximise your returns while minimising the hassle."
+    contentBlocks={[
+      {
+        heading: "Rigorous Tenant Vetting",
+        text: "We conduct thorough referencing on every applicant – credit checks, employment verification, and previous landlord references. Only quality tenants make it through our screening process."
+      },
+      {
+        heading: "Proactive Management",
+        text: "From routine inspections to emergency repairs, we handle everything. Our proactive approach helps prevent small issues becoming costly problems."
+      },
+      {
+        heading: "Full Compliance",
+        text: "Landlord regulations are constantly evolving. We stay on top of all legal requirements – gas safety, EPCs, deposit protection – so you don't have to worry."
+      }
+    ]}
+    imageSrc="https://images.pexels.com/photos/1974596/pexels-photo-1974596.jpeg?auto=compress&cs=tinysrgb&w=1200"
+    imageAlt="Modern rental property"
   />
 
   <!-- Content Blocks - Alternating Layout -->
@@ -111,5 +138,22 @@ const pageContent = await getPageContent('landlords')
     serviceItems={["14 Days to Let", "99% Rent Collection", "200+ Properties"]}
   />
 
+  <!-- FAQ Section -->
+  <ContentBlock
+    blockKey="landlord_faqs"
+    pageContent={pageContent}
+    layout="faq"
+    mediaSrc="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=800"
+    mediaAlt="Landlord consultation"
+    title="Frequently Asked Questions"
+    subtitle="FAQS"
+    imagePosition="left"
+    faqItems={[
+      { question: "What services do you offer landlords?", answer: "We offer three service levels: Tenant Find Only, Rent Collection, and Full Management. Each can be tailored to your specific needs, from basic tenant sourcing to complete hands-off property management." },
+      { question: "How do you find and vet tenants?", answer: "We conduct comprehensive referencing including credit checks, employment verification, previous landlord references, and right-to-rent checks to ensure you get reliable, quality tenants." },
+      { question: "What legal requirements do I need to meet?", answer: "Landlords must have valid Gas Safety certificates, EPC ratings, electrical safety reports, and comply with deposit protection rules. Our team ensures you meet all current legislation." },
+      { question: "How quickly can you find a tenant?", answer: "On average, we let properties within 14 days. We market across all major portals and our database of pre-qualified tenants, ensuring maximum exposure for your property." }
+    ]}
+  />
 
 </Layout>

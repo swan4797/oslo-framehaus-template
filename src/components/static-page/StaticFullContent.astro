@@ -1,0 +1,156 @@
+---
+// ========================================
+// STATIC FULL CONTENT COMPONENT
+// Two-column editorial layout with accent title
+// Left: Title with accent highlight, Right: Content + Image
+// Integrates with Stratos CRM via blockKey
+// ========================================
+
+import type { PageContent } from '../../lib/pages'
+import { getSectionTitle, getSectionContent, getSectionImage } from '../../lib/pages'
+
+// ----------------------------------------
+// TYPE DEFINITIONS
+// ----------------------------------------
+
+interface ContentBlock {
+  heading?: string
+  text: string
+}
+
+interface Props {
+  // CMS Integration
+  blockKey?: string
+  pageContent?: PageContent | null
+
+  // Content props
+  subtitle?: string
+  titleAccent?: string
+  titleMain?: string
+  leadText?: string
+
+  // Secondary content blocks
+  contentBlocks?: ContentBlock[]
+
+  // Media
+  imageSrc?: string
+  imageAlt?: string
+
+  // Styling
+  accentColor?: string
+  backgroundColor?: string
+}
+
+// ----------------------------------------
+// COMPONENT PROPS
+// ----------------------------------------
+
+const {
+  // CMS Integration
+  blockKey = '',
+  pageContent = null,
+
+  // Content
+  subtitle = '',
+  titleAccent = '',
+  titleMain = '',
+  leadText = '',
+
+  // Secondary content
+  contentBlocks = [],
+
+  // Media
+  imageSrc = '',
+  imageAlt = 'Featured image',
+
+  // Styling
+  accentColor = '',
+  backgroundColor = '',
+} = Astro.props
+
+// ----------------------------------------
+// CMS CONTENT RESOLUTION
+// ----------------------------------------
+
+const cmsTitle = blockKey && pageContent ? getSectionTitle(pageContent, blockKey, titleMain) : titleMain
+const cmsContent = blockKey && pageContent ? getSectionContent(pageContent, blockKey, leadText) : leadText
+const cmsImage = blockKey && pageContent ? getSectionImage(pageContent, blockKey) : null
+
+// Resolve final values (CMS takes priority)
+const finalTitleMain = cmsTitle || titleMain
+const finalLeadText = cmsContent || leadText
+const finalImageSrc = cmsImage?.url || imageSrc
+const finalImageAlt = cmsImage?.alt || imageAlt
+
+// Check for content
+const hasImage = !!finalImageSrc
+const hasContentBlocks = contentBlocks && contentBlocks.length > 0
+
+// Build section classes
+const sectionClasses = [
+  'static-full-content',
+].filter(Boolean).join(' ')
+---
+
+<section
+  class={sectionClasses}
+  style={backgroundColor ? `background-color: ${backgroundColor}` : ''}
+>
+  <div class="static-full-content__container">
+    <!-- Left Column: Title -->
+    <div class="static-full-content__left">
+      {subtitle && (
+        <span class="static-full-content__subtitle">{subtitle}</span>
+      )}
+
+      {(titleAccent || finalTitleMain) && (
+        <h2 class="static-full-content__title">
+          {titleAccent && (
+            <span
+              class="static-full-content__title-accent"
+              style={accentColor ? `color: ${accentColor}` : ''}
+            >{titleAccent}</span>
+          )}
+          {finalTitleMain && (
+            <span class="static-full-content__title-main">{finalTitleMain}</span>
+          )}
+        </h2>
+      )}
+    </div>
+
+    <!-- Right Column: Content + Image -->
+    <div class="static-full-content__right">
+      {finalLeadText && (
+        <p class="static-full-content__lead">{finalLeadText}</p>
+      )}
+
+      {hasContentBlocks && (
+        <div class="static-full-content__blocks">
+          {contentBlocks.map((block) => (
+            <div class="static-full-content__block">
+              {block.heading && (
+                <h3 class="static-full-content__block-heading">{block.heading}</h3>
+              )}
+              <p class="static-full-content__block-text">{block.text}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {hasImage && (
+        <div class="static-full-content__image-wrapper">
+          <img
+            src={finalImageSrc}
+            alt={finalImageAlt}
+            class="static-full-content__image"
+            loading="lazy"
+          />
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/components/static-full-content';
+</style>

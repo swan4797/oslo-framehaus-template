@@ -80,21 +80,24 @@ const overlayClass = `hero__overlay hero__overlay--${overlayOpacity}`
     <div class={overlayClass}></div>
   </div>
 
-  <!-- Centered Content -->
+  <!-- Two-Column Bottom Content -->
   <div class="hero__content">
-    <h1 class="hero__headline" set:html={headline} />
-    {description && (
-      <p class="hero__description">
-        {description}
-      </p>
-    )}
-    {ctaText && ctaLink && (
-      <a href={ctaLink} class="hero__cta">
-        {ctaText}
-      </a>
-    )}
+    <div class="hero__content-left">
+      <h1 class="hero__headline" set:html={headline} />
+    </div>
+    <div class="hero__content-right">
+      {description && (
+        <p class="hero__description">
+          {description}
+        </p>
+      )}
+      {ctaText && ctaLink && (
+        <a href={ctaLink} class="hero__cta">
+          {ctaText}
+        </a>
+      )}
+    </div>
   </div>
-
 
   <!-- Floating Utility: Phone Link (Bottom Right) -->
   <!-- {showPhoneButton && (

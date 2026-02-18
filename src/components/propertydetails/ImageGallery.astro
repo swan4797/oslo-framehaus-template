@@ -28,63 +28,69 @@ const remainingCount = sortedImages.length - 1
 <div class="property-gallery" data-property-id={propertyId}>
   {hasImages ? (
     <>
-      <!-- Vertical Gallery Layout -->
-      <div class="gallery-bento">
-        <!-- Main Large Image (Top) -->
-        <div class="gallery-bento__main">
+      <!-- Hero-Style Gallery Layout -->
+      <div class="gallery-hero">
+        <!-- Main Hero Image -->
+        <div class="gallery-hero__main">
           <button
             type="button"
-            class="gallery-bento__image-btn gallery-bento__image-btn--main"
+            class="gallery-hero__image-btn"
             data-index="0"
             aria-label="View image 1"
           >
             <img
               src={primaryImage.file_url}
               alt={primaryImage.alt_text || `${propertyAddress} - Main Image`}
-              class="gallery-bento__image"
+              class="gallery-hero__image"
               id="slider-image"
               data-index="0"
             />
-            <!-- Mobile: Show all photos button on main image -->
-            {sortedImages.length > 1 && (
-              <div class="gallery-bento__show-all gallery-bento__show-all--mobile">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="3" width="7" height="7"/>
-                  <rect x="14" y="3" width="7" height="7"/>
-                  <rect x="14" y="14" width="7" height="7"/>
-                  <rect x="3" y="14" width="7" height="7"/>
-                </svg>
-                <span>Show all photos</span>
-              </div>
-            )}
+            <div class="gallery-hero__overlay"></div>
+          </button>
+
+          <!-- Bottom Content Overlay -->
+          <div class="gallery-hero__content">
+            <div class="gallery-hero__content-left">
+              <h1 class="gallery-hero__title">{propertyAddress}</h1>
+            </div>
+            <div class="gallery-hero__content-right">
+              <p class="gallery-hero__description">
+                Discover this exceptional property featuring premium finishes and stunning views.
+              </p>
+              <!-- Show all photos button -->
+              {sortedImages.length > 1 && (
+                <button type="button" class="gallery-hero__view-all" id="view-all-photos">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"/>
+                    <rect x="14" y="3" width="7" height="7"/>
+                    <rect x="14" y="14" width="7" height="7"/>
+                    <rect x="3" y="14" width="7" height="7"/>
+                  </svg>
+                  <span>View all {sortedImages.length} photos</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legacy bento structure for compatibility -->
+      <div class="gallery-bento" style="display: none;">
+        <div class="gallery-bento__main">
+          <button type="button" class="gallery-bento__image-btn gallery-bento__image-btn--main" data-index="0">
+            <img src={primaryImage.file_url} alt={primaryImage.alt_text || propertyAddress} class="gallery-bento__image" />
           </button>
         </div>
-
-        <!-- Thumbnail Row (Bottom) - 4 images -->
         {sortedImages.length > 1 && (
           <div class="gallery-bento__thumbnails">
             {sortedImages.slice(1, 5).map((image, index) => {
               const isLastVisible = index === 3 || index === sortedImages.slice(1, 5).length - 1
-              const hasMorePhotos = sortedImages.length > 5 && isLastVisible
               return (
                 <div class={`gallery-bento__thumb ${isLastVisible ? 'gallery-bento__thumb--last' : ''}`}>
-                  <button
-                    type="button"
-                    class="gallery-bento__image-btn"
-                    data-index={index + 1}
-                    aria-label={`View image ${index + 2}`}
-                  >
-                    <img
-                      src={image.file_url}
-                      alt={image.alt_text || `${propertyAddress} - Image ${index + 2}`}
-                      class="gallery-bento__image"
-                      loading="lazy"
-                    />
-                    <!-- Show all photos overlay on last thumbnail -->
+                  <button type="button" class="gallery-bento__image-btn" data-index={index + 1}>
+                    <img src={image.file_url} alt={image.alt_text || propertyAddress} class="gallery-bento__image" loading="lazy" />
                     {isLastVisible && sortedImages.length > 5 && (
-                      <div class="gallery-bento__show-all" id="view-all-photos">
-                        <span>+{sortedImages.length - 5}</span>
-                      </div>
+                      <div class="gallery-bento__show-all"><span>+{sortedImages.length - 5}</span></div>
                     )}
                   </button>
                 </div>
@@ -486,6 +492,19 @@ const remainingCount = sortedImages.length - 1
     dot.addEventListener('click', () => goToSlide(index))
   })
 
+  // Click on hero image to open gallery (mobile) or lightbox (desktop)
+  const heroImageBtn = document.querySelector('.gallery-hero__image-btn')
+  if (heroImageBtn) {
+    heroImageBtn.addEventListener('click', (e) => {
+      const index = parseInt(heroImageBtn.getAttribute('data-index') || '0', 10)
+      if (isMobile()) {
+        openMobileGallery()
+      } else {
+        openLightbox(index)
+      }
+    })
+  }
+
   // Click on bento grid images to open gallery (mobile) or lightbox (desktop)
   const bentoImageBtns = document.querySelectorAll('.gallery-bento__image-btn')
   bentoImageBtns.forEach(btn => {
@@ -498,6 +517,19 @@ const remainingCount = sortedImages.length - 1
       }
     })
   })
+
+  // View all photos button (hero style)
+  const heroViewAllBtn = document.querySelector('.gallery-hero__view-all')
+  if (heroViewAllBtn) {
+    heroViewAllBtn.addEventListener('click', (e) => {
+      e.stopPropagation()
+      if (isMobile()) {
+        openMobileGallery()
+      } else {
+        openLightbox(0)
+      }
+    })
+  }
 
   // View all photos buttons (handles clicks on all "show all photos" overlays)
   const showAllBtns = document.querySelectorAll('.gallery-bento__show-all')

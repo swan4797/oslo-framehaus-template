@@ -30,8 +30,8 @@ $container-max-width: 90rem;
   // Sizing (static - design system constants)
   --header-height: 5rem;
   --header-height-mobile: 4rem;
-  --header-padding-x: 2rem;
-  --header-padding-x-mobile: 1.25rem;
+  --header-padding-x: 1.5rem;
+  --header-padding-x-mobile: 1rem;
 
   // Colors (fallback defaults - overridden by inline styles from Header component)
   // These ensure the header works even without JS or inline styles
@@ -53,14 +53,11 @@ $container-max-width: 90rem;
   right: 0;
   z-index: $z-fixed;
   font-family: typography.$font-family-base;
-  background: var(--header-bg);
-  border-bottom: 1px solid var(--header-border);
+  background: transparent;
+  border-bottom: none;
   transform: translateY(0);
   transition:
-    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-    background 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 
   // Non-sticky variant (static positioning)
@@ -85,107 +82,34 @@ $container-max-width: 90rem;
 // ========================================
 
 .site-header--transparent {
-  --header-text-color: #{colors.$color-text-light-90};
-  --header-text-hover: #{colors.$color-text-light};
-  --header-bg: transparent;
-  --header-border: transparent;
-
-  // Menu open state - switch to solid with brand accents
-  &.is-menu-open {
-    --header-bg: #{colors.$color-bg-primary};
-    --header-border: #{colors.$color-border-light};
-    --header-text-color: #{colors.$color-text-primary};
-    --header-text-hover: #{colors.$color-primary};
-
-    .header__logo-icon,
-    .header__logo-text,
-    .header__logo-tagline {
-      color: colors.$color-primary;
-    }
-  }
-
-  // Scrolled state - solid background with blur and brand accents
-  &.is-scrolled {
-    --header-bg: var(--header-scrolled-bg, #{colors.$color-bg-primary-98});
-    --header-border: #{colors.$color-border-light};
-    --header-text-color: #{colors.$color-text-primary};
-    --header-text-hover: #{colors.$color-primary};
-    box-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.08);
-
-    .header__logo-icon,
-    .header__logo-text,
-    .header__logo-tagline {
-      color: colors.$color-primary;
-    }
-  }
-
-  // Blur effect when scrolled (controlled by data attribute)
-  &[data-scrolled-blur="true"].is-scrolled {
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
+  // The container handles the background now
 }
 
 // ========================================
 // VARIANT: SOLID
 // For standard pages without hero sections
-// Uses brand colors for accents on white background
 // ========================================
 
 .site-header--solid {
-  // Scrolled state - add shadow
-  &.is-scrolled {
-    box-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.08);
-  }
-
-  // Logo uses brand color
-  .header__logo-icon,
-  .header__logo-text,
-  .header__logo-tagline {
-    color: colors.$color-primary;
-  }
+  // The container handles the background now
 }
 
 // ========================================
 // VARIANT: DARK
 // For pages with dark backgrounds
-// Light text on dark background
 // ========================================
 
 .site-header--dark {
-  // Scrolled state - subtle shadow
-  &.is-scrolled {
-    box-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  // Menu open state
-  &.is-menu-open {
-    --header-bg: #{colors.$color-bg-dark};
-    --header-border: #{colors.$color-border-light};
-  }
+  // The container handles the background now
 }
 
 // ========================================
 // VARIANT: MINIMAL
 // Clean, borderless design for simple pages
-// Transitions to solid on scroll
 // ========================================
 
 .site-header--minimal {
-  // Scrolled state - fade in background
-  &.is-scrolled {
-    --header-border: #{colors.$color-border-light};
-    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.04);
-  }
-
-  // Logo uses brand color
-  .header__logo-icon,
-  .header__logo-text,
-  .header__logo-tagline {
-    color: colors.$color-primary;
-  }
+  // The container handles the background now
 }
 
 // ========================================
@@ -203,56 +127,81 @@ $container-max-width: 90rem;
 // CONTAINER
 // ========================================
 
+.header__outer {
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: 0.75rem var(--header-padding-x);
+
+  @include mobile-only {
+    padding: 0.5rem var(--header-padding-x-mobile);
+  }
+}
+
 .header__container {
   position: relative;
-  z-index: 1000; // Stay above mobile menu overlay
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: $container-max-width;
-  margin: 0 auto;
-  padding: 0 var(--header-padding-x);
-  height: var(--header-height);
-  background: transparent; // Inherit header background
+  gap: 1rem;
+  padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+  height: auto;
+  min-height: 3.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 100px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
 
   @include mobile-only {
-    height: var(--header-height-mobile);
-    padding: 0 var(--header-padding-x-mobile);
+    padding: 0.375rem 0.375rem 0.375rem 1rem;
+    min-height: 3rem;
   }
 }
 
-// Left navigation links
-.header__left-nav {
-  flex: 1;
+// ========================================
+// DESKTOP NAVIGATION
+// ========================================
+
+.header__desktop-nav {
+  display: none;
+
+  @include md {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
+}
+
+.header__desktop-list {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.header__left-link {
+.header__desktop-item {
+  position: relative;
+}
+
+.header__desktop-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
   font-family: typography.$font-family-base;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: typography.$font-weight-regular;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+  color: colors.$color-text-primary;
   text-decoration: none;
-  color: var(--header-text-color, rgba(255, 255, 255, 0.9));
-  transition: color 0.2s ease, opacity 0.2s ease;
+  letter-spacing: 0.01em;
+  border-radius: 100px;
+  transition: background 0.2s ease, color 0.2s ease;
 
   &:hover {
-    opacity: 0.7;
-  }
-
-  // When scrolled or menu open
-  .site-header--transparent.is-scrolled &,
-  .site-header--transparent.is-menu-open &,
-  .site-header--solid & {
-    color: colors.$color-text-primary;
-  }
-
-  // Hide on mobile
-  @include mobile-only {
-    display: none;
+    background: rgba(0, 0, 0, 0.05);
   }
 }
 
@@ -263,7 +212,7 @@ $container-max-width: 90rem;
 .header__logo {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   text-decoration: none;
   flex-shrink: 0;
   transition: opacity 0.2s ease;
@@ -276,18 +225,16 @@ $container-max-width: 90rem;
 // Stacked logo layout (name + tagline)
 .header__logo-stack {
   display: flex;
-  flex-direction: column;
   align-items: center;
   gap: 0.125rem;
 }
 
 .header__logo-text {
   font-family: typography.$font-family-heading;
-  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
   font-weight: typography.$font-weight-medium;
-  color: var(--header-text-color);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  color: colors.$color-text-primary;
+  letter-spacing: 0.05em;
   transition: color 0.3s ease;
   white-space: nowrap;
 }
@@ -296,7 +243,7 @@ $container-max-width: 90rem;
   font-family: typography.$font-family-base;
   font-size: clamp(0.625rem, 1.2vw, 0.75rem);
   font-weight: typography.$font-weight-regular;
-  color: var(--header-text-color);
+  color: colors.$color-text-primary;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   opacity: 0.9;
@@ -307,7 +254,7 @@ $container-max-width: 90rem;
 .header__logo-icon {
   width: 2rem;
   height: 2rem;
-  color: var(--header-text-color);
+  color: colors.$color-text-primary;
   transition: color 0.3s ease;
 
   @include mobile-only {
@@ -317,22 +264,17 @@ $container-max-width: 90rem;
 }
 
 .header__logo-img {
-  max-height: 3.5rem;
+  max-height: 2.5rem;
   width: auto;
   object-fit: contain;
   transition: filter 0.3s ease;
 
-  // Invert logo for transparent variant (assuming dark logo)
-  // .site-header--transparent:not(.is-scrolled):not(.is-menu-open) & {
-  //   filter: brightness(0) invert(1);
-  // }
-
   @include mobile-only {
-    max-height: 2.25rem;
+    max-height: 2rem;
   }
 
   @media (max-width: 480px) {
-    max-height: 2rem;
+    max-height: 1.75rem;
   }
 }
 
@@ -795,20 +737,18 @@ $container-max-width: 90rem;
   align-items: center;
   justify-content: flex-end;
   gap: 0.5rem;
-  flex: 1;
 }
 
 .header__search-btn {
-  // Hidden by default for minimal design
   display: none;
   align-items: center;
   justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2.5rem;
+  height: 2.5rem;
   background: transparent;
   border: none;
-  border-radius: 0.5rem;
-  color: var(--header-text-color);
+  border-radius: 50%;
+  color: colors.$color-text-primary;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease;
 
@@ -818,73 +758,42 @@ $container-max-width: 90rem;
   }
 
   &:hover {
-    color: var(--header-text-hover);
-  }
-
-  // Transparent variant hover
-  .site-header--transparent:not(.is-scrolled):not(.is-menu-open) &:hover {
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  // Solid variant or scrolled hover
-  .site-header--solid &:hover,
-  .site-header--transparent.is-scrolled &:hover,
-  .site-header--transparent.is-menu-open &:hover {
-    background: colors.$color-bg-tertiary;
+    background: rgba(0, 0, 0, 0.05);
   }
 
   @include mobile-only {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.25rem;
+    height: 2.25rem;
   }
 }
 
 .header__cta {
-  // Hidden by default for minimal design
   display: none;
   align-items: center;
   justify-content: center;
-  height: 2.75rem;
-  padding: 0 1.5rem;
+  height: 2.5rem;
+  padding: 0 1.25rem;
+  font-family: typography.$font-family-base;
   font-size: 0.875rem;
-  font-weight: typography.$font-weight-semibold;
+  font-weight: typography.$font-weight-medium;
   text-decoration: none;
-  border-radius: 0.5rem;
+  color: colors.$color-text-light;
+  background: colors.$color-primary;
+  border: none;
+  border-radius: 100px;
   transition:
     background 0.2s ease,
     transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease;
+    box-shadow 0.2s ease;
 
-  // Transparent variant - glassmorphic style
-  .site-header--transparent:not(.is-scrolled):not(.is-menu-open) & {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    color: colors.$color-text-light;
-    border: 1px solid colors.$color-text-light-25;
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.25);
-      border-color: colors.$color-text-light-40;
-      transform: translateY(-0.0625rem);
-    }
+  &:hover {
+    background: colors.$color-primary-dark;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
-  // Solid variant or scrolled - brand color button
-  .site-header--solid &,
-  .site-header--transparent.is-scrolled &,
-  .site-header--transparent.is-menu-open & {
-    color: colors.$color-text-light;
-    background: colors.$color-primary;
-    border: 1px solid transparent;
-
-    &:hover {
-      background: colors.$color-primary-dark;
-      box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.15);
-      transform: translateY(-0.0625rem);
-    }
+  @include md {
+    display: inline-flex;
   }
 }
 
@@ -896,27 +805,22 @@ $container-max-width: 90rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2.5rem;
+  height: 2.5rem;
   background: transparent;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 50%;
   cursor: pointer;
   transition: background 0.2s ease;
 
-  // Transparent variant hover
-  .site-header--transparent:not(.is-scrolled):not(.is-menu-open) &:hover {
-    background: rgba(255, 255, 255, 0.1);
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
   }
 
-  // Solid variant or scrolled hover
-  .site-header--solid &:hover,
-  .site-header--transparent.is-scrolled &:hover,
-  .site-header--transparent.is-menu-open &:hover {
-    background: colors.$color-bg-tertiary;
+  // Hide on desktop when nav is visible
+  @include md {
+    display: none;
   }
-
-  // Always visible for minimal design
 }
 
 .header__hamburger {
@@ -924,43 +828,31 @@ $container-max-width: 90rem;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 6px;
-  width: 24px;
-  height: 24px;
+  gap: 5px;
+  width: 20px;
+  height: 20px;
 }
 
 .header__hamburger-line {
   display: block;
-  width: 24px;
+  width: 20px;
   height: 2px;
-  background-color: var(--header-text-color, #ffffff);
+  background-color: colors.$color-text-primary;
   border-radius: 1px;
   transition:
     transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0.2s ease,
     background-color 0.3s ease;
-
-  // Ensure visibility on transparent header
-  .site-header--transparent:not(.is-scrolled):not(.is-menu-open) & {
-    background-color: rgba(255, 255, 255, 0.95);
-  }
-
-  // Dark color when scrolled or menu open
-  .site-header--transparent.is-scrolled &,
-  .site-header--transparent.is-menu-open &,
-  .site-header--solid & {
-    background-color: colors.$color-text-primary;
-  }
 }
 
 // Hamburger animation when open (2-line X)
 .site-header.is-menu-open {
   .header__hamburger-line:nth-child(1) {
-    transform: translateY(4px) rotate(45deg);
+    transform: translateY(3.5px) rotate(45deg);
   }
 
   .header__hamburger-line:nth-child(2) {
-    transform: translateY(-4px) rotate(-45deg);
+    transform: translateY(-3.5px) rotate(-45deg);
   }
 }
 

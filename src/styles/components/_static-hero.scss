@@ -1,0 +1,331 @@
+// ========================================
+// STATIC HERO COMPONENT STYLES
+// Split-panel hero for static/service pages
+// Using centralized color tokens
+// ========================================
+
+@use '../variables' as *;
+@use '../mixins' as *;
+@use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+
+// ========================================
+// BASE LAYOUT
+// ========================================
+
+.static-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+  min-height: 100svh;
+
+  @include md {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @include lg {
+    grid-template-columns: 45% 55%;
+  }
+}
+
+// Reversed variant
+.static-hero--reversed {
+  @include md {
+    .static-hero__content-panel {
+      order: 2;
+    }
+
+    .static-hero__image-panel {
+      order: 1;
+    }
+  }
+}
+
+// ========================================
+// CONTENT PANEL (Left)
+// ========================================
+
+.static-hero__content-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: colors.$color-bg-tertiary;
+  padding: spacing.$space-12 spacing.$space-6;
+  min-height: 50vh;
+
+  @include md {
+    padding: spacing.$space-16 spacing.$space-10;
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  @include lg {
+    padding: spacing.$space-20 spacing.$space-16;
+  }
+}
+
+.static-hero__content-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  max-width: 520px;
+}
+
+// ========================================
+// TITLE
+// ========================================
+
+.static-hero__title {
+  font-family: $font-family-heading;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: $font-weight-bold;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: colors.$color-text-primary;
+  margin: 0 0 spacing.$space-8;
+
+  // Support for line breaks
+  br {
+    display: block;
+  }
+
+  @include md {
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    margin-bottom: spacing.$space-12;
+  }
+
+  @include lg {
+    font-size: clamp(3rem, 4.5vw, 4.5rem);
+  }
+}
+
+// ========================================
+// DESCRIPTION
+// ========================================
+
+.static-hero__description {
+  font-family: $font-family-base;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-regular;
+  line-height: 1.7;
+  color: colors.$color-text-secondary;
+  margin: 0 0 spacing.$space-10;
+  max-width: 380px;
+
+  @include md {
+    font-size: $font-size-base;
+    margin-bottom: auto;
+  }
+}
+
+// ========================================
+// BRAND CREDIT
+// ========================================
+
+.static-hero__brand {
+  display: flex;
+  align-items: center;
+  gap: spacing.$space-3;
+  margin-top: auto;
+  padding-top: spacing.$space-10;
+}
+
+.static-hero__brand-name {
+  font-family: $font-family-base;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: colors.$color-text-secondary;
+  letter-spacing: 0.02em;
+}
+
+.static-hero__brand-dot {
+  width: 8px;
+  height: 8px;
+  background-color: colors.$color-text-primary;
+  border-radius: 50%;
+}
+
+// ========================================
+// IMAGE PANEL (Right)
+// ========================================
+
+.static-hero__image-panel {
+  position: relative;
+  min-height: 50vh;
+  overflow: hidden;
+
+  @include md {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+}
+
+.static-hero__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+// ========================================
+// OVERLAY VARIANTS
+// ========================================
+
+.static-hero__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  // Light overlay (default)
+  &--light {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.05) 0%,
+      rgba(0, 0, 0, 0.1) 50%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+  }
+
+  // Medium overlay
+  &--medium {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0.45) 100%
+    );
+  }
+
+  // Dark overlay
+  &--dark {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.2) 0%,
+      rgba(0, 0, 0, 0.3) 50%,
+      rgba(0, 0, 0, 0.6) 100%
+    );
+  }
+}
+
+// ========================================
+// CATEGORY LABEL
+// ========================================
+
+.static-hero__category {
+  position: absolute;
+  bottom: spacing.$space-10;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 spacing.$space-6;
+  z-index: 2;
+
+  @include md {
+    bottom: spacing.$space-16;
+    padding: 0 spacing.$space-10;
+  }
+
+  @include lg {
+    bottom: spacing.$space-20;
+  }
+}
+
+.static-hero__category-label {
+  font-family: $font-family-heading;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-weight: $font-weight-medium;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: colors.$color-text-light;
+  text-align: center;
+
+  @include md {
+    font-size: clamp(2rem, 5vw, 4rem);
+  }
+
+  @include lg {
+    font-size: clamp(2.5rem, 5vw, 5rem);
+  }
+}
+
+// ========================================
+// ANIMATIONS
+// ========================================
+
+@keyframes static-hero-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.static-hero__title {
+  animation: static-hero-fade-in 0.8s ease forwards;
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
+.static-hero__description {
+  animation: static-hero-fade-in 0.8s ease forwards;
+  animation-delay: 0.4s;
+  opacity: 0;
+}
+
+.static-hero__brand {
+  animation: static-hero-fade-in 0.8s ease forwards;
+  animation-delay: 0.6s;
+  opacity: 0;
+}
+
+.static-hero__category-label {
+  animation: static-hero-fade-in 1s ease forwards;
+  animation-delay: 0.8s;
+  opacity: 0;
+}
+
+// ========================================
+// RESPONSIVE ADJUSTMENTS
+// ========================================
+
+@media (max-width: #{$breakpoint-md - 1px}) {
+  .static-hero {
+    .static-hero__content-panel {
+      order: 2;
+    }
+
+    .static-hero__image-panel {
+      order: 1;
+    }
+  }
+
+  .static-hero__category {
+    bottom: spacing.$space-8;
+  }
+}
+
+// ========================================
+// ACCESSIBILITY
+// ========================================
+
+@media (prefers-reduced-motion: reduce) {
+  .static-hero__title,
+  .static-hero__description,
+  .static-hero__brand,
+  .static-hero__category-label {
+    animation: none;
+    opacity: 1;
+  }
+}

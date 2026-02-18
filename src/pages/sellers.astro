@@ -7,6 +7,8 @@
 
 import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
+import StaticHero from '../components/static-page/StaticHero.astro'
+import StaticFullContent from '../components/static-page/StaticFullContent.astro'
 import IntroSection from '../components/static-page/layouts/IntroSection.astro'
 import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
 import CTABanner from '../components/static-page/layouts/CTABanner.astro'
@@ -22,16 +24,15 @@ const pageContent = await getPageContent('sellers')
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-  <!-- Hero Section -->
-  <Hero
-    headline="Sell Your Property With Confidence"
-    description="With expert local knowledge and a proven track record, we'll help you achieve the best possible price for your property."
-    ctaText="Get a Free Valuation"
-    ctaLink="/valuation"
+  <!-- Static Hero Section -->
+  <StaticHero
+    title="SELLING<br/>WITH CONFIDENCE"
+    description="With expert local knowledge and a proven track record, we'll help you achieve the best possible price for your property. From valuation to completion, we're with you every step."
+    brandName="Seller Services"
     backgroundType="image"
     backgroundSrc="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=80"
-    overlayOpacity="dark"
-    showPhoneButton={false}
+    categoryLabel="VALUATIONS"
+    overlayOpacity="light"
   />
 
   <!-- Intro Section -->
@@ -45,6 +46,32 @@ const pageContent = await getPageContent('sellers')
     leftImageAlt="Stylish home interior"
     rightImageSrc="https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=800"
     rightImageAlt="Beautiful property exterior"
+  />
+
+  <!-- Static Full Content Section -->
+  <StaticFullContent
+    blockKey="selling_journey"
+    pageContent={pageContent}
+    subtitle="Your Success"
+    titleAccent="Maximising"
+    titleMain="YOUR PROPERTY'S VALUE"
+    leadText="Selling your home is a significant decision. Our proven approach combines local expertise with strategic marketing to achieve the best possible price for your property."
+    contentBlocks={[
+      {
+        heading: "Accurate Valuations",
+        text: "We provide honest, realistic valuations based on current market conditions and comparable sales. No inflated prices to win your instruction – just accurate advice you can trust."
+      },
+      {
+        heading: "Premium Marketing",
+        text: "Professional photography, compelling descriptions, and exposure across all major portals. We present your property at its absolute best to attract qualified buyers."
+      },
+      {
+        heading: "Skilled Negotiation",
+        text: "Our experienced negotiators work tirelessly to secure the best offer. We handle all viewings, feedback, and negotiations, keeping you informed at every stage."
+      }
+    ]}
+    imageSrc="https://images.pexels.com/photos/1918291/pexels-photo-1918291.jpeg?auto=compress&cs=tinysrgb&w=1200"
+    imageAlt="Stylish property interior"
   />
 
   <ContentBlock
@@ -109,6 +136,24 @@ const pageContent = await getPageContent('sellers')
     imagePosition="right"
     overlayStrength="light"
     serviceItems={["98% Asking Price", "6 Week Average", "500+ Properties"]}
+  />
+
+  <!-- FAQ Section -->
+  <ContentBlock
+    blockKey="seller_faqs"
+    pageContent={pageContent}
+    layout="faq"
+    mediaSrc="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800"
+    mediaAlt="Seller consultation"
+    title="Frequently Asked Questions"
+    subtitle="FAQS"
+    imagePosition="left"
+    faqItems={[
+      { question: "How do you determine my property's value?", answer: "We conduct a comprehensive market appraisal considering recent local sales, current market conditions, your property's unique features, and our extensive local knowledge to provide an accurate valuation." },
+      { question: "What are your fees for selling?", answer: "Our fees are competitive and transparent. We'll discuss our fee structure during your free valuation appointment, with no hidden costs or surprise charges." },
+      { question: "How long will it take to sell my property?", answer: "On average, our properties receive an offer within 6 weeks. However, this depends on pricing, market conditions, and property type. We'll keep you informed every step of the way." },
+      { question: "What happens if my property doesn't sell?", answer: "We continuously review our marketing strategy and will discuss options with you, including price adjustments or enhanced marketing, to ensure the best possible outcome." }
+    ]}
   />
 
 </Layout>

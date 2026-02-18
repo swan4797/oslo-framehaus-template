@@ -1,0 +1,120 @@
+---
+// ========================================
+// STATIC HERO COMPONENT
+// Split-panel hero for static/service pages
+// Left: Content panel, Right: Image with label overlay
+// ========================================
+
+type BackgroundType = 'video' | 'image'
+
+interface Props {
+  // Content
+  title: string
+  description?: string
+  brandName?: string
+
+  // Background configuration
+  backgroundType?: BackgroundType
+  backgroundSrc?: string
+  backgroundAlt?: string
+  backgroundPoster?: string
+
+  // Image overlay label
+  categoryLabel?: string
+
+  // Overlay configuration
+  overlayOpacity?: 'light' | 'medium' | 'dark'
+
+  // Layout options
+  reversed?: boolean
+}
+
+const {
+  // Content
+  title,
+  description = '',
+  brandName = '',
+
+  // Background
+  backgroundType = 'image',
+  backgroundSrc = 'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1920',
+  backgroundAlt = 'Hero background',
+  backgroundPoster = '',
+
+  // Category label on image
+  categoryLabel = '',
+
+  // Overlay
+  overlayOpacity = 'light',
+
+  // Layout
+  reversed = false,
+} = Astro.props
+
+// Build section classes
+const sectionClasses = [
+  'static-hero',
+  reversed && 'static-hero--reversed',
+].filter(Boolean).join(' ')
+
+// Overlay class
+const overlayClass = `static-hero__overlay static-hero__overlay--${overlayOpacity}`
+---
+
+<section class={sectionClasses}>
+  <!-- Left Panel: Content -->
+  <div class="static-hero__content-panel">
+    <div class="static-hero__content-inner">
+      {title && (
+        <h1 class="static-hero__title" set:html={title} />
+      )}
+
+      {description && (
+        <p class="static-hero__description">
+          {description}
+        </p>
+      )}
+
+      {brandName && (
+        <div class="static-hero__brand">
+          <span class="static-hero__brand-name">{brandName}</span>
+          <span class="static-hero__brand-dot"></span>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Right Panel: Image -->
+  <div class="static-hero__image-panel">
+    {backgroundType === 'video' ? (
+      <video
+        class="static-hero__media"
+        autoplay
+        muted
+        loop
+        playsinline
+        poster={backgroundPoster}
+      >
+        <source src={backgroundSrc} type="video/mp4" />
+      </video>
+    ) : (
+      <div
+        class="static-hero__media"
+        style={`background-image: url('${backgroundSrc}')`}
+        role="img"
+        aria-label={backgroundAlt}
+      />
+    )}
+    <div class={overlayClass}></div>
+
+    {categoryLabel && (
+      <div class="static-hero__category">
+        <span class="static-hero__category-label">{categoryLabel}</span>
+      </div>
+    )}
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/components/static-hero';
+</style>

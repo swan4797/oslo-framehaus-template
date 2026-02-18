@@ -7,6 +7,8 @@
 
 import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
+import StaticHero from '../components/static-page/StaticHero.astro'
+import StaticFullContent from '../components/static-page/StaticFullContent.astro'
 import IntroSection from '../components/static-page/layouts/IntroSection.astro'
 import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
 import CTABanner from '../components/static-page/layouts/CTABanner.astro'
@@ -22,16 +24,15 @@ const pageContent = await getPageContent('tenants')
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-  <!-- Hero Section -->
-  <Hero
-    headline="Find Your Perfect Rental"
-    description="Discover quality rental properties and enjoy excellent support throughout your tenancy."
-    ctaText="View Rentals"
-    ctaLink="/search?listing_type=let"
+  <!-- Static Hero Section -->
+  <StaticHero
+    title="RENTING<br/>MADE SIMPLE"
+    description="Discover quality rental properties and enjoy excellent support throughout your tenancy. We make the process straightforward with clear information and a simple application process."
+    brandName="Tenant Services"
     backgroundType="image"
     backgroundSrc="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1920&q=80"
-    overlayOpacity="dark"
-    showPhoneButton={false}
+    categoryLabel="LETTINGS"
+    overlayOpacity="light"
   />
 
   <!-- Intro Section -->
@@ -45,6 +46,32 @@ const pageContent = await getPageContent('tenants')
     leftImageAlt="Cozy rental interior"
     rightImageSrc="https://images.pexels.com/photos/2062426/pexels-photo-2062426.jpeg?auto=compress&cs=tinysrgb&w=800"
     rightImageAlt="Modern rental property"
+  />
+
+  <!-- Static Full Content Section -->
+  <StaticFullContent
+    blockKey="tenant_experience"
+    pageContent={pageContent}
+    subtitle="Your Experience"
+    titleAccent="Making"
+    titleMain="RENTING SIMPLE"
+    leadText="Finding your next home should be exciting, not stressful. We streamline the rental process so you can focus on what matters – finding the perfect place to call home."
+    contentBlocks={[
+      {
+        heading: "Quality Properties",
+        text: "Every property on our books meets strict standards. We conduct regular inspections and only work with responsible landlords who maintain their properties to a high standard."
+      },
+      {
+        heading: "Transparent Process",
+        text: "No hidden fees, no surprises. We explain all costs upfront and guide you through each step of the application process with clear, honest communication."
+      },
+      {
+        heading: "Ongoing Support",
+        text: "Our relationship doesn't end when you move in. We're here throughout your tenancy to handle maintenance requests, answer questions, and ensure you're happy in your home."
+      }
+    ]}
+    imageSrc="https://images.pexels.com/photos/1571459/pexels-photo-1571459.jpeg?auto=compress&cs=tinysrgb&w=1200"
+    imageAlt="Cozy rental living space"
   />
 
   <!-- Content Blocks - Alternating Layout -->
@@ -93,7 +120,7 @@ const pageContent = await getPageContent('tenants')
   />
    -->
   <ContentBlock
-    blockKey="tenant_faqs"
+    blockKey="tenant_support"
     pageContent={pageContent}
     mediaSrc="https://images.pexels.com/photos/1571461/pexels-photo-1571461.jpeg?auto=compress&cs=tinysrgb&w=800"
     mediaAlt="Tenant support"
@@ -107,5 +134,23 @@ const pageContent = await getPageContent('tenants')
     imagePosition="right"
     overlayStrength="light"
     serviceItems={["Quick Response", "Maintenance Support", "24/7 Emergency"]}
+  />
+
+  <!-- FAQ Section -->
+  <ContentBlock
+    blockKey="tenant_faqs"
+    pageContent={pageContent}
+    layout="faq"
+    mediaSrc="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800"
+    mediaAlt="Rental support team"
+    title="Frequently Asked Questions"
+    subtitle="FAQS"
+    imagePosition="left"
+    faqItems={[
+      { question: "What documents do I need to apply for a rental?", answer: "You'll typically need photo ID (passport or driving licence), proof of income (payslips or employment contract), bank statements, and references from previous landlords if applicable." },
+      { question: "How much deposit is required?", answer: "Most properties require a deposit equivalent to 5 weeks' rent (capped by law). This is protected in a government-approved tenancy deposit scheme throughout your tenancy." },
+      { question: "How do I report maintenance issues?", answer: "You can report maintenance issues through our online portal, by phone, or email. Emergency issues are handled 24/7, while non-urgent repairs are typically addressed within 48 hours." },
+      { question: "Can I end my tenancy early?", answer: "Early termination depends on your tenancy agreement terms. Contact us to discuss your options – we may be able to help find a replacement tenant or negotiate with your landlord." }
+    ]}
   />
 </Layout>

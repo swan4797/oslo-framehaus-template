@@ -191,8 +191,63 @@ const experienceItems = [
     overlayOpacity="medium"
   />
 
+  <IntroSection                                                                         
+    subtitle="OUR PURPOSE"                                                              
+    title="Connecting Technology with Agriculture"                                      
+    description="Our goal is to support farmers..."                                     
+    ctaText="Learn More"                                                                
+    ctaLink="/about"                                                                    
+    featuredMediaSrc="https://images.pexels.com/photos/6585598/pexels-photo-6585598.jpeg?auto=compress&cs=tinysrgb&w=800"                                    
+    featuredMediaType="image"                                                           
+    stats={[                                                                            
+      { value: "75%", label: "Of users report improved decision-making", variant:       
+  "accent" },                                                                           
+      { value: "250+", label: "Successful field implementations", variant: "light" },   
+      { value: "Expert-Led", label: "Solutions developed with specialists", variant:    
+  "image", imageSrc: "/image.jpg" }                                                     
+    ]}                                                                                  
+  />
+
+  <!-- Why Choose Us - Bento Layout -->
+  <ServiceGrid
+    title="Why <em>Choose</em> Compatto"
+    layout="bento"
+    items={[
+      {
+        id: '1',
+        title: 'End-to-End Solutions',
+        description: 'We manage every aspect of your furnishing project, saving you time and resources.',
+        mediaSrc: 'https://images.pexels.com/photos/5644365/pexels-photo-5644365.jpeg',
+        href: '#'
+      },
+      {
+        id: '2',
+        title: 'After-Sales Support',
+        description: 'We are committed to providing ongoing support & after-sales service to address any future needs or concerns.',
+        mediaSrc: 'https://images.pexels.com/photos/5490364/pexels-photo-5490364.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+        href: '#'
+      },
+      {
+        id: '3',
+        title: 'No Variety Restrictions',
+        description: 'We partner with any vendor meeting our quality standards, providing the broadest selection of furniture solutions to suit your needs and preferences.',
+        mediaSrc: 'https://images.pexels.com/photos/1907784/pexels-photo-1907784.jpeg',
+        href: '#',
+        overlayOpacity: 'dark'
+      },
+      {
+        id: '4',
+        title: 'Superior Quality',
+        description: 'Our partnerships with the best suppliers grant us access to the finest materials, craftsmanship, and quality control processes.',
+        mediaSrc: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        href: '#',
+        overlayOpacity: 'medium'
+      },
+    ]}
+  /> 
+
   <!-- Intro Section -->
-  <IntroSection
+  <!-- <IntroSection
     title="A well-designed home is a <em>work of art</em>"
     description="An aesthetically storied compilation of elements that speak to your lifestyle and ideals, while honouring the organic structure of your space. Melanie Hay Design sets out to pull together your ever-evolving interior canvas and bring forth exquisite, enduring environments that welcome restoration, conversation, and celebration."
     ctaText="Work Together"
@@ -202,42 +257,30 @@ const experienceItems = [
     rightImageSrc="https://images.pexels.com/photos/6782567/pexels-photo-6782567.jpeg?auto=compress&cs=tinysrgb&w=800"
     rightImageAlt="Modern kitchen with bar stools"
     backgroundVariant="light"
-  />
+  /> -->
 
   <!-- Content Blocks - Alternating Layout -->
-  <ContentBlock                                                              
+  <!-- <ContentBlock                                                              
     title="<em>Our</em><strong> Services</strong>"                            
     description="Your description text here..."                              
     mediaSrc="https://images.pexels.com/photos/6585598/pexels-photo-6585598.jpeg?auto=compress&cs=tinysrgb&w=800"                         
     secondaryMediaSrc="https://images.pexels.com/photos/6782567/pexels-photo-6782567.jpeg?auto=compress&cs=tinysrgb&w=800"              
     imagePosition="right"                                                    
     serviceItems={["New Build", "Large-Scale Renovation", "Interior Design"]}
-  />
+  /> -->
 
-  <!-- How We Work Together - Cards Layout -->
-  <ServiceGrid
-    title="How We Can Work Together"
-    subtitle="MHD specializes in a quietly refined aesthetic – accentuated by an assemblage of high-quality materials, textiles, and craftsmanship that exude an old-world, lived-in feel."
-    layout="cards"
-    items={[
-      {
-        id: 'service-1',
-        title: 'New Build',
-        description: 'We guide you through every step of the established process, from concept to completion. Our team ensures effortless navigation of conscious design decisions and artful execution of your interiors project.',
-        mediaSrc: 'https://images.pexels.com/photos/12292600/pexels-photo-12292600.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-        href: '/services/new-build',
-        ctaText: 'Learn More'
-      },
-      {
-        id: 'service-2',
-        title: 'Renovation',
-        description: 'Transform your existing space with our comprehensive renovation services. We honour the organic structure of your home while bringing forth exquisite, enduring environments that welcome restoration and celebration.',
-        mediaSrc: 'https://images.pexels.com/photos/11403257/pexels-photo-11403257.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-        href: '/services/renovation',
-        ctaText: 'Learn More'
-      }
-    ]}
-  />
+  <ContentBlock                                                                         
+    layout="faq"                                                                        
+    subtitle="FAQS"                                                                     
+    title="Frequently Asked Questions"                                                  
+    mediaSrc="https://images.pexels.com/photos/6782567/pexels-photo-6782567.jpeg?auto=compress&cs=tinysrgb&w=800"    
+    imagePosition="right"                                                                                                       
+    faqItems={[                                                                         
+      { question: "Question 1?", answer: "Answer 1" },                                  
+      { question: "Question 2?", answer: "Answer 2" },                                  
+    ]}                                                                                  
+  /> 
+
 
   
   <!-- Latest Properties - Uses filter props for automatic data fetching -->
