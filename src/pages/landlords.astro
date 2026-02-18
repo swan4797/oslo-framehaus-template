@@ -35,19 +35,6 @@ const pageContent = await getPageContent('landlords')
     overlayOpacity="light"
   />
 
-  <!-- Intro Section -->
-  <IntroSection
-    title="Maximise Your Rental Income"
-    subtitle="Landlord Services"
-    description="Whether you own one property or a portfolio, we understand that your rental income matters. Our letting services are designed to minimise void periods, find reliable tenants, and ensure your property is well-maintained."
-    ctaText="Request a valuation"
-    ctaLink="/valuation"
-    leftImageSrc="https://images.pexels.com/photos/1974596/pexels-photo-1974596.jpeg?auto=compress&cs=tinysrgb&w=800"
-    leftImageAlt="Modern apartment interior"
-    rightImageSrc="https://images.pexels.com/photos/2089698/pexels-photo-2089698.jpeg?auto=compress&cs=tinysrgb&w=800"
-    rightImageAlt="Rental property exterior"
-  />
-
   <!-- Static Full Content Section -->
   <StaticFullContent
     blockKey="landlord_partnership"
@@ -74,8 +61,27 @@ const pageContent = await getPageContent('landlords')
     imageAlt="Modern rental property"
   />
 
-  <!-- Content Blocks - Alternating Layout -->
+  <!-- FAQ Section -->
   <ContentBlock
+    blockKey="landlord_faqs"
+    pageContent={pageContent}
+    layout="faq"
+    mediaSrc="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=800"
+    mediaAlt="Landlord consultation"
+    title="Frequently Asked Questions"
+    subtitle="FAQS"
+    imagePosition="right"
+    faqItems={[
+      { question: "What services do you offer landlords?", answer: "We offer three service levels: Tenant Find Only, Rent Collection, and Full Management. Each can be tailored to your specific needs, from basic tenant sourcing to complete hands-off property management." },
+      { question: "How do you find and vet tenants?", answer: "We conduct comprehensive referencing including credit checks, employment verification, previous landlord references, and right-to-rent checks to ensure you get reliable, quality tenants." },
+      { question: "What legal requirements do I need to meet?", answer: "Landlords must have valid Gas Safety certificates, EPC ratings, electrical safety reports, and comply with deposit protection rules. Our team ensures you meet all current legislation." },
+      { question: "How quickly can you find a tenant?", answer: "On average, we let properties within 14 days. We market across all major portals and our database of pre-qualified tenants, ensuring maximum exposure for your property." }
+    ]}
+  />
+
+
+  <!-- Content Blocks - Alternating Layout -->
+  <!-- <ContentBlock
     blockKey="services"
     pageContent={pageContent}
     mediaSrc="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80"
@@ -109,10 +115,10 @@ const pageContent = await getPageContent('landlords')
     overlayStrength="light"
     textBackground="var(--color-bg-tertiary)"
     serviceItems={["Inventory Management", "Maintenance Support", "Legal Compliance"]}
-  />
+  /> -->
 
   <!-- CTA Banner -->
-  <CTABanner
+  <!-- <CTABanner
     title="Ready to Let Your Property?"
     subtitle="Get a free rental valuation and find out how we can help you maximise your rental income while minimising the hassle."
     primaryCtaText="Request Valuation"
@@ -136,24 +142,6 @@ const pageContent = await getPageContent('landlords')
     imagePosition="left"
     overlayStrength="light"
     serviceItems={["14 Days to Let", "99% Rent Collection", "200+ Properties"]}
-  />
-
-  <!-- FAQ Section -->
-  <ContentBlock
-    blockKey="landlord_faqs"
-    pageContent={pageContent}
-    layout="faq"
-    mediaSrc="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=800"
-    mediaAlt="Landlord consultation"
-    title="Frequently Asked Questions"
-    subtitle="FAQS"
-    imagePosition="left"
-    faqItems={[
-      { question: "What services do you offer landlords?", answer: "We offer three service levels: Tenant Find Only, Rent Collection, and Full Management. Each can be tailored to your specific needs, from basic tenant sourcing to complete hands-off property management." },
-      { question: "How do you find and vet tenants?", answer: "We conduct comprehensive referencing including credit checks, employment verification, previous landlord references, and right-to-rent checks to ensure you get reliable, quality tenants." },
-      { question: "What legal requirements do I need to meet?", answer: "Landlords must have valid Gas Safety certificates, EPC ratings, electrical safety reports, and comply with deposit protection rules. Our team ensures you meet all current legislation." },
-      { question: "How quickly can you find a tenant?", answer: "On average, we let properties within 14 days. We market across all major portals and our database of pre-qualified tenants, ensuring maximum exposure for your property." }
-    ]}
-  />
+  /> -->
 
 </Layout>
