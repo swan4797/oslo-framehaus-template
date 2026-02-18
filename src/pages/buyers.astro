@@ -35,19 +35,6 @@ const pageContent = await getPageContent('buyers')
     overlayOpacity="light"
   />
 
-  <!-- Intro Section -->
-  <IntroSection
-    title="Expert Buyer Support"
-    subtitle="Your Journey"
-    description="Whether you're a first-time buyer or looking to move up the ladder, we're here to help. Our team provides personalised guidance through every step of the buying process, from initial search to picking up the keys."
-    ctaText="View properties"
-    ctaLink="/search?listing_type=sale"
-    leftImageSrc="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800"
-    leftImageAlt="Modern living room interior"
-    rightImageSrc="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=800"
-    rightImageAlt="Elegant home exterior"
-  />
-
   <!-- Static Full Content Section -->
   <StaticFullContent
     blockKey="buyer_journey"
@@ -74,8 +61,26 @@ const pageContent = await getPageContent('buyers')
     imageAlt="Beautiful home interior"
   />
 
-  <!-- Content Blocks - Alternating Layout -->
+  <!-- FAQ Section -->
   <ContentBlock
+    blockKey="buyer_faqs"
+    pageContent={pageContent}
+    layout="faq"
+    mediaSrc="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800"
+    mediaAlt="Buyer support team"
+    title="Frequently Asked Questions"
+    subtitle="FAQS"
+    imagePosition="left"
+    faqItems={[
+      { question: "How long does the buying process typically take?", answer: "The buying process typically takes 8-12 weeks from offer acceptance to completion, though this can vary depending on the chain and any legal complexities involved." },
+      { question: "What costs should I budget for when buying?", answer: "Beyond the property price, you should budget for stamp duty, solicitor fees (£1,000-£2,000), survey costs (£400-£1,500), and mortgage arrangement fees if applicable." },
+      { question: "Do I need a mortgage in principle before viewing?", answer: "While not essential for viewings, having a mortgage in principle shows sellers you're a serious buyer and can speed up the process once you find the right property." },
+      { question: "What happens after my offer is accepted?", answer: "Once accepted, you'll instruct a solicitor, arrange a survey, and your solicitor will handle searches and contract negotiations. We'll guide you through each step." }
+    ]}
+  />
+
+  <!-- Content Blocks - Alternating Layout -->
+  <!-- <ContentBlock
     blockKey="buyer_services"
     pageContent={pageContent}
     mediaSrc="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80"
@@ -110,7 +115,7 @@ const pageContent = await getPageContent('buyers')
   />
 
   
-  <!-- CTA Banner -->
+  CTA Banner
   <CTABanner
     title="Ready to Find Your Dream Home?"
     subtitle="Browse our available properties or get in touch to discuss your requirements. Our team is ready to help you find the perfect property."
@@ -135,23 +140,5 @@ const pageContent = await getPageContent('buyers')
     imagePosition="right"
     overlayStrength="light"
     serviceItems={["Mortgage Guidance", "Step-by-Step Support", "Legal Assistance"]}
-  />
-
-  <!-- FAQ Section -->
-  <ContentBlock
-    blockKey="buyer_faqs"
-    pageContent={pageContent}
-    layout="faq"
-    mediaSrc="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800"
-    mediaAlt="Buyer support team"
-    title="Frequently Asked Questions"
-    subtitle="FAQS"
-    imagePosition="left"
-    faqItems={[
-      { question: "How long does the buying process typically take?", answer: "The buying process typically takes 8-12 weeks from offer acceptance to completion, though this can vary depending on the chain and any legal complexities involved." },
-      { question: "What costs should I budget for when buying?", answer: "Beyond the property price, you should budget for stamp duty, solicitor fees (£1,000-£2,000), survey costs (£400-£1,500), and mortgage arrangement fees if applicable." },
-      { question: "Do I need a mortgage in principle before viewing?", answer: "While not essential for viewings, having a mortgage in principle shows sellers you're a serious buyer and can speed up the process once you find the right property." },
-      { question: "What happens after my offer is accepted?", answer: "Once accepted, you'll instruct a solicitor, arrange a survey, and your solicitor will handle searches and contract negotiations. We'll guide you through each step." }
-    ]}
-  />
+  /> -->
 </Layout>
