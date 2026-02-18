@@ -1,0 +1,75 @@
+---
+// ========================================
+// FORM SPLIT LAYOUT
+// Split-panel layout for form pages
+// Left: Form content, Right: Image panel
+// Follows StaticHero visual structure
+// ========================================
+
+interface Props {
+  // Image configuration
+  imageSrc?: string
+  imageAlt?: string
+
+  // Overlay configuration
+  overlayOpacity?: 'light' | 'medium' | 'dark'
+
+  // Optional label on image
+  categoryLabel?: string
+
+  // Layout options
+  reversed?: boolean
+
+  // Optional class
+  class?: string
+}
+
+const {
+  imageSrc = 'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1920',
+  imageAlt = 'Form background',
+  overlayOpacity = 'light',
+  categoryLabel = '',
+  reversed = false,
+  class: className = '',
+} = Astro.props
+
+// Build section classes
+const sectionClasses = [
+  'form-split-layout',
+  reversed && 'form-split-layout--reversed',
+  className,
+].filter(Boolean).join(' ')
+
+// Overlay class
+const overlayClass = `form-split-layout__overlay form-split-layout__overlay--${overlayOpacity}`
+---
+
+<div class={sectionClasses}>
+  <!-- Left Panel: Form Content -->
+  <div class="form-split-layout__content-panel">
+    <div class="form-split-layout__content-inner">
+      <slot />
+    </div>
+  </div>
+
+  <!-- Right Panel: Image -->
+  <div class="form-split-layout__image-panel">
+    <div
+      class="form-split-layout__media"
+      style={`background-image: url('${imageSrc}')`}
+      role="img"
+      aria-label={imageAlt}
+    />
+    <div class={overlayClass}></div>
+
+    {categoryLabel && (
+      <div class="form-split-layout__category">
+        <span class="form-split-layout__category-label">{categoryLabel}</span>
+      </div>
+    )}
+  </div>
+</div>
+
+<style lang="scss">
+  @use '../../../styles/pages/form-page/form-split-layout';
+</style>

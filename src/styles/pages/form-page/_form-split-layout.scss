@@ -1,0 +1,289 @@
+// ========================================
+// FORM SPLIT LAYOUT STYLES
+// Split-panel layout for form pages
+// Left: Form content, Right: Image panel
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+@use '../../mixins' as *;
+@use '../../variables' as *;
+
+// ========================================
+// BASE LAYOUT
+// ========================================
+
+.form-split-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  @include md {
+    flex-direction: row;
+  }
+}
+
+// Reversed variant
+.form-split-layout--reversed {
+  @include md {
+    flex-direction: row-reverse;
+  }
+}
+
+// ========================================
+// CONTENT PANEL (Left)
+// ========================================
+
+.form-split-layout__content-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: spacing.$space-20 spacing.$space-6 spacing.$space-12;
+  overflow-y: auto;
+
+  @include md {
+    flex: 0 0 50%;
+    padding: spacing.$space-20 spacing.$space-8;
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  @include lg {
+    flex: 0 0 55%;
+    padding: spacing.$space-24 spacing.$space-12 spacing.$space-16;
+  }
+}
+
+.form-split-layout__content-inner {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+
+  @include lg {
+    max-width: 640px;
+    margin: 0 auto 0 0;
+    padding-left: spacing.$space-8;
+  }
+}
+
+// ========================================
+// IMAGE PANEL (Right)
+// ========================================
+
+.form-split-layout__image-panel {
+  position: relative;
+  min-height: 40vh;
+  overflow: hidden;
+  display: none;
+
+  @include md {
+    display: flex;
+    flex: 0 0 50%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+  }
+
+  @include lg {
+    flex: 0 0 45%;
+    width: 45%;
+  }
+}
+
+.form-split-layout__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+// ========================================
+// OVERLAY VARIANTS
+// ========================================
+
+.form-split-layout__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  &--light {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.05) 0%,
+      rgba(0, 0, 0, 0.1) 50%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+  }
+
+  &--medium {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0.45) 100%
+    );
+  }
+
+  &--dark {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.2) 0%,
+      rgba(0, 0, 0, 0.3) 50%,
+      rgba(0, 0, 0, 0.6) 100%
+    );
+  }
+}
+
+// ========================================
+// CATEGORY LABEL
+// ========================================
+
+.form-split-layout__category {
+  position: absolute;
+  bottom: spacing.$space-10;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 spacing.$space-6;
+  z-index: 2;
+
+  @include md {
+    bottom: spacing.$space-16;
+    padding: 0 spacing.$space-10;
+  }
+
+  @include lg {
+    bottom: spacing.$space-20;
+  }
+}
+
+.form-split-layout__category-label {
+  font-family: typography.$font-family-heading;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-weight: typography.$font-weight-medium;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: colors.$color-text-light;
+  text-align: center;
+
+  @include md {
+    font-size: clamp(2rem, 5vw, 4rem);
+  }
+
+  @include lg {
+    font-size: clamp(2.5rem, 5vw, 5rem);
+  }
+}
+
+// ========================================
+// FORM CONTENT STYLES
+// Styles for form elements within layout
+// ========================================
+
+.form-split-layout {
+  // Title styles
+  .form-split-title {
+    font-family: typography.$font-family-heading;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: typography.$font-weight-medium;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: colors.$color-text-primary;
+    margin: 0 0 spacing.$space-4;
+
+    @include md {
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+    }
+  }
+
+  // Subtitle styles
+  .form-split-subtitle {
+    font-family: typography.$font-family-base;
+    font-size: typography.$font-size-base;
+    font-weight: typography.$font-weight-regular;
+    line-height: 1.6;
+    color: colors.$color-text-secondary;
+    margin: 0 0 spacing.$space-8;
+    max-width: 480px;
+
+    @include md {
+      font-size: typography.$font-size-lg;
+      margin-bottom: spacing.$space-10;
+    }
+  }
+
+  // Form card within split layout
+  .form-split-card {
+    background: colors.$color-bg-secondary;
+    border-radius: 1rem;
+    padding: spacing.$space-6;
+    margin-bottom: spacing.$space-8;
+
+    @include md {
+      padding: spacing.$space-8;
+      margin-bottom: spacing.$space-10;
+    }
+  }
+
+  // Section spacing
+  .form-split-section {
+    margin-bottom: spacing.$space-8;
+
+    @include md {
+      margin-bottom: spacing.$space-10;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  // Contact info grid override
+  .contact-info-grid {
+    margin-bottom: spacing.$space-8;
+
+    @include md {
+      margin-bottom: spacing.$space-10;
+    }
+  }
+}
+
+// ========================================
+// ANIMATIONS
+// ========================================
+
+@keyframes form-split-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-split-layout__content-inner {
+  animation: form-split-fade-in 0.8s ease forwards;
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
+// ========================================
+// ACCESSIBILITY
+// ========================================
+
+@media (prefers-reduced-motion: reduce) {
+  .form-split-layout__content-inner {
+    animation: none;
+    opacity: 1;
+  }
+}
