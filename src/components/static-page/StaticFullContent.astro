@@ -116,6 +116,16 @@ const sectionClasses = [
           )}
         </h2>
       )}
+      {hasImage && (
+        <div class="static-full-content__image-wrapper">
+          <img
+            src={finalImageSrc}
+            alt={finalImageAlt}
+            class="static-full-content__image"
+            loading="lazy"
+          />
+        </div>
+      )}      
     </div>
 
     <!-- Right Column: Content + Image -->
@@ -134,17 +144,6 @@ const sectionClasses = [
               <p class="static-full-content__block-text">{block.text}</p>
             </div>
           ))}
-        </div>
-      )}
-
-      {hasImage && (
-        <div class="static-full-content__image-wrapper">
-          <img
-            src={finalImageSrc}
-            alt={finalImageAlt}
-            class="static-full-content__image"
-            loading="lazy"
-          />
         </div>
       )}
     </div>

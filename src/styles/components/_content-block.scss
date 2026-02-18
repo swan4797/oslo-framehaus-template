@@ -13,6 +13,7 @@
 // ========================================
 
 .content-block {
+  @include container;
   display: grid;
   grid-template-columns: 1fr;
   min-height: 500px;
@@ -24,6 +25,7 @@
 
   @include lg {
     min-height: 700px;
+    padding: 0;
   }
 }
 
@@ -359,7 +361,6 @@
 // ========================================
 
 .content-block--faq {
-  background-color: colors.$color-bg-secondary;
 
   .content-block__media {
     padding: $spacing-6;
@@ -369,7 +370,7 @@
     }
 
     @include lg {
-      padding: $spacing-10;
+      padding: 0.5em;
     }
   }
 

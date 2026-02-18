@@ -147,7 +147,7 @@ $container-max-width: 90rem;
   padding: 0.5rem 0.5rem 0.5rem 1.5rem;
   height: auto;
   min-height: 3.5rem;
-  background: rgba(255, 255, 255, 0.95);
+  background: colors.$color-bg-primary;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: 100px;
@@ -194,7 +194,7 @@ $container-max-width: 90rem;
   font-family: typography.$font-family-base;
   font-size: 0.875rem;
   font-weight: typography.$font-weight-regular;
-  color: colors.$color-text-primary;
+  color: colors.$color-text-light;
   text-decoration: none;
   letter-spacing: 0.01em;
   border-radius: 100px;
@@ -202,6 +202,8 @@ $container-max-width: 90rem;
 
   &:hover {
     background: rgba(0, 0, 0, 0.05);
+    color: colors.$color-accent;
+
   }
 }
 
@@ -777,8 +779,8 @@ $container-max-width: 90rem;
   font-size: 0.875rem;
   font-weight: typography.$font-weight-medium;
   text-decoration: none;
-  color: colors.$color-text-light;
-  background: colors.$color-primary;
+  color: colors.$color-text-primary;
+  background: colors.$color-bg-tertiary;
   border: none;
   border-radius: 100px;
   transition:
@@ -787,7 +789,7 @@ $container-max-width: 90rem;
     box-shadow 0.2s ease;
 
   &:hover {
-    background: colors.$color-primary-dark;
+    background: colors.$color-bg-secondary;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }

@@ -130,52 +130,6 @@ const reviews = [
   },
 ]
 
-// Experience grid items (5 items for asymmetric layout: 2 + 1 featured + 2)
-const experienceItems = [
-  // Left column (2 cards)
-  {
-    id: 'buyers',
-    title: 'Buyers',
-    href: '/buyers',
-    mediaType: 'image' as const,
-    mediaSrc: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80',
-    overlayOpacity: 'medium' as const,
-  },
-  {
-    id: 'sellers',
-    title: 'Sellers',
-    href: '/sellers',
-    mediaType: 'image' as const,
-    mediaSrc: 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=800&q=80',
-    overlayOpacity: 'medium' as const,
-  },
-  // Center column (1 featured card)
-  {
-    id: 'valuation',
-    title: 'Free Valuation',
-    href: '/valuation',
-    mediaType: 'image' as const,
-    mediaSrc: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80',
-    overlayOpacity: 'medium' as const,
-  },
-  // Right column (2 cards)
-  {
-    id: 'landlords',
-    title: 'Landlords',
-    href: '/landlords',
-    mediaType: 'image' as const,
-    mediaSrc: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80',
-    overlayOpacity: 'medium' as const,
-  },
-  {
-    id: 'tenants',
-    title: 'Tenants',
-    href: '/tenants',
-    mediaType: 'image' as const,
-    mediaSrc: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80',
-    overlayOpacity: 'medium' as const,
-  },
-]
 
 ---
 
@@ -206,6 +160,19 @@ const experienceItems = [
       { value: "Expert-Led", label: "Solutions developed with specialists", variant:    
   "image", imageSrc: "/image.jpg" }                                                     
     ]}                                                                                  
+  />
+
+  <!-- Latest Properties - Uses filter props for automatic data fetching -->
+  <PropertyGridSlider
+    title={featuredTitle}
+    subtitle={hasFeaturedSection && featuredContent ? featuredContent : 'Our latest properties for sale and to rent'}
+    ctaText="View All Properties"
+    source="homepage"
+    layout="slider"
+    sectionId="latest-properties"
+    limit={6}
+    sortBy="newest"
+    listingStatus="available"
   />
 
   <!-- Why Choose Us - Bento Layout -->
@@ -246,6 +213,31 @@ const experienceItems = [
     ]}
   /> 
 
+
+  <!-- Client Reviews -->
+  <ReviewCarousel
+    title={testimonialsTitle}
+    subtitle="Trusted by buyers, sellers, and landlords across London"
+    ctaText="Read All Reviews"
+    ctaLink="/reviews"
+    reviews={reviews}
+    variant="alt"
+    showRating={true}
+    showSource={true}
+  />  
+
+  <ContentBlock                                                                         
+    layout="faq"                                                                        
+    subtitle="FAQS"                                                                     
+    title="Frequently Asked Questions"                                                  
+    mediaSrc="https://images.pexels.com/photos/6782567/pexels-photo-6782567.jpeg?auto=compress&cs=tinysrgb&w=800"    
+    imagePosition="right"                                                                                                       
+    faqItems={[                                                                         
+      { question: "Question 1?", answer: "Answer 1" },                                  
+      { question: "Question 2?", answer: "Answer 2" },                                  
+    ]}                                                                                  
+  />   
+
   <!-- Intro Section -->
   <!-- <IntroSection
     title="A well-designed home is a <em>work of art</em>"
@@ -268,34 +260,6 @@ const experienceItems = [
     imagePosition="right"                                                    
     serviceItems={["New Build", "Large-Scale Renovation", "Interior Design"]}
   /> -->
-
-  <ContentBlock                                                                         
-    layout="faq"                                                                        
-    subtitle="FAQS"                                                                     
-    title="Frequently Asked Questions"                                                  
-    mediaSrc="https://images.pexels.com/photos/6782567/pexels-photo-6782567.jpeg?auto=compress&cs=tinysrgb&w=800"    
-    imagePosition="right"                                                                                                       
-    faqItems={[                                                                         
-      { question: "Question 1?", answer: "Answer 1" },                                  
-      { question: "Question 2?", answer: "Answer 2" },                                  
-    ]}                                                                                  
-  /> 
-
-
-  
-  <!-- Latest Properties - Uses filter props for automatic data fetching -->
-  <PropertyGridSlider
-    title={featuredTitle}
-    subtitle={hasFeaturedSection && featuredContent ? featuredContent : 'Our latest properties for sale and to rent'}
-    ctaText="View All Properties"
-    source="homepage"
-    layout="slider"
-    sectionId="latest-properties"
-    limit={6}
-    sortBy="newest"
-    listingStatus="available"
-  />
-
 <!-- 4-column featured sales -->                                                     
  <!-- <PropertyGrid                                                                        
  title="Featured Properties"                                                        
@@ -315,19 +279,6 @@ const experienceItems = [
     secondaryCtaLink={contact.phone ? `tel:${contact.phone}` : ""}
   /> -->
 
-
-
-  <!-- Client Reviews -->
-  <ReviewCarousel
-    title={testimonialsTitle}
-    subtitle="Trusted by buyers, sellers, and landlords across London"
-    ctaText="Read All Reviews"
-    ctaLink="/reviews"
-    reviews={reviews}
-    variant="alt"
-    showRating={true}
-    showSource={true}
-  />
 
 </Layout>
 

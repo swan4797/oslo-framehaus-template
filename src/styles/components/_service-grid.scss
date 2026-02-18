@@ -84,7 +84,6 @@
   @include container;
   position: relative;
   z-index: 1;
-  max-width: 95%;
 }
 
 // ========================================
@@ -575,7 +574,7 @@
 // ========================================
 
 .service-grid--bento-layout {
-  background: colors.$color-bg-secondary;
+  background: none;
 
   .service-grid__header {
     flex-direction: column;
