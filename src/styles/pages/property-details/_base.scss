@@ -312,13 +312,13 @@
 // ----------------------------------------
 
 .property-details__similar {
-  max-width: 1400px;
+  max-width: 95%;
   margin: 0 auto;
-  padding: spacing.$spacing-8 spacing.$spacing-6;
+  padding: spacing.$spacing-6;
   border-top: 1px solid colors.$color-border-light;
 
   @include lg {
-    padding: spacing.$spacing-10 spacing.$spacing-8;
+    padding: 2em 0;
   }
 }
 

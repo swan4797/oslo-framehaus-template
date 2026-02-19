@@ -43,31 +43,25 @@
     font-family: typography.$font-family-base;
   }
 
-  // Images Grid
+  // Images Grid - Single Column
   &__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: spacing.$spacing-4;
-
-    @include md {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-6;
   }
 
   // Individual Image Item
   &__item {
     display: block;
     position: relative;
-    background: colors.$color-bg-secondary;
-    border: 1px solid colors.$color-border-light;
-    border-radius: 0.75rem;
+    background: colors.$color-bg-tertiary;
+    border-radius: 1rem;
     overflow: hidden;
     text-decoration: none;
-    transition: border-color effects.$transition-base, box-shadow effects.$transition-base;
+    transition: box-shadow effects.$transition-base;
 
     &:hover {
-      border-color: colors.$color-border-medium;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     }
 
     &:hover .floorplan-section__overlay {
@@ -80,7 +74,12 @@
     height: auto;
     display: block;
     object-fit: contain;
-    padding: spacing.$spacing-4;
+    background: colors.$color-bg-secondary;
+    padding: spacing.$spacing-6;
+
+    @include md {
+      padding: spacing.$spacing-8;
+    }
   }
 
   // Hover Overlay
@@ -89,12 +88,13 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: spacing.$spacing-4;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+    padding: spacing.$spacing-4 spacing.$spacing-5;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
     opacity: 0;
     transition: opacity effects.$transition-base;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: spacing.$spacing-2;
     color: #fff;
 
