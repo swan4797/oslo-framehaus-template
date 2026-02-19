@@ -64,7 +64,7 @@
   font-weight: $font-weight-medium;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   margin-bottom: $spacing-4;
 
   @include md {
@@ -116,9 +116,43 @@
   font-size: clamp(1rem, 2vw, 1.25rem);
   font-weight: $font-weight-regular;
   line-height: 1.7;
-  color: colors.$color-text-secondary;
-  margin: 0;
+  color: colors.$color-text-primary;
   max-width: 600px;
+
+  p {
+    margin: 0 0 $spacing-4 0;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  strong, b {
+    font-weight: $font-weight-semibold;
+  }
+
+  a {
+    color: colors.$color-text-primary;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  ul, ol {
+    margin: $spacing-4 0;
+    padding-left: $spacing-6;
+  }
+
+  li {
+    margin-bottom: $spacing-2;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
 // ========================================
@@ -164,8 +198,43 @@
   font-size: $font-size-base;
   font-weight: $font-weight-regular;
   line-height: 1.7;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   margin: 0;
+
+  p {
+    margin: 0 0 $spacing-4 0;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  strong, b {
+    font-weight: $font-weight-semibold;
+  }
+
+  a {
+    color: colors.$color-text-primary;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  ul, ol {
+    margin: $spacing-4 0;
+    padding-left: $spacing-6;
+  }
+
+  li {
+    margin-bottom: $spacing-2;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
 // ========================================

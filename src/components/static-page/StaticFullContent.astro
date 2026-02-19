@@ -131,7 +131,7 @@ const sectionClasses = [
     <!-- Right Column: Content + Image -->
     <div class="static-full-content__right">
       {finalLeadText && (
-        <p class="static-full-content__lead">{finalLeadText}</p>
+        <div class="static-full-content__lead" set:html={finalLeadText} />
       )}
 
       {hasContentBlocks && (
@@ -141,7 +141,7 @@ const sectionClasses = [
               {block.heading && (
                 <h3 class="static-full-content__block-heading">{block.heading}</h3>
               )}
-              <p class="static-full-content__block-text">{block.text}</p>
+              <div class="static-full-content__block-text" set:html={block.text} />
             </div>
           ))}
         </div>

@@ -25,10 +25,10 @@
     .search-bar__form {
       display: flex;
       flex-direction: column;
-      background: colors.$color-bg-tertiary;
+      background: colors.$color-bg-secondary;
       padding: spacing.$space-5 spacing.$space-6;
-      box-shadow: none;
-      border: none;
+      box-shadow: effects.$shadow-md;
+      border: 1px solid colors.$color-border-light;
       border-radius: effects.$radius-xl;
       gap: spacing.$space-5;
 
@@ -70,7 +70,7 @@
       &[data-active="false"] {
         .search-bar__toggle-content {
           background: transparent;
-          color: colors.$color-text-secondary;
+          color: colors.$color-text-primary;
           box-shadow: none;
         }
       }
@@ -130,7 +130,7 @@
     .search-bar__label {
       font-size: typography.$font-size-xs;
       font-weight: typography.$font-weight-medium;
-      color: colors.$color-text-secondary;
+      color: colors.$color-text-primary;
       text-transform: none;
       letter-spacing: 0;
 
@@ -158,7 +158,7 @@
       white-space: nowrap;
 
       &:hover {
-        background: colors.$color-text-secondary;
+        background: colors.$color-text-primary;
       }
 
       @include mobile-only {
@@ -223,7 +223,7 @@
       flex-shrink: 0;
 
       &:hover {
-        background: colors.$color-text-secondary;
+        background: colors.$color-text-primary;
         border-color: transparent;
       }
 
