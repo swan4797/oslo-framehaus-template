@@ -20,6 +20,7 @@ const href = `/areas/${area.page_slug}`
 ---
 
 <a href={href} class="area-card">
+  <!-- Image Section -->
   <div class="area-card__image-wrapper">
     {area.hero_image_url ? (
       <img
@@ -36,22 +37,41 @@ const href = `/areas/${area.page_slug}`
         </svg>
       </div>
     )}
-  </div>
-  <div class="area-card__content">
-    <h3 class="area-card__title">{displayName}</h3>
+
+    <!-- Location Badge -->
     {location && (
-      <p class="area-card__location">{location}</p>
+      <span class="area-card__badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        {location}
+      </span>
     )}
+  </div>
+
+  <!-- Content Section -->
+  <div class="area-card__content">
+    <!-- Title -->
+    <div class="area-card__header">
+      <h3 class="area-card__title">{displayName}</h3>
+    </div>
+
+    <!-- Description -->
     {area.description && (
       <p class="area-card__description">{area.description}</p>
     )}
-    <span class="area-card__link">
-      {linkText}
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 12h14"/>
-        <path d="m12 5 7 7-7 7"/>
-      </svg>
-    </span>
+
+    <!-- Footer -->
+    <div class="area-card__footer">
+      <span class="area-card__link">
+        {linkText}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"/>
+          <path d="m12 5 7 7-7 7"/>
+        </svg>
+      </span>
+    </div>
   </div>
 </a>
 

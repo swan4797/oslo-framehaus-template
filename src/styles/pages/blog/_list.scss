@@ -22,6 +22,13 @@ $section-spacing-mobile: 56px;
 
 .blog-page {
   font-family: typography.$font-family-base;
+  max-width: 95%;
+  margin: 0 auto;
+  padding: spacing.$spacing-8 0;
+
+  @include lg {
+    padding: spacing.$spacing-10 0;
+  }
 }
 
 // ========================================
@@ -29,44 +36,58 @@ $section-spacing-mobile: 56px;
 // ========================================
 
 .blog-header {
-  padding: 64px 24px 48px;
-  text-align: center;
-  background: colors.$color-bg-secondary;
+  margin-bottom: spacing.$spacing-8;
 
-  @media (max-width: 768px) {
-    padding: 40px 20px 32px;
+  @include lg {
+    margin-bottom: spacing.$spacing-10;
   }
-}
-
-.blog-header__content {
-  max-width: $content-max-width;
-  margin: 0 auto;
 }
 
 .blog-header__title {
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-family: typography.$font-family-heading;
+  font-size: 2rem;
+  font-weight: typography.$font-weight-semibold;
   color: colors.$color-text-primary;
-  margin: 0 0 16px 0;
+  margin: 0 0 spacing.$spacing-6 0;
   line-height: 1.2;
   letter-spacing: -0.02em;
 
-  @media (max-width: 768px) {
-    font-size: 2rem;
+  @include md {
+    font-size: 2.5rem;
   }
 }
 
-.blog-header__subtitle {
-  font-size: 1.125rem;
-  color: colors.$color-text-secondary;
-  margin: 0;
-  line-height: 1.6;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+// ========================================
+// CATEGORY FILTERS
+// ========================================
 
-  @media (max-width: 768px) {
-    font-size: 1rem;
+.blog-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing.$spacing-2;
+}
+
+.blog-filters__btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: colors.$color-bg-tertiary;
+  color: colors.$color-text-primary;
+  font-size: 0.875rem;
+  font-weight: typography.$font-weight-medium;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all effects.$transition-fast;
+
+  &:hover {
+    background: colors.$color-border-light;
+  }
+
+  &--active {
+    background: colors.$color-text-primary;
+    color: colors.$color-bg-secondary;
   }
 }
 
@@ -143,8 +164,20 @@ $section-spacing-mobile: 56px;
 
 .stat-item__label {
   font-size: 0.9375rem;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   font-weight: 500;
+}
+
+// ========================================
+// FEATURED SECTION
+// ========================================
+
+.blog-featured {
+  margin-bottom: spacing.$spacing-10;
+
+  @include lg {
+    margin-bottom: spacing.$spacing-12;
+  }
 }
 
 // ========================================
@@ -152,48 +185,60 @@ $section-spacing-mobile: 56px;
 // ========================================
 
 .blog-section {
-  padding: $section-spacing 24px;
-  background: colors.$color-bg-secondary;
-
-  &--featured {
-    background: colors.$color-bg-secondary;
-  }
-
-  @media (max-width: 768px) {
-    padding: $section-spacing-mobile 20px;
-  }
-}
-
-.blog-section__container {
-  max-width: $page-max-width;
-  margin: 0 auto;
+  // Section container
 }
 
 .blog-section__header {
-  text-align: center;
-  margin-bottom: 48px;
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-4;
+  margin-bottom: spacing.$spacing-6;
 
-  @media (max-width: 768px) {
-    margin-bottom: 36px;
+  @include lg {
+    margin-bottom: spacing.$spacing-8;
   }
+}
+
+.blog-section__bullet {
+  width: 8px;
+  height: 8px;
+  background: colors.$color-text-primary;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.blog-section__label {
+  font-size: 0.875rem;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .blog-section__title {
-  font-size: 1.75rem;
-  font-weight: 700;
+  font-family: typography.$font-family-heading;
+  font-size: 1.5rem;
+  font-weight: typography.$font-weight-semibold;
   color: colors.$color-text-primary;
-  margin: 0 0 12px 0;
+  margin: 0;
   letter-spacing: -0.01em;
 
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
+  @include md {
+    font-size: 1.75rem;
   }
 }
 
-.blog-section__subtitle {
-  font-size: 1rem;
-  color: colors.$color-text-secondary;
-  margin: 0;
+.blog-section__count {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  background: colors.$color-bg-tertiary;
+  border-radius: 100px;
+  font-size: 0.8125rem;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+  font-family: typography.$font-family-base;
+  margin-left: auto;
 }
 
 // ========================================
@@ -255,7 +300,7 @@ $section-spacing-mobile: 56px;
 
 .empty-state__text {
   font-size: 1rem;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   margin: 0;
 }
 

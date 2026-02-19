@@ -1,33 +1,34 @@
 // ========================================
 // AREA CARD STYLES
-// Individual card for displaying an area guide
+// Card design matching Oslo template style
 // ========================================
 
 @use '../../tokens/colors' as colors;
 @use '../../tokens/effects' as effects;
 @use '../../tokens/spacing' as spacing;
 @use '../../tokens/typography' as typography;
+@use '../../mixins' as *;
 
 .area-card {
   display: flex;
   flex-direction: column;
   background: colors.$color-bg-secondary;
-  border-radius: effects.$radius-xl;
+  border-radius: 1rem;
   overflow: hidden;
-  box-shadow: effects.$shadow-sm;
   text-decoration: none;
-  transition: effects.$transition-base;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform effects.$transition-base, box-shadow effects.$transition-base;
 
   &:hover {
-    transform: translateY(-6px);
-    box-shadow: effects.$shadow-lg;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
 
     .area-card__image {
       transform: scale(1.05);
     }
 
     .area-card__link {
-      color: colors.$color-primary;
+      color: colors.$color-accent;
 
       svg {
         transform: translateX(4px);
@@ -35,74 +36,124 @@
     }
   }
 
+  // ----------------------------------------
+  // IMAGE SECTION
+  // ----------------------------------------
+
   &__image-wrapper {
     position: relative;
-    width: 100%;
-    height: 220px;
     overflow: hidden;
   }
 
   &__image {
     width: 100%;
-    height: 100%;
+    height: 180px;
     object-fit: cover;
-    transition: effects.$transition-smooth;
+    transition: transform effects.$transition-smooth;
+
+    @include md {
+      height: 200px;
+    }
   }
 
   &__placeholder {
     width: 100%;
-    height: 100%;
+    height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: colors.$color-bg-secondary;
-    color: colors.$color-text-muted;
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
+    opacity: 0.4;
+
+    @include md {
+      height: 200px;
+    }
   }
 
+  // ----------------------------------------
+  // LOCATION BADGE
+  // ----------------------------------------
+
+  &__badge {
+    position: absolute;
+    top: spacing.$spacing-3;
+    left: spacing.$spacing-3;
+    display: inline-flex;
+    align-items: center;
+    gap: spacing.$spacing-1;
+    padding: 0.375rem 0.75rem;
+    background: colors.$color-bg-secondary;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: typography.$font-weight-medium;
+    color: colors.$color-text-primary;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    svg {
+      opacity: 0.7;
+    }
+  }
+
+  // ----------------------------------------
+  // CONTENT SECTION
+  // ----------------------------------------
+
   &__content {
-    padding: clamp(20px, 3vw, 28px);
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
+    flex: 1;
+    padding: spacing.$spacing-5;
+  }
+
+  &__header {
+    margin-bottom: spacing.$spacing-2;
   }
 
   &__title {
-    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+    font-family: typography.$font-family-heading;
+    font-size: 1.125rem;
     font-weight: typography.$font-weight-semibold;
     color: colors.$color-text-primary;
-    margin: 0 0 spacing.$space-2;
-  }
-
-  &__location {
-    font-size: typography.$font-size-sm;
-    color: colors.$color-primary;
-    font-weight: typography.$font-weight-medium;
-    margin: 0 0 spacing.$space-3;
+    margin: 0;
+    line-height: 1.3;
   }
 
   &__description {
-    font-size: 0.9375rem;
-    color: colors.$color-text-muted;
-    line-height: 1.6;
-    margin: 0 0 spacing.$space-4;
+    font-size: 0.875rem;
+    color: colors.$color-text-primary;
+    opacity: 0.7;
+    margin: 0 0 spacing.$spacing-4;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    line-height: 1.5;
+  }
+
+  // ----------------------------------------
+  // FOOTER
+  // ----------------------------------------
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-top: spacing.$spacing-4;
+    border-top: 1px solid colors.$color-border-light;
   }
 
   &__link {
     display: inline-flex;
     align-items: center;
-    gap: spacing.$space-2;
-    font-size: typography.$font-size-sm;
+    gap: spacing.$spacing-2;
+    font-size: 0.875rem;
     font-weight: typography.$font-weight-semibold;
-    color: colors.$color-text-muted;
-    margin-top: auto;
-    transition: effects.$transition-fast;
+    color: colors.$color-text-primary;
+    transition: color effects.$transition-fast;
 
     svg {
-      transition: effects.$transition-fast;
+      transition: transform effects.$transition-fast;
     }
   }
 }

@@ -51,12 +51,50 @@ const authorImage = article.author?.profile_photo_url || `https://ui-avatars.com
 const pageTitle = article.meta_title || `${article.title} | ${brand.business_name}`
 const pageDescription = article.meta_description || article.excerpt || `Read ${article.title} on the ${brand.business_name} blog.`
 const ogImage = article.og_image_url || article.featured_image_url
+
+// Format date and time for header
+const formatDateTime = (dateString: string | null | undefined) => {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  const dateFormatted = date.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  })
+  const timeFormatted = date.toLocaleTimeString('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  }).toUpperCase()
+  return `${dateFormatted} • ${timeFormatted}`
+}
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
   <article class="article-page">
 
-    <!-- Hero Section -->
+    <!-- Back Button -->
+    <div class="article-back">
+      <a href="/blog" class="article-back__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Back
+      </a>
+    </div>
+
+    <!-- Article Header (Centered) -->
+    <header class="article-header">
+      {article.categories && article.categories.length > 0 && (
+        <span class="article-header__category">{article.categories[0].name}</span>
+      )}
+      <h1 class="article-header__title">{article.title}</h1>
+      <time datetime={article.published_at || ''} class="article-header__meta">
+        {formatDateTime(article.published_at)}
+      </time>
+    </header>
+
+    <!-- Hero Image -->
     <ArticleHero
       title={article.title}
       imageUrl={imageUrl}
@@ -68,19 +106,73 @@ const ogImage = article.og_image_url || article.featured_image_url
       viewCount={article.view_count}
     />
 
-    <!-- Article Content -->
+    <!-- Article Content with Sidebar -->
     <div class="article-body">
       <div class="article-body__container">
-        <div class="article-body__wrapper">
-          <!-- Main Content -->
+
+        <!-- Sidebar (Left) -->
+        <aside class="article-sidebar">
+          <!-- Table of Contents -->
+          <nav class="article-toc" aria-label="Table of contents">
+            <ul class="article-toc__list" id="toc-list">
+              <!-- Populated by JavaScript -->
+            </ul>
+          </nav>
+
+          <!-- Share Section -->
+          <div class="article-sidebar__share">
+            <span class="article-sidebar__share-label">Share Article</span>
+            <div class="article-sidebar__share-buttons">
+              <a
+                href={`https://www.instagram.com/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="article-sidebar__share-btn article-sidebar__share-btn--instagram"
+                title="Share on Instagram"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </a>
+              <a
+                href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(Astro.url.href)}&title=${encodeURIComponent(article.title)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="article-sidebar__share-btn article-sidebar__share-btn--linkedin"
+                title="Share on LinkedIn"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                </svg>
+              </a>
+              <a
+                href={`https://open.spotify.com/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="article-sidebar__share-btn article-sidebar__share-btn--spotify"
+                title="Share on Spotify"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Main Content (Right) -->
+        <div class="article-main">
           <div class="article-content" set:html={article.content} />
 
           <!-- Tags -->
           <ArticleTags tags={article.tags || []} />
 
-          <!-- Share Buttons -->
-          <ArticleShare title={article.title} url={Astro.url.href} />
+          <!-- Share Buttons (Mobile) -->
+          <div class="article-share-mobile">
+            <ArticleShare title={article.title} url={Astro.url.href} />
+          </div>
         </div>
+
       </div>
     </div>
 
@@ -105,6 +197,69 @@ const ogImage = article.og_image_url || article.featured_image_url
 
 <script>
   import { createTracker } from '../../lib/stratos-tracker'
+
+  // ========================================
+  // TABLE OF CONTENTS GENERATION
+  // ========================================
+
+  function generateTableOfContents() {
+    const articleContent = document.querySelector('.article-content')
+    const tocList = document.getElementById('toc-list')
+
+    if (!articleContent || !tocList) return
+
+    const headings = articleContent.querySelectorAll('h2, h3')
+
+    headings.forEach((heading, index) => {
+      // Add ID to heading for anchor links
+      const id = `heading-${index}`
+      heading.id = id
+
+      // Create TOC item
+      const li = document.createElement('li')
+      li.className = 'article-toc__item'
+
+      const a = document.createElement('a')
+      a.href = `#${id}`
+      a.className = 'article-toc__link'
+      a.textContent = heading.textContent || ''
+
+      // Indent h3 items
+      if (heading.tagName === 'H3') {
+        li.classList.add('article-toc__item--nested')
+      }
+
+      li.appendChild(a)
+      tocList.appendChild(li)
+    })
+
+    // Highlight active TOC item on scroll
+    const observerOptions = {
+      rootMargin: '-100px 0px -66%',
+      threshold: 0
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const id = entry.target.id
+        const tocLink = tocList.querySelector(`a[href="#${id}"]`)
+
+        if (entry.isIntersecting) {
+          // Remove active class from all links
+          tocList.querySelectorAll('.article-toc__link').forEach(link => {
+            link.classList.remove('article-toc__link--active')
+          })
+          // Add active class to current link
+          tocLink?.classList.add('article-toc__link--active')
+        }
+      })
+    }, observerOptions)
+
+    headings.forEach(heading => observer.observe(heading))
+  }
+
+  // Run on page load
+  generateTableOfContents()
 
   // ========================================
   // BLOG ANALYTICS TRACKING
@@ -139,14 +294,16 @@ const ogImage = article.og_image_url || article.featured_image_url
   // ========================================
 
   // Track share button clicks
-  document.querySelectorAll('.article-share__btn').forEach(btn => {
+  document.querySelectorAll('.article-share__btn, .article-sidebar__share-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       if (!articleId) return
 
       const shareMethod = btn.classList.contains('article-share__btn--twitter') ? 'twitter'
         : btn.classList.contains('article-share__btn--facebook') ? 'facebook'
-        : btn.classList.contains('article-share__btn--linkedin') ? 'linkedin'
+        : btn.classList.contains('article-share__btn--linkedin') || btn.classList.contains('article-sidebar__share-btn--linkedin') ? 'linkedin'
         : btn.classList.contains('article-share__btn--copy') ? 'copy_link'
+        : btn.classList.contains('article-sidebar__share-btn--instagram') ? 'instagram'
+        : btn.classList.contains('article-sidebar__share-btn--spotify') ? 'spotify'
         : 'unknown'
 
       tracker.trackBlogShare(articleId, shareMethod)
