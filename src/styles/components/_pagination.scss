@@ -12,8 +12,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: spacing.$space-4;
-  padding: spacing.$space-5 spacing.$space-6;
+  gap: spacing.$spacing-4;
+  padding: spacing.$spacing-5 spacing.$spacing-6;
   background: colors.$color-bg-secondary;
   border-radius: 0;
   box-shadow: effects.$shadow-sm;
@@ -22,7 +22,7 @@
   @include md {
     flex-direction: row;
     justify-content: space-between;
-    gap: spacing.$space-6;
+    gap: spacing.$spacing-6;
   }
 
   // ----------------------------------------
@@ -56,10 +56,10 @@
   &__controls {
     display: flex;
     align-items: center;
-    gap: spacing.$space-1-5;
+    gap: spacing.$spacing-1-5;
 
     @include md {
-      gap: spacing.$space-2;
+      gap: spacing.$spacing-2;
     }
   }
 
@@ -70,8 +70,8 @@
   &__btn {
     display: inline-flex;
     align-items: center;
-    gap: spacing.$space-1-5;
-    padding: spacing.$space-2 spacing.$space-3-5;
+    gap: spacing.$spacing-1-5;
+    padding: spacing.$spacing-2 spacing.$spacing-3-5;
     font-size: 0.8125rem;
     font-weight: typography.$font-weight-medium;
     color: colors.$color-text-primary;
@@ -134,7 +134,7 @@
   &__pages {
     display: flex;
     align-items: center;
-    gap: spacing.$space-1;
+    gap: spacing.$spacing-1;
   }
 
   &__page {
@@ -143,7 +143,7 @@
     justify-content: center;
     min-width: 2.25rem;
     height: 2.25rem;
-    padding: 0 spacing.$space-2-5;
+    padding: 0 spacing.$spacing-2-5;
     font-size: 0.8125rem;
     font-weight: typography.$font-weight-medium;
     color: colors.$color-text-primary;

@@ -15,15 +15,15 @@
 
 .service-grid {
   position: relative;
-  padding: spacing.$space-16 0;
+  padding: spacing.$spacing-16 0;
   background: colors.$color-bg-secondary;
 
   @include md {
-    padding: spacing.$space-20 0;
+    padding: spacing.$spacing-20 0;
   }
 
   @include lg {
-    padding: spacing.$space-24 0;
+    padding: spacing.$spacing-24 0;
   }
 
   &--has-background {
@@ -93,15 +93,15 @@
 .service-grid__header {
   display: flex;
   flex-direction: column;
-  gap: spacing.$space-6;
-  margin-bottom: spacing.$space-10;
+  gap: spacing.$spacing-6;
+  margin-bottom: spacing.$spacing-10;
 
   @include md {
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
-    gap: spacing.$space-12;
-    margin-bottom: spacing.$space-12;
+    gap: spacing.$spacing-12;
+    margin-bottom: spacing.$spacing-12;
   }
 }
 
@@ -116,7 +116,7 @@
 .service-grid__header-right {
   display: flex;
   flex-direction: column;
-  gap: spacing.$space-4;
+  gap: spacing.$spacing-4;
 
   @include md {
     max-width: 50%;
@@ -148,15 +148,15 @@
 .service-grid__cta {
   display: inline-flex;
   align-items: center;
-  gap: spacing.$space-2;
+  gap: spacing.$spacing-2;
   font-size: typography.$font-size-sm;
   font-weight: typography.$font-weight-medium;
   color: colors.$color-text-primary;
   text-decoration: none;
-  padding-bottom: spacing.$space-1;
+  padding-bottom: spacing.$spacing-1;
   border-bottom: 1px solid colors.$color-border-medium;
   transition: all effects.$transition-base;
-  margin-top: spacing.$space-2;
+  margin-top: spacing.$spacing-2;
 
   svg {
     transition: transform effects.$transition-base;
@@ -178,10 +178,10 @@
 
 .service-grid__cards {
   display: grid;
-  gap: spacing.$space-4;
+  gap: spacing.$spacing-4;
 
-  @include sm { gap: spacing.$space-5; }
-  @include md { gap: spacing.$space-6; }
+  @include sm { gap: spacing.$spacing-5; }
+  @include md { gap: spacing.$spacing-6; }
 
   &--cols-2 {
     grid-template-columns: 1fr;
@@ -214,14 +214,14 @@
 
 .service-grid__cards--asymmetric {
   display: grid;
-  gap: spacing.$space-4;
+  gap: spacing.$spacing-4;
 
   @include sm {
-    gap: spacing.$space-5;
+    gap: spacing.$spacing-5;
   }
 
   @include md {
-    gap: spacing.$space-6;
+    gap: spacing.$spacing-6;
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: minmax(200px, auto);
   }
@@ -299,7 +299,7 @@
 
   .service-grid__card-content {
     @include lg {
-      padding: spacing.$space-10;
+      padding: spacing.$spacing-10;
     }
   }
 }
@@ -406,14 +406,14 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: spacing.$space-5;
+  padding: spacing.$spacing-5;
 
   @include md {
-    padding: spacing.$space-6;
+    padding: spacing.$spacing-6;
   }
 
   @include lg {
-    padding: spacing.$space-8;
+    padding: spacing.$spacing-8;
   }
 }
 
@@ -437,7 +437,7 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: spacing.$space-4;
+    gap: spacing.$spacing-4;
   }
 
   .service-grid__header-left {
@@ -476,11 +476,11 @@
 .service-grid__cards--cards-layout {
   display: grid;
   grid-template-columns: 1fr;
-  gap: spacing.$space-10;
+  gap: spacing.$spacing-10;
 
   @include md {
     grid-template-columns: repeat(2, 1fr);
-    gap: spacing.$space-12;
+    gap: spacing.$spacing-12;
   }
 }
 
@@ -494,7 +494,7 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  margin-bottom: spacing.$space-6;
+  margin-bottom: spacing.$spacing-6;
 
   img, video {
     width: 100%;
@@ -511,7 +511,7 @@
 
   @include md {
     aspect-ratio: 3 / 2;
-    margin-bottom: spacing.$space-8;
+    margin-bottom: spacing.$spacing-8;
   }
 }
 
@@ -526,7 +526,7 @@
   font-size: clamp(0.875rem, 1.5vw, 1rem);
   font-weight: typography.$font-weight-regular;
   color: colors.$color-text-primary;
-  margin-bottom: spacing.$space-4;
+  margin-bottom: spacing.$spacing-4;
 
   @include md {
     font-size: clamp(1rem, 1.5vw, 1.125rem);
@@ -539,11 +539,11 @@
   font-weight: typography.$font-weight-regular;
   line-height: 1.7;
   color: colors.$color-text-primary;
-  margin: 0 0 spacing.$space-6 0;
+  margin: 0 0 spacing.$spacing-6 0;
   max-width: 90%;
 
   @include md {
-    margin-bottom: spacing.$space-8;
+    margin-bottom: spacing.$spacing-8;
   }
 }
 
@@ -551,7 +551,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: spacing.$space-3 spacing.$space-6;
+  padding: spacing.$spacing-3 spacing.$spacing-6;
   font-family: typography.$font-family-body;
   font-size: 0.6875rem;
   font-weight: typography.$font-weight-medium;
@@ -579,11 +579,11 @@
   .service-grid__header {
     flex-direction: column;
     align-items: flex-start;
-    gap: spacing.$space-4;
-    margin-bottom: spacing.$space-10;
+    gap: spacing.$spacing-4;
+    margin-bottom: spacing.$spacing-10;
 
     @include md {
-      margin-bottom: spacing.$space-12;
+      margin-bottom: spacing.$spacing-12;
     }
   }
 
@@ -612,15 +612,15 @@
 // Bento Grid Layout
 .service-grid__cards--bento {
   display: grid;
-  gap: spacing.$space-4;
+  gap: spacing.$spacing-4;
   grid-template-columns: 1fr;
 
   @include sm {
-    gap: spacing.$space-5;
+    gap: spacing.$spacing-5;
   }
 
   @include md {
-    gap: spacing.$space-5;
+    gap: spacing.$spacing-5;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: auto auto auto;
   }
@@ -637,13 +637,13 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: spacing.$space-6;
+  padding: spacing.$spacing-6;
   border-radius: 1.25rem;
   overflow: hidden;
   min-height: 200px;
 
   @include md {
-    padding: spacing.$space-8;
+    padding: spacing.$spacing-8;
     min-height: 220px;
   }
 
@@ -794,7 +794,7 @@
   font-size: clamp(1.125rem, 2vw, 1.375rem);
   font-weight: typography.$font-weight-semibold;
   line-height: typography.$line-height-snug;
-  margin: 0 0 spacing.$space-3 0;
+  margin: 0 0 spacing.$spacing-3 0;
 }
 
 .service-grid__bento-card-description {

@@ -1,12 +1,14 @@
 // ========================================
 // CONTENT BLOCK COMPONENT
 // Editorial 50/50 split layout
-// Using centralized color tokens from tokens/_colors.scss
+// Using centralized design tokens
 // ========================================
 
-@use '../variables' as *;
-@use '../mixins' as *;
 @use '../tokens/colors' as colors;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../tokens/effects' as effects;
+@use '../mixins' as *;
 
 // ========================================
 // BASE LAYOUT
@@ -83,23 +85,23 @@
   width: 100%;
   height: 100%;
   min-height: 400px;
-  padding: $spacing-8;
+  padding: spacing.$spacing-8;
 
   @include md {
     min-height: 100%;
-    padding: $spacing-10;
+    padding: spacing.$spacing-10;
   }
 
   @include lg {
-    padding: $spacing-12;
+    padding: spacing.$spacing-12;
   }
 }
 
 // Primary image - main large image (bottom layer)
 .content-block__image-primary {
   position: absolute;
-  right: $spacing-6;
-  bottom: $spacing-6;
+  right: spacing.$spacing-6;
+  bottom: spacing.$spacing-6;
   width: 75%;
   height: 70%;
   z-index: 1;
@@ -112,15 +114,15 @@
   }
 
   @include md {
-    right: $spacing-8;
-    bottom: $spacing-8;
+    right: spacing.$spacing-8;
+    bottom: spacing.$spacing-8;
     width: 72%;
     height: 68%;
   }
 
   @include lg {
-    right: $spacing-10;
-    bottom: $spacing-10;
+    right: spacing.$spacing-10;
+    bottom: spacing.$spacing-10;
     width: 65%;
     height: 50%;
     z-index: 1;
@@ -130,8 +132,8 @@
 // Secondary image - smaller overlay (top layer)
 .content-block__image-secondary {
   position: absolute;
-  left: $spacing-4;
-  top: $spacing-4;
+  left: spacing.$spacing-4;
+  top: spacing.$spacing-4;
   width: 50%;
   height: 45%;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
@@ -143,15 +145,15 @@
   }
 
   @include md {
-    left: $spacing-6;
-    top: $spacing-6;
+    left: spacing.$spacing-6;
+    top: spacing.$spacing-6;
     width: 48%;
     height: 42%;
   }
 
   @include lg {
-    left: $spacing-8;
-    top: $spacing-8;
+    left: spacing.$spacing-8;
+    top: spacing.$spacing-8;
     width: 55%;
     height: 80%;
 
@@ -166,14 +168,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: $spacing-12 $spacing-6;
+  padding: spacing.$spacing-12 spacing.$spacing-6;
 
   @include md {
-    padding: $spacing-16 $spacing-10;
+    padding: spacing.$spacing-16 spacing.$spacing-10;
   }
 
   @include lg {
-    padding: $spacing-20 $spacing-16;
+    padding: spacing.$spacing-20 spacing.$spacing-16;
   }
 }
 
@@ -188,26 +190,26 @@
 
 .content-block__subtitle {
   display: block;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: colors.$color-primary;
-  margin-bottom: $spacing-4;
+  margin-bottom: spacing.$spacing-4;
 
   @include md {
-    margin-bottom: $spacing-5;
+    margin-bottom: spacing.$spacing-5;
   }
 }
 
 .content-block__title {
-  font-family: $font-family-heading;
+  font-family: typography.$font-family-heading;
   font-size: clamp(1.75rem, 4vw, 2.75rem);
-  font-weight: $font-weight-regular;
+  font-weight: typography.$font-weight-regular;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  color: $text-primary;
-  margin: 0 0 $spacing-6;
+  color: colors.$color-text-primary;
+  margin: 0 0 spacing.$spacing-6;
 
   // Support for italic emphasis
   em, i {
@@ -218,27 +220,27 @@
   // Support for uppercase/bold portions
   strong, b {
     display: block;
-    font-weight: $font-weight-medium;
+    font-weight: typography.$font-weight-medium;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-top: 0.1em;
   }
 
   @include md {
-    margin-bottom: $spacing-8;
+    margin-bottom: spacing.$spacing-8;
   }
 }
 
 .content-block__description {
-  font-family: $font-family-base;
+  font-family: typography.$font-family-base;
   font-size: clamp(0.875rem, 1.5vw, 1rem);
-  font-weight: $font-weight-regular;
+  font-weight: typography.$font-weight-regular;
   line-height: 1.7;
   color: colors.$color-text-primary;
-  margin-bottom: $spacing-6;
+  margin-bottom: spacing.$spacing-6;
 
   @include md {
-    margin-bottom: $spacing-8;
+    margin-bottom: spacing.$spacing-8;
   }
 
   p {
@@ -246,20 +248,20 @@
   }
 
   p + p {
-    margin-top: $spacing-4;
+    margin-top: spacing.$spacing-4;
   }
 }
 
 .content-block__cta {
   display: inline-flex;
   align-items: center;
-  gap: $spacing-2;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  color: $text-primary;
+  gap: spacing.$spacing-2;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
   text-decoration: none;
-  padding-bottom: $spacing-1;
-  border-bottom: 1px solid $text-primary;
+  padding-bottom: spacing.$spacing-1;
+  border-bottom: 1px solid colors.$color-text-primary;
   transition: all 0.3s ease;
 
   svg {
@@ -282,18 +284,18 @@
 
 .content-block__services {
   list-style: none;
-  margin: $spacing-10 0 0 0;
+  margin: spacing.$spacing-10 0 0 0;
   padding: 0;
 }
 
 .content-block__service-item {
-  font-family: $font-family-base;
+  font-family: typography.$font-family-base;
   font-size: 0.75rem;
-  font-weight: $font-weight-medium;
+  font-weight: typography.$font-weight-medium;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: $text-primary;
-  padding: $spacing-4 0;
+  color: colors.$color-text-primary;
+  padding: spacing.$spacing-4 0;
   border-top: 1px solid colors.$color-border-medium;
 
   &:last-child {
@@ -363,20 +365,20 @@
 .content-block--faq {
 
   .content-block__media {
-    padding: $spacing-6;
+    padding: spacing.$spacing-6;
 
     @include md {
-      padding: $spacing-8;
+      padding: spacing.$spacing-8;
     }
 
     @include lg {
-      padding: 0.5em;
+      padding: spacing.$spacing-2;
     }
   }
 
   .content-block__image {
     position: relative;
-    border-radius: $radius-xl;
+    border-radius: effects.$radius-xl;
     overflow: hidden;
   }
 
@@ -389,26 +391,26 @@
 .content-block__label-badge {
   display: inline-flex;
   align-items: center;
-  gap: $spacing-2;
-  padding: $spacing-2 $spacing-4;
+  gap: spacing.$spacing-2;
+  padding: spacing.$spacing-2 spacing.$spacing-4;
   background-color: colors.$color-bg-tertiary;
-  border-radius: $radius-md;
-  margin-bottom: $spacing-6;
+  border-radius: effects.$radius-md;
+  margin-bottom: spacing.$spacing-6;
 
   svg {
     color: colors.$color-text-primary;
   }
 
   span {
-    font-size: $font-size-xs;
-    font-weight: $font-weight-medium;
+    font-size: typography.$font-size-xs;
+    font-weight: typography.$font-weight-medium;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: colors.$color-text-primary;
   }
 
   @include md {
-    margin-bottom: $spacing-8;
+    margin-bottom: spacing.$spacing-8;
   }
 }
 
@@ -416,10 +418,10 @@
 .content-block__title--faq {
   font-style: italic;
   font-size: clamp(2rem, 4vw, 3rem);
-  margin-bottom: $spacing-8;
+  margin-bottom: spacing.$spacing-8;
 
   @include md {
-    margin-bottom: $spacing-10;
+    margin-bottom: spacing.$spacing-10;
   }
 }
 
@@ -447,16 +449,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: $spacing-4;
-  padding: $spacing-5 0;
+  gap: spacing.$spacing-4;
+  padding: spacing.$spacing-5 0;
   cursor: pointer;
   text-align: left;
   transition: color 0.2s ease;
 
   span {
-    font-family: $font-family-base;
-    font-size: $font-size-base;
-    font-weight: $font-weight-medium;
+    font-family: typography.$font-family-base;
+    font-size: typography.$font-size-base;
+    font-weight: typography.$font-weight-medium;
     color: colors.$color-text-primary;
     line-height: 1.4;
   }
@@ -466,10 +468,10 @@
   }
 
   @include md {
-    padding: $spacing-6 0;
+    padding: spacing.$spacing-6 0;
 
     span {
-      font-size: $font-size-lg;
+      font-size: typography.$font-size-lg;
     }
   }
 }
@@ -492,17 +494,17 @@
   transition: max-height 0.3s ease, padding 0.3s ease;
 
   p {
-    font-family: $font-family-base;
-    font-size: $font-size-sm;
-    font-weight: $font-weight-regular;
+    font-family: typography.$font-family-base;
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-regular;
     line-height: 1.7;
     color: colors.$color-text-primary;
     margin: 0;
-    padding-bottom: $spacing-5;
+    padding-bottom: spacing.$spacing-5;
 
     @include md {
-      font-size: $font-size-base;
-      padding-bottom: $spacing-6;
+      font-size: typography.$font-size-base;
+      padding-bottom: spacing.$spacing-6;
     }
   }
 }
@@ -522,7 +524,7 @@
 // RESPONSIVE ADJUSTMENTS
 // ========================================
 
-@media (max-width: #{$breakpoint-md - 1px}) {
+@include mobile-only {
   .content-block {
     // On mobile, media always appears first
     .content-block__media {
@@ -532,7 +534,7 @@
     .content-block__text {
       order: 2 !important;
       align-items: flex-start;
-      padding-top: $spacing-10;
+      padding-top: spacing.$spacing-10;
     }
   }
 }

@@ -105,8 +105,8 @@
   }
 
   @include lg {
-    padding-top: 3em;
-    padding-bottom: 3em;
+    padding-top: spacing.$spacing-12;
+    padding-bottom: spacing.$spacing-12;
   }
 }
 

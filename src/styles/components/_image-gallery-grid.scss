@@ -1,0 +1,451 @@
+// ========================================
+// IMAGE GALLERY - GRID & SLIDER
+// Bento grid layout and single image slider
+// ========================================
+
+@use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/sizing' as sizing;
+@use '../tokens/typography' as typography;
+@use '../mixins' as *;
+
+// Local design tokens
+$gallery-height: 32rem;
+$gallery-height-lg: 38rem;
+$transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+// ========================================
+// GALLERY CONTAINER
+// ========================================
+
+.property-gallery {
+  position: relative;
+  width: 100%;
+}
+
+// ========================================
+// BENTO GRID GALLERY LAYOUT
+// ========================================
+
+.gallery-bento {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing.$spacing-2;
+
+  @include md {
+    grid-template-columns: 1.15fr 1fr;
+  }
+}
+
+.gallery-bento__main {
+  position: relative;
+  overflow: hidden;
+  border-radius: spacing.$spacing-3;
+  aspect-ratio: 4 / 3;
+
+  @include md {
+    aspect-ratio: auto;
+    height: 100%;
+    min-height: 320px;
+  }
+
+  @include lg {
+    min-height: 380px;
+    border-radius: spacing.$spacing-4;
+  }
+}
+
+.gallery-bento__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: spacing.$spacing-2;
+
+  @include mobile-only {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+  }
+}
+
+.gallery-bento__thumb {
+  position: relative;
+  overflow: hidden;
+  border-radius: spacing.$spacing-3;
+  aspect-ratio: 4 / 3;
+
+  @include md {
+    aspect-ratio: auto;
+    height: 100%;
+  }
+
+  @include lg {
+    border-radius: spacing.$spacing-4;
+  }
+}
+
+.gallery-bento__image-btn {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: colors.$color-bg-tertiary;
+  cursor: pointer;
+  position: relative;
+
+  &:focus-visible {
+    outline: 2px solid colors.$color-primary;
+    outline-offset: 2px;
+  }
+}
+
+.gallery-bento__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform $transition-smooth;
+
+  .gallery-bento__image-btn:hover & {
+    transform: scale(1.05);
+  }
+}
+
+.gallery-bento__more {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: typography.$font-size-lg;
+  font-weight: typography.$font-weight-semibold;
+  letter-spacing: 0.02em;
+  transition: background $transition-smooth;
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+
+  .gallery-bento__image-btn:hover & {
+    background: rgba(0, 0, 0, 0.65);
+  }
+
+  span {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
+
+  @include lg {
+    font-size: typography.$font-size-xl;
+  }
+}
+
+// ========================================
+// SINGLE IMAGE SLIDER
+// ========================================
+
+.gallery-slider {
+  position: relative;
+  width: 100%;
+}
+
+.gallery-slider__container {
+  position: relative;
+  width: 100%;
+  height: $gallery-height;
+  overflow: hidden;
+  background: colors.$color-bg-secondary;
+
+  &:hover {
+    .gallery-slider__nav {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  @include lg {
+    height: $gallery-height-lg;
+  }
+
+  @include mobile-only {
+    height: 24rem;
+
+    .gallery-slider__nav {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    height: 20rem;
+  }
+}
+
+.gallery-slider__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: opacity effects.$transition-base, transform $transition-smooth;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  &.fade-out {
+    opacity: 0;
+  }
+}
+
+// ========================================
+// SLIDER NAVIGATION ARROWS
+// ========================================
+
+.gallery-slider__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: sizing.$size-button-lg;
+  height: sizing.$size-button-lg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: colors.$color-bg-secondary;
+  color: colors.$color-text-primary;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity effects.$transition-base,
+    visibility effects.$transition-base,
+    transform effects.$transition-fast,
+    background effects.$transition-fast,
+    box-shadow effects.$transition-fast;
+
+  &:hover {
+    background: colors.$color-bg-secondary;
+    transform: translateY(-50%) scale(1.08);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.96);
+  }
+
+  svg {
+    width: sizing.$size-icon-md;
+    height: sizing.$size-icon-md;
+    stroke-width: 2.5;
+  }
+
+  &--prev {
+    left: spacing.$spacing-5;
+  }
+
+  &--next {
+    right: spacing.$spacing-5;
+  }
+
+  @include mobile-only {
+    width: sizing.$size-button-md;
+    height: sizing.$size-button-md;
+
+    svg {
+      width: sizing.$size-icon-sm;
+      height: sizing.$size-icon-sm;
+    }
+
+    &--prev {
+      left: spacing.$spacing-3;
+    }
+
+    &--next {
+      right: spacing.$spacing-3;
+    }
+  }
+
+  @media (max-width: 480px) {
+    width: sizing.$size-button-sm;
+    height: sizing.$size-button-sm;
+
+    svg {
+      width: sizing.$size-icon-sm;
+      height: sizing.$size-icon-sm;
+    }
+
+    &--prev {
+      left: spacing.$spacing-2;
+    }
+
+    &--next {
+      right: spacing.$spacing-2;
+    }
+  }
+}
+
+// ========================================
+// SLIDER COUNTER BADGE
+// ========================================
+
+.gallery-slider__counter {
+  position: absolute;
+  bottom: spacing.$spacing-5;
+  left: spacing.$spacing-5;
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-2;
+  background: colors.$color-bg-secondary;
+  color: white;
+  padding: spacing.$spacing-2 spacing.$spacing-4;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(8px);
+  z-index: 5;
+
+  svg {
+    width: sizing.$size-icon-sm;
+    height: sizing.$size-icon-sm;
+    opacity: 0.8;
+  }
+
+  @include mobile-only {
+    bottom: spacing.$spacing-4;
+    left: spacing.$spacing-4;
+    padding: spacing.$spacing-1-5 spacing.$spacing-3;
+    font-size: typography.$font-size-xs;
+  }
+}
+
+// ========================================
+// VIEW ALL PHOTOS BUTTON
+// ========================================
+
+.gallery-slider__view-all {
+  position: absolute;
+  bottom: spacing.$spacing-5;
+  right: spacing.$spacing-5;
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-2;
+  background: colors.$color-bg-secondary;
+  color: white;
+  padding: spacing.$spacing-2-5 spacing.$spacing-5;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-semibold;
+  letter-spacing: 0.02em;
+  border: none;
+  cursor: pointer;
+  transition: all effects.$transition-fast;
+  z-index: 5;
+
+  &:hover {
+    background: colors.$color-bg-secondary;
+    transform: translateY(-2px);
+  }
+
+  svg {
+    width: sizing.$size-icon-sm;
+    height: sizing.$size-icon-sm;
+    opacity: 0.9;
+  }
+
+  @include mobile-only {
+    bottom: spacing.$spacing-4;
+    right: spacing.$spacing-4;
+    padding: spacing.$spacing-2 spacing.$spacing-4;
+    font-size: typography.$font-size-xs;
+
+    span {
+      display: none;
+    }
+
+    svg {
+      width: sizing.$size-icon-lg;
+      height: sizing.$size-icon-lg;
+    }
+  }
+}
+
+// ========================================
+// SLIDER DOTS NAVIGATION
+// ========================================
+
+.gallery-slider__dots {
+  display: flex;
+  justify-content: center;
+  gap: spacing.$spacing-2;
+  padding: spacing.$spacing-4 0;
+  background: colors.$color-bg-secondary;
+
+  @media (max-width: 480px) {
+    gap: spacing.$spacing-1-5;
+    padding: spacing.$spacing-3 0;
+  }
+}
+
+.gallery-slider__dot {
+  width: spacing.$spacing-2;
+  height: spacing.$spacing-2;
+  border-radius: 50%;
+  background: colors.$color-bg-secondary;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all effects.$transition-fast;
+
+  &:hover {
+    background: colors.$color-bg-secondary;
+    transform: scale(1.2);
+  }
+
+  &--active {
+    background: colors.$color-bg-secondary;
+    transform: scale(1.2);
+
+    &:hover {
+      background: colors.$color-bg-secondary;
+    }
+  }
+
+  @media (max-width: 480px) {
+    width: 0.4rem;
+    height: 0.4rem;
+  }
+}
+
+// ========================================
+// NO IMAGES STATE
+// ========================================
+
+.no-images {
+  width: 100%;
+  height: $gallery-height;
+  background: colors.$color-bg-secondary;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.$spacing-3;
+  color: colors.$color-text-muted;
+
+  svg {
+    width: sizing.$size-icon-2xl;
+    height: sizing.$size-icon-2xl;
+    opacity: 0.5;
+  }
+
+  p {
+    font-size: typography.$font-size-base;
+    margin: 0;
+    letter-spacing: 0.01em;
+  }
+
+  @include mobile-only {
+    height: 20rem;
+  }
+}

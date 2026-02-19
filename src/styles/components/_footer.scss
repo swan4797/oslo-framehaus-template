@@ -15,8 +15,8 @@
 // Layout values specific to footer
 // ----------------------------------------
 
-$container-max: 1400px;
-$container-padding: 2rem;
+$container-max: 90rem;  // Aligned with header's max-width
+$container-padding: spacing.$spacing-8;
 
 // ========================================
 // FOOTER BASE
@@ -42,18 +42,18 @@ $container-padding: 2rem;
 
 .footer-tier__container {
   max-width: $container-max;
-  margin: 0 auto;
+  margin-inline: auto;
   padding-left: $container-padding;
   padding-right: $container-padding;
 
   @media (max-width: 768px) {
-    padding-left: spacing.$space-6;
-    padding-right: spacing.$space-6;
+    padding-left: spacing.$spacing-6;
+    padding-right: spacing.$spacing-6;
   }
 
   @media (max-width: 480px) {
-    padding-left: spacing.$space-5;
-    padding-right: spacing.$space-5;
+    padding-left: spacing.$spacing-5;
+    padding-right: spacing.$spacing-5;
   }
 }
 
@@ -63,23 +63,23 @@ $container-padding: 2rem;
 
 .footer-brand {
   background: colors.$color-bg-primary;
-  padding: spacing.$space-16 0 spacing.$space-10;
+  padding: spacing.$spacing-16 0 spacing.$spacing-10;
   overflow: hidden;
 
   @media (max-width: 768px) {
-    padding: spacing.$space-12 0 spacing.$space-8;
+    padding: spacing.$spacing-12 0 spacing.$spacing-8;
   }
 }
 
 .footer-brand__container {
   max-width: $container-max;
-  margin: 0 auto;
+  margin-inline: auto;
   padding-left: $container-padding;
   padding-right: $container-padding;
 
   @media (max-width: 768px) {
-    padding-left: spacing.$space-6;
-    padding-right: spacing.$space-6;
+    padding-left: spacing.$spacing-6;
+    padding-right: spacing.$spacing-6;
   }
 }
 
@@ -122,31 +122,31 @@ $container-padding: 2rem;
 
 .footer-tier--main {
   background: colors.$color-bg-primary;
-  padding: spacing.$space-12 0 spacing.$space-16;
+  padding: spacing.$spacing-12 0 spacing.$spacing-16;
 
   @media (max-width: 768px) {
-    padding: spacing.$space-10 0 spacing.$space-12;
+    padding: spacing.$spacing-10 0 spacing.$spacing-12;
   }
 
   .footer-tier__container {
     display: grid;
-    grid-template-columns: 1.5fr repeat(3, 1fr) 1.2fr;
-    gap: spacing.$space-8;
+    grid-template-columns: 1.5fr repeat(3,1fr);
+    gap: spacing.$spacing-8;
     align-items: start;
 
     @media (max-width: 1200px) {
       grid-template-columns: 1.3fr repeat(3, 1fr);
-      gap: spacing.$space-6;
+      gap: spacing.$spacing-6;
     }
 
     @media (max-width: 1024px) {
       grid-template-columns: 1fr 1fr;
-      gap: spacing.$space-10 spacing.$space-8;
+      gap: spacing.$spacing-10 spacing.$spacing-8;
     }
 
     @media (max-width: 640px) {
       grid-template-columns: 1fr;
-      gap: spacing.$space-10;
+      gap: spacing.$spacing-10;
     }
   }
 }
@@ -155,7 +155,7 @@ $container-padding: 2rem;
 .footer-main__about {
   display: flex;
   flex-direction: column;
-  gap: spacing.$space-8;
+  gap: spacing.$spacing-8;
 
   @media (max-width: 1024px) {
     grid-column: 1 / -1;
@@ -184,7 +184,7 @@ $container-padding: 2rem;
 .footer-main__social {
   display: flex;
   align-items: center;
-  gap: spacing.$space-3;
+  gap: spacing.$spacing-3;
 }
 
 // Social Links (shared styles)
@@ -216,7 +216,7 @@ $container-padding: 2rem;
 .footer-main__nav-col {
   display: flex;
   flex-direction: column;
-  gap: spacing.$space-5;
+  gap: spacing.$spacing-5;
 
   @media (max-width: 1200px) {
     &:last-of-type {
@@ -243,7 +243,7 @@ $container-padding: 2rem;
 .footer-main__nav-list {
   display: flex;
   flex-direction: column;
-  gap: spacing.$space-4;
+  gap: spacing.$spacing-4;
 }
 
 // Featured Image Column
@@ -297,18 +297,18 @@ $container-padding: 2rem;
 
 .footer-tier--bottom {
   background: colors.$color-bg-primary;
-  padding: spacing.$space-6 0;
+  padding: spacing.$spacing-6 0;
   border-top: 1px solid colors.$color-border-dark;
 
   .footer-tier__container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: spacing.$space-8;
+    gap: spacing.$spacing-8;
 
     @media (max-width: 768px) {
       flex-direction: column;
-      gap: spacing.$space-4;
+      gap: spacing.$spacing-4;
     }
   }
 }
@@ -327,16 +327,16 @@ $container-padding: 2rem;
 .footer-bottom__legal-links {
   display: flex;
   align-items: center;
-  gap: spacing.$space-8;
+  gap: spacing.$spacing-8;
   flex-wrap: wrap;
   justify-content: center;
 
   @media (max-width: 768px) {
-    gap: spacing.$space-6;
+    gap: spacing.$spacing-6;
   }
 
   @media (max-width: 480px) {
-    gap: spacing.$space-4;
+    gap: spacing.$spacing-4;
   }
 }
 
@@ -371,7 +371,7 @@ $container-padding: 2rem;
   .site-footer {
     background: colors.$color-bg-secondary;
     color: black;
-    padding: spacing.$space-4 0;
+    padding: spacing.$spacing-4 0;
   }
 
   .footer-brand,

@@ -7,6 +7,7 @@
 @use '../../tokens/colors' as colors;
 @use '../../tokens/effects' as effects;
 @use '../../tokens/spacing' as spacing;
+@use '../../tokens/sizing' as sizing;
 @use '../../tokens/typography' as typography;
 @use '../../mixins' as *;
 
@@ -53,7 +54,10 @@
 }
 
 .list-header {
-  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-1;
+  padding: spacing.$spacing-5 spacing.$spacing-6;
   background: colors.$color-bg-secondary;
   border-bottom: 1px solid var(--map-border);
   position: sticky;
@@ -62,8 +66,8 @@
 
   .count-text {
     margin: 0;
-    font-size: 1.125rem;
-    font-weight: 600;
+    font-size: typography.$font-size-lg;
+    font-weight: typography.$font-weight-semibold;
     color: var(--map-text-primary);
 
     strong {
@@ -72,8 +76,8 @@
   }
 
   .price-summary {
-    margin: 0.25rem 0 0 0;
-    font-size: 0.875rem;
+    margin: 0;
+    font-size: typography.$font-size-sm;
     color: var(--map-text-secondary);
   }
 }
@@ -81,13 +85,13 @@
 .loading-spinner {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: spacing.$spacing-2;
   color: var(--map-text-secondary);
-  font-size: 0.9375rem;
+  font-size: typography.$font-size-base;
 
   .spinner-icon {
-    width: 20px;
-    height: 20px;
+    width: sizing.$size-icon-md;
+    height: sizing.$size-icon-md;
     animation: spin 1s linear infinite;
   }
 }
@@ -97,10 +101,10 @@
 }
 
 .property-cards-scroll {
-  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: spacing.$spacing-4;
+  padding: spacing.$spacing-4;
 }
 
 // ----------------------------------------
@@ -108,38 +112,41 @@
 // ----------------------------------------
 
 .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacing.$spacing-4;
   text-align: center;
-  padding: 3rem 1.5rem;
+  padding: spacing.$spacing-12 spacing.$spacing-6;
   background: colors.$color-bg-secondary;
   border: 1px dashed var(--map-border);
 
   .empty-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: sizing.$size-icon-4xl;
+    height: sizing.$size-icon-4xl;
     background: colors.$color-bg-secondary;
     border-radius: 50%;
 
     svg {
-      width: 32px;
-      height: 32px;
+      width: sizing.$size-icon-xl;
+      height: sizing.$size-icon-xl;
       color: var(--map-text-muted);
     }
   }
 
   .empty-title {
     margin: 0;
-    font-size: 1.0625rem;
-    font-weight: 600;
+    font-size: typography.$font-size-base;
+    font-weight: typography.$font-weight-semibold;
     color: var(--map-text-primary);
   }
 
   .empty-hint {
-    margin: 0.5rem 0 0 0;
-    font-size: 0.875rem;
+    margin: 0;
+    font-size: typography.$font-size-sm;
     color: var(--map-text-muted);
   }
 }
@@ -206,8 +213,8 @@
     min-height: 120px;
 
     svg {
-      width: 32px;
-      height: 32px;
+      width: sizing.$size-icon-xl;
+      height: sizing.$size-icon-xl;
       color: var(--map-text-muted);
     }
   }
@@ -215,11 +222,11 @@
   // Badges
   .card-badge {
     position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
-    padding: 0.25rem 0.5rem;
-    font-size: 0.625rem;
-    font-weight: 700;
+    top: spacing.$spacing-2;
+    left: spacing.$spacing-2;
+    padding: spacing.$spacing-1 spacing.$spacing-2;
+    font-size: typography.$font-size-xs;
+    font-weight: typography.$font-weight-bold;
     text-transform: uppercase;
     letter-spacing: 0.03em;
 
@@ -235,9 +242,9 @@
 
     &.featured {
       top: auto;
-      bottom: 0.5rem;
-      left: 0.5rem;
-      padding: 0.25rem;
+      bottom: spacing.$spacing-2;
+      left: spacing.$spacing-2;
+      padding: spacing.$spacing-1;
       background: colors.$color-bg-secondary;
       color: white;
       display: flex;
@@ -245,8 +252,8 @@
       justify-content: center;
 
       svg {
-        width: 12px;
-        height: 12px;
+        width: sizing.$size-icon-xs;
+        height: sizing.$size-icon-xs;
       }
     }
   }
@@ -257,35 +264,35 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    padding: 0.875rem 1rem;
+    gap: spacing.$spacing-2;
+    padding: spacing.$spacing-3-5 spacing.$spacing-4;
   }
 
   .card-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 0.5rem;
-    margin-bottom: 0.25rem;
+    gap: spacing.$spacing-2;
   }
 
   .card-price {
-    font-size: 1.0625rem;
-    font-weight: 700;
+    font-size: typography.$font-size-base;
+    font-weight: typography.$font-weight-bold;
     color: var(--map-text-primary);
     line-height: 1.2;
 
     .price-suffix {
-      font-size: 0.75rem;
-      font-weight: 500;
+      font-size: typography.$font-size-xs;
+      font-weight: typography.$font-weight-medium;
       color: var(--map-text-secondary);
     }
   }
 
   .card-address {
-    font-size: 0.8125rem;
-    font-weight: 500;
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-medium;
     color: var(--map-text-primary);
-    margin: 0 0 0.5rem 0;
+    margin: 0;
     line-height: 1.35;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -297,26 +304,25 @@
   .card-specs {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.625rem;
-    margin-bottom: 0.625rem;
+    gap: spacing.$spacing-2-5;
 
     .spec {
       display: flex;
       align-items: center;
-      gap: 0.25rem;
-      font-size: 0.75rem;
+      gap: spacing.$spacing-1;
+      font-size: typography.$font-size-xs;
       color: var(--map-text-secondary);
 
       svg {
-        width: 14px;
-        height: 14px;
+        width: sizing.$size-icon-sm;
+        height: sizing.$size-icon-sm;
         flex-shrink: 0;
       }
 
       &.type {
         text-transform: capitalize;
         background: colors.$color-bg-secondary;
-        padding: 0.125rem 0.375rem;
+        padding: spacing.$spacing-0-5 spacing.$spacing-1-5;
         font-size: 0.6875rem;
       }
     }
@@ -326,21 +332,21 @@
   .card-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    font-size: 0.75rem;
-    font-weight: 600;
+    gap: spacing.$spacing-1;
+    font-size: typography.$font-size-xs;
+    font-weight: typography.$font-weight-semibold;
     color: var(--map-accent);
     text-decoration: none;
     transition: gap 0.2s ease;
     margin-top: auto;
 
     &:hover {
-      gap: 0.5rem;
+      gap: spacing.$spacing-2;
     }
 
     svg {
-      width: 14px;
-      height: 14px;
+      width: sizing.$size-icon-sm;
+      height: sizing.$size-icon-sm;
     }
   }
 }
@@ -358,9 +364,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 0.875rem;
-  font-size: 0.8125rem;
-  font-weight: 700;
+  padding: spacing.$spacing-2 spacing.$spacing-3-5;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-bold;
   font-family: Inter, system-ui, -apple-system, sans-serif;
   color: white;
   background: colors.$color-bg-secondary;
@@ -444,43 +450,44 @@
     background: colors.$color-bg-secondary;
 
     svg {
-      width: 36px;
-      height: 36px;
+      width: sizing.$size-icon-2xl;
+      height: sizing.$size-icon-2xl;
       color: var(--map-text-muted);
     }
   }
 
   .popup-content {
-    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-1;
+    padding: spacing.$spacing-4;
   }
 
   .popup-price {
-    font-size: 1.125rem;
-    font-weight: 700;
+    font-size: typography.$font-size-lg;
+    font-weight: typography.$font-weight-bold;
     color: var(--map-text-primary);
-    margin-bottom: 0.25rem;
   }
 
   .popup-details {
-    font-size: 0.8125rem;
+    font-size: typography.$font-size-sm;
     color: var(--map-text-secondary);
-    margin-bottom: 0.375rem;
   }
 
   .popup-address {
-    font-size: 0.875rem;
+    font-size: typography.$font-size-sm;
     color: var(--map-text-primary);
-    margin-bottom: 0.75rem;
     line-height: 1.4;
   }
 
   .popup-link {
     display: inline-flex;
     align-items: center;
-    font-size: 0.875rem;
-    font-weight: 600;
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-semibold;
     color: var(--map-accent);
     text-decoration: none;
+    margin-top: spacing.$spacing-2;
 
     &:hover {
       text-decoration: underline;
@@ -505,9 +512,9 @@
 .loading-spinner-text {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1rem !important;
-  font-weight: 600;
+  gap: spacing.$spacing-2;
+  font-size: typography.$font-size-base !important;
+  font-weight: typography.$font-weight-semibold;
   color: var(--map-accent) !important;
 }
 
@@ -515,7 +522,7 @@
 // RESPONSIVE
 // ----------------------------------------
 
-@media (max-width: 768px) {
+@include mobile-only {
   .property-list-sidebar {
     width: 100%;
     height: 40vh;

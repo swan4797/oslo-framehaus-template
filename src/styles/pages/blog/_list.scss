@@ -13,8 +13,6 @@
 // Local variables
 $content-max-width: 720px;
 $page-max-width: 1200px;
-$section-spacing: 80px;
-$section-spacing-mobile: 56px;
 
 // ========================================
 // PAGE LAYOUT
@@ -138,9 +136,9 @@ $section-spacing-mobile: 56px;
 }
 
 .stat-item__icon {
-  width: 48px;
-  height: 48px;
-  margin: 0 auto 16px;
+  width: spacing.$spacing-12;
+  height: spacing.$spacing-12;
+  margin: 0 auto spacing.$spacing-4;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -148,28 +146,28 @@ $section-spacing-mobile: 56px;
   border-radius: effects.$radius-md;
 
   svg {
-    width: 24px;
-    height: 24px;
+    width: spacing.$spacing-6;
+    height: spacing.$spacing-6;
     color: colors.$color-bg-primary;
   }
 }
 
 .stat-item__value {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: typography.$font-size-3xl;
+  font-weight: typography.$font-weight-bold;
   color: colors.$color-text-primary;
-  margin-bottom: 4px;
+  margin-bottom: spacing.$spacing-1;
   letter-spacing: -0.02em;
 
-  @media (max-width: 768px) {
-    font-size: 1.75rem;
+  @include mobile-only {
+    font-size: typography.$font-size-2xl;
   }
 }
 
 .stat-item__label {
-  font-size: 0.9375rem;
+  font-size: typography.$font-size-base;
   color: colors.$color-text-primary;
-  font-weight: 500;
+  font-weight: typography.$font-weight-medium;
 }
 
 // ========================================
@@ -283,9 +281,9 @@ $section-spacing-mobile: 56px;
 }
 
 .empty-state__icon {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 24px;
+  width: spacing.$spacing-20;
+  height: spacing.$spacing-20;
+  margin: 0 auto spacing.$spacing-6;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -293,21 +291,21 @@ $section-spacing-mobile: 56px;
   border-radius: 50%;
 
   svg {
-    width: 40px;
-    height: 40px;
+    width: spacing.$spacing-10;
+    height: spacing.$spacing-10;
     color: colors.$color-text-muted;
   }
 }
 
 .empty-state__title {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: typography.$font-size-lg;
+  font-weight: typography.$font-weight-semibold;
   color: colors.$color-text-primary;
-  margin: 0 0 8px 0;
+  margin: 0 0 spacing.$spacing-2 0;
 }
 
 .empty-state__text {
-  font-size: 1rem;
+  font-size: typography.$font-size-base;
   color: colors.$color-text-primary;
   margin: 0;
 }
@@ -341,13 +339,13 @@ $section-spacing-mobile: 56px;
 .pagination__btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
+  gap: spacing.$spacing-2;
+  padding: spacing.$spacing-3 spacing.$spacing-5;
   background: colors.$color-bg-secondary;
   border: 1.5px solid colors.$color-border-light;
   border-radius: effects.$radius-md;
-  font-size: 0.9375rem;
-  font-weight: 600;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-semibold;
   color: colors.$color-text-primary;
   text-decoration: none;
   transition: all effects.$transition-fast;
@@ -360,14 +358,14 @@ $section-spacing-mobile: 56px;
   }
 
   svg {
-    width: 18px;
-    height: 18px;
+    width: spacing.$spacing-4-5;
+    height: spacing.$spacing-4-5;
   }
 }
 
 .pagination__numbers {
   display: flex;
-  gap: 8px;
+  gap: spacing.$spacing-2;
 
   @media (max-width: 640px) {
     display: none;
@@ -403,11 +401,11 @@ $section-spacing-mobile: 56px;
 // ========================================
 
 .blog-cta {
-  padding: $section-spacing-mobile spacing.$spacing-5;
+  padding: spacing.$spacing-14 spacing.$spacing-5;
   background: colors.$color-bg-secondary;
 
   @include md {
-    padding: $section-spacing spacing.$spacing-6;
+    padding: spacing.$spacing-20 spacing.$spacing-6;
   }
 }
 
@@ -418,9 +416,9 @@ $section-spacing-mobile: 56px;
 }
 
 .blog-cta__icon {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 24px;
+  width: spacing.$spacing-16;
+  height: spacing.$spacing-16;
+  margin: 0 auto spacing.$spacing-6;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -428,38 +426,38 @@ $section-spacing-mobile: 56px;
   border-radius: effects.$radius-lg;
 
   svg {
-    width: 32px;
-    height: 32px;
+    width: spacing.$spacing-8;
+    height: spacing.$spacing-8;
     color: colors.$color-bg-primary;
   }
 }
 
 .blog-cta__title {
-  font-size: 1.75rem;
-  font-weight: 700;
+  font-size: typography.$font-size-2xl;
+  font-weight: typography.$font-weight-bold;
   color: colors.$color-bg-primary;
-  margin: 0 0 16px 0;
+  margin: 0 0 spacing.$spacing-4 0;
   letter-spacing: -0.01em;
 
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
+  @include mobile-only {
+    font-size: typography.$font-size-xl;
   }
 }
 
 .blog-cta__text {
-  font-size: 1rem;
+  font-size: typography.$font-size-base;
   color: rgba(colors.$color-bg-primary, 0.8);
-  margin: 0 0 32px 0;
+  margin: 0 0 spacing.$spacing-8 0;
   line-height: 1.7;
 
-  @media (max-width: 768px) {
-    margin-bottom: 24px;
+  @include mobile-only {
+    margin-bottom: spacing.$spacing-6;
   }
 }
 
 .blog-cta__form {
   display: flex;
-  gap: 12px;
+  gap: spacing.$spacing-3;
   max-width: 480px;
   margin: 0 auto;
 
@@ -470,13 +468,13 @@ $section-spacing-mobile: 56px;
 
 .blog-cta__input {
   flex: 1;
-  height: 52px;
-  padding: 0 20px;
+  height: spacing.$spacing-14;
+  padding: 0 spacing.$spacing-5;
   background: colors.$color-bg-secondary;
   border: none;
   border-radius: effects.$radius-md;
   font-family: typography.$font-family-base;
-  font-size: 1rem;
+  font-size: typography.$font-size-base;
   color: colors.$color-text-primary;
 
   &::placeholder {
@@ -493,15 +491,15 @@ $section-spacing-mobile: 56px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  height: 52px;
-  padding: 0 24px;
+  gap: spacing.$spacing-2;
+  height: spacing.$spacing-14;
+  padding: 0 spacing.$spacing-6;
   background: colors.$color-bg-secondary;
   border: none;
   border-radius: effects.$radius-md;
   font-family: typography.$font-family-base;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-semibold;
   color: colors.$color-bg-primary;
   cursor: pointer;
   transition: background effects.$transition-fast, transform effects.$transition-fast, box-shadow effects.$transition-fast;
@@ -514,13 +512,13 @@ $section-spacing-mobile: 56px;
   }
 
   svg {
-    width: 18px;
-    height: 18px;
+    width: spacing.$spacing-4-5;
+    height: spacing.$spacing-4-5;
   }
 }
 
 .blog-cta__note {
-  font-size: 0.875rem;
+  font-size: typography.$font-size-sm;
   color: rgba(colors.$color-bg-primary, 0.6);
-  margin: 16px 0 0 0;
+  margin: spacing.$spacing-4 0 0 0;
 }

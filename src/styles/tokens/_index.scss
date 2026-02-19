@@ -13,6 +13,7 @@
 // - _colors.scss     : Color palette with CSS custom properties
 // - _typography.scss : Font families, sizes, weights
 // - _spacing.scss    : Spacing scale
+// - _sizing.scss     : Component sizes (icons, inputs, buttons)
 // - _effects.scss    : Shadows, radius, transitions
 // - _layout.scss     : Container, grid, breakpoints, z-index
 //
@@ -27,6 +28,7 @@
 @forward 'colors';
 @forward 'typography';
 @forward 'spacing';
+@forward 'sizing';
 @forward 'effects';
 @forward 'layout';
 
@@ -34,5 +36,6 @@
 @use 'colors' as *;
 @use 'typography' as *;
 @use 'spacing' as *;
+@use 'sizing' as *;
 @use 'effects' as *;
 @use 'layout' as *;

@@ -5,6 +5,7 @@
 // ========================================
 
 @use '../../tokens/colors' as colors;
+@use '../../tokens/spacing' as spacing;
 @use '../../mixins' as *;
 
 // Local design tokens
@@ -12,19 +13,18 @@ $page-width: 1200px;
 
 .gallery-section {
   background: colors.$color-bg-secondary;
-  padding: 6rem 1rem 3rem 1rem;
+  padding: spacing.$spacing-24 spacing.$spacing-4 spacing.$spacing-12;
 
-  @media (min-width: 768px) {
-    padding: 10rem 1.5rem 4rem 1.5rem;
+  @include md {
+    padding: spacing.$spacing-40 spacing.$spacing-6 spacing.$spacing-16;
   }
 
-  @media (min-width: 1024px) {
-    padding: 12rem 2rem 5rem 2rem;
+  @include lg {
+    padding: spacing.$spacing-48 spacing.$spacing-8 spacing.$spacing-20;
   }
 
   &__container {
     max-width: $page-width;
-    margin: 0 auto;
-    padding: 0;
+    margin-inline: auto;
   }
 }

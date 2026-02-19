@@ -1,0 +1,262 @@
+// ========================================
+// HEADER MOBILE STYLES
+// Hamburger, mobile menu, toggle
+// ========================================
+
+@use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/sizing' as sizing;
+@use '../tokens/typography' as typography;
+@use '../mixins' as *;
+
+// ----------------------------------------
+// DESIGN TOKENS
+// ----------------------------------------
+
+$mobile-menu-bg: colors.$color-bg-primary;
+$mobile-menu-text: colors.$color-text-primary;
+$mobile-menu-text-muted: colors.$color-text-muted;
+$mobile-menu-border: colors.$color-border-light;
+$mobile-menu-hover-bg: colors.$color-bg-secondary;
+
+// ========================================
+// MOBILE MENU TOGGLE
+// ========================================
+
+.header__mobile-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: sizing.$size-button-md;
+  height: sizing.$size-button-md;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  @include md {
+    display: none;
+  }
+}
+
+.header__hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: sizing.$size-icon-md;
+  height: sizing.$size-icon-md;
+}
+
+.header__hamburger-line {
+  display: block;
+  width: sizing.$size-icon-md;
+  height: 2px;
+  background-color: colors.$color-text-light;
+  border-radius: 1px;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.2s ease,
+    background-color 0.3s ease;
+}
+
+// Hamburger animation when open
+.site-header.is-menu-open {
+  .header__hamburger-line:nth-child(1) {
+    transform: translateY(3.5px) rotate(45deg);
+  }
+
+  .header__hamburger-line:nth-child(2) {
+    transform: translateY(-3.5px) rotate(-45deg);
+  }
+}
+
+// ========================================
+// MOBILE MENU (Legacy - now uses full-screen nav)
+// ========================================
+
+.header__mobile-menu {
+  display: none !important;
+}
+
+.site-header.is-menu-open .header__mobile-menu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+// ========================================
+// MOBILE NAV CONTENT
+// ========================================
+
+.header__mobile-nav {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: calc(var(--header-height-mobile) + #{spacing.$spacing-6}) spacing.$spacing-6 spacing.$spacing-8;
+
+  @media (max-width: 480px) {
+    padding: calc(var(--header-height-mobile) + #{spacing.$spacing-5}) spacing.$spacing-5 spacing.$spacing-6;
+  }
+}
+
+.header__mobile-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+
+.header__mobile-item {
+  border-bottom: 1px solid $mobile-menu-border;
+
+  &:first-child {
+    border-top: 1px solid $mobile-menu-border;
+  }
+}
+
+.header__mobile-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: spacing.$spacing-5 spacing.$spacing-2;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-medium;
+  color: $mobile-menu-text;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease, background 0.2s ease;
+  border: none;
+  background: transparent;
+  font-family: typography.$font-family-base;
+  cursor: pointer;
+  text-align: left;
+  margin: 0 -#{spacing.$spacing-2};
+  border-radius: spacing.$spacing-2;
+
+  &:hover,
+  &:active {
+    color: colors.$color-primary;
+    background: colors.$color-bg-tertiary;
+  }
+
+  @media (max-width: 480px) {
+    padding: spacing.$spacing-4-5 spacing.$spacing-2;
+    font-size: typography.$font-size-sm;
+  }
+}
+
+.header__mobile-dropdown-icon {
+  width: sizing.$size-icon-md;
+  height: sizing.$size-icon-md;
+  color: $mobile-menu-text-muted;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s ease;
+
+  .header__mobile-item--has-dropdown.is-open & {
+    transform: rotate(180deg);
+    color: colors.$color-primary;
+  }
+}
+
+.header__mobile-dropdown {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 spacing.$spacing-3 0;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.25s ease,
+    padding 0.35s ease;
+
+  .header__mobile-item--has-dropdown.is-open & {
+    max-height: 25rem;
+    opacity: 1;
+  }
+}
+
+.header__mobile-dropdown-link {
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-3;
+  padding: spacing.$spacing-3-5 spacing.$spacing-4;
+  margin: spacing.$spacing-1 0;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-medium;
+  color: $mobile-menu-text-muted;
+  text-decoration: none;
+  background: colors.$color-bg-tertiary;
+  border-radius: spacing.$spacing-2;
+  transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    background: colors.$color-primary;
+    border-radius: 0 2px 2px 0;
+    transition: height 0.2s ease;
+  }
+
+  &:hover,
+  &:active {
+    color: colors.$color-primary;
+    background: colors.$color-bg-secondary;
+    transform: translateX(spacing.$spacing-1);
+
+    &::before {
+      height: spacing.$spacing-5;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: spacing.$spacing-3 spacing.$spacing-3-5;
+    font-size: typography.$font-size-sm;
+  }
+}
+
+.header__mobile-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.$spacing-2;
+  width: 100%;
+  height: sizing.$size-button-xl;
+  margin-top: spacing.$spacing-8;
+  background: colors.$color-primary;
+  color: colors.$color-text-light;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-semibold;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  border-radius: spacing.$spacing-2;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  &:hover,
+  &:active {
+    background: colors.$color-primary-dark;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 480px) {
+    height: sizing.$size-input-height-md;
+    margin-top: spacing.$spacing-6;
+    font-size: typography.$font-size-sm;
+  }
+}
