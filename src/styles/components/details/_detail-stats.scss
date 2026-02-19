@@ -1,29 +1,30 @@
 // ========================================
-// AREA SECTIONS GRID STYLES
-// "Living in [area]" section with info cards
-// Modern two-column header with grid layout
+// DETAIL STATS COMPONENT
+// Stats section with title, description, and stat cards
 // ========================================
 
 @use '../../tokens/colors' as colors;
 @use '../../tokens/typography' as typography;
 @use '../../tokens/spacing' as spacing;
 @use '../../tokens/effects' as effects;
+@use '../../tokens/layout' as layout;
 @use '../../mixins' as *;
 
-.area-sections {
+.detail-stats {
   background: colors.$color-bg-secondary;
-  padding: spacing.$space-16 0;
+  padding: spacing.$space-12 0 spacing.$space-16;
+  border-top: 1px solid colors.$color-border-light;
 
   @include md {
-    padding: spacing.$space-20 0;
+    padding: spacing.$space-16 0 spacing.$space-20;
   }
 
   @include lg {
-    padding: spacing.$space-24 0;
+    padding: spacing.$space-20 0 spacing.$space-24;
   }
 }
 
-.area-sections__container {
+.detail-stats__container {
   @include container;
 }
 
@@ -31,7 +32,7 @@
 // HEADER
 // ----------------------------------------
 
-.area-sections__header {
+.detail-stats__header {
   display: grid;
   grid-template-columns: 1fr;
   gap: spacing.$space-4;
@@ -49,7 +50,7 @@
   }
 }
 
-.area-sections__title {
+.detail-stats__title {
   font-family: typography.$font-family-heading;
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: typography.$font-weight-regular;
@@ -67,7 +68,7 @@
   }
 }
 
-.area-sections__description {
+.detail-stats__description {
   font-family: typography.$font-family-body;
   font-size: typography.$font-size-sm;
   font-weight: typography.$font-weight-regular;
@@ -85,20 +86,62 @@
 }
 
 // ----------------------------------------
-// GRID
+// STATS GRID
 // ----------------------------------------
 
-.area-sections__grid {
+.detail-stats__grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: spacing.$space-4;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: colors.$color-border-light;
+  border-top: 1px solid colors.$color-border-light;
 
-  @include sm {
-    grid-template-columns: repeat(2, 1fr);
+  @include md {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.detail-stats__card {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$space-2;
+  padding: spacing.$space-6;
+  background: colors.$color-bg-secondary;
+  text-align: center;
+
+  @include md {
+    padding: spacing.$space-8;
+    gap: spacing.$space-3;
   }
 
   @include lg {
-    grid-template-columns: repeat(4, 1fr);
-    gap: spacing.$space-5;
+    padding: spacing.$space-10;
+  }
+}
+
+.detail-stats__card-value {
+  font-family: typography.$font-family-heading;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: typography.$font-weight-regular;
+  font-style: italic;
+  color: colors.$color-text-primary;
+  line-height: 1.1;
+
+  @include md {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+  }
+}
+
+.detail-stats__card-label {
+  font-family: typography.$font-family-body;
+  font-size: typography.$font-size-xs;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  @include md {
+    font-size: typography.$font-size-sm;
   }
 }

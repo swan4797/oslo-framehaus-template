@@ -2,6 +2,7 @@
 // ========================================
 // AREA SECTION CARD COMPONENT
 // Individual info card for area guide sections
+// Clean, modern card design
 // ========================================
 
 interface Props {
@@ -22,13 +23,17 @@ const icons = {
 ---
 
 <div class="area-section-card">
-  <div class="area-section-card__icon">
-    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <Fragment set:html={icons[icon]} />
-    </svg>
+  <div class="area-section-card__header">
+    <div class="area-section-card__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <Fragment set:html={icons[icon]} />
+      </svg>
+    </div>
+    <h3 class="area-section-card__title">{title}</h3>
   </div>
-  <h3 class="area-section-card__title">{title}</h3>
-  <div class="area-section-card__content" set:html={content} />
+  {content && (
+    <div class="area-section-card__content" set:html={content} />
+  )}
 </div>
 
 <style lang="scss">

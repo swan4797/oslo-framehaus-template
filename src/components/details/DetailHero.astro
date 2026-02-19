@@ -1,0 +1,87 @@
+---
+// ========================================
+// DETAIL HERO COMPONENT
+// Dark hero section with label, title, description, CTA and featured image
+// Used by Area and Branch detail pages
+// ========================================
+
+interface Props {
+  // Content
+  label?: string
+  title: string
+  titleEmphasis?: string // Second line with italic styling
+  description?: string
+
+  // CTA
+  ctaText?: string
+  ctaLink?: string
+
+  // Featured Image
+  imageSrc?: string
+  imageAlt?: string
+}
+
+const {
+  label,
+  title,
+  titleEmphasis,
+  description,
+  ctaText,
+  ctaLink,
+  imageSrc,
+  imageAlt = 'Featured image',
+} = Astro.props
+
+const hasImage = !!imageSrc
+const hasCta = ctaText && ctaLink
+---
+
+<section class="detail-hero">
+  <div class="detail-hero__container">
+    <!-- Content -->
+    <div class="detail-hero__content">
+      {label && (
+        <div class="detail-hero__label">
+          <span class="detail-hero__label-dot"></span>
+          <span>{label}</span>
+        </div>
+      )}
+
+      <h1 class="detail-hero__title">
+        {title}
+        {titleEmphasis && (
+          <>
+            <br />
+            <em>{titleEmphasis}</em>
+          </>
+        )}
+      </h1>
+
+      {description && (
+        <p class="detail-hero__description">{description}</p>
+      )}
+
+      {hasCta && (
+        <a href={ctaLink} class="detail-hero__cta">
+          {ctaText}
+        </a>
+      )}
+    </div>
+
+    <!-- Featured Image -->
+    {hasImage && (
+      <div class="detail-hero__image-wrapper">
+        <img
+          src={imageSrc}
+          alt={imageAlt}
+          class="detail-hero__image"
+          loading="eager"
+        />
+      </div>
+    )}
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/components/details/detail-hero';
+</style>

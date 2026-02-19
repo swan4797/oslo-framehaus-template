@@ -5,9 +5,10 @@
 // ========================================
 
 import Layout from '../../layouts/Layout.astro'
-import Hero from '../../components/Hero.astro'
-import ContentBlock from '../../components/static-page/layouts/ContentBlock.astro'
-import CTABanner from '../../components/static-page/layouts/CTABanner.astro'
+import DetailHero from '../../components/details/DetailHero.astro'
+import DetailContent from '../../components/details/DetailContent.astro'
+import DetailStats from '../../components/details/DetailStats.astro'
+import DetailCta from '../../components/details/DetailCta.astro'
 import PropertyGrid from '../../components/properties/grids/PropertyGrid.astro'
 import AreaInfoBar from '../../components/areas/details/AreaInfoBar.astro'
 import AreaSectionsGrid from '../../components/areas/details/AreaSectionsGrid.astro'
@@ -87,6 +88,23 @@ const propertyLimit = guide.properties_limit || 6
 const pageTitle = guide.meta_title || `${heroTitle} Area Guide | Living in ${guide.area_name}`
 const pageDescription = guide.meta_description || guide.description || `Discover what it's like to live in ${guide.area_name}. Local amenities, schools, transport links and properties.`
 
+// Build content blocks for DetailContent component
+const contentBlocks = allSections.slice(0, 4).map((block: ContentBlockType) => ({
+  title: block.section?.title || block.block_key.replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
+  description: block.section?.content || ''
+})).filter(block => block.description)
+
+// Get first section image for DetailContent
+const firstSectionImage = allSections[0]?.section?.image?.url || heroImage?.url
+
+// Build stats from area data
+const areaStats = [
+  localAmenities?.items?.length ? { label: 'Local Amenities', value: String(localAmenities.items.length) + '+' } : null,
+  schools?.items?.length ? { label: 'Schools Nearby', value: String(schools.items.length) + '+' } : null,
+  transport?.items?.length ? { label: 'Transport Links', value: String(transport.items.length) + '+' } : null,
+  { label: 'Properties Available', value: propertyLimit + '+' }
+].filter(Boolean) as Array<{ label: string; value: string }>
+
 // Debug logging
 console.log('[Area Guide Page] Rendering:', guide.page_slug)
 console.log('[Area Guide Page] Content blocks:', allSections.length)
@@ -94,35 +112,30 @@ console.log('[Area Guide Page] Content blocks:', allSections.length)
 
 <Layout title={pageTitle} description={pageDescription}>
   <!-- Hero Section -->
-  <Hero
-    headline={heroTitle}
+  <DetailHero
+    label="Area Guide"
+    title={guide.area_name}
+    titleEmphasis={locationString ? `in ${locationString}` : 'Living Guide'}
     description={heroSubtitle}
     ctaText="View Properties"
     ctaLink={`/search?area=${guide.area_name}`}
-    backgroundType="image"
-    backgroundSrc={heroImage?.url || "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920&q=80"}
-    overlayOpacity="dark"
-    showPhoneButton={false}
-    showScrollIndicator={false}
+    imageSrc={heroImage?.url || "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920&q=80"}
+    imageAlt={`${guide.area_name} area`}
   />
 
   <!-- Location Info Bar -->
   <AreaInfoBar locationString={locationString} postcodesString={postcodesString} />
 
-  <!-- Dynamic Content Blocks -->
-  {allSections.map((block: ContentBlockType, index: number) => (
-    <ContentBlock
-      blockKey={block.block_key}
-      title={block.section?.title || ''}
-      subtitle={block.block_key.replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
-      description={block.section?.content || ''}
-      mediaSrc={block.section?.image?.url || "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&q=80"}
-      mediaAlt={block.section?.image?.alt || block.block_key}
-      imagePosition={index % 2 === 0 ? 'left' : 'right'}
-      overlayStrength="light"
-      textBackground={index % 2 === 1 ? '#f9f9f9' : undefined}
+  <!-- Content Section -->
+  {contentBlocks.length > 0 && (
+    <DetailContent
+      title={`Discover ${guide.area_name}`}
+      titleEmphasis="Your Complete Guide"
+      imageSrc={firstSectionImage || "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&q=80"}
+      imageAlt={`Living in ${guide.area_name}`}
+      blocks={contentBlocks}
     />
-  ))}
+  )}
 
   <!-- Area Sections -->
   <AreaSectionsGrid
@@ -133,6 +146,16 @@ console.log('[Area Guide Page] Content blocks:', allSections.length)
     demographics={demographics}
     hasContent={hasAreaSectionContent}
   />
+
+  <!-- Stats Section -->
+  {areaStats.length > 0 && (
+    <DetailStats
+      title="Essential Aspects"
+      titleEmphasis={`Of ${guide.area_name}`}
+      description={`Explore what makes ${guide.area_name} a great place to live with local amenities, excellent schools, and convenient transport links.`}
+      stats={areaStats}
+    />
+  )}
 
   <!-- Properties For Sale -->
   {showSalesProperties && (
@@ -172,7 +195,7 @@ console.log('[Area Guide Page] Content blocks:', allSections.length)
   <AreaBackLink />
 
   <!-- CTA Banner -->
-  <CTABanner
+  <DetailCta
     title={`Ready to find your home in ${guide.area_name}?`}
     subtitle="Whether you're buying, selling, or renting, our local team is here to help."
     primaryCtaText="Contact Us"
@@ -181,4 +204,3 @@ console.log('[Area Guide Page] Content blocks:', allSections.length)
     secondaryCtaLink="/valuation"
   />
 </Layout>
-

@@ -1,0 +1,68 @@
+---
+// ========================================
+// DETAIL CTA COMPONENT
+// Call-to-action banner for detail pages
+// Used by Area and Branch detail pages
+// ========================================
+
+interface Props {
+  title: string
+  subtitle?: string
+  primaryCtaText?: string
+  primaryCtaLink?: string
+  secondaryCtaText?: string
+  secondaryCtaLink?: string
+  backgroundSrc?: string
+}
+
+const {
+  title,
+  subtitle,
+  primaryCtaText,
+  primaryCtaLink,
+  secondaryCtaText,
+  secondaryCtaLink,
+  backgroundSrc,
+} = Astro.props
+
+const hasPrimaryCta = primaryCtaText && primaryCtaLink
+const hasSecondaryCta = secondaryCtaText && secondaryCtaLink
+const hasBackground = !!backgroundSrc
+---
+
+<section class:list={['detail-cta', { 'detail-cta--has-background': hasBackground }]}>
+  {hasBackground && (
+    <div class="detail-cta__background">
+      <img src={backgroundSrc} alt="" class="detail-cta__background-image" loading="lazy" />
+      <div class="detail-cta__overlay"></div>
+    </div>
+  )}
+
+  <div class="detail-cta__container">
+    <div class="detail-cta__content">
+      <h2 class="detail-cta__title">{title}</h2>
+
+      {subtitle && (
+        <p class="detail-cta__subtitle">{subtitle}</p>
+      )}
+
+      <div class="detail-cta__actions">
+        {hasPrimaryCta && (
+          <a href={primaryCtaLink} class="detail-cta__btn detail-cta__btn--primary">
+            {primaryCtaText}
+          </a>
+        )}
+
+        {hasSecondaryCta && (
+          <a href={secondaryCtaLink} class="detail-cta__btn detail-cta__btn--secondary">
+            {secondaryCtaText}
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/components/details/detail-cta';
+</style>

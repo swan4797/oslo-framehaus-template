@@ -1,0 +1,180 @@
+// ========================================
+// DETAIL CTA COMPONENT
+// Call-to-action banner for detail pages
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/effects' as effects;
+@use '../../tokens/layout' as layout;
+@use '../../mixins' as *;
+
+.detail-cta {
+  position: relative;
+  background: colors.$color-bg-primary;
+  padding: spacing.$space-16 0;
+
+  @include md {
+    padding: spacing.$space-20 0;
+  }
+
+  @include lg {
+    padding: spacing.$space-24 0;
+  }
+
+  &--has-background {
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+// ----------------------------------------
+// BACKGROUND
+// ----------------------------------------
+
+.detail-cta__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.detail-cta__background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.detail-cta__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.6) 50%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+}
+
+// ----------------------------------------
+// CONTAINER & CONTENT
+// ----------------------------------------
+
+.detail-cta__container {
+  @include container;
+  position: relative;
+  z-index: 1;
+}
+
+.detail-cta__content {
+  max-width: 560px;
+}
+
+.detail-cta__title {
+  font-family: typography.$font-family-heading;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: typography.$font-weight-regular;
+  color: colors.$color-accent;
+  line-height: 1.2;
+  margin: 0 0 spacing.$space-4;
+
+  @include md {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    margin-bottom: spacing.$space-5;
+  }
+}
+
+.detail-cta__subtitle {
+  font-family: typography.$font-family-body;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-regular;
+  color: colors.$color-accent;
+  opacity: 0.85;
+  line-height: 1.6;
+  margin: 0 0 spacing.$space-8;
+
+  @include md {
+    font-size: typography.$font-size-base;
+    margin-bottom: spacing.$space-10;
+  }
+}
+
+// ----------------------------------------
+// ACTIONS
+// ----------------------------------------
+
+.detail-cta__actions {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$space-3;
+
+  @include sm {
+    flex-direction: row;
+    gap: spacing.$space-4;
+  }
+}
+
+.detail-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: spacing.$space-3 spacing.$space-6;
+  font-family: typography.$font-family-body;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
+  text-decoration: none;
+  border-radius: 0;
+  transition: all effects.$transition-fast;
+  white-space: nowrap;
+
+  @include md {
+    padding: spacing.$space-4 spacing.$space-8;
+  }
+
+  &--primary {
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
+    border: none;
+
+    &:hover {
+      background: colors.$color-bg-secondary;
+    }
+  }
+
+  &--secondary {
+    background: transparent;
+    color: colors.$color-accent;
+    border: 1px solid colors.$color-accent;
+
+    &:hover {
+      background: colors.$color-accent;
+      color: colors.$color-bg-primary;
+    }
+  }
+}
+
+// ----------------------------------------
+// RESPONSIVE - MOBILE
+// ----------------------------------------
+
+@media (max-width: 767px) {
+  .detail-cta__overlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.7) 100%
+    );
+  }
+
+  .detail-cta__content {
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .detail-cta__actions {
+    justify-content: center;
+  }
+}

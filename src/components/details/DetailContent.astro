@@ -1,0 +1,78 @@
+---
+// ========================================
+// DETAIL CONTENT COMPONENT
+// Two-column layout with title/image on left and content blocks on right
+// Used by Area and Branch detail pages
+// ========================================
+
+interface ContentBlock {
+  title: string
+  description: string
+}
+
+interface Props {
+  // Left column
+  title: string
+  titleEmphasis?: string // Second line with italic styling
+  imageSrc?: string
+  imageAlt?: string
+
+  // Right column - content blocks
+  blocks?: ContentBlock[]
+}
+
+const {
+  title,
+  titleEmphasis,
+  imageSrc,
+  imageAlt = 'Section image',
+  blocks = [],
+} = Astro.props
+
+const hasImage = !!imageSrc
+const hasBlocks = blocks && blocks.length > 0
+---
+
+<section class="detail-content">
+  <div class="detail-content__container">
+    <!-- Left Column -->
+    <div class="detail-content__left">
+      <h2 class="detail-content__title">
+        {title}
+        {titleEmphasis && (
+          <>
+            <br />
+            <em>{titleEmphasis}</em>
+          </>
+        )}
+      </h2>
+
+      {hasImage && (
+        <div class="detail-content__image-wrapper">
+          <img
+            src={imageSrc}
+            alt={imageAlt}
+            class="detail-content__image"
+            loading="lazy"
+          />
+        </div>
+      )}
+    </div>
+
+    <!-- Right Column -->
+    {hasBlocks && (
+      <div class="detail-content__right">
+        {blocks.map((block) => (
+          <div class="detail-content__block">
+            <h3 class="detail-content__block-title">{block.title}</h3>
+            <p class="detail-content__block-description" set:html={block.description} />
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/components/details/detail-content';
+</style>

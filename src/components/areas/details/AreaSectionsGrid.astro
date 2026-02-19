@@ -2,6 +2,7 @@
 // ========================================
 // AREA SECTIONS GRID COMPONENT
 // "Living in [area]" section with info cards
+// Modern two-column header with grid layout
 // ========================================
 
 import AreaSectionCard from './AreaSectionCard.astro'
@@ -19,13 +20,27 @@ interface Props {
 const { areaName, localAmenities, schools, transport, demographics, hasContent } = Astro.props
 
 const hasAnySection = hasContent(localAmenities) || hasContent(schools) || hasContent(transport) || hasContent(demographics)
+
+// Count available sections for description
+const sectionCount = [localAmenities, schools, transport, demographics].filter(s => hasContent(s)).length
 ---
 
 {hasAnySection && (
   <section class="area-sections">
     <div class="area-sections__container">
-      <h2 class="area-sections__title">Living in {areaName}</h2>
+      <!-- Header -->
+      <div class="area-sections__header">
+        <h2 class="area-sections__title">
+          Living in {areaName}
+          <br />
+          <em>What to Expect</em>
+        </h2>
+        <p class="area-sections__description">
+          Discover everything you need to know about living in {areaName}, from local amenities and schools to transport links and community insights.
+        </p>
+      </div>
 
+      <!-- Grid -->
       <div class="area-sections__grid">
         {hasContent(localAmenities) && (
           <AreaSectionCard

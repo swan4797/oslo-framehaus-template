@@ -1,6 +1,6 @@
 // ========================================
 // PROPERTY LIST CARD COMPONENT
-// Full-width image with glassmorphism overlay
+// Horizontal two-column layout
 // Using centralized design tokens
 // ========================================
 
@@ -15,24 +15,37 @@
 // ----------------------------------------
 
 .list-card {
-  position: relative;
-  background: colors.$color-bg-dark;
-  border-radius: effects.$radius-xl;
+  display: flex;
+  flex-direction: column;
+  background: colors.$color-bg-secondary;
+  border-radius: 0;
   overflow: hidden;
-  box-shadow: effects.$shadow-lg;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform effects.$transition-base, box-shadow effects.$transition-base;
 
   &:hover {
-    box-shadow: effects.$shadow-xl;
     transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+
+    .list-card__image--active {
+      transform: scale(1.05);
+    }
+
+    .list-card__read-more {
+      color: colors.$color-accent;
+
+      svg {
+        transform: translateX(4px);
+      }
+    }
   }
 
   // Featured variant
   &--featured {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
 
     &:hover {
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
     }
   }
 }
@@ -42,29 +55,38 @@
 // ----------------------------------------
 
 .list-card__link {
-  display: block;
+  display: flex;
+  flex-direction: column;
   text-decoration: none;
   color: inherit;
   height: 100%;
+
+  @include md {
+    flex-direction: row;
+  }
 }
 
 // ----------------------------------------
-// IMAGE CONTAINER (Full-width)
+// IMAGE SECTION (Left)
 // ----------------------------------------
 
-.list-card__image-container {
+.list-card__image-section {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 10;
   overflow: hidden;
-  background: colors.$color-bg-dark;
+  background: colors.$color-bg-tertiary;
+  flex-shrink: 0;
 
   @include md {
-    aspect-ratio: 21 / 9;
+    width: 45%;
+    aspect-ratio: auto;
+    min-height: 280px;
   }
 
   @include lg {
-    aspect-ratio: 2.5 / 1;
+    width: 40%;
+    min-height: 320px;
   }
 
   // Show navigation on hover
@@ -93,10 +115,6 @@
   &--active {
     opacity: 1;
     z-index: 1;
-  }
-
-  .list-card:hover &--active {
-    transform: scale(1.03);
   }
 }
 
@@ -157,7 +175,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: colors.$color-bg-dark;
+  background: colors.$color-bg-primary;
 
   &.list-card__image--active {
     opacity: 1;
@@ -208,134 +226,37 @@
 }
 
 // ----------------------------------------
-// CTA ACTIONS (View Property + Favourite)
-// ----------------------------------------
-
-.list-card__actions {
-  display: flex;
-  align-items: center;
-  gap: spacing.$space-3;
-  margin-bottom: spacing.$space-4;
-
-  @include md {
-    gap: spacing.$space-4;
-    margin-bottom: spacing.$space-5;
-  }
-}
-
-.list-card__favourite {
-  flex-shrink: 0;
-}
-
-// ----------------------------------------
-// CONTENT OVERLAY (Glassmorphism)
+// CONTENT SECTION (Right)
 // ----------------------------------------
 
 .list-card__content {
-  position: absolute;
-  bottom: spacing.$space-4;
-  right: spacing.$space-4;
-  left: spacing.$space-4;
   display: flex;
   flex-direction: column;
-  padding: spacing.$space-5;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: effects.$radius-lg;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  z-index: 10;
+  flex: 1;
+  padding: spacing.$spacing-5;
 
   @include md {
-    bottom: spacing.$space-6;
-    right: spacing.$space-6;
-    left: auto;
-    width: 45%;
-    max-width: 480px;
-    padding: spacing.$space-6;
+    padding: spacing.$spacing-6;
   }
 
   @include lg {
-    bottom: spacing.$space-8;
-    right: 5%;
-    width: 40%;
-    max-width: 520px;
-    padding: spacing.$space-8;
+    padding: spacing.$spacing-8;
   }
 }
 
 // ----------------------------------------
-// TAGS
+// CATEGORY LABEL
 // ----------------------------------------
 
-.list-card__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: spacing.$space-2;
-  margin-bottom: spacing.$space-3;
-
-  @include md {
-    margin-bottom: spacing.$space-4;
-  }
-}
-
-.list-card__tag {
+.list-card__category {
   display: inline-block;
-  padding: spacing.$space-1 spacing.$space-3;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 100px;
   font-size: typography.$font-size-xs;
   font-weight: typography.$font-weight-medium;
-  color: white;
+  color: colors.$color-text-primary;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-
-  @include md {
-    padding: spacing.$space-2 spacing.$space-4;
-  }
-
-  &--featured {
-    background: rgba(255, 200, 100, 0.25);
-    border-color: rgba(255, 200, 100, 0.5);
-    color: #ffecc7;
-  }
-}
-
-// ----------------------------------------
-// CIRCULAR THUMBNAIL
-// ----------------------------------------
-
-.list-card__thumbnail-circle {
-  position: absolute;
-  top: spacing.$space-5;
-  right: spacing.$space-5;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  flex-shrink: 0;
-
-  @include md {
-    top: spacing.$space-6;
-    right: spacing.$space-6;
-    width: 72px;
-    height: 72px;
-    border-width: 3px;
-  }
-
-  @include lg {
-    width: 88px;
-    height: 88px;
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  letter-spacing: 0.08em;
+  margin-bottom: spacing.$spacing-2;
+  opacity: 0.7;
 }
 
 // ----------------------------------------
@@ -346,21 +267,50 @@
   font-family: typography.$font-family-heading;
   font-size: 1.125rem;
   font-weight: typography.$font-weight-semibold;
-  color: white;
+  color: colors.$color-text-primary;
   line-height: 1.3;
-  margin: 0 0 spacing.$space-2 0;
-  max-width: calc(100% - 70px);
+  margin: 0 0 spacing.$spacing-2 0;
 
   @include md {
-    font-size: 1.375rem;
-    max-width: calc(100% - 90px);
-    margin-bottom: spacing.$space-3;
+    font-size: 1.25rem;
+    margin-bottom: spacing.$spacing-3;
   }
 
   @include lg {
-    font-size: 1.5rem;
-    max-width: calc(100% - 100px);
+    font-size: 1.375rem;
   }
+}
+
+// ----------------------------------------
+// PRICE
+// ----------------------------------------
+
+.list-card__price {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  margin-bottom: spacing.$spacing-3;
+
+  @include md {
+    margin-bottom: spacing.$spacing-4;
+  }
+}
+
+.list-card__price-value {
+  font-size: 1.125rem;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
+
+  @include md {
+    font-size: 1.25rem;
+  }
+}
+
+.list-card__price-suffix {
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+  opacity: 0.7;
 }
 
 // ----------------------------------------
@@ -368,56 +318,56 @@
 // ----------------------------------------
 
 .list-card__description {
-  font-size: typography.$font-size-sm;
+  font-size: 0.875rem;
   font-weight: typography.$font-weight-regular;
-  color: rgba(255, 255, 255, 0.85);
-  line-height: 1.5;
-  margin: 0 0 spacing.$space-4 0;
+  color: colors.$color-text-primary;
+  opacity: 0.7;
+  line-height: 1.6;
+  margin: 0 0 spacing.$spacing-4 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 
   @include md {
-    font-size: typography.$font-size-base;
-    -webkit-line-clamp: 3;
-    margin-bottom: spacing.$space-5;
-  }
-
-  @include lg {
     -webkit-line-clamp: 3;
   }
 }
 
 // ----------------------------------------
-// CTA BUTTON
+// SPECS
 // ----------------------------------------
 
-.list-card__cta {
-  display: inline-flex;
+.list-card__specs {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  padding: spacing.$space-3 spacing.$space-6;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  font-size: typography.$font-size-sm;
-  font-weight: typography.$font-weight-semibold;
-  border-radius: 100px;
-  transition: background 0.2s ease, transform 0.2s ease;
+  gap: spacing.$spacing-4;
+  margin-bottom: spacing.$spacing-4;
 
   @include md {
-    padding: spacing.$space-3 spacing.$space-8;
+    gap: spacing.$spacing-5;
+    margin-bottom: spacing.$spacing-5;
   }
+}
 
-  .list-card:hover & {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateX(4px);
+.list-card__spec {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing.$spacing-2;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+  opacity: 0.8;
+
+  svg {
+    flex-shrink: 0;
+    opacity: 0.7;
   }
 }
 
 // ----------------------------------------
-// FOOTER (Price & Specs)
+// FOOTER
 // ----------------------------------------
 
 .list-card__footer {
@@ -425,59 +375,30 @@
   align-items: center;
   justify-content: space-between;
   margin-top: auto;
-  padding-top: spacing.$space-4;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: spacing.$spacing-4;
+  border-top: 1px solid colors.$color-border-light;
 
   @include md {
-    padding-top: spacing.$space-5;
+    padding-top: spacing.$spacing-5;
   }
 }
 
-.list-card__price {
-  display: flex;
-  align-items: baseline;
-  gap: 2px;
-}
-
-.list-card__price-value {
-  font-size: 1.125rem;
-  font-weight: typography.$font-weight-bold;
-  color: white;
-
-  @include md {
-    font-size: 1.25rem;
-  }
-
-  @include lg {
-    font-size: 1.375rem;
-  }
-}
-
-.list-card__price-suffix {
-  font-size: typography.$font-size-sm;
-  font-weight: typography.$font-weight-medium;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.list-card__specs {
-  display: flex;
+.list-card__read-more {
+  display: inline-flex;
   align-items: center;
-  gap: spacing.$space-3;
+  gap: spacing.$spacing-2;
+  font-size: 0.875rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+  transition: color effects.$transition-fast;
 
-  @include md {
-    gap: spacing.$space-4;
+  svg {
+    transition: transform effects.$transition-fast;
   }
 }
 
-.list-card__spec {
-  font-size: typography.$font-size-xs;
-  font-weight: typography.$font-weight-medium;
-  color: rgba(255, 255, 255, 0.8);
-  white-space: nowrap;
-
-  @include md {
-    font-size: typography.$font-size-sm;
-  }
+.list-card__favourite {
+  flex-shrink: 0;
 }
 
 // ----------------------------------------
@@ -485,65 +406,6 @@
 // ----------------------------------------
 
 @include mobile-only {
-  .list-card__content {
-    position: relative;
-    bottom: auto;
-    right: auto;
-    left: auto;
-    width: 100%;
-    border-radius: 0;
-    border: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    background: rgba(30, 30, 30, 0.95);
-  }
-
-  .list-card__thumbnail-circle {
-    width: 48px;
-    height: 48px;
-    top: spacing.$space-5;
-    right: spacing.$space-5;
-  }
-
-  .list-card__title {
-    font-size: 1rem;
-    max-width: calc(100% - 60px);
-  }
-
-  .list-card__actions {
-    flex-wrap: wrap;
-    gap: spacing.$space-2;
-  }
-
-  .list-card__description {
-    -webkit-line-clamp: 2;
-    font-size: typography.$font-size-xs;
-  }
-
-  .list-card__cta {
-    padding: spacing.$space-2 spacing.$space-5;
-    font-size: typography.$font-size-xs;
-  }
-
-  .list-card__footer {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: spacing.$space-2;
-    padding-top: spacing.$space-3;
-  }
-
-  .list-card__price-value {
-    font-size: 1rem;
-  }
-
-  .list-card__specs {
-    gap: spacing.$space-2;
-  }
-
-  .list-card__spec {
-    font-size: 0.6875rem;
-  }
-
-  // Always show nav on mobile
   .list-card__slider-nav {
     opacity: 1;
   }
@@ -557,12 +419,17 @@
       height: 14px;
     }
   }
+
+  .list-card__specs {
+    gap: spacing.$spacing-3;
+  }
 }
 
 // ----------------------------------------
 // LEGACY SUPPORT (hidden elements)
 // ----------------------------------------
 
+.list-card__image-container,
 .list-card__image-counter,
 .list-card__price-badge,
 .list-card__type-badge,
@@ -584,6 +451,11 @@
 .list-card__thumbnail-more,
 .list-card__thumbnail-more-count,
 .list-card__thumbnail-more-label,
-.list-card__more-slide-cta {
+.list-card__more-slide-cta,
+.list-card__thumbnail-circle,
+.list-card__tags,
+.list-card__tag,
+.list-card__cta,
+.list-card__actions {
   display: none;
 }

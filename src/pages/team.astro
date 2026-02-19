@@ -6,6 +6,7 @@
 // ========================================
 
 import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
 import TeamGrid from '../components/team/layouts/TeamGrid.astro'
 import { getTeamMembers } from '../lib/api'
 import { fetchBrandSettings, getContactInfo } from '../lib/brand'
@@ -29,22 +30,40 @@ const stats = [
 ]
 ---
 
-<Layout title={pageTitle} description={pageDescription} headerVariant="solid">
+<Layout title={pageTitle} description={pageDescription} headerVariant="transparent">
   <div class="team-page">
 
     <!-- Hero Section -->
-    <section class="team-hero">
-      <div class="team-hero__container">
-        <h1 class="team-hero__title">The Team</h1>
-        <p class="team-hero__subtitle">
-          Good energy powered<br />by good humans.
-        </p>
-      </div>
-    </section>
+    <Hero
+      headline="Our Team"
+      description="Our people define our success. We are all passionate and committed to deliver high quality services to our clients."
+      ctaText=""
+      ctaLink=""
+      backgroundType="image"
+      backgroundSrc="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1920&q=80"
+      backgroundAlt="Professional team member"
+      overlayOpacity="light"
+      showPhoneButton={false}
+      showScrollIndicator={false}
+    />
 
     <!-- Team Grid Section -->
     <section class="team-section">
       <div class="team-section__container">
+        <!-- Section Header -->
+        <div class="team-section__header">
+          <div class="team-section__label">
+            <span class="team-section__label-dot"></span>
+            <span>Our expert crew</span>
+          </div>
+          <h2 class="team-section__title">
+            Meet the
+            <br />
+            <em>leadership team</em>
+          </h2>
+        </div>
+
+        <!-- Team Grid -->
         <TeamGrid
           members={allMembers}
           configId="fullPage"

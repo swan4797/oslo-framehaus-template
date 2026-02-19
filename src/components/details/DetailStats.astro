@@ -1,0 +1,70 @@
+---
+// ========================================
+// DETAIL STATS COMPONENT
+// Stats section with title, description, and stat cards
+// Used by Area and Branch detail pages
+// ========================================
+
+interface StatCard {
+  label: string
+  value?: string
+}
+
+interface Props {
+  // Header
+  title: string
+  titleEmphasis?: string // Second line with italic styling
+  description?: string
+
+  // Stats
+  stats?: StatCard[]
+}
+
+const {
+  title,
+  titleEmphasis,
+  description,
+  stats = [],
+} = Astro.props
+
+const hasStats = stats && stats.length > 0
+---
+
+<section class="detail-stats">
+  <div class="detail-stats__container">
+    <!-- Header -->
+    <div class="detail-stats__header">
+      <h2 class="detail-stats__title">
+        {title}
+        {titleEmphasis && (
+          <>
+            <br />
+            <em>{titleEmphasis}</em>
+          </>
+        )}
+      </h2>
+
+      {description && (
+        <p class="detail-stats__description">{description}</p>
+      )}
+    </div>
+
+    <!-- Stats Grid -->
+    {hasStats && (
+      <div class="detail-stats__grid">
+        {stats.map((stat) => (
+          <div class="detail-stats__card">
+            {stat.value && (
+              <span class="detail-stats__card-value">{stat.value}</span>
+            )}
+            <span class="detail-stats__card-label">{stat.label}</span>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/components/details/detail-stats';
+</style>

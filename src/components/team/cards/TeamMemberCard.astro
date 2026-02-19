@@ -1,8 +1,8 @@
 ---
 // ========================================
 // TEAM MEMBER CARD COMPONENT
-// Simple vertical card with portrait image, name, and title
-// Clean minimal design
+// Card with portrait image, name and title overlay
+// Modern design with gradient overlay and + icon
 // ========================================
 
 import type { TeamMember } from '../../../types/database'
@@ -24,7 +24,7 @@ const avatarUrl = member.profile_photo_url || `https://ui-avatars.com/api/?name=
     { 'team-card--featured': featured }
   ]}
 >
-  <!-- Portrait Image -->
+  <!-- Image with overlay -->
   <div class="team-card__image-wrap">
     <img
       src={avatarUrl}
@@ -32,14 +32,23 @@ const avatarUrl = member.profile_photo_url || `https://ui-avatars.com/api/?name=
       class="team-card__image"
       loading="lazy"
     />
-  </div>
+    <div class="team-card__overlay"></div>
 
-  <!-- Info -->
-  <div class="team-card__info">
-    <h3 class="team-card__name">{member.full_name}</h3>
-    {member.job_title && (
-      <p class="team-card__title">{member.job_title}</p>
-    )}
+    <!-- Info overlay -->
+    <div class="team-card__info">
+      <h3 class="team-card__name">{member.full_name}</h3>
+      {member.job_title && (
+        <p class="team-card__title">{member.job_title}</p>
+      )}
+    </div>
+
+    <!-- Plus icon -->
+    <div class="team-card__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14"/>
+        <path d="M5 12h14"/>
+      </svg>
+    </div>
   </div>
 </article>
 

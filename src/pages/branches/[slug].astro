@@ -5,10 +5,10 @@
 // ========================================
 
 import Layout from '../../layouts/Layout.astro'
-import Hero from '../../components/Hero.astro'
-import IntroSection from '../../components/static-page/layouts/IntroSection.astro'
-import ContentBlock from '../../components/static-page/layouts/ContentBlock.astro'
-import CTABanner from '../../components/static-page/layouts/CTABanner.astro'
+import DetailHero from '../../components/details/DetailHero.astro'
+import DetailContent from '../../components/details/DetailContent.astro'
+import DetailStats from '../../components/details/DetailStats.astro'
+import DetailCta from '../../components/details/DetailCta.astro'
 import PropertyGrid from '../../components/properties/grids/PropertyGrid.astro'
 import BranchTeamSection from '../../components/branches/details/BranchTeamSection.astro'
 import BranchContactSection from '../../components/branches/details/BranchContactSection.astro'
@@ -86,6 +86,43 @@ const propertyLimit = propertiesFilter.limit || 6
 const pageTitle = `${heroTitle} | Estate Agents`
 const pageDescription = microsite.description || `Property services in ${microsite.branch_name}. Sales, lettings, valuations and more.`
 
+// Build content blocks for DetailContent component
+const contentBlocks = [
+  hasSection(microsite, 'welcome') ? {
+    title: getSectionTitle(microsite, 'welcome', `Welcome to ${microsite.branch_name}`),
+    description: getSectionContent(microsite, 'welcome') || ''
+  } : null,
+  hasSection(microsite, 'services') ? {
+    title: getSectionTitle(microsite, 'services', 'Our Services'),
+    description: getSectionContent(microsite, 'services') || ''
+  } : null,
+  hasSection(microsite, 'area_guide') ? {
+    title: getSectionTitle(microsite, 'area_guide', 'Area Guide'),
+    description: getSectionContent(microsite, 'area_guide') || ''
+  } : null,
+  hasSection(microsite, 'contact') ? {
+    title: getSectionTitle(microsite, 'contact', 'Contact Us'),
+    description: getSectionContent(microsite, 'contact') || ''
+  } : null,
+  ...additionalSections.map((block: ContentBlockType) => ({
+    title: block.section?.title || block.block_key.replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
+    description: block.section?.content || ''
+  }))
+].filter(block => block && block.description) as Array<{ title: string; description: string }>
+
+// Get section image for DetailContent
+const welcomeImage = getSectionImage(microsite, 'welcome')?.url
+const servicesImage = getSectionImage(microsite, 'services')?.url
+const contentImage = welcomeImage || servicesImage || heroImage?.url
+
+// Build stats
+const branchStats = [
+  { label: 'Properties For Sale', value: propertyLimit + '+' },
+  { label: 'Rental Properties', value: propertyLimit + '+' },
+  showTeam && teamMembers.length > 0 ? { label: 'Expert Team Members', value: String(teamMembers.length) } : null,
+  { label: 'Years Experience', value: '10+' }
+].filter(Boolean) as Array<{ label: string; value: string }>
+
 // Debug logging
 console.log('[Branch Page] Rendering:', microsite.page_slug)
 console.log('[Branch Page] Sections:', allSections.length)
@@ -93,75 +130,37 @@ console.log('[Branch Page] Sections:', allSections.length)
 
 <Layout title={pageTitle} description={pageDescription}>
   <!-- Hero Section -->
-  <Hero
-    headline={heroTitle}
+  <DetailHero
+    label="Our Branch"
+    title={heroTitle}
+    titleEmphasis="Your Local Experts"
     description={heroSubtitle}
     ctaText="View Properties"
     ctaLink={`/properties?branch=${microsite.branch_id}`}
-    backgroundType="image"
-    backgroundSrc={heroImage?.url || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=80"}
-    overlayOpacity="dark"
-    showPhoneButton={false}
-    showScrollIndicator={false}
+    imageSrc={heroImage?.url || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=80"}
+    imageAlt={`${microsite.branch_name} office`}
   />
 
-  <!-- Welcome Section -->
-  {hasSection(microsite, 'welcome') && (
-    <ContentBlock
-      blockKey="welcome"
-      title={getSectionTitle(microsite, 'welcome', `Welcome to ${microsite.branch_name}`)}
-      subtitle="About Us"
-      description={getSectionContent(microsite, 'welcome')}
-      mediaSrc={getSectionImage(microsite, 'welcome')?.url || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80"}
-      mediaAlt={getSectionImage(microsite, 'welcome')?.alt || 'Welcome'}
-      imagePosition="left"
-      overlayStrength="light"
+  <!-- Content Section -->
+  {contentBlocks.length > 0 && (
+    <DetailContent
+      title={`About ${microsite.branch_name}`}
+      titleEmphasis="Estate Agents"
+      imageSrc={contentImage || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80"}
+      imageAlt={`${microsite.branch_name} team`}
+      blocks={contentBlocks.slice(0, 4)}
     />
   )}
 
-  <!-- Services Section -->
-  {hasSection(microsite, 'services') && (
-    <ContentBlock
-      blockKey="services"
-      title={getSectionTitle(microsite, 'services', 'Our Services')}
-      subtitle="What We Offer"
-      description={getSectionContent(microsite, 'services')}
-      mediaSrc={getSectionImage(microsite, 'services')?.url || "https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=1200&q=80"}
-      mediaAlt={getSectionImage(microsite, 'services')?.alt || 'Services'}
-      imagePosition="right"
-      overlayStrength="light"
-      textBackground="#f9f9f9"
+  <!-- Stats Section -->
+  {branchStats.length > 0 && (
+    <DetailStats
+      title="Essential Aspects"
+      titleEmphasis="Driving Our Success"
+      description={`Our success in ${microsite.branch_name} is driven by innovation, operational excellence, and a strong commitment to our clients.`}
+      stats={branchStats}
     />
   )}
-
-  <!-- Area Guide Section -->
-  {hasSection(microsite, 'area_guide') && (
-    <ContentBlock
-      blockKey="area_guide"
-      title={getSectionTitle(microsite, 'area_guide', 'Area Guide')}
-      subtitle="Local Expertise"
-      description={getSectionContent(microsite, 'area_guide')}
-      mediaSrc={getSectionImage(microsite, 'area_guide')?.url || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80"}
-      mediaAlt={getSectionImage(microsite, 'area_guide')?.alt || 'Area Guide'}
-      imagePosition="left"
-      overlayStrength="light"
-    />
-  )}
-
-  <!-- Additional dynamic sections -->
-  {additionalSections.map((block: ContentBlockType, index: number) => (
-    <ContentBlock
-      blockKey={block.block_key}
-      title={block.section?.title || ''}
-      subtitle={block.block_key.replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
-      description={block.section?.content || ''}
-      mediaSrc={block.section?.image?.url || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80"}
-      mediaAlt={block.section?.image?.alt || block.block_key}
-      imagePosition={index % 2 === 0 ? 'right' : 'left'}
-      overlayStrength="light"
-      textBackground={index % 2 === 0 ? '#f9f9f9' : undefined}
-    />
-  ))}
 
   <!-- Properties For Sale -->
   {showSalesProperties && (
@@ -212,7 +211,7 @@ console.log('[Branch Page] Sections:', allSections.length)
   />
 
   <!-- CTA Banner -->
-  <CTABanner
+  <DetailCta
     title={`Ready to start your property journey in ${microsite.branch_name}?`}
     subtitle="Whether you're buying, selling, or renting, our local team is here to help."
     primaryCtaText="Contact Us"
@@ -221,4 +220,3 @@ console.log('[Branch Page] Sections:', allSections.length)
     secondaryCtaLink="/valuation"
   />
 </Layout>
-
