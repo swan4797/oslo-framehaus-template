@@ -203,7 +203,7 @@
     margin-bottom: spacing.$space-4;
 
     svg {
-      color: colors.$color-text-secondary;
+      color: colors.$color-text-primary;
     }
 
     span {
@@ -211,7 +211,7 @@
       font-weight: typography.$font-weight-medium;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: colors.$color-text-secondary;
+      color: colors.$color-text-primary;
     }
   }
 
@@ -249,8 +249,7 @@
       max-width: 100%;
     }
 
-    .intro-section__title,
-    .intro-section__description {
+    .intro-section__title {
       max-width: var(--intro-max-width, 48rem);
     }
 
@@ -327,7 +326,7 @@
     font-family: typography.$font-family-body;
     font-size: clamp(0.875rem, 1.5vw, 1rem);
     font-weight: typography.$font-weight-regular;
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
     line-height: 1.7;
     max-width: 36rem;
     margin: 0;
@@ -583,7 +582,7 @@
       }
 
       .intro-section__stat-label {
-        color: colors.$color-text-secondary;
+        color: colors.$color-text-primary;
       }
     }
 
