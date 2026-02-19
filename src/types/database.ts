@@ -130,6 +130,12 @@ export interface Property {
   lease_years_remaining?: number
   broadband_speed?: string
   mobile_signal_strength?: string
+
+  // Additional property details
+  year_built?: number
+  condition?: string
+  land_area?: number
+  minimum_term?: string
   
   // Media
   property_media?: PropertyMedia[]

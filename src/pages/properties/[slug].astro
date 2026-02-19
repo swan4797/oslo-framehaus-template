@@ -169,15 +169,12 @@ const pageDescription = property.summary || `${propertyType} in ${property.city 
             propertyId={property.id}
           />
 
-          <!-- Description Section -->
-          <DescriptionSection description={property.description} />
-
           <!-- Key Features (if any) -->
           <KeyFeaturesSection
             features={property.key_features}
             images={property.property_media || []}
             propertyAddress={property.display_address}
-          />
+          />          
 
           <!-- Property Specs Grid -->
           <div class="property-specs">
@@ -242,6 +239,10 @@ const pageDescription = property.summary || `${propertyType} in ${property.city 
             )}
           </div>
 
+          <!-- Description Section -->
+          <DescriptionSection description={property.description} />
+
+
           <!-- Location Map -->
           {hasLocation && (
             <PropertyMapSection
@@ -285,12 +286,12 @@ const pageDescription = property.summary || `${propertyType} in ${property.city 
               </div>
 
               <div class="property-sidebar__details">
-                {property.listing_type === 'lettings' && (
+                {property.listing_type === 'let' && (
                   <>
-                    {property.deposit && (
+                    {property.deposit_amount && (
                       <div class="property-sidebar__detail-row">
                         <span class="property-sidebar__detail-label">Move-in price</span>
-                        <span class="property-sidebar__detail-value">£{property.deposit.toLocaleString()}</span>
+                        <span class="property-sidebar__detail-value">£{property.deposit_amount.toLocaleString()}</span>
                       </div>
                     )}
                     {property.available_date && (
