@@ -51,7 +51,7 @@
   &__label-icon {
     width: 1rem;
     height: 1rem;
-    color: colors.$color-text-muted;
+    color: colors.$color-text-primary;
     flex-shrink: 0;
   }
 
@@ -76,7 +76,7 @@
       box-shadow effects.$transition-fast;
 
     &::placeholder {
-      color: colors.$color-text-muted;
+      color: colors.$color-text-primary;
     }
 
     &:hover {

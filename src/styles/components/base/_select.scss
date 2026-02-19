@@ -79,7 +79,7 @@
 
   // Style placeholder option differently
   &:has(option[value=""]:checked) {
-    color: colors.$color-text-muted;
+    color: colors.$color-text-primary;
   }
 }
 
@@ -94,7 +94,7 @@
   transform: translateY(-50%);
   width: 1.25rem;
   height: 1.25rem;
-  color: colors.$color-text-muted;
+  color: colors.$color-text-primary;
   pointer-events: none;
   transition: color effects.$transition-fast;
 
@@ -157,7 +157,7 @@
 .select-group__hint {
   font-family: typography.$font-family-base;
   font-size: 0.8125rem;
-  color: colors.$color-text-muted;
+  color: colors.$color-text-primary;
   margin: 0;
 }
 

@@ -115,7 +115,7 @@ a.contact-info-card {
   height: 2.25rem;
   background: colors.$color-bg-secondary;
   border-radius: 0;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   transition: background effects.$transition-fast, color effects.$transition-fast;
 
   svg {
@@ -124,7 +124,7 @@ a.contact-info-card {
   }
 
   &:hover {
-    background: colors.$color-bg-secondary;
-    color: colors.$color-text-light;
+    background: colors.$color-bg-primary;
+    color: colors.$color-accent;
   }
 }

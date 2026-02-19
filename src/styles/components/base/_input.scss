@@ -50,7 +50,7 @@
     box-shadow effects.$transition-fast;
 
   &::placeholder {
-    color: colors.$color-text-muted;
+    color: colors.$color-text-primary;
   }
 
   &:hover:not(:disabled):not(:focus) {
@@ -116,7 +116,7 @@
 .input-group__hint {
   font-family: typography.$font-family-base;
   font-size: 0.8125rem;
-  color: colors.$color-text-muted;
+  color: colors.$color-text-primary;
   margin: 0;
 }
 

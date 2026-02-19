@@ -1,7 +1,7 @@
 ---
 // ========================================
 // ENERGY PERFORMANCE SECTION COMPONENT
-// Premium layered two-column composition
+// Simple one-column layout
 // Styles in: src/styles/pages/property-details/_epc-section.scss
 // ========================================
 
@@ -50,105 +50,71 @@ const needsDarkText = (rating: string): boolean => ['D', 'E'].includes(rating.to
 
 {hasEpcData && (
   <section class="epc-section">
-    <!-- Two-Column Layered Layout (Reversed) -->
-    <div class="epc-section__layout">
-      <!-- Left Column - EPC Content (Overlapping) -->
-      <div class="epc-section__epc-column">
-        <div class="epc-section__epc-card">
-          <!-- EPC Summary Row -->
-          {(epcRating || epcCurrentScore || epcPotentialScore) && (
-            <div class={`epc-section__summary ${epcImages.length > 0 ? 'epc-section__summary--with-images' : ''}`}>
-              <!-- EPC Rating Badge -->
-              {epcRating && (
-                <div class="epc-section__rating">
-                  <div
-                    class="epc-section__rating-badge"
-                    style={`background-color: ${getEpcColor(epcRating)}; color: ${needsDarkText(epcRating) ? '#1A1A1A' : '#FFFFFF'};`}
-                  >
-                    {epcRating}
-                  </div>
-                  <span class="epc-section__rating-label">
-                    Current Rating
-                  </span>
-                </div>
-              )}
-
-              <!-- Current Score -->
-              {epcCurrentScore && (
-                <div class="epc-section__score-card">
-                  <span class="epc-section__score-value">
-                    {epcCurrentScore}
-                  </span>
-                  <span class="epc-section__score-label">
-                    Current Score
-                  </span>
-                </div>
-              )}
-
-              <!-- Potential Score -->
-              {epcPotentialScore && (
-                <div class="epc-section__score-card epc-section__score-card--potential">
-                  <span class="epc-section__score-value epc-section__score-value--potential">
-                    {epcPotentialScore}
-                  </span>
-                  <span class="epc-section__score-label">
-                    Potential Score
-                  </span>
-                </div>
-              )}
-            </div>
-          )}
-
-          <!-- EPC Certificate Images -->
-          {epcImages.length > 0 && (
-            <div class={`epc-section__certificates ${epcImages.length === 1 ? 'epc-section__certificates--single' : 'epc-section__certificates--multiple'}`}>
-              {epcImages.map((media) => (
-                <a
-                  href={media.file_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="epc-section__certificate-link"
-                >
-                  <img
-                    src={media.file_url}
-                    alt={media.alt_text || `EPC Certificate for ${propertyAddress}`}
-                    loading="lazy"
-                  />
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <!-- Right Column - Colored Panel -->
-      <div class="epc-section__panel-column">
-        <!-- Panel Content -->
-        <div class="epc-section__content">
-          <!-- Eyebrow Label -->
-          <span class="epc-section__eyebrow">
-            Sustainability
-          </span>
-
-          <!-- Primary Heading -->
-          <h2 class="epc-section__heading">
-            Energy<br />Performance
-          </h2>
-
-          <!-- Body Text -->
-          <p class="epc-section__text">
-            Energy efficiency rating and potential improvements for this property.
-          </p>
-
-          <!-- Info Badge -->
-          <div class="epc-section__badge">
-            <svg viewBox="0 0 24 24">
-              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-            </svg>
-            <span>EPC Certificate</span>
-          </div>
-        </div>
-      </div>
+    <!-- Section Header -->
+    <div class="epc-section__header">
+      <h2 class="epc-section__title">Energy Performance</h2>
     </div>
+
+    <!-- EPC Summary Row -->
+    {(epcRating || epcCurrentScore || epcPotentialScore) && (
+      <div class="epc-section__summary">
+        <!-- EPC Rating Badge -->
+        {epcRating && (
+          <div class="epc-section__rating">
+            <div
+              class="epc-section__rating-badge"
+              style={`background-color: ${getEpcColor(epcRating)}; color: ${needsDarkText(epcRating) ? '#1A1A1A' : '#FFFFFF'};`}
+            >
+              {epcRating}
+            </div>
+            <span class="epc-section__rating-label">Current Rating</span>
+          </div>
+        )}
+
+        <!-- Current Score -->
+        {epcCurrentScore && (
+          <div class="epc-section__score-card">
+            <span class="epc-section__score-value">{epcCurrentScore}</span>
+            <span class="epc-section__score-label">Current Score</span>
+          </div>
+        )}
+
+        <!-- Potential Score -->
+        {epcPotentialScore && (
+          <div class="epc-section__score-card epc-section__score-card--potential">
+            <span class="epc-section__score-value epc-section__score-value--potential">{epcPotentialScore}</span>
+            <span class="epc-section__score-label">Potential Score</span>
+          </div>
+        )}
+      </div>
+    )}
+
+    <!-- EPC Certificate Images -->
+    {epcImages.length > 0 && (
+      <div class="epc-section__certificates">
+        {epcImages.map((media) => (
+          <a
+            href={media.file_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="epc-section__certificate-link"
+          >
+            <img
+              src={media.file_url}
+              alt={media.alt_text || `EPC Certificate for ${propertyAddress}`}
+              loading="lazy"
+            />
+            <div class="epc-section__overlay">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 3h6v6"/>
+                <path d="M10 14L21 3"/>
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+              </svg>
+              <span>View full size</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
   </section>
 )}

@@ -42,7 +42,7 @@
   gap: spacing.$space-3-5;
   padding: spacing.$space-6 spacing.$space-8;
   background: colors.$color-bg-secondary;
-  color: colors.$color-text-light;
+  color: colors.$color-text-primary;
 }
 
 .general-enquiry-card .form-icon {
@@ -92,7 +92,7 @@
   font-family: typography.$font-family-base;
   font-size: typography.$font-size-sm;
   font-weight: typography.$font-weight-semibold;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   margin-bottom: spacing.$space-2;
 }
 
@@ -116,7 +116,7 @@
   }
 
   &::placeholder {
-    color: colors.$color-text-muted;
+    color: colors.$color-text-primary;
   }
 }
 
@@ -130,7 +130,7 @@
 .general-enquiry-card .field-hint {
   font-family: typography.$font-family-base;
   font-size: 0.8125rem;
-  color: colors.$color-text-muted;
+  color: colors.$color-text-primary;
   margin: spacing.$space-1-5 0 0 0;
   line-height: typography.$line-height-base;
 }
@@ -164,7 +164,7 @@
 .general-enquiry-card .checkbox-label {
   font-family: typography.$font-family-base;
   font-size: typography.$font-size-sm;
-  color: colors.$color-text-muted;
+  color: colors.$color-text-primary;
   line-height: typography.$line-height-relaxed;
   cursor: pointer;
 }
@@ -214,7 +214,7 @@
 .general-enquiry-card .privacy-notice {
   font-family: typography.$font-family-base;
   font-size: typography.$font-size-xs;
-  color: colors.$color-text-muted;
+  color: colors.$color-text-primary;
   text-align: center;
   margin-top: spacing.$space-4;
   margin-bottom: 0;
@@ -341,7 +341,7 @@
   font-family: typography.$font-family-base;
   font-size: 0.8125rem;
   font-weight: typography.$font-weight-semibold;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   margin: 0 0 spacing.$space-1 0;
   text-transform: uppercase;
   letter-spacing: 0.025em;
@@ -350,7 +350,7 @@
 .method-value {
   font-family: typography.$font-family-base;
   font-size: typography.$font-size-sm;
-  color: colors.$color-text-muted;
+  color: colors.$color-text-primary;
   margin: 0;
   line-height: typography.$line-height-relaxed;
 }
@@ -371,7 +371,7 @@
   p {
     font-family: typography.$font-family-base;
     font-size: 0.8125rem;
-    color: colors.$color-text-muted;
+    color: colors.$color-text-primary;
     margin: 0;
     line-height: typography.$line-height-relaxed;
   }

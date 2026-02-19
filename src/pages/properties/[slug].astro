@@ -9,9 +9,7 @@ export const prerender = false
 
 // -- Layout & Components --
 import Layout from '../../layouts/Layout.astro'
-import Breadcrumbs from '../../components/ui/Breadcrumbs.astro'
 import ImageGallery from '../../components/propertydetails/ImageGallery.astro'
-import PropertyDetailsSection from '../../components/propertydetails/PropertyDetailsSection.astro'
 import DescriptionSection from '../../components/propertydetails/DescriptionSection.astro'
 import FloorplanSection from '../../components/propertydetails/FloorplanSection.astro'
 import KeyFeaturesSection from '../../components/propertydetails/KeyFeaturesSection.astro'
@@ -89,135 +87,259 @@ const pageDescription = property.summary || `${propertyType} in ${property.city 
   <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
   <article class="property-page">
-    <!-- Navigation breadcrumbs -->
-    <Breadcrumbs
-      items={[
-        { label: 'Home', href: '/' },
-        {
-          label: property.listing_type === 'sale' ? 'Properties for Sale' : 'Properties to Let',
-          href: `/search?listing_type=${property.listing_type}`
-        },
-        { label: property.display_address }
-      ]}
-    />
-
-
-    <!-- Main content container -->
-    <section class="property-details">
-      <!-- Top Section: Two Column Grid -->
-      <div class="property-details__top-grid">
-        <!-- Left Column: Details + Viewing -->
-        <div class="property-details__info-column">
-
-          <!-- Viewing request section with form -->
-          <ViewingSection property={property} />
+    <!-- Property Header Bar -->
+    <header class="property-topbar">
+      <div class="property-topbar__container">
+        <!-- Left: Back link + Title + Stats -->
+        <div class="property-topbar__left">
+          <a href={`/search?listing_type=${property.listing_type}`} class="property-topbar__back" aria-label="Back to search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </a>
+          <div class="property-topbar__info">
+            <h1 class="property-topbar__title">{property.display_address}</h1>
+            <div class="property-topbar__stats">
+              {property.bedrooms > 0 && (
+                <span class="property-topbar__stat">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M3 21V7a2 2 0 012-2h14a2 2 0 012 2v14"/>
+                    <path d="M3 11h18"/>
+                    <path d="M7 11V7"/>
+                    <path d="M17 11V7"/>
+                  </svg>
+                  <span>{String(property.bedrooms).padStart(2, '0')}</span>
+                </span>
+              )}
+              {property.bathrooms && property.bathrooms > 0 && (
+                <span class="property-topbar__stat">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M4 12h16a1 1 0 011 1v3a4 4 0 01-4 4H7a4 4 0 01-4-4v-3a1 1 0 011-1z"/>
+                    <path d="M6 12V5a2 2 0 012-2h1a2 2 0 012 2v2"/>
+                  </svg>
+                  <span>{String(property.bathrooms).padStart(2, '0')}</span>
+                </span>
+              )}
+              {property.floor_area && (
+                <span class="property-topbar__stat">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <path d="M3 9h18"/>
+                    <path d="M9 21V9"/>
+                  </svg>
+                  <span>{property.floor_area}m²</span>
+                </span>
+              )}
+            </div>
+          </div>
         </div>
 
-        <!-- Right Column: Image Gallery -->
-        <div class="property-details__gallery-column">
+        <!-- Right: Save + Share Actions -->
+        <div class="property-topbar__actions">
+          {(contact.phone || contact.email) && (
+            <ContactCard
+              phone={contact.phone}
+              email={contact.email}
+              title=""
+              subtitle=""
+              emailSubject={`Enquiry about ${property.display_address}`}
+              showCard={false}
+            />
+          )}
+          <ShareCard
+            shareUrl={Astro.url.href}
+            shareText={property.display_address}
+            title=""
+            copyButtonId="header-share-copy"
+            showCard={false}
+          />
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content: Two Column Layout -->
+    <section class="property-details">
+      <div class="property-details__layout">
+        <!-- Left Column: Gallery + Content -->
+        <div class="property-details__main">
+          <!-- Image Gallery -->
           <ImageGallery
             images={property.property_media || []}
             propertyAddress={property.display_address}
             propertyId={property.id}
           />
-          <!-- Contact & Share Actions -->
-          <div class="property-header__actions">
-            {(contact.phone || contact.email) && (
-              <ContactCard
-                phone={contact.phone}
-                email={contact.email}
-                title=""
-                subtitle=""
-                emailSubject={`Enquiry about ${property.display_address}`}
-                showCard={false}
-              />
-            )}
-            <ShareCard
-              shareUrl={Astro.url.href}
-              shareText={property.display_address}
-              title=""
-              copyButtonId="header-share-copy"
-              showCard={false}
-            />
-          </div>          
-        </div>
-      </div>
 
-      <!-- Property Header & Details Row -->
-      <div class="property-details__header-row">
-        <!-- Left Column: Property Title & Location -->
-        <div class="property-header">
-          {property.listing_status !== 'available' && (
-            <span class="property-header__status">{statusText}</span>
-          )}
-          <h1 class="property-header__title">{property.display_address}</h1>
-          <p class="property-header__location">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-              <circle cx="12" cy="10" r="3"/>
-            </svg>
-            <span>{property.city && `${property.city}, `}{property.postcode}</span>
-          </p>
-        </div>
+          <!-- Description Section -->
+          <DescriptionSection description={property.description} />
 
-        <!-- Right Column: Price & Property Details -->
-        <PropertyDetailsSection
-          propertyType={propertyType}
-          bedrooms={property.bedrooms}
-          bathrooms={property.bathrooms}
-          receptions={property.receptions}
-          tenure={property.tenure}
-          epcRating={property.epc_rating}
-          listedDate={listedDate}
-          listingType={property.listing_type}
-          displayPrice={displayPrice}
-        />
-      </div>
-      <!-- Description & Key Features Row -->
-      <div class="property-details__description-row">
-        <!-- Property description text -->
-        <DescriptionSection description={property.description} />
-
-        <!-- Key features list with image slider -->
-        <KeyFeaturesSection
-          features={property.key_features}
-          images={property.property_media || []}
-          propertyAddress={property.display_address}
-        />
-      </div>
-
-      <!-- Bottom Section: Full Width Content -->
-      <div class="property-details__content-sections">
-        <!-- Floorplan images (if available) -->
-        {floorplanImages.length > 0 && (
-          <FloorplanSection
-            floorplanImages={floorplanImages}
+          <!-- Key Features (if any) -->
+          <KeyFeaturesSection
+            features={property.key_features}
+            images={property.property_media || []}
             propertyAddress={property.display_address}
           />
-        )}
 
-        <!-- Interactive location map (if coordinates exist) -->
-        {hasLocation && (
-          <PropertyMapSection
-            latitude={property.latitude!}
-            longitude={property.longitude!}
-            address={property.display_address}
-            postcode={property.postcode}
-            displayAddress={property.display_address}
-            provider="openstreetmap"
+          <!-- Property Specs Grid -->
+          <div class="property-specs">
+            {property.year_built && (
+              <div class="property-specs__item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="4" width="18" height="18" rx="2"/>
+                  <path d="M16 2v4"/>
+                  <path d="M8 2v4"/>
+                  <path d="M3 10h18"/>
+                </svg>
+                <div class="property-specs__content">
+                  <span class="property-specs__label">Built from</span>
+                  <span class="property-specs__value">{property.year_built} Year</span>
+                </div>
+              </div>
+            )}
+            {property.condition && (
+              <div class="property-specs__item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+                </svg>
+                <div class="property-specs__content">
+                  <span class="property-specs__label">Work Level</span>
+                  <span class="property-specs__value">{property.condition}</span>
+                </div>
+              </div>
+            )}
+            <div class="property-specs__item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+              <div class="property-specs__content">
+                <span class="property-specs__label">Property Type</span>
+                <span class="property-specs__value">{propertyType}</span>
+              </div>
+            </div>
+            {property.land_area && (
+              <div class="property-specs__item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+                </svg>
+                <div class="property-specs__content">
+                  <span class="property-specs__label">Land size</span>
+                  <span class="property-specs__value">{property.land_area}m²</span>
+                </div>
+              </div>
+            )}
+            {property.floor_area && (
+              <div class="property-specs__item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <path d="M3 9h18"/>
+                  <path d="M9 21V9"/>
+                </svg>
+                <div class="property-specs__content">
+                  <span class="property-specs__label">Building size</span>
+                  <span class="property-specs__value">{property.floor_area}m²</span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <!-- Location Map -->
+          {hasLocation && (
+            <PropertyMapSection
+              latitude={property.latitude!}
+              longitude={property.longitude!}
+              address={property.display_address}
+              postcode={property.postcode}
+              displayAddress={property.display_address}
+              provider="openstreetmap"
+            />
+          )}
+
+          <!-- Floorplan (if available) -->
+          {floorplanImages.length > 0 && (
+            <FloorplanSection
+              floorplanImages={floorplanImages}
+              propertyAddress={property.display_address}
+            />
+          )}
+
+          <!-- EPC Section (if available) -->
+          <EnergyPerformanceSection
+            epcRating={property.epc_rating}
+            epcCurrentScore={property.epc_current_score}
+            epcPotentialScore={property.epc_potential_score}
+            epcImages={epcImages}
+            propertyAddress={property.display_address}
           />
-        )}
+        </div>
 
-        <!-- EPC rating and certificate (if available) -->
-        <EnergyPerformanceSection
-          epcRating={property.epc_rating}
-          epcCurrentScore={property.epc_current_score}
-          epcPotentialScore={property.epc_potential_score}
-          epcImages={epcImages}
-          propertyAddress={property.display_address}
-        />
+        <!-- Right Column: Pricing Sidebar -->
+        <aside class="property-details__sidebar">
+          <div class="property-sidebar">
+            <!-- Price Card -->
+            <div class="property-sidebar__card">
+              <div class="property-sidebar__price-section">
+                <span class="property-sidebar__price-label">
+                  {property.listing_type === 'sale' ? 'Guide Price' : 'Monthly Net Rent'}
+                </span>
+                <span class="property-sidebar__price">{displayPrice}</span>
+              </div>
 
-        <!-- Recommended similar properties -->
+              <div class="property-sidebar__details">
+                {property.listing_type === 'lettings' && (
+                  <>
+                    {property.deposit && (
+                      <div class="property-sidebar__detail-row">
+                        <span class="property-sidebar__detail-label">Move-in price</span>
+                        <span class="property-sidebar__detail-value">£{property.deposit.toLocaleString()}</span>
+                      </div>
+                    )}
+                    {property.available_date && (
+                      <div class="property-sidebar__detail-row">
+                        <span class="property-sidebar__detail-label">Available from</span>
+                        <span class="property-sidebar__detail-value">{formatDate(property.available_date)}</span>
+                      </div>
+                    )}
+                    {property.minimum_term && (
+                      <div class="property-sidebar__detail-row">
+                        <span class="property-sidebar__detail-label">Rental period</span>
+                        <span class="property-sidebar__detail-value">{property.minimum_term}</span>
+                      </div>
+                    )}
+                  </>
+                )}
+                {property.listing_type === 'sale' && (
+                  <>
+                    {property.tenure && (
+                      <div class="property-sidebar__detail-row">
+                        <span class="property-sidebar__detail-label">Tenure</span>
+                        <span class="property-sidebar__detail-value">{property.tenure}</span>
+                      </div>
+                    )}
+                    {listedDate && (
+                      <div class="property-sidebar__detail-row">
+                        <span class="property-sidebar__detail-label">Date Listed</span>
+                        <span class="property-sidebar__detail-value">{listedDate}</span>
+                      </div>
+                    )}
+                    {property.epc_rating && (
+                      <div class="property-sidebar__detail-row">
+                        <span class="property-sidebar__detail-label">EPC Rating</span>
+                        <span class="property-sidebar__detail-value">{property.epc_rating}</span>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+
+              <!-- Contact Button -->
+              <ViewingSection property={property} />
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Full Width: Similar Properties -->
+      <div class="property-details__similar">
         <SimilarProperties
           propertyId={property.id}
           listingType={property.listing_type}

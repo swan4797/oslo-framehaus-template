@@ -1,220 +1,110 @@
 // ========================================
 // FLOORPLAN STYLES
-// Floorplan images grid
+// Simple one-column layout
 // Using centralized design tokens
 // ========================================
 
 @use '../../tokens/colors' as colors;
+@use '../../tokens/spacing' as spacing;
 @use '../../tokens/typography' as typography;
 @use '../../tokens/effects' as effects;
 @use '../../mixins' as *;
 
 .floorplan-section {
-  position: relative;
-  overflow: hidden;
-
-  &__layout {
-    display: grid;
-    grid-template-columns: 40% 60%;
-    min-height: 520px;
-    position: relative;
-
-    @media (max-width: 768px) {
-      grid-template-columns: 1fr;
-      min-height: auto;
-    }
-  }
-
-  &__panel-column {
-    position: relative;
-    z-index: 1;
-    background-color: colors.$color-bg-primary;
+  // Header
+  &__header {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    padding-left: 4rem;
-    padding-right: calc(80px + 4rem);
-
-    @media (max-width: 1024px) {
-      padding-left: 2.5rem;
-      padding-right: calc(60px + 2.5rem);
-    }
-
-    @media (max-width: 768px) {
-      order: 1;
-      padding: 3rem 1.5rem;
-      justify-content: center;
-    }
+    justify-content: space-between;
+    margin-bottom: spacing.$spacing-6;
   }
 
-  &__content {
-    max-width: 380px;
-    text-align: right;
-
-    @media (max-width: 768px) {
-      text-align: center;
-      max-width: 100%;
-    }
-  }
-
-  &__eyebrow {
-    display: inline-block;
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: colors.$color-accent;
-    margin-bottom: 1rem;
-    font-family: typography.$font-family-base;
-  }
-
-  &__heading {
+  &__title {
     font-family: typography.$font-family-heading;
-    font-size: clamp(1.75rem, 3vw, 2.5rem);
-    font-weight: 500;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    color: colors.$color-text-light;
-    margin: 0 0 1.5rem 0;
+    font-size: 1.5rem;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+    margin: 0;
+
+    @include md {
+      font-size: 1.75rem;
+    }
   }
 
-  &__text {
-    font-size: 0.9375rem;
-    line-height: 1.7;
-    color: colors.$color-text-light;
-    margin: 0 0 2rem 0;
-    font-family: typography.$font-family-base;
-  }
-
-  &__badge {
+  &__count {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.625rem 1rem;
-    background-color: colors.$color-bg-tertiary;
-    border-radius: 4px;
-    color: colors.$color-primary;
+    padding: 0.375rem 0.75rem;
+    background: colors.$color-bg-tertiary;
+    border-radius: 100px;
     font-size: 0.8125rem;
-    font-weight: 500;
+    font-weight: typography.$font-weight-medium;
+    color: colors.$color-text-primary;
     font-family: typography.$font-family-base;
+  }
 
-    svg {
-      color: colors.$color-primary;
+  // Images Grid
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: spacing.$spacing-4;
+
+    @include md {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  &__image-column {
-    position: relative;
-    z-index: 2;
-    margin-left: -80px;
-    display: flex;
-    align-items: center;
-    padding: 2rem 0;
-
-    @media (max-width: 1024px) {
-      margin-left: -60px;
-      padding-right: 1.5rem;
-    }
-
-    @media (max-width: 768px) {
-      order: 2;
-      margin-left: 0;
-      padding: 0 1.5rem 2rem;
-    }
-  }
-
-  &__images {
-    width: 100%;
-    height: 100%;
-    max-height: 520px;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    justify-content: center;
-
-    @media (max-width: 768px) {
-      min-height: auto;
-    }
-  }
-
-  &__image-link {
+  // Individual Image Item
+  &__item {
     display: block;
     position: relative;
-    background-color: colors.$color-bg-secondary;
+    background: colors.$color-bg-secondary;
+    border: 1px solid colors.$color-border-light;
+    border-radius: 0.75rem;
     overflow: hidden;
-    box-shadow: -8px 0 40px rgba(0, 0, 0, 0.15);
-    transition: transform effects.$transition-base, box-shadow effects.$transition-base;
-    max-height: calc(50% - 0.5rem);
-
-    &--single {
-      flex: 1;
-      max-height: 100%;
-    }
+    text-decoration: none;
+    transition: border-color effects.$transition-base, box-shadow effects.$transition-base;
 
     &:hover {
-      transform: translateX(-4px);
-      box-shadow: -12px 0 50px rgba(0, 0, 0, 0.2);
+      border-color: colors.$color-border-medium;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
-    @media (max-width: 768px) {
-      max-height: none;
-      flex: 0 0 auto;
+    &:hover .floorplan-section__overlay {
+      opacity: 1;
     }
   }
 
   &__image {
     width: 100%;
-    height: 100%;
+    height: auto;
+    display: block;
     object-fit: contain;
-    padding: 1.5rem;
-
-    @media (max-width: 768px) {
-      max-height: 300px;
-    }
+    padding: spacing.$spacing-4;
   }
 
+  // Hover Overlay
   &__overlay {
     position: absolute;
-    inset: 0;
-    background: rgba(colors.$color-bg-primary, 0.7);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: spacing.$spacing-4;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
     opacity: 0;
     transition: opacity effects.$transition-base;
     display: flex;
-    align-items: flex-end;
-    padding: 1.5rem;
+    align-items: center;
+    gap: spacing.$spacing-2;
+    color: #fff;
 
-    .floorplan-section__image-link:hover & {
-      opacity: 1;
+    svg {
+      flex-shrink: 0;
     }
-  }
 
-  &__overlay-text {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: colors.$color-text-light;
-    font-size: 0.875rem;
-    font-weight: 600;
-    font-family: typography.$font-family-base;
-  }
-
-  &__more-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 1rem;
-    background-color: colors.$color-bg-secondary;
-    border-radius: 8px;
-    color: colors.$color-primary;
-    font-size: 0.875rem;
-    font-weight: 600;
-    font-family: typography.$font-family-base;
-    text-decoration: none;
-    transition: all effects.$transition-fast;
-
-    &:hover {
-      background-color: colors.$color-bg-secondary;
+    span {
+      font-size: 0.875rem;
+      font-weight: typography.$font-weight-medium;
     }
   }
 }

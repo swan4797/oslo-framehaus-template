@@ -38,7 +38,7 @@
   gap: spacing.$space-3-5;
   padding: spacing.$space-6 spacing.$space-8;
   background: colors.$color-bg-secondary;
-  color: colors.$color-text-light;
+  color: colors.$color-text-primary;
 }
 
 .valuation-form-card .form-icon {
@@ -116,7 +116,7 @@
   font-family: typography.$font-family-base;
   font-size: typography.$font-size-sm;
   font-weight: typography.$font-weight-semibold;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   margin-bottom: spacing.$space-2;
 }
 
@@ -140,7 +140,7 @@
   }
 
   &::placeholder {
-    color: colors.$color-text-muted;
+    color: colors.$color-text-primary;
   }
 }
 
@@ -166,7 +166,7 @@
   font-family: typography.$font-family-base;
   font-size: typography.$font-size-base;
   font-weight: typography.$font-weight-semibold;
-  color: colors.$color-text-muted;
+  color: colors.$color-text-primary;
   pointer-events: none;
 }
 
@@ -177,7 +177,7 @@
 .field-hint {
   font-family: typography.$font-family-base;
   font-size: 0.8125rem;
-  color: colors.$color-text-muted;
+  color: colors.$color-text-primary;
   margin: spacing.$space-1-5 0 0 0;
   line-height: typography.$line-height-base;
 }
@@ -211,7 +211,7 @@
 .checkbox-label {
   font-family: typography.$font-family-base;
   font-size: typography.$font-size-sm;
-  color: colors.$color-text-muted;
+  color: colors.$color-text-primary;
   line-height: typography.$line-height-relaxed;
   cursor: pointer;
 }
@@ -265,7 +265,7 @@
 .privacy-notice {
   font-family: typography.$font-family-base;
   font-size: typography.$font-size-xs;
-  color: colors.$color-text-muted;
+  color: colors.$color-text-primary;
   text-align: center;
   margin-top: spacing.$space-4;
   margin-bottom: 0;

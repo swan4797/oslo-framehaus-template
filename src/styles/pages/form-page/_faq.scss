@@ -37,10 +37,9 @@ $transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
   font-family: typography.$font-family-heading;
   font-size: 1.5rem;
   font-weight: typography.$font-weight-bold;
-  color: colors.$color-text-light;
+  color: colors.$color-text-primary;
   margin: 0 0 spacing.$space-3 0;
   letter-spacing: -0.02em;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
   @include md {
     font-size: 1.75rem;
@@ -50,10 +49,9 @@ $transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
 .faq-section__subtitle {
   font-family: typography.$font-family-base;
   font-size: typography.$font-size-base;
-  color: colors.$color-white-85;
+  color: colors.$color-text-primary;
   margin: 0;
   line-height: typography.$line-height-relaxed;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 // ========================================
@@ -140,7 +138,7 @@ $transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
   padding: 0;
   font-family: typography.$font-family-base;
   font-size: 0.9375rem;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   line-height: 1.7;
   margin: 0;
 

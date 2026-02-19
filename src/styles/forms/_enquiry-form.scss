@@ -37,7 +37,7 @@
   gap: spacing.$space-2;
   padding: spacing.$space-3;
   background: colors.$color-bg-secondary;
-  color: colors.$color-text-light;
+  color: colors.$color-text-primary;
 }
 
 .form-icon {
@@ -98,7 +98,7 @@
   }
 
   &::placeholder {
-    color: colors.$color-text-muted;
+    color: colors.$color-text-primary;
   }
 }
 

@@ -6,191 +6,319 @@
 
 @use '../../tokens/colors' as colors;
 @use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
 @use '../../mixins' as *;
 
 // ========================================
-// LEGACY CONTAINER (backwards compatibility)
+// PROPERTY TOPBAR
 // ========================================
 
-.property__details_container {
-  padding: 1em 3em;
+.property-topbar {
   background: colors.$color-bg-secondary;
-
-  @media (max-width: 540px) {
-    padding: 0.3em;
-  }
+  border-bottom: 1px solid colors.$color-border-light;
+  margin-top: 1em;
+  padding: 1em 0 0;
+  border-radius: 20px;
+  box-shadow: 0 6px 15px rgba(0.5, 0.5, 0.5, 0.10)
 }
 
-// ========================================
-// NEW LAYOUT STRUCTURE
-// ========================================
-
-.property-details {
-  background: colors.$color-bg-secondary;
-}
-
-// ----------------------------------------
-// TOP GRID: Two Column Layout
-// Details + Viewing on left, Gallery on right
-// ----------------------------------------
-
-.property-details__top-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: spacing.$spacing-6;
-  padding: spacing.$spacing-6;
-  max-width: 1600px;
-  margin: 0 auto;
-
-  @include md {
-    grid-template-columns: 1fr 1fr;
-    gap: spacing.$spacing-8;
-    padding: spacing.$spacing-8;
-  }
-
-  @include lg {
-    grid-template-columns: 0.8fr 1.2fr;
-    gap: spacing.$spacing-10;
-    padding: spacing.$spacing-10 spacing.$spacing-12;
-  }
-
-  @include xl {
-    grid-template-columns: 0.7fr 1.3fr;
-    gap: spacing.$spacing-12;
-    padding: spacing.$spacing-12 spacing.$spacing-16;
-  }
-}
-
-// ----------------------------------------
-// LEFT COLUMN: Details + Viewing
-// ----------------------------------------
-
-.property-details__info-column {
+.property-topbar__container {
   display: flex;
-  flex-direction: column;
-  gap: spacing.$spacing-6;
-  order: 2;
+  align-items: center;
+  justify-content: space-between;
+  gap: spacing.$spacing-4;
+  max-width: 95%;
+  margin: 0 auto;
+  padding: spacing.$spacing-4 spacing.$spacing-6;
+
+  @include lg {
+    padding: spacing.$spacing-5 0;
+  }
+}
+
+.property-topbar__left {
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-4;
+  min-width: 0;
+  flex: 1;
+}
+
+.property-topbar__back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: colors.$color-bg-tertiary;
+  color: colors.$color-text-primary;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: colors.$color-border-light;
+  }
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+.property-topbar__info {
+  min-width: 0;
+  flex: 1;
+}
+
+.property-topbar__title {
+  font-family: typography.$font-family-heading;
+  font-size: 1.125rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   @include md {
-    order: 1;
+    font-size: 1.25rem;
   }
 
   @include lg {
-    gap: spacing.$spacing-8;
+    font-size: 1.375rem;
   }
 }
 
-// ----------------------------------------
-// RIGHT COLUMN: Image Gallery
-// ----------------------------------------
+.property-topbar__stats {
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-4;
+  margin-top: spacing.$spacing-1;
+}
 
-.property-details__gallery-column {
-  min-width: 0; // Prevent grid blowout
-  order: 1;
+.property-topbar__stat {
+  display: flex;
+  align-items: center;
+  gap: spacing.$space-1-5;
+  font-size: 0.8125rem;
+  color: colors.$color-text-primary;
 
-  @include md {
-    order: 2;
+  svg {
+    width: 1rem;
+    height: 1rem;
+    opacity: 0.6;
   }
 }
 
-// ----------------------------------------
-// HEADER ROW: Two Column Layout
-// Property title/location on left, Price/details on right
-// ----------------------------------------
+.property-topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-3;
+  flex-shrink: 0;
+}
 
-.property-details__header-row {
+// ========================================
+// MAIN LAYOUT STRUCTURE
+// ========================================
+
+
+.property-details__layout {
   display: grid;
   grid-template-columns: 1fr;
   gap: spacing.$spacing-6;
-  padding: spacing.$spacing-6;
-  max-width: 1600px;
+  max-width: 95%;
   margin: 0 auto;
-
-  @include md {
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: spacing.$spacing-8;
-    padding: spacing.$spacing-8;
-    align-items: start;
-  }
+  padding: spacing.$spacing-6 0;
 
   @include lg {
-    gap: spacing.$spacing-10;
-    padding: spacing.$spacing-10 spacing.$spacing-12;
+    grid-template-columns: 1fr 380px;
+    gap: spacing.$spacing-8;
+    padding: spacing.$spacing-8 0;
   }
 
   @include xl {
-    gap: spacing.$spacing-12;
-    padding: spacing.$spacing-12 spacing.$spacing-16;
-  }
-
-  > * {
-    min-width: 0;
+    grid-template-columns: 1fr 420px;
+    gap: spacing.$spacing-10;
   }
 }
 
 // ----------------------------------------
-// DESCRIPTION ROW: Two Column Layout
-// Description on left, Key Features on right
+// LEFT COLUMN: Main Content
 // ----------------------------------------
 
-.property-details__description-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: spacing.$spacing-6;
-  padding: spacing.$spacing-6;
-  max-width: 1600px;
-  margin: 0 auto;
-
-  @include md {
-    grid-template-columns: 1fr 1fr;
-    gap: spacing.$spacing-8;
-    padding: spacing.$spacing-8;
-  }
-
-  @include lg {
-    gap: spacing.$spacing-10;
-    padding: spacing.$spacing-10 spacing.$spacing-12;
-  }
-
-  @include xl {
-    gap: spacing.$spacing-12;
-    padding: spacing.$spacing-12 spacing.$spacing-16;
-  }
-
-  > * {
-    min-width: 0;
-  }
-}
-
-// ----------------------------------------
-// BOTTOM SECTION: Full Width Content
-// ----------------------------------------
-
-.property-details__content-sections {
+.property-details__main {
   display: flex;
   flex-direction: column;
   gap: spacing.$spacing-8;
+  min-width: 0;
+
+  @include lg {
+    gap: spacing.$spacing-10;
+  }
+}
+
+// ----------------------------------------
+// RIGHT COLUMN: Sidebar
+// ----------------------------------------
+
+.property-details__sidebar {
+  @include lg {
+    position: sticky;
+    top: 6rem;
+    height: fit-content;
+  }
+}
+
+.property-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-4;
+}
+
+.property-sidebar__card {
+  background: colors.$color-bg-secondary;
+  border: 1px solid colors.$color-border-light;
+  border-radius: 1rem;
   padding: spacing.$spacing-6;
-  max-width: 1600px;
-  margin: 0 auto;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+.property-sidebar__price-section {
+  margin-bottom: spacing.$spacing-6;
+  padding-bottom: spacing.$spacing-6;
+  border-bottom: 1px solid colors.$color-border-light;
+}
+
+.property-sidebar__price-label {
+  display: block;
+  font-size: 0.8125rem;
+  color: colors.$color-text-primary;
+  margin-bottom: spacing.$spacing-2;
+}
+
+.property-sidebar__price {
+  display: block;
+  font-family: typography.$font-family-heading;
+  font-size: 2rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+  letter-spacing: -0.02em;
+
+  @include lg {
+    font-size: 2.25rem;
+  }
+}
+
+.property-sidebar__details {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-4;
+  margin-bottom: spacing.$spacing-6;
+}
+
+.property-sidebar__detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.property-sidebar__detail-label {
+  font-size: 0.875rem;
+  color: colors.$color-text-primary;
+}
+
+.property-sidebar__detail-value {
+  font-size: 0.875rem;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+}
+
+.property-sidebar__status {
+  text-align: center;
+}
+
+.property-sidebar__status-badge {
+  display: inline-block;
+  padding: spacing.$spacing-2 spacing.$spacing-4;
+  background: colors.$color-error-lighter;
+  color: colors.$color-error;
+  font-size: 0.75rem;
+  font-weight: typography.$font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 100px;
+}
+
+// ========================================
+// PROPERTY SPECS GRID
+// ========================================
+
+.property-specs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: spacing.$spacing-4;
+  padding: spacing.$spacing-6;
+  background: colors.$color-bg-secondary;
+  border: 1px solid colors.$color-border-light;
+  border-radius: 0.75rem;
 
   @include md {
-    gap: spacing.$spacing-10;
-    padding: spacing.$spacing-8;
+    grid-template-columns: repeat(3, 1fr);
+    gap: spacing.$spacing-5;
   }
 
   @include lg {
-    gap: spacing.$spacing-12;
-    padding: spacing.$spacing-10 spacing.$spacing-12;
+    grid-template-columns: repeat(5, 1fr);
+    gap: spacing.$spacing-6;
   }
+}
 
-  @include xl {
-    padding: spacing.$spacing-12 spacing.$spacing-16;
+.property-specs__item {
+  display: flex;
+  align-items: flex-start;
+  gap: spacing.$spacing-3;
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: colors.$color-text-primary;
+    opacity: 0.5;
+    flex-shrink: 0;
+    margin-top: 0.125rem;
   }
+}
 
-  // Full-width sections
-  > * {
-    width: 100%;
+.property-specs__content {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-1;
+}
+
+.property-specs__label {
+  font-size: 0.75rem;
+  color: colors.$color-text-primary;
+}
+
+.property-specs__value {
+  font-size: 0.875rem;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+}
+
+// ----------------------------------------
+// SIMILAR PROPERTIES SECTION
+// ----------------------------------------
+
+.property-details__similar {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: spacing.$spacing-8 spacing.$spacing-6;
+  border-top: 1px solid colors.$color-border-light;
+
+  @include lg {
+    padding: spacing.$spacing-10 spacing.$spacing-8;
   }
 }
 
@@ -199,18 +327,20 @@
 // ========================================
 
 @media (max-width: 767px) {
-  .property-details__top-grid {
+  .property-topbar__stats {
+    display: none;
+  }
+
+  .property-details__layout {
     padding: spacing.$spacing-4;
   }
 
-  .property-details__content-sections {
-    padding: spacing.$spacing-4;
-    gap: spacing.$spacing-6;
+  .property-sidebar__card {
+    border-radius: 0.75rem;
+    padding: spacing.$spacing-5;
   }
 
-  .property-details__info-column {
-    position: static;
-    max-height: none;
-    overflow: visible;
+  .property-specs {
+    padding: spacing.$spacing-5;
   }
 }
