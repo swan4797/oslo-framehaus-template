@@ -437,7 +437,8 @@
       text-transform: none;
 
       &:hover {
-        background-color: colors.$color-bg-secondary;
+        background-color: colors.$color-bg-tertiary;
+        color: colors.$color-text-primary;
 
         .intro-section__btn-icon {
           transform: rotate(45deg);
