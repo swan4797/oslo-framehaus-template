@@ -105,6 +105,7 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: spacing.$spacing-4;
+    max-width: 580px;
   }
 
   &__certificate-link {

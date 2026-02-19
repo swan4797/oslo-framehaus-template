@@ -122,7 +122,7 @@
 
 .pg__subtitle {
   font-size: 0.9375rem;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   margin: 0;
   line-height: typography.$line-height-relaxed;
   max-width: 32rem;
@@ -171,6 +171,7 @@
 
 .pg__grid {
   display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.25rem;
 
   @include md {
