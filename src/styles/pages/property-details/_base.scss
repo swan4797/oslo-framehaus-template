@@ -222,16 +222,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: spacing.$spacing-3 spacing.$spacing-4;
+  background: colors.$color-bg-tertiary;
+  border-radius: 100px;
 }
 
 .property-sidebar__detail-label {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
+  font-weight: typography.$font-weight-medium;
   color: colors.$color-text-primary;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .property-sidebar__detail-value {
   font-size: 0.875rem;
-  font-weight: typography.$font-weight-medium;
+  font-weight: typography.$font-weight-semibold;
   color: colors.$color-text-primary;
 }
 

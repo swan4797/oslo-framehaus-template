@@ -105,10 +105,6 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: spacing.$spacing-4;
-
-    @include md {
-      grid-template-columns: repeat(2, 1fr);
-    }
   }
 
   &__certificate-link {

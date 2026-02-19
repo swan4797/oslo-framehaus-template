@@ -651,7 +651,7 @@ $form-input-border-focus: colors.$color-primary;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding-top: 0.5rem;
+  margin-top: 5px;
 
   @include sm {
     flex-direction: row;

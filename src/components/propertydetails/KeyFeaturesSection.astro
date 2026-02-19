@@ -33,9 +33,119 @@ const hasFeatures = features && features.length > 0
 const getFeatureIcon = (feature: string): string => {
   const lowerFeature = feature.toLowerCase()
 
+  // No Chain / Chain Free (broken chain icon)
+  if (lowerFeature.includes('no chain') || lowerFeature.includes('chain free') || lowerFeature.includes('chain-free')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/><line x1="2" y1="2" x2="22" y2="22"/></svg>`
+  }
+
   // Garden/Outdoor
-  if (lowerFeature.includes('garden') || lowerFeature.includes('yard') || lowerFeature.includes('patio')) {
-    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3c-1.5 2-3 4.5-3 7 0 2.5 1.5 4 3 4s3-1.5 3-4c0-2.5-1.5-5-3-7z"/><path d="M12 14v7"/><path d="M9 21h6"/></svg>`
+  if (lowerFeature.includes('garden') || lowerFeature.includes('yard') || lowerFeature.includes('patio') || lowerFeature.includes('lawn')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3c-1.5 2-3 4.5-3 7 0 2.5 1.5 4 3 4s3-1.5 3-4c0-2.5-1.5-5-3-7z"/><path d="M12 14v7"/><path d="M9 21h6"/><path d="M7 14c-2 0-4 1-4 3"/><path d="M17 14c2 0 4 1 4 3"/></svg>`
+  }
+
+  // Freehold
+  if (lowerFeature.includes('freehold')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><circle cx="12" cy="10" r="2"/></svg>`
+  }
+
+  // Leasehold
+  if (lowerFeature.includes('leasehold')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`
+  }
+
+  // Double/Triple Glazing
+  if (lowerFeature.includes('glazing') || lowerFeature.includes('glazed')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="12" y1="3" x2="12" y2="21"/></svg>`
+  }
+
+  // Bathroom/Shower
+  if (lowerFeature.includes('bathroom') || lowerFeature.includes('shower') || lowerFeature.includes('bath ')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12h16a1 1 0 0 1 1 1v3a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4v-3a1 1 0 0 1 1-1z"/><path d="M6 12V5a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2"/><circle cx="12" cy="5" r="1"/></svg>`
+  }
+
+  // Reception/Living Room
+  if (lowerFeature.includes('reception') || lowerFeature.includes('living') || lowerFeature.includes('lounge') || lowerFeature.includes('sitting')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0H6a2 2 0 0 0-4 0z"/><path d="M4 18v2"/><path d="M20 18v2"/></svg>`
+  }
+
+  // Conservatory
+  if (lowerFeature.includes('conservatory') || lowerFeature.includes('sun room') || lowerFeature.includes('sunroom')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18"/><path d="M4 21V10"/><path d="M20 21V10"/><path d="M12 3l9 7H3l9-7z"/><path d="M8 21v-6h8v6"/><line x1="12" y1="10" x2="12" y2="15"/></svg>`
+  }
+
+  // Loft/Attic
+  if (lowerFeature.includes('loft') || lowerFeature.includes('attic')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18"/><path d="M5 21V10l7-7 7 7v11"/><path d="M9 21v-4h6v4"/><path d="M10 7l2-2 2 2"/></svg>`
+  }
+
+  // Cellar/Basement
+  if (lowerFeature.includes('cellar') || lowerFeature.includes('basement')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="10" width="16" height="11" rx="1"/><path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M4 15h16"/><path d="M10 15v6"/><path d="M14 15v6"/></svg>`
+  }
+
+  // Period Property/Victorian/Georgian
+  if (lowerFeature.includes('period') || lowerFeature.includes('victorian') || lowerFeature.includes('georgian') || lowerFeature.includes('edwardian') || lowerFeature.includes('character')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18"/><path d="M6 21V8l6-5 6 5v13"/><path d="M9 21v-6a3 3 0 0 1 6 0v6"/><path d="M12 3v3"/><circle cx="12" cy="11" r="1"/></svg>`
+  }
+
+  // New Build/Modern
+  if (lowerFeature.includes('new build') || lowerFeature.includes('newly built') || lowerFeature.includes('modern')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="16" height="13" rx="1"/><path d="M8 8V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3"/><rect x="8" y="12" width="3" height="3"/><rect x="13" y="12" width="3" height="3"/><path d="M10 21v-3h4v3"/></svg>`
+  }
+
+  // Detached
+  if (lowerFeature.includes('detached') && !lowerFeature.includes('semi')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><rect x="9" y="13" width="6" height="8"/><path d="M9 13h6"/></svg>`
+  }
+
+  // Semi-detached
+  if (lowerFeature.includes('semi-detached') || lowerFeature.includes('semi detached')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18"/><path d="M4 21V10l8-7 8 7v11"/><line x1="12" y1="3" x2="12" y2="21"/><rect x="6" y="14" width="4" height="4"/><rect x="14" y="14" width="4" height="4"/></svg>`
+  }
+
+  // Pet Friendly
+  if (lowerFeature.includes('pet') || lowerFeature.includes('dog') || lowerFeature.includes('cat')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="4" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="4" cy="8" r="2"/><path d="M12 12c-2 0-4 1.5-4 4s2 5 4 5 4-2.5 4-5-2-4-4-4z"/></svg>`
+  }
+
+  // Furnished
+  if (lowerFeature.includes('furnished')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="14" width="18" height="4" rx="1"/><path d="M5 14V9a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v5"/><path d="M4 18v2"/><path d="M20 18v2"/><path d="M8 8V6"/><path d="M16 8V6"/></svg>`
+  }
+
+  // Views/Scenic
+  if (lowerFeature.includes('view') || lowerFeature.includes('scenic') || lowerFeature.includes('overlooking')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>`
+  }
+
+  // Quiet/Peaceful
+  if (lowerFeature.includes('quiet') || lowerFeature.includes('peaceful') || lowerFeature.includes('secluded')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 9h.01"/><path d="M15 9h.01"/><path d="M8 13a4 4 0 0 0 8 0"/><circle cx="12" cy="12" r="10"/></svg>`
+  }
+
+  // Renovated/Refurbished
+  if (lowerFeature.includes('renovated') || lowerFeature.includes('refurbished') || lowerFeature.includes('modernised') || lowerFeature.includes('modernized')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`
+  }
+
+  // Open Plan
+  if (lowerFeature.includes('open plan') || lowerFeature.includes('open-plan')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 12h8"/><path d="M12 12v9"/></svg>`
+  }
+
+  // South Facing
+  if (lowerFeature.includes('south facing') || lowerFeature.includes('south-facing') || lowerFeature.includes('sunny')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
+  }
+
+  // Transport/Station
+  if (lowerFeature.includes('transport') || lowerFeature.includes('station') || lowerFeature.includes('tube') || lowerFeature.includes('train') || lowerFeature.includes('bus')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/><path d="M8 19l-2 3"/><path d="M16 19l2 3"/></svg>`
+  }
+
+  // Schools
+  if (lowerFeature.includes('school') || lowerFeature.includes('education')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.1 2.7 2 6 2s6-.9 6-2v-5"/></svg>`
   }
 
   // Pool/Jacuzzi/Hot tub
@@ -49,13 +159,13 @@ const getFeatureIcon = (feature: string): string => {
   }
 
   // Garage/Parking
-  if (lowerFeature.includes('garage') || lowerFeature.includes('parking') || lowerFeature.includes('driveway')) {
+  if (lowerFeature.includes('garage') || lowerFeature.includes('parking') || lowerFeature.includes('driveway') || lowerFeature.includes('off street') || lowerFeature.includes('off-street')) {
     return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M3 8l3-4h12l3 4"/><rect x="7" y="12" width="10" height="5"/></svg>`
   }
 
   // Laundry/Utility
   if (lowerFeature.includes('laundry') || lowerFeature.includes('utility') || lowerFeature.includes('washer') || lowerFeature.includes('dryer')) {
-    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="2"/><circle cx="12" cy="13" r="5"/><circle cx="12" cy="13" r="2"/><line x1="8" y1="6" x2="8" y2="6"/><line x1="12" y1="6" x2="12" y2="6"/></svg>`
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="2"/><circle cx="12" cy="13" r="5"/><circle cx="12" cy="13" r="2"/><circle cx="8" cy="6" r="1"/><circle cx="12" cy="6" r="1"/></svg>`
   }
 
   // Kitchen/Dining
@@ -69,44 +179,64 @@ const getFeatureIcon = (feature: string): string => {
   }
 
   // Heating/Boiler
-  if (lowerFeature.includes('heating') || lowerFeature.includes('boiler') || lowerFeature.includes('central heat') || lowerFeature.includes('underfloor')) {
+  if (lowerFeature.includes('heating') || lowerFeature.includes('boiler') || lowerFeature.includes('central heat') || lowerFeature.includes('underfloor') || lowerFeature.includes('gas')) {
     return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 9a4 4 0 0 0-2 7.5"/><path d="M12 3v3"/><path d="M6.6 18.4l-1.4 1.4"/><path d="M20 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0z"/></svg>`
   }
 
   // Storage/Closet
-  if (lowerFeature.includes('storage') || lowerFeature.includes('closet') || lowerFeature.includes('wardrobe')) {
-    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="9" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="15" y2="12"/></svg>`
+  if (lowerFeature.includes('storage') || lowerFeature.includes('closet') || lowerFeature.includes('wardrobe') || lowerFeature.includes('cupboard')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/></svg>`
   }
 
   // Balcony/Terrace
-  if (lowerFeature.includes('balcony') || lowerFeature.includes('terrace') || lowerFeature.includes('deck')) {
+  if (lowerFeature.includes('balcony') || lowerFeature.includes('terrace') || lowerFeature.includes('deck') || lowerFeature.includes('veranda')) {
     return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="10" width="20" height="2"/><path d="M4 12v8"/><path d="M20 12v8"/><path d="M12 12v8"/><path d="M2 20h20"/></svg>`
   }
 
   // Security
-  if (lowerFeature.includes('security') || lowerFeature.includes('alarm') || lowerFeature.includes('cctv')) {
-    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`
+  if (lowerFeature.includes('security') || lowerFeature.includes('alarm') || lowerFeature.includes('cctv') || lowerFeature.includes('gated')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>`
   }
 
   // Air conditioning
-  if (lowerFeature.includes('air con') || lowerFeature.includes('ac') || lowerFeature.includes('cooling')) {
+  if (lowerFeature.includes('air con') || lowerFeature.includes('a/c') || lowerFeature.includes('cooling') || lowerFeature.includes('climate')) {
     return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v10"/><path d="M18.36 5.64l-6.36 6.36"/><path d="M22 12h-10"/><path d="M18.36 18.36l-6.36-6.36"/><path d="M12 22v-10"/><path d="M5.64 18.36l6.36-6.36"/><path d="M2 12h10"/><path d="M5.64 5.64l6.36 6.36"/></svg>`
   }
 
   // Fireplace
-  if (lowerFeature.includes('fireplace') || lowerFeature.includes('fire') || lowerFeature.includes('log burner')) {
+  if (lowerFeature.includes('fireplace') || lowerFeature.includes('wood burner') || lowerFeature.includes('log burner') || lowerFeature.includes('open fire')) {
     return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2c1 3 3 5.5 3 8.5a3 3 0 0 1-6 0c0-3 2-5.5 3-8.5z"/><path d="M4 21h16"/><rect x="6" y="15" width="12" height="6" rx="1"/></svg>`
   }
 
-  // Default icon (star/feature)
-  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`
+  // EPC Rating
+  if (lowerFeature.includes('epc') || lowerFeature.includes('energy')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`
+  }
+
+  // Cul-de-sac
+  if (lowerFeature.includes('cul-de-sac') || lowerFeature.includes('cul de sac') || lowerFeature.includes('dead end')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="16" r="6"/><path d="M12 10V2"/><path d="M8 6l4-4 4 4"/></svg>`
+  }
+
+  // Corner Plot
+  if (lowerFeature.includes('corner') || lowerFeature.includes('plot')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3h18v18H3z"/><path d="M3 3l18 18"/></svg>`
+  }
+
+  // Investment/Buy to Let
+  if (lowerFeature.includes('investment') || lowerFeature.includes('buy to let') || lowerFeature.includes('rental')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`
+  }
+
+  // Default icon (checkmark)
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
 }
 ---
 
 {hasFeatures && (
   <section class="features-section">
     <!-- Section Header -->
-    <h2 class="features-section__heading">Service</h2>
+    <h2 class="features-section__heading">Features</h2>
 
     <!-- Features Grid -->
     <div class="features-section__grid">
