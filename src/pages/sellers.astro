@@ -6,154 +6,122 @@
 // ========================================
 
 import Layout from '../layouts/Layout.astro'
-import Hero from '../components/Hero.astro'
 import StaticHero from '../components/static-page/StaticHero.astro'
 import StaticFullContent from '../components/static-page/StaticFullContent.astro'
-import IntroSection from '../components/static-page/layouts/IntroSection.astro'
 import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
 import CTABanner from '../components/static-page/layouts/CTABanner.astro'
 
 // Page content utilities
-import { getPageContent, hasSection } from '../lib/pages'
-
-const pageTitle = 'Selling Your Property'
-const pageDescription = 'Expert guidance and support for selling your property. Get the best price with our experienced team.'
+import {
+  getPageContent,
+  hasSection,
+  getSectionTitle,
+  getSectionContent,
+  getSectionImage,
+  getHeroImage,
+} from '../lib/pages'
 
 // Fetch sellers page content from Stratos CRM
 const pageContent = await getPageContent('sellers')
+
+// Get hero image from CMS or use fallback
+const heroImage = getHeroImage(pageContent)
+
+// Get page title from CMS
+const pageTitle = pageContent?.page_title || 'Selling Your Property'
+const pageDescription = 'Expert guidance and support for selling your property. Get the best price with our experienced team.'
+
+// Check which sections exist in CMS
+const hasWhySellers = hasSection(pageContent, 'why_sellers_choose_us')
+const hasSellingProcess = hasSection(pageContent, 'selling_process')
+const hasAreasCovered = hasSection(pageContent, 'areas_covered')
+const hasTestimonials = hasSection(pageContent, 'testimonials')
+const hasCta = hasSection(pageContent, 'cta')
+
+// Get section images
+const whySellersImage = getSectionImage(pageContent, 'why_sellers_choose_us')
+const sellingProcessImage = getSectionImage(pageContent, 'selling_process')
+const areasCoveredImage = getSectionImage(pageContent, 'areas_covered')
+const testimonialsImage = getSectionImage(pageContent, 'testimonials')
+const ctaImage = getSectionImage(pageContent, 'cta')
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
   <!-- Static Hero Section -->
   <StaticHero
-    title="SELLING<br/>WITH CONFIDENCE"
-    description="With expert local knowledge and a proven track record, we'll help you achieve the best possible price for your property. From valuation to completion, we're with you every step."
+    title={pageTitle}
+    description={pageContent?.content || ''}
     brandName="Seller Services"
     backgroundType="image"
-    backgroundSrc="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=80"
+    backgroundSrc={heroImage?.url || whySellersImage?.url || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=80"}
+    backgroundAlt={heroImage?.alt || whySellersImage?.alt || "Selling property"}
     categoryLabel="VALUATIONS"
     overlayOpacity="light"
   />
 
-  <!-- Intro Section -->
-  <!-- <IntroSection
-    title="Achieve the Best Price for Your Property"
-    subtitle="Expert Guidance"
-    description="Selling a property is one of the biggest financial decisions you'll make. That's why we take a personalised approach, combining local market expertise with modern marketing strategies to attract the right buyers."
-    ctaText="Get a free valuation"
-    ctaLink="/valuation"
-    leftImageSrc="https://images.pexels.com/photos/1918291/pexels-photo-1918291.jpeg?auto=compress&cs=tinysrgb&w=800"
-    leftImageAlt="Stylish home interior"
-    rightImageSrc="https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=800"
-    rightImageAlt="Beautiful property exterior"
-  /> -->
+  <!-- Why Sellers Choose Us Section -->
+  {hasWhySellers && (
+    <StaticFullContent
+      blockKey="full_sellers"
+      pageContent={pageContent}
+      imageSrc={whySellersImage?.url}
+      imageAlt={whySellersImage?.alt}
+    />
+  )}
 
-  <!-- Static Full Content Section -->
-  <StaticFullContent
-    blockKey="selling_journey"
-    pageContent={pageContent}
-    subtitle="Your Success"
-    titleAccent="Maximising"
-    titleMain="YOUR PROPERTY'S VALUE"
-    leadText="Selling your home is a significant decision. Our proven approach combines local expertise with strategic marketing to achieve the best possible price for your property."
-    contentBlocks={[
-      {
-        heading: "Accurate Valuations",
-        text: "We provide honest, realistic valuations based on current market conditions and comparable sales. No inflated prices to win your instruction – just accurate advice you can trust."
-      },
-      {
-        heading: "Premium Marketing",
-        text: "Professional photography, compelling descriptions, and exposure across all major portals. We present your property at its absolute best to attract qualified buyers."
-      },
-      {
-        heading: "Skilled Negotiation",
-        text: "Our experienced negotiators work tirelessly to secure the best offer. We handle all viewings, feedback, and negotiations, keeping you informed at every stage."
-      }
-    ]}
-    imageSrc="https://images.pexels.com/photos/1918291/pexels-photo-1918291.jpeg?auto=compress&cs=tinysrgb&w=1200"
-    imageAlt="Stylish property interior"
-  />
+  <!-- Selling Process Section -->
+  <!-- {hasSellingProcess && (
+    <ContentBlock
+      blockKey="selling_process"
+      pageContent={pageContent}
+      mediaSrc={sellingProcessImage?.url}
+      mediaAlt={sellingProcessImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/2082087/pexels-photo-2082087.jpeg"
+      secondaryMediaAlt="Property interior"
+      layout="default"
+      imagePosition="right"
+    />
+  )} -->
 
-  <!-- <ContentBlock
-    blockKey="selling_process"
-    pageContent={pageContent}
-    mediaSrc="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=1200&q=80"
-    mediaAlt="The selling process"
-    secondaryMediaSrc="https://images.pexels.com/photos/3935333/pexels-photo-3935333.jpeg?auto=compress&cs=tinysrgb&w=800"
-    secondaryMediaAlt="Property consultation"
-    title="The Selling Process"
-    subtitle="Step by Step"
-    description="From the initial valuation to completion, we handle everything. Professional photography, premium portal listings, accompanied viewings, expert negotiation, and sales progression — all designed to get you the best result."
-    ctaText="Book a valuation"
-    ctaLink="/valuation"
-    imagePosition="right"
-    overlayStrength="light"
-    serviceItems={["Portal Listings", "Accompanied Viewings", "Expert Negotiation"]}
-  />   -->
+  <!-- Areas Covered Section -->
+  <!-- {hasAreasCovered && (
+    <ContentBlock
+      blockKey="areas_covered"
+      pageContent={pageContent}
+      mediaSrc={areasCoveredImage?.url}
+      mediaAlt={areasCoveredImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/584399/living-room-couch-interior-room-584399.jpeg"
+      secondaryMediaAlt="Living room interior"
+      layout="default"
+      imagePosition="left"
+    />
+  )} -->
 
-  <!-- Content Blocks - Alternating Layout -->
-  <!-- <ContentBlock
-    blockKey="our_approach"
-    pageContent={pageContent}
-    mediaSrc="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80"
-    mediaAlt="Our approach to selling"
-    secondaryMediaSrc="https://images.pexels.com/photos/1643384/pexels-photo-1643384.jpeg?auto=compress&cs=tinysrgb&w=800"
-    secondaryMediaAlt="Property staging"
-    title="Our Approach to Selling"
-    subtitle="Expert Guidance"
-    description="Selling a property is one of the biggest financial decisions you'll make. That's why we take a personalised approach, combining local market expertise with modern marketing strategies to attract the right buyers and achieve the best price."
-    ctaText="Learn more"
-    ctaLink="/contact"
-    imagePosition="left"
-    overlayStrength="light"
-    serviceItems={["Free Valuation", "Professional Photography", "Premium Marketing"]}
-  /> -->
+  <!-- Testimonials Section -->
+  <!-- {hasTestimonials && (
+    <ContentBlock
+      blockKey="testimonials"
+      pageContent={pageContent}
+      mediaSrc={testimonialsImage?.url}
+      mediaAlt={testimonialsImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/1648839/pexels-photo-1648839.jpeg"
+      secondaryMediaAlt="Modern home"
+      layout="default"
+      imagePosition="right"
+    />
+  )} -->
 
-
-
-  <!-- CTA Banner -->
-  <!-- <CTABanner
-    title="Start Your Property Journey Today"
-    subtitle="Still exploring? Get in touch for a free consultation or sign up to receive our latest listings — tailored just for you."
-    primaryCtaText="Contact Us"
-    primaryCtaLink="/contact"
-    backgroundType="image"
-    backgroundSrc="https://images.pexels.com/photos/5644365/pexels-photo-5644365.jpeg"
-    overlayOpacity="medium"
-  />   
-  <ContentBlock
-    blockKey="fees"
-    pageContent={pageContent}
-    mediaSrc="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80"
-    mediaAlt="Our track record"
-    secondaryMediaSrc="https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?auto=compress&cs=tinysrgb&w=800"
-    secondaryMediaAlt="Successful sale"
-    title="Our Track Record"
-    subtitle="Results That Speak"
-    description="98% asking price achieved, 6 weeks average time to offer, and over 500 properties sold. Our track record speaks for itself. We consistently deliver exceptional results for our clients."
-    ctaText="View success stories"
-    ctaLink="/about"
-    imagePosition="right"
-    overlayStrength="light"
-    serviceItems={["98% Asking Price", "6 Week Average", "500+ Properties"]}
-  /> -->
-
-  <!-- FAQ Section -->
-  <ContentBlock
-    blockKey="seller_faqs"
-    pageContent={pageContent}
-    layout="faq"
-    mediaSrc="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800"
-    mediaAlt="Seller consultation"
-    title="Frequently Asked Questions"
-    subtitle="FAQS"
-    imagePosition="left"
-    faqItems={[
-      { question: "How do you determine my property's value?", answer: "We conduct a comprehensive market appraisal considering recent local sales, current market conditions, your property's unique features, and our extensive local knowledge to provide an accurate valuation." },
-      { question: "What are your fees for selling?", answer: "Our fees are competitive and transparent. We'll discuss our fee structure during your free valuation appointment, with no hidden costs or surprise charges." },
-      { question: "How long will it take to sell my property?", answer: "On average, our properties receive an offer within 6 weeks. However, this depends on pricing, market conditions, and property type. We'll keep you informed every step of the way." },
-      { question: "What happens if my property doesn't sell?", answer: "We continuously review our marketing strategy and will discuss options with you, including price adjustments or enhanced marketing, to ensure the best possible outcome." }
-    ]}
-  />
-
+  <!-- CTA Section -->
+  <!-- {hasCta && (
+    <CTABanner
+      blockKey="cta"
+      pageContent={pageContent}
+      backgroundType={ctaImage?.url ? "image" : "none"}
+      backgroundSrc={ctaImage?.url}
+      primaryCtaText="Get Free Valuation"
+      primaryCtaLink="/valuation"
+      secondaryCtaText="Contact Us"
+      secondaryCtaLink="/contact"
+    />
+  )} -->
 </Layout>

@@ -96,10 +96,10 @@ $section-spacing-mobile: 56px;
 // ========================================
 
 .blog-stats {
-  padding: 0 24px 64px;
+  padding: 0 spacing.$spacing-5 spacing.$spacing-12;
 
-  @media (max-width: 768px) {
-    padding: 0 20px 48px;
+  @include md {
+    padding: 0 spacing.$spacing-6 spacing.$spacing-16;
   }
 }
 
@@ -107,18 +107,22 @@ $section-spacing-mobile: 56px;
   max-width: 800px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
+  grid-template-columns: 1fr;
+  gap: spacing.$spacing-5;
 
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
-    gap: 24px;
+  @include sm {
+    grid-template-columns: repeat(3, 1fr);
+    gap: spacing.$spacing-6;
+  }
+
+  @include md {
+    gap: spacing.$spacing-8;
   }
 }
 
 .stat-item {
   text-align: center;
-  padding: 32px 24px;
+  padding: spacing.$spacing-6 spacing.$spacing-5;
   background: colors.$color-bg-secondary;
   border-radius: effects.$radius-lg;
   transition: transform effects.$transition-base, box-shadow effects.$transition-base;
@@ -128,8 +132,8 @@ $section-spacing-mobile: 56px;
     box-shadow: effects.$shadow-card;
   }
 
-  @media (max-width: 768px) {
-    padding: 24px 20px;
+  @include md {
+    padding: spacing.$spacing-8 spacing.$spacing-6;
   }
 }
 
@@ -247,21 +251,21 @@ $section-spacing-mobile: 56px;
 
 .blog-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: 1fr;
+  gap: spacing.$spacing-5;
 
   &--featured {
     max-width: 1000px;
     margin: 0 auto;
   }
 
-  @media (max-width: 1024px) {
+  @include sm {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
-    gap: 20px;
+  @include lg {
+    grid-template-columns: repeat(3, 1fr);
+    gap: spacing.$spacing-6;
   }
 }
 
@@ -271,7 +275,11 @@ $section-spacing-mobile: 56px;
 
 .empty-state {
   text-align: center;
-  padding: 64px 24px;
+  padding: spacing.$spacing-12 spacing.$spacing-5;
+
+  @include md {
+    padding: spacing.$spacing-16 spacing.$spacing-6;
+  }
 }
 
 .empty-state__icon {
@@ -312,13 +320,21 @@ $section-spacing-mobile: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  margin-top: 64px;
-  padding-top: 32px;
+  gap: spacing.$spacing-4;
+  margin-top: spacing.$spacing-12;
+  padding-top: spacing.$spacing-8;
   border-top: 1px solid colors.$color-border-light;
+
+  @include sm {
+    gap: spacing.$spacing-4;
+  }
 
   @media (max-width: 640px) {
     flex-wrap: wrap;
+  }
+
+  @include md {
+    margin-top: spacing.$spacing-16;
   }
 }
 
@@ -387,11 +403,11 @@ $section-spacing-mobile: 56px;
 // ========================================
 
 .blog-cta {
-  padding: $section-spacing 24px;
+  padding: $section-spacing-mobile spacing.$spacing-5;
   background: colors.$color-bg-secondary;
 
-  @media (max-width: 768px) {
-    padding: $section-spacing-mobile 20px;
+  @include md {
+    padding: $section-spacing spacing.$spacing-6;
   }
 }
 

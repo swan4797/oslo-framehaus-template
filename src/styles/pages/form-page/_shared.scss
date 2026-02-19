@@ -92,7 +92,7 @@ $form-input-border-hover: colors.$color-border-medium;
 @mixin form-header-subtitle {
   font-family: typography.$font-family-base;
   font-size: typography.$font-size-base;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   margin: 0;
   line-height: typography.$line-height-relaxed;
 }
@@ -279,7 +279,7 @@ $form-input-border-hover: colors.$color-border-medium;
 @mixin form-checkbox-label {
   font-family: typography.$font-family-base;
   font-size: 0.9375rem;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   line-height: typography.$line-height-base;
   cursor: pointer;
   user-select: none;
@@ -354,7 +354,7 @@ $form-input-border-hover: colors.$color-border-medium;
   margin: 0;
 
   a {
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
     text-decoration: underline;
     transition: color $form-transition-fast;
 
@@ -440,7 +440,7 @@ $form-input-border-hover: colors.$color-border-medium;
 @mixin contact-alternative-text {
   font-family: typography.$font-family-base;
   font-size: 0.9375rem;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   margin: 0;
   line-height: typography.$line-height-relaxed;
 

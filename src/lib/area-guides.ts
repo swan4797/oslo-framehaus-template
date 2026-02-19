@@ -27,6 +27,7 @@ export interface AreaSection {
   title: string
   content: string // Rich text HTML
   image: ImageContent | null
+  items?: string[] // List items (amenities, schools, transport links)
 }
 
 /**

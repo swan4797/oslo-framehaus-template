@@ -449,7 +449,7 @@
   &__price-suffix {
     font-size: typography.$font-size-sm;
     font-weight: typography.$font-weight-medium;
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
   }
 
   // Address
@@ -470,7 +470,7 @@
   &__type {
     font-size: typography.$font-size-sm;
     font-weight: typography.$font-weight-medium;
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
     margin: 0;
   }
 
@@ -490,7 +490,7 @@
     gap: spacing.$spacing-2;
     font-size: typography.$font-size-sm;
     font-weight: typography.$font-weight-medium;
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
 
     svg {
       width: 16px;
@@ -502,7 +502,7 @@
   // Summary
   &__summary {
     font-size: typography.$font-size-sm;
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
     line-height: typography.$line-height-relaxed;
     margin: 0;
     @include line-clamp(2);
@@ -596,7 +596,7 @@
 
   &__subtitle {
     font-size: typography.$font-size-base;
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
     line-height: typography.$line-height-relaxed;
 
     @include md {
@@ -671,7 +671,7 @@
 
   &__item-desc {
     font-size: typography.$font-size-sm;
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
     line-height: typography.$line-height-relaxed;
   }
 }
@@ -734,7 +734,7 @@
 
   &__stat-label {
     font-size: typography.$font-size-sm;
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
   }
 
   &__link {

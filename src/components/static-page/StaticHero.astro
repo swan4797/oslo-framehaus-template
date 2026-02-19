@@ -70,9 +70,7 @@ const overlayClass = `static-hero__overlay static-hero__overlay--${overlayOpacit
       )}
 
       {description && (
-        <p class="static-hero__description">
-          {description}
-        </p>
+        <div class="static-hero__description" set:html={description} />
       )}
 
       {brandName && (

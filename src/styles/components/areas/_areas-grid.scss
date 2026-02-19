@@ -20,11 +20,15 @@
 
   &__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: clamp(24px, 4vw, 32px);
+    grid-template-columns: 1fr;
+    gap: clamp(20px, 4vw, 32px);
 
-    @media (max-width: 420px) {
-      grid-template-columns: 1fr;
+    @media (min-width: 640px) {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     }
   }
 

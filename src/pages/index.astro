@@ -15,7 +15,7 @@ import IntroSection from '../components/static-page/layouts/IntroSection.astro'
 import PropertyGridSlider from '../components/properties/grids/PropertyGridSlider.astro'
 import ReviewCarousel from '../components/reviews/ReviewCarousel.astro'
 import { siteConfig } from '../lib/config'
-import PropertyGrid from '../components/properties/grids/PropertyGrid.astro'           
+import PropertyGrid from '../components/properties/grids/PropertyGrid.astro'
 
 // Brand utilities
 import {
@@ -30,6 +30,7 @@ import {
   getSectionTitle,
   getSectionContent,
   getSectionImage,
+  getHeroImage,
   hasSection,
 } from '../lib/pages'
 
@@ -38,29 +39,52 @@ const brand = await fetchBrandSettings(true)
 const contact = getContactInfo(brand)
 
 // Fetch homepage content from Stratos CRM
-const pageContent = await getPageContent('homepage')
+const pageContent = await getPageContent('elliot-and-co')
+
+// Get hero image from CMS
+const heroImage = getHeroImage(pageContent)
 
 // ========================================
-// SPECIFIC SECTION BLOCK KEYS
-// These match the block_keys from Stratos CRM
+// CMS SECTION DATA
 // ========================================
 
 // Featured Properties section (block_key: featured_properties)
 const featuredTitle = getSectionTitle(pageContent, 'featured_properties', 'Featured Properties')
 const featuredContent = getSectionContent(pageContent, 'featured_properties', '<p>Discover our handpicked selection of premium properties.</p>')
+const featuredImage = getSectionImage(pageContent, 'featured_properties')
 
 // Why Choose Us section (block_key: why_choose_us)
 const whyChooseTitle = getSectionTitle(pageContent, 'why_choose_us', 'Why Choose Us')
 const whyChooseContent = getSectionContent(pageContent, 'why_choose_us', '')
+const whyChooseImage = getSectionImage(pageContent, 'why_choose_us')
+
+// Services section (block_key: services)
+const servicesTitle = getSectionTitle(pageContent, 'services', '')
+const servicesContent = getSectionContent(pageContent, 'services', '')
+const servicesImage = getSectionImage(pageContent, 'services')
 
 // Testimonials section (block_key: testimonials)
 const testimonialsTitle = getSectionTitle(pageContent, 'testimonials', 'What Our Clients Say')
 const testimonialsContent = getSectionContent(pageContent, 'testimonials', '')
+const testimonialsImage = getSectionImage(pageContent, 'testimonials')
+
+// Areas section (block_key: areas)
+const areasTitle = getSectionTitle(pageContent, 'areas', '')
+const areasContent = getSectionContent(pageContent, 'areas', '')
+const areasImage = getSectionImage(pageContent, 'areas')
+
+// CTA section (block_key: cta)
+const ctaTitle = getSectionTitle(pageContent, 'cta', '')
+const ctaContent = getSectionContent(pageContent, 'cta', '')
+const ctaImage = getSectionImage(pageContent, 'cta')
 
 // Check which sections exist in CRM
 const hasFeaturedSection = hasSection(pageContent, 'featured_properties')
 const hasWhyChooseSection = hasSection(pageContent, 'why_choose_us')
+const hasServicesSection = hasSection(pageContent, 'services')
 const hasTestimonialsSection = hasSection(pageContent, 'testimonials')
+const hasAreasSection = hasSection(pageContent, 'areas')
+const hasCtaSection = hasSection(pageContent, 'cta')
 
 // ========================================
 // REVIEWS DATA
@@ -136,31 +160,31 @@ const reviews = [
 <Layout>
   <!-- Hero Section -->
   <Hero
-    headline={brand.tagline || "A Sprawling Coastal Escape"}
-    description={brand.mission_statement || "Discover exceptional properties with personalized service from our experienced local team."}
+    headline={pageContent?.page_title || brand.tagline || "A Sprawling Coastal Escape"}
+    description={pageContent?.content || brand.mission_statement || "Discover exceptional properties with personalized service from our experienced local team."}
     ctaText="Start your search"
     ctaLink="/search"
     backgroundType="image"
-    backgroundSrc="https://images.pexels.com/photos/3614082/pexels-photo-3614082.jpeg"
+    backgroundSrc={heroImage?.url || "https://images.pexels.com/photos/3614082/pexels-photo-3614082.jpeg"}
     overlayOpacity="medium"
   />
 
-  <IntroSection                                                                         
-    subtitle="OUR PURPOSE"                                                              
-    title="Connecting Technology with Agriculture"                                      
-    description="Our goal is to support farmers..."                                     
-    ctaText="Learn More"                                                                
-    ctaLink="/about"                                                                    
-    featuredMediaSrc="https://videos.pexels.com/video-files/3253079/3253079-uhd_2560_1440_25fps.mp4"                                    
-    featuredMediaType="video"    
-    videoAutoplay={true}                                                       
-    stats={[                                                                            
-      { value: "75%", label: "Of users report improved decision-making", variant:       
-  "accent" },                                                                           
-      { value: "250+", label: "Successful field implementations", variant: "light" },   
-      { value: "Expert-Led", label: "Solutions developed with specialists", variant:    
-  "image", imageSrc: "/image.jpg" }                                                     
-    ]}                                                                                  
+  <IntroSection
+    subtitle="OUR PURPOSE"
+    title={whyChooseTitle || "Connecting Technology with Agriculture"}
+    description={whyChooseContent || "Our goal is to support farmers..."}
+    ctaText="Learn More"
+    ctaLink="/about"
+    featuredMediaSrc={whyChooseImage?.url || "https://videos.pexels.com/video-files/3253079/3253079-uhd_2560_1440_25fps.mp4"}
+    featuredMediaType={whyChooseImage?.url ? "image" : "video"}
+    videoAutoplay={true}
+    stats={[
+      { value: "75%", label: "Of users report improved decision-making", variant:
+  "accent" },
+      { value: "250+", label: "Successful field implementations", variant: "light" },
+      { value: "Expert-Led", label: "Solutions developed with specialists", variant:
+  "image", imageSrc: "/image.jpg" }
+    ]}
   />
 
   <!-- Latest Properties - Uses filter props for automatic data fetching -->
@@ -178,14 +202,14 @@ const reviews = [
 
   <!-- Why Choose Us - Bento Layout -->
   <ServiceGrid
-    title="Why <em>Choose</em> Compatto"
+    title={servicesTitle || "Why <em>Choose</em> Compatto"}
     layout="bento"
     items={[
       {
         id: '1',
         title: 'End-to-End Solutions',
         description: 'We manage every aspect of your furnishing project, saving you time and resources.',
-        mediaSrc: 'https://images.pexels.com/photos/5644365/pexels-photo-5644365.jpeg',
+        mediaSrc: servicesImage?.url || 'https://images.pexels.com/photos/5644365/pexels-photo-5644365.jpeg',
         href: '#'
       },
       {
@@ -212,73 +236,42 @@ const reviews = [
         overlayOpacity: 'medium'
       },
     ]}
-  /> 
+  />
 
 
   <!-- Client Reviews -->
   <ReviewCarousel
     title={testimonialsTitle}
-    subtitle="Trusted by buyers, sellers, and landlords across London"
-    ctaText="Read All Reviews"
-    ctaLink="/reviews"
+    subtitle={testimonialsContent || "Trusted by buyers, sellers, and landlords across London"}
     reviews={reviews}
     variant="alt"
     showRating={true}
     showSource={true}
-  />  
+  />
 
-  <ContentBlock                                                                         
-    layout="faq"                                                                        
-    subtitle="FAQS"                                                                     
-    title="Frequently Asked Questions"                                                  
-    mediaSrc="https://images.pexels.com/photos/6782567/pexels-photo-6782567.jpeg?auto=compress&cs=tinysrgb&w=800"    
-    imagePosition="right"                                                                                                       
-    faqItems={[                                                                         
-      { question: "Question 1?", answer: "Answer 1" },                                  
-      { question: "Question 2?", answer: "Answer 2" },                                  
-    ]}                                                                                  
-  />   
-
-  <!-- Intro Section -->
-  <!-- <IntroSection
-    title="A well-designed home is a <em>work of art</em>"
-    description="An aesthetically storied compilation of elements that speak to your lifestyle and ideals, while honouring the organic structure of your space. Melanie Hay Design sets out to pull together your ever-evolving interior canvas and bring forth exquisite, enduring environments that welcome restoration, conversation, and celebration."
-    ctaText="Work Together"
-    ctaLink="/contact"
-    leftImageSrc="https://images.pexels.com/photos/6585598/pexels-photo-6585598.jpeg?auto=compress&cs=tinysrgb&w=800"
-    leftImageAlt="Cozy living room interior"
-    rightImageSrc="https://images.pexels.com/photos/6782567/pexels-photo-6782567.jpeg?auto=compress&cs=tinysrgb&w=800"
-    rightImageAlt="Modern kitchen with bar stools"
-    backgroundVariant="light"
-  /> -->
-
-  <!-- Content Blocks - Alternating Layout -->
-  <!-- <ContentBlock                                                              
-    title="<em>Our</em><strong> Services</strong>"                            
-    description="Your description text here..."                              
-    mediaSrc="https://images.pexels.com/photos/6585598/pexels-photo-6585598.jpeg?auto=compress&cs=tinysrgb&w=800"                         
-    secondaryMediaSrc="https://images.pexels.com/photos/6782567/pexels-photo-6782567.jpeg?auto=compress&cs=tinysrgb&w=800"              
-    imagePosition="right"                                                    
-    serviceItems={["New Build", "Large-Scale Renovation", "Interior Design"]}
-  /> -->
-<!-- 4-column featured sales -->                                                     
- <!-- <PropertyGrid                                                                        
- title="Featured Properties"                                                        
- columns={4}                                                                        
- limit={4}                                                                          
- listingType="sale"                                                                 
- listingStatus="available"                                                          
- />   -->
+  <ContentBlock
+    layout="faq"
+    subtitle="FAQS"
+    title={areasTitle || "Frequently Asked Questions"}
+    mediaSrc={areasImage?.url || "https://images.pexels.com/photos/6782567/pexels-photo-6782567.jpeg?auto=compress&cs=tinysrgb&w=800"}
+    imagePosition="right"
+    faqItems={[
+      { question: "Question 1?", answer: "Answer 1" },
+      { question: "Question 2?", answer: "Answer 2" },
+    ]}
+  />
 
   <!-- CTA Banner -->
-  <!-- <CTABanner
-    title="Thinking of Selling or Letting?"
-    subtitle="Get an instant online valuation or book a free home visit with our local experts"
+  <CTABanner
+    title={ctaTitle || "Thinking of Selling or Letting?"}
+    subtitle={ctaContent || "Get an instant online valuation or book a free home visit with our local experts"}
+    backgroundType={ctaImage?.url ? "image" : "none"}
+    backgroundSrc={ctaImage?.url}
     primaryCtaText="Get Free Valuation"
     primaryCtaLink="/valuation"
     secondaryCtaText={contact.phone ? "Call Us" : ""}
     secondaryCtaLink={contact.phone ? `tel:${contact.phone}` : ""}
-  /> -->
+  />
 
 
 </Layout>

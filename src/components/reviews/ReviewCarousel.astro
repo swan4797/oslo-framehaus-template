@@ -168,7 +168,7 @@ const renderStars = (rating: number) => {
       <div class="rc__header">
         <div class="rc__title-group">
           {title && <h2 class="rc__title">{title}</h2>}
-          {subtitle && <p class="rc__subtitle">{subtitle}</p>}
+          {subtitle && <div class="rc__subtitle" set:html={subtitle} />}
         </div>
 
         <div class="rc__controls">

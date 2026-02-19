@@ -6,151 +6,106 @@
 // ========================================
 
 import Layout from '../layouts/Layout.astro'
-import Hero from '../components/Hero.astro'
 import StaticHero from '../components/static-page/StaticHero.astro'
 import StaticFullContent from '../components/static-page/StaticFullContent.astro'
-import IntroSection from '../components/static-page/layouts/IntroSection.astro'
 import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
 import CTABanner from '../components/static-page/layouts/CTABanner.astro'
 
 // Page content utilities
-import { getPageContent, hasSection } from '../lib/pages'
-
-const pageTitle = 'Renting a Property'
-const pageDescription = 'Find your perfect rental home with our expert help. Quality properties and excellent tenant support.'
+import {
+  getPageContent,
+  hasSection,
+  getSectionTitle,
+  getSectionContent,
+  getSectionImage,
+  getHeroImage,
+} from '../lib/pages'
 
 // Fetch tenants page content from Stratos CRM
 const pageContent = await getPageContent('tenants')
+
+// Get hero image from CMS or use fallback
+const heroImage = getHeroImage(pageContent)
+
+// Get page title from CMS
+const pageTitle = pageContent?.page_title || 'Renting a Property'
+const pageDescription = 'Find your perfect rental home with our expert help. Quality properties and excellent tenant support.'
+
+// Check which sections exist in CMS
+const hasHowToRent = hasSection(pageContent, 'how_to_rent')
+const hasWhatYouNeed = hasSection(pageContent, 'what_you_need')
+const hasTenantFaqs = hasSection(pageContent, 'tenant_faqs')
+const hasRegister = hasSection(pageContent, 'register')
+
+// Get section images
+const howToRentImage = getSectionImage(pageContent, 'how_to_rent')
+const whatYouNeedImage = getSectionImage(pageContent, 'what_you_need')
+const tenantFaqsImage = getSectionImage(pageContent, 'tenant_faqs')
+const registerImage = getSectionImage(pageContent, 'register')
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
   <!-- Static Hero Section -->
   <StaticHero
-    title="RENTING<br/>MADE SIMPLE"
-    description="Discover quality rental properties and enjoy excellent support throughout your tenancy. We make the process straightforward with clear information and a simple application process."
+    title={pageTitle}
+    description={pageContent?.content || ''}
     brandName="Tenant Services"
     backgroundType="image"
-    backgroundSrc="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1920&q=80"
+    backgroundSrc={heroImage?.url || howToRentImage?.url || "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1920&q=80"}
+    backgroundAlt={heroImage?.alt || howToRentImage?.alt || "Renting property"}
     categoryLabel="LETTINGS"
     overlayOpacity="light"
   />
 
-  <!-- Intro Section -->
-  <IntroSection
-    title="Your Rental Journey Starts Here"
-    subtitle="Tenant Services"
-    description="Looking for a rental property should be an exciting experience, not a stressful one. We make the process straightforward, with clear information about every property and a simple, transparent application process."
-    ctaText="Start searching"
-    ctaLink="/search?listing_type=let"
-    leftImageSrc="https://images.pexels.com/photos/1571459/pexels-photo-1571459.jpeg?auto=compress&cs=tinysrgb&w=800"
-    leftImageAlt="Cozy rental interior"
-    rightImageSrc="https://images.pexels.com/photos/2062426/pexels-photo-2062426.jpeg?auto=compress&cs=tinysrgb&w=800"
-    rightImageAlt="Modern rental property"
-  />
+  <!-- How To Rent Section -->
+  {hasHowToRent && (
+    <StaticFullContent
+      blockKey="how_to_rent"
+      pageContent={pageContent}
+      imageSrc={howToRentImage?.url}
+      imageAlt={howToRentImage?.alt}
+    />
+  )}
 
-  <!-- Static Full Content Section -->
-  <StaticFullContent
-    blockKey="tenant_experience"
-    pageContent={pageContent}
-    subtitle="Your Experience"
-    titleAccent="Making"
-    titleMain="RENTING SIMPLE"
-    leadText="Finding your next home should be exciting, not stressful. We streamline the rental process so you can focus on what matters – finding the perfect place to call home."
-    contentBlocks={[
-      {
-        heading: "Quality Properties",
-        text: "Every property on our books meets strict standards. We conduct regular inspections and only work with responsible landlords who maintain their properties to a high standard."
-      },
-      {
-        heading: "Transparent Process",
-        text: "No hidden fees, no surprises. We explain all costs upfront and guide you through each step of the application process with clear, honest communication."
-      },
-      {
-        heading: "Ongoing Support",
-        text: "Our relationship doesn't end when you move in. We're here throughout your tenancy to handle maintenance requests, answer questions, and ensure you're happy in your home."
-      }
-    ]}
-    imageSrc="https://images.pexels.com/photos/1571459/pexels-photo-1571459.jpeg?auto=compress&cs=tinysrgb&w=1200"
-    imageAlt="Cozy rental living space"
-  />
+  <!-- What You Need Section -->
+  {hasWhatYouNeed && (
+    <ContentBlock
+      blockKey="what_you_need"
+      pageContent={pageContent}
+      mediaSrc={whatYouNeedImage?.url}
+      mediaAlt={whatYouNeedImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/584399/living-room-couch-interior-room-584399.jpeg"
+      secondaryMediaAlt="Cozy living room"
+      layout="default"
+      imagePosition="right"
+    />
+  )}
 
-  <!-- Content Blocks - Alternating Layout -->
-  <ContentBlock
-    blockKey="how_to_rent"
-    pageContent={pageContent}
-    mediaSrc="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1200&q=80"
-    mediaAlt="How to rent"
-    secondaryMediaSrc="https://images.pexels.com/photos/1571452/pexels-photo-1571452.jpeg?auto=compress&cs=tinysrgb&w=800"
-    secondaryMediaAlt="Rental viewing"
-    title="How To Rent"
-    subtitle="Simple Process"
-    description="Looking for a rental property should be an exciting experience, not a stressful one. We make the process straightforward, with clear information about every property and a simple, transparent application process."
-    ctaText="Start searching"
-    ctaLink="/search?listing_type=let"
-    imagePosition="right"
-    overlayStrength="light"
-    serviceItems={["Browse Properties", "Schedule Viewings", "Easy Application"]}
-  />
+  <!-- Tenant FAQs Section -->
+  {hasTenantFaqs && (
+    <ContentBlock
+      blockKey="tenant_faqs"
+      pageContent={pageContent}
+      mediaSrc={tenantFaqsImage?.url}
+      mediaAlt={tenantFaqsImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/4857772/pexels-photo-4857772.jpeg"
+      secondaryMediaAlt="Property exterior"
+      layout="default"
+      imagePosition="left"
+    />
+  )}
 
-  <ContentBlock
-    blockKey="what_you_need"
-    pageContent={pageContent}
-    mediaSrc="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=80"
-    mediaAlt="What you need"
-    secondaryMediaSrc="https://images.pexels.com/photos/1571461/pexels-photo-1571461.jpeg?auto=compress&cs=tinysrgb&w=800"
-    secondaryMediaAlt="Rental preparation"
-    title="What You'll Need"
-    subtitle="Be Prepared"
-    description="Verified, quality properties. Flexible viewing times. Clear, upfront costs. Fast application processing. Dedicated tenant support. 24/7 emergency contact. All our rental properties meet high standards."
-    ctaText="Learn more"
-    ctaLink="/contact"
-    imagePosition="left"
-    overlayStrength="light"
-    serviceItems={["ID Verification", "References", "Deposit Payment"]}
-  />
-
-  <!-- CTA Banner -->
-  <!-- <CTABanner
-    title="Ready to Find Your Rental?"
-    subtitle="Browse our available properties or register with us to be notified when new rentals matching your criteria become available."
-    primaryCtaText="View Rentals"
-    primaryCtaLink="/search?listing_type=let"
-    secondaryCtaText="Register Interest"
-    secondaryCtaLink="/contact"
-  />
-   -->
-  <ContentBlock
-    blockKey="tenant_support"
-    pageContent={pageContent}
-    mediaSrc="https://images.pexels.com/photos/1571461/pexels-photo-1571461.jpeg?auto=compress&cs=tinysrgb&w=800"
-    mediaAlt="Tenant support"
-    secondaryMediaSrc="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=80"
-    secondaryMediaAlt="Tenant support team"
-    title="Dedicated Support"
-    subtitle="We're Here For You"
-    description="Once you've found your home, our dedicated team is here to support you throughout your tenancy, responding quickly to any queries or maintenance issues. We've streamlined the rental process to get you into your new home as quickly as possible."
-    ctaText="Contact us"
-    ctaLink="/contact"
-    imagePosition="right"
-    overlayStrength="light"
-    serviceItems={["Quick Response", "Maintenance Support", "24/7 Emergency"]}
-  />
-
-  <!-- FAQ Section -->
-  <ContentBlock
-    blockKey="tenant_faqs"
-    pageContent={pageContent}
-    layout="faq"
-    mediaSrc="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800"
-    mediaAlt="Rental support team"
-    title="Frequently Asked Questions"
-    subtitle="FAQS"
-    imagePosition="left"
-    faqItems={[
-      { question: "What documents do I need to apply for a rental?", answer: "You'll typically need photo ID (passport or driving licence), proof of income (payslips or employment contract), bank statements, and references from previous landlords if applicable." },
-      { question: "How much deposit is required?", answer: "Most properties require a deposit equivalent to 5 weeks' rent (capped by law). This is protected in a government-approved tenancy deposit scheme throughout your tenancy." },
-      { question: "How do I report maintenance issues?", answer: "You can report maintenance issues through our online portal, by phone, or email. Emergency issues are handled 24/7, while non-urgent repairs are typically addressed within 48 hours." },
-      { question: "Can I end my tenancy early?", answer: "Early termination depends on your tenancy agreement terms. Contact us to discuss your options – we may be able to help find a replacement tenant or negotiate with your landlord." }
-    ]}
-  />
+  <!-- Register Section -->
+  {hasRegister && (
+    <CTABanner
+      blockKey="register"
+      pageContent={pageContent}
+      backgroundType={registerImage?.url ? "image" : "none"}
+      backgroundSrc={registerImage?.url}
+      primaryCtaText="View Rentals"
+      primaryCtaLink="/search?listing_type=let"
+      secondaryCtaText="Register Interest"
+      secondaryCtaLink="/contact"
+    />
+  )}
 </Layout>

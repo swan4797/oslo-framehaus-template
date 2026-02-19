@@ -60,7 +60,7 @@
 
 .search-results-header__count-text {
   font-size: 1rem;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   font-weight: 400;
 
   @include mobile-only {

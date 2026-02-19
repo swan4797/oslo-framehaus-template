@@ -234,7 +234,7 @@
   font-size: clamp(0.875rem, 1.5vw, 1rem);
   font-weight: $font-weight-regular;
   line-height: 1.7;
-  color: $text-secondary;
+  color: colors.$color-text-primary;
   margin-bottom: $spacing-6;
 
   @include md {
@@ -396,7 +396,7 @@
   margin-bottom: $spacing-6;
 
   svg {
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
   }
 
   span {
@@ -404,7 +404,7 @@
     font-weight: $font-weight-medium;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
   }
 
   @include md {
@@ -477,7 +477,7 @@
 // FAQ Icon (plus/minus)
 .content-block__faq-icon {
   flex-shrink: 0;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   transition: transform 0.3s ease;
 
   path:last-child {
@@ -496,7 +496,7 @@
     font-size: $font-size-sm;
     font-weight: $font-weight-regular;
     line-height: 1.7;
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
     margin: 0;
     padding-bottom: $spacing-5;
 

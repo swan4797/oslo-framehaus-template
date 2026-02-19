@@ -9,6 +9,12 @@
 // RESPONSIVE BREAKPOINTS
 // ----------------------------------------
 
+@mixin xs {
+  @media (min-width: $breakpoint-xs) {
+    @content;
+  }
+}
+
 @mixin sm {
   @media (min-width: $breakpoint-sm) {
     @content;

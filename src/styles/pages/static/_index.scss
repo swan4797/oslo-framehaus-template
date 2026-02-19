@@ -108,7 +108,7 @@ $card-amber-bg: #FFF8E1;
 
 .hero__tagline {
   font-size: typography.$font-size-lg;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   line-height: typography.$line-height-relaxed;
   margin: 0 0 spacing.$spacing-6 0;
   max-width: 360px;
@@ -262,7 +262,7 @@ $card-amber-bg: #FFF8E1;
 
 .showcase__card-text {
   font-size: typography.$font-size-base;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   line-height: typography.$line-height-relaxed;
   margin: 0 0 spacing.$spacing-6 0;
   max-width: 400px;
@@ -543,7 +543,7 @@ $card-amber-bg: #FFF8E1;
 
 .content__text {
   font-size: typography.$font-size-lg;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   line-height: typography.$line-height-relaxed;
   margin: 0 0 spacing.$spacing-5 0;
 
@@ -662,7 +662,7 @@ $card-amber-bg: #FFF8E1;
 
 .content__highlight-label {
   font-size: typography.$font-size-sm;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   font-weight: typography.$font-weight-medium;
 }
 

@@ -45,6 +45,14 @@
 
 .branches-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: clamp(20px, 3vw, 30px);
+  grid-template-columns: 1fr;
+  gap: clamp(16px, 3vw, 30px);
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  }
 }

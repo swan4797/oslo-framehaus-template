@@ -6,139 +6,106 @@
 // ========================================
 
 import Layout from '../layouts/Layout.astro'
-import Hero from '../components/Hero.astro'
 import StaticHero from '../components/static-page/StaticHero.astro'
 import StaticFullContent from '../components/static-page/StaticFullContent.astro'
-import IntroSection from '../components/static-page/layouts/IntroSection.astro'
 import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
 import CTABanner from '../components/static-page/layouts/CTABanner.astro'
 
 // Page content utilities
-import { getPageContent, hasSection } from '../lib/pages'
-
-const pageTitle = 'Buying a Property'
-const pageDescription = 'Find your perfect home with our expert guidance. We make buying a property simple and stress-free.'
+import {
+  getPageContent,
+  hasSection,
+  getSectionTitle,
+  getSectionContent,
+  getSectionImage,
+  getHeroImage,
+} from '../lib/pages'
 
 // Fetch buyers page content from Stratos CRM
 const pageContent = await getPageContent('buyers')
+
+// Get hero image from CMS or use fallback
+const heroImage = getHeroImage(pageContent)
+
+// Get page title from CMS
+const pageTitle = pageContent?.page_title || 'Buying a Property'
+const pageDescription = 'Find your perfect home with our expert guidance. We make buying a property simple and stress-free.'
+
+// Check which sections exist in CMS
+const hasWhyChoose = hasSection(pageContent, 'why_choose_us')
+const hasAreasExpertise = hasSection(pageContent, 'areas_of_expertise')
+const hasGettingStarted = hasSection(pageContent, 'getting_started')
+const hasCta = hasSection(pageContent, 'cta')
+
+// Get section images
+const whyChooseImage = getSectionImage(pageContent, 'why_choose_us')
+const areasExpertiseImage = getSectionImage(pageContent, 'areas_of_expertise')
+const gettingStartedImage = getSectionImage(pageContent, 'getting_started')
+const ctaImage = getSectionImage(pageContent, 'cta')
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
   <!-- Static Hero Section -->
   <StaticHero
-    title="BUYING<br/>YOUR DREAM HOME"
-    description="We make buying a property simple and stress-free. Let our expert team guide you through every step of the process, from initial search to picking up the keys."
+    title={pageTitle}
+    description={pageContent?.content || ''}
     brandName="Buyer Services"
     backgroundType="image"
-    backgroundSrc="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80"
+    backgroundSrc={heroImage?.url || whyChooseImage?.url || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80"}
+    backgroundAlt={heroImage?.alt || whyChooseImage?.alt || "Buying property"}
     categoryLabel="SALES"
     overlayOpacity="light"
   />
 
-  <!-- Static Full Content Section -->
-  <StaticFullContent
-    blockKey="buyer_journey"
-    pageContent={pageContent}
-    subtitle="Your Journey"
-    titleAccent="Finding"
-    titleMain="YOUR PERFECT HOME"
-    leadText="Buying a property is one of life's biggest decisions. We're here to make the process as smooth and stress-free as possible, guiding you every step of the way."
-    contentBlocks={[
-      {
-        heading: "Understanding Your Needs",
-        text: "We start by getting to know you – your lifestyle, your must-haves, and your budget. This helps us identify properties that truly match what you're looking for."
-      },
-      {
-        heading: "Expert Market Knowledge",
-        text: "Our team knows the local market inside out. We can advise on property values, upcoming developments, and which areas offer the best investment potential."
-      },
-      {
-        heading: "Negotiation & Support",
-        text: "When you find the right property, we negotiate on your behalf to secure the best possible deal. We're with you through surveys, legals, and right up to completion."
-      }
-    ]}
-    imageSrc="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1200"
-    imageAlt="Beautiful home interior"
-  />
+  <!-- Why Choose Us Section -->
+  {hasWhyChoose && (
+    <StaticFullContent
+      blockKey="why_choose_us"
+      pageContent={pageContent}
+      imageSrc={whyChooseImage?.url}
+      imageAlt={whyChooseImage?.alt}
+    />
+  )}
 
-  <!-- FAQ Section -->
-  <ContentBlock
-    blockKey="buyer_faqs"
-    pageContent={pageContent}
-    layout="faq"
-    mediaSrc="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800"
-    mediaAlt="Buyer support team"
-    title="Frequently Asked Questions"
-    subtitle="FAQS"
-    imagePosition="left"
-    faqItems={[
-      { question: "How long does the buying process typically take?", answer: "The buying process typically takes 8-12 weeks from offer acceptance to completion, though this can vary depending on the chain and any legal complexities involved." },
-      { question: "What costs should I budget for when buying?", answer: "Beyond the property price, you should budget for stamp duty, solicitor fees (£1,000-£2,000), survey costs (£400-£1,500), and mortgage arrangement fees if applicable." },
-      { question: "Do I need a mortgage in principle before viewing?", answer: "While not essential for viewings, having a mortgage in principle shows sellers you're a serious buyer and can speed up the process once you find the right property." },
-      { question: "What happens after my offer is accepted?", answer: "Once accepted, you'll instruct a solicitor, arrange a survey, and your solicitor will handle searches and contract negotiations. We'll guide you through each step." }
-    ]}
-  />
+  <!-- Areas of Expertise Section -->
+  {hasAreasExpertise && (
+    <ContentBlock
+      blockKey="areas_of_expertise"
+      pageContent={pageContent}
+      mediaSrc={areasExpertiseImage?.url}
+      mediaAlt={areasExpertiseImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/4857772/pexels-photo-4857772.jpeg"
+      secondaryMediaAlt="Property exterior"
+      layout="default"
+      imagePosition="right"
+    />
+  )}
 
-  <!-- Content Blocks - Alternating Layout -->
-  <!-- <ContentBlock
-    blockKey="buyer_services"
-    pageContent={pageContent}
-    mediaSrc="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80"
-    mediaAlt="Buyer services"
-    secondaryMediaSrc="https://images.pexels.com/photos/1571468/pexels-photo-1571468.jpeg?auto=compress&cs=tinysrgb&w=800"
-    secondaryMediaAlt="Home interior detail"
-    title="Expert Buyer Support"
-    subtitle="Your Journey"
-    description="Whether you're a first-time buyer or looking to move up the ladder, we're here to help. Our team provides personalised guidance through every step of the buying process, from initial search to picking up the keys."
-    ctaText="View properties"
-    ctaLink="/search?listing_type=sale"
-    imagePosition="right"
-    overlayStrength="light"
-    serviceItems={["Property Search", "Viewings & Guidance", "Offer Negotiation"]}
-  />
+  <!-- Getting Started Section -->
+  {hasGettingStarted && (
+    <ContentBlock
+      blockKey="getting_started"
+      pageContent={pageContent}
+      mediaSrc={gettingStartedImage?.url}
+      mediaAlt={gettingStartedImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/376531/pexels-photo-376531.jpeg"
+      secondaryMediaAlt="Home interior"
+      layout="default"
+      imagePosition="left"
+    />
+  )}
 
-  <ContentBlock
-    blockKey="buying_process"
-    pageContent={pageContent}
-    mediaSrc="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=1200&q=80"
-    mediaAlt="The buying process"
-    secondaryMediaSrc="https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=800"
-    secondaryMediaAlt="Property viewing"
-    title="The Buying Process"
-    subtitle="Made Simple"
-    description="We'll arrange viewings that suit your schedule, provide detailed information about each property, and guide you through making an offer. Our experienced negotiators work to get you the best deal."
-    ctaText="Book a viewing"
-    ctaLink="/contact"
-    imagePosition="left"
-    overlayStrength="light"
-    serviceItems={["Flexible Viewings", "Market Analysis", "Price Negotiation"]}
-  />
-
-  
-  CTA Banner
-  <CTABanner
-    title="Ready to Find Your Dream Home?"
-    subtitle="Browse our available properties or get in touch to discuss your requirements. Our team is ready to help you find the perfect property."
-    primaryCtaText="Search Properties"
-    primaryCtaLink="/search?listing_type=sale"
-    secondaryCtaText="Contact Us"
-    secondaryCtaLink="/contact"
-  />
-
-  <ContentBlock
-    blockKey="first_time_buyers"
-    pageContent={pageContent}
-    mediaSrc="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=80"
-    mediaAlt="First time buyers"
-    secondaryMediaSrc="https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=800"
-    secondaryMediaAlt="New home keys"
-    title="First-Time Buyers"
-    subtitle="We're Here to Help"
-    description="Buying your first home is exciting but can feel overwhelming. We specialise in helping first-time buyers navigate the process with clear advice, patience, and support every step of the way."
-    ctaText="Get started"
-    ctaLink="/contact"
-    imagePosition="right"
-    overlayStrength="light"
-    serviceItems={["Mortgage Guidance", "Step-by-Step Support", "Legal Assistance"]}
-  /> -->
+  <!-- CTA Section -->
+  {hasCta && (
+    <CTABanner
+      blockKey="cta"
+      pageContent={pageContent}
+      backgroundType={ctaImage?.url ? "image" : "none"}
+      backgroundSrc={ctaImage?.url}
+      primaryCtaText="Search Properties"
+      primaryCtaLink="/search?listing_type=sale"
+      secondaryCtaText="Contact Us"
+      secondaryCtaLink="/contact"
+    />
+  )}
 </Layout>

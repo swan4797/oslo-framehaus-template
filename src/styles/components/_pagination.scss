@@ -40,7 +40,7 @@
 
   &__info-text {
     font-size: 0.8125rem;
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
     font-weight: typography.$font-weight-regular;
 
     strong {
@@ -207,7 +207,7 @@
   &__mobile-info {
     display: block;
     font-size: 0.8125rem;
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
     font-weight: typography.$font-weight-medium;
 
     @include md {

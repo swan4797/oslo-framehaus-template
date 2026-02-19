@@ -137,7 +137,7 @@
   font-size: typography.$font-size-base;
   font-weight: typography.$font-weight-regular;
   line-height: typography.$line-height-relaxed;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   margin: 0;
 
   @include md {
@@ -462,7 +462,7 @@
 
   .service-grid__subtitle {
     font-size: clamp(0.8125rem, 1.2vw, 0.9375rem);
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
     line-height: 1.7;
     max-width: 500px;
     margin: 0 auto;
@@ -538,7 +538,7 @@
   font-size: clamp(0.8125rem, 1.2vw, 0.875rem);
   font-weight: typography.$font-weight-regular;
   line-height: 1.7;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   margin: 0 0 spacing.$space-6 0;
   max-width: 90%;
 
@@ -656,7 +656,7 @@
     }
 
     .service-grid__bento-card-description {
-      color: colors.$color-text-secondary;
+      color: colors.$color-text-primary;
     }
   }
 

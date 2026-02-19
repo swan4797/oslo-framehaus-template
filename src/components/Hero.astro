@@ -87,9 +87,7 @@ const overlayClass = `hero__overlay hero__overlay--${overlayOpacity}`
     </div>
     <div class="hero__content-right">
       {description && (
-        <p class="hero__description">
-          {description}
-        </p>
+        <div class="hero__description" set:html={description} />
       )}
       {ctaText && ctaLink && (
         <a href={ctaLink} class="hero__cta">

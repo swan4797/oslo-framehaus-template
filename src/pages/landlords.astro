@@ -6,142 +6,106 @@
 // ========================================
 
 import Layout from '../layouts/Layout.astro'
-import Hero from '../components/Hero.astro'
 import StaticHero from '../components/static-page/StaticHero.astro'
 import StaticFullContent from '../components/static-page/StaticFullContent.astro'
-import IntroSection from '../components/static-page/layouts/IntroSection.astro'
 import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
 import CTABanner from '../components/static-page/layouts/CTABanner.astro'
 
 // Page content utilities
-import { getPageContent, hasSection } from '../lib/pages'
-
-const pageTitle = 'Landlord Services'
-const pageDescription = 'Professional letting and property management services for landlords. Maximise your rental income with expert support.'
+import {
+  getPageContent,
+  hasSection,
+  getSectionTitle,
+  getSectionContent,
+  getSectionImage,
+  getHeroImage,
+} from '../lib/pages'
 
 // Fetch landlords page content from Stratos CRM
 const pageContent = await getPageContent('landlords')
+
+// Get hero image from CMS or use fallback
+const heroImage = getHeroImage(pageContent)
+
+// Get page title from CMS
+const pageTitle = pageContent?.page_title || 'Landlord Services'
+const pageDescription = 'Professional letting and property management services for landlords. Maximise your rental income with expert support.'
+
+// Check which sections exist in CMS
+const hasServices = hasSection(pageContent, 'services')
+const hasWhyLetWithUs = hasSection(pageContent, 'why_let_with_us')
+const hasCompliance = hasSection(pageContent, 'compliance')
+const hasCta = hasSection(pageContent, 'cta')
+
+// Get section images
+const servicesImage = getSectionImage(pageContent, 'services')
+const whyLetWithUsImage = getSectionImage(pageContent, 'why_let_with_us')
+const complianceImage = getSectionImage(pageContent, 'compliance')
+const ctaImage = getSectionImage(pageContent, 'cta')
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
   <!-- Static Hero Section -->
   <StaticHero
-    title="LANDLORD<br/>SERVICES"
-    description="From finding quality tenants to full property management, we take the stress out of being a landlord. Maximise your rental income with our expert support."
+    title={pageTitle}
+    description={pageContent?.content || ''}
     brandName="Property Management"
     backgroundType="image"
-    backgroundSrc="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=80"
+    backgroundSrc={heroImage?.url || servicesImage?.url || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=80"}
+    backgroundAlt={heroImage?.alt || servicesImage?.alt || "Landlord services"}
     categoryLabel="MANAGEMENT"
     overlayOpacity="light"
   />
 
-  <!-- Static Full Content Section -->
-  <StaticFullContent
-    blockKey="landlord_partnership"
-    pageContent={pageContent}
-    subtitle="Your Partnership"
-    titleAccent="Protecting"
-    titleMain="YOUR INVESTMENT"
-    leadText="Your rental property is a valuable asset. We provide comprehensive letting and management services designed to maximise your returns while minimising the hassle."
-    contentBlocks={[
-      {
-        heading: "Rigorous Tenant Vetting",
-        text: "We conduct thorough referencing on every applicant – credit checks, employment verification, and previous landlord references. Only quality tenants make it through our screening process."
-      },
-      {
-        heading: "Proactive Management",
-        text: "From routine inspections to emergency repairs, we handle everything. Our proactive approach helps prevent small issues becoming costly problems."
-      },
-      {
-        heading: "Full Compliance",
-        text: "Landlord regulations are constantly evolving. We stay on top of all legal requirements – gas safety, EPCs, deposit protection – so you don't have to worry."
-      }
-    ]}
-    imageSrc="https://images.pexels.com/photos/1974596/pexels-photo-1974596.jpeg?auto=compress&cs=tinysrgb&w=1200"
-    imageAlt="Modern rental property"
-  />
+  <!-- Services Section -->
+  {hasServices && (
+    <StaticFullContent
+      blockKey="services"
+      pageContent={pageContent}
+      imageSrc={servicesImage?.url}
+      imageAlt={servicesImage?.alt}
+    />
+  )}
 
-  <!-- FAQ Section -->
-  <ContentBlock
-    blockKey="landlord_faqs"
-    pageContent={pageContent}
-    layout="faq"
-    mediaSrc="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=800"
-    mediaAlt="Landlord consultation"
-    title="Frequently Asked Questions"
-    subtitle="FAQS"
-    imagePosition="right"
-    faqItems={[
-      { question: "What services do you offer landlords?", answer: "We offer three service levels: Tenant Find Only, Rent Collection, and Full Management. Each can be tailored to your specific needs, from basic tenant sourcing to complete hands-off property management." },
-      { question: "How do you find and vet tenants?", answer: "We conduct comprehensive referencing including credit checks, employment verification, previous landlord references, and right-to-rent checks to ensure you get reliable, quality tenants." },
-      { question: "What legal requirements do I need to meet?", answer: "Landlords must have valid Gas Safety certificates, EPC ratings, electrical safety reports, and comply with deposit protection rules. Our team ensures you meet all current legislation." },
-      { question: "How quickly can you find a tenant?", answer: "On average, we let properties within 14 days. We market across all major portals and our database of pre-qualified tenants, ensuring maximum exposure for your property." }
-    ]}
-  />
+  <!-- Why Let With Us Section -->
+  {hasWhyLetWithUs && (
+    <ContentBlock
+      blockKey="why_let_with_us"
+      pageContent={pageContent}
+      mediaSrc={whyLetWithUsImage?.url}
+      mediaAlt={whyLetWithUsImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/1648839/pexels-photo-1648839.jpeg"
+      secondaryMediaAlt="Modern property"
+      layout="default"
+      imagePosition="right"
+    />
+  )}
 
+  <!-- Compliance Section -->
+  {hasCompliance && (
+    <ContentBlock
+      blockKey="compliance"
+      pageContent={pageContent}
+      mediaSrc={complianceImage?.url}
+      mediaAlt={complianceImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/2082087/pexels-photo-2082087.jpeg"
+      secondaryMediaAlt="Property interior"
+      layout="default"
+      imagePosition="left"
+    />
+  )}
 
-  <!-- Content Blocks - Alternating Layout -->
-  <!-- <ContentBlock
-    blockKey="services"
-    pageContent={pageContent}
-    mediaSrc="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80"
-    mediaAlt="Our landlord services"
-    secondaryMediaSrc="https://images.pexels.com/photos/1571453/pexels-photo-1571453.jpeg?auto=compress&cs=tinysrgb&w=800"
-    secondaryMediaAlt="Property management"
-    title="Our Landlord Services"
-    subtitle="Complete Solutions"
-    description="Whether you own one property or a portfolio, we understand that your rental income matters. Our letting services are designed to minimise void periods, find reliable tenants, and ensure your property is well-maintained."
-    ctaText="Learn more"
-    ctaLink="/contact"
-    imagePosition="left"
-    overlayStrength="light"
-    serviceItems={["Tenant Finding", "Rent Collection", "Full Management"]}
-  />
-
-
-  <ContentBlock
-    blockKey="why_let_with_us"
-    pageContent={pageContent}
-    mediaSrc="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=1200&q=80"
-    mediaAlt="Why let with us"
-    secondaryMediaSrc="https://images.pexels.com/photos/2079249/pexels-photo-2079249.jpeg?auto=compress&cs=tinysrgb&w=800"
-    secondaryMediaAlt="Property inspection"
-    title="Why Let With Us"
-    subtitle="Your Investment Protected"
-    description="Tenant find service, rent collection, full property management, inventory and check-in/out, maintenance coordination, and legal compliance management. We offer a range of services so you can choose the level of support that works best for you."
-    ctaText="View packages"
-    ctaLink="/contact"
-    imagePosition="right"
-    overlayStrength="light"
-    textBackground="var(--color-bg-tertiary)"
-    serviceItems={["Inventory Management", "Maintenance Support", "Legal Compliance"]}
-  /> -->
-
-  <!-- CTA Banner -->
-  <!-- <CTABanner
-    title="Ready to Let Your Property?"
-    subtitle="Get a free rental valuation and find out how we can help you maximise your rental income while minimising the hassle."
-    primaryCtaText="Request Valuation"
-    primaryCtaLink="/valuation"
-    secondaryCtaText="Contact Us"
-    secondaryCtaLink="/contact"
-  />
-
-  <ContentBlock
-    blockKey="compliance"
-    pageContent={pageContent}
-    mediaSrc="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=1200&q=80"
-    mediaAlt="Compliance and safety"
-    secondaryMediaSrc="https://images.pexels.com/photos/3935350/pexels-photo-3935350.jpeg?auto=compress&cs=tinysrgb&w=800"
-    secondaryMediaAlt="Property compliance check"
-    title="Compliance & Safety"
-    subtitle="Peace of Mind"
-    description="14 days average time to let, 99% rent collection rate, and over 200 properties managed. We stay up-to-date with all the latest legislation and compliance requirements, so you can have peace of mind."
-    ctaText="Get started"
-    ctaLink="/contact"
-    imagePosition="left"
-    overlayStrength="light"
-    serviceItems={["14 Days to Let", "99% Rent Collection", "200+ Properties"]}
-  /> -->
-
+  <!-- CTA Section -->
+  {hasCta && (
+    <CTABanner
+      blockKey="cta"
+      pageContent={pageContent}
+      backgroundType={ctaImage?.url ? "image" : "none"}
+      backgroundSrc={ctaImage?.url}
+      primaryCtaText="Request Valuation"
+      primaryCtaLink="/valuation"
+      secondaryCtaText="Contact Us"
+      secondaryCtaLink="/contact"
+    />
+  )}
 </Layout>

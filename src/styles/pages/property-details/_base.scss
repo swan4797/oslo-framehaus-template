@@ -16,40 +16,71 @@
 .property-topbar {
   background: colors.$color-bg-secondary;
   border-bottom: 1px solid colors.$color-border-light;
-  margin-top: 1em;
-  padding: 1em 0 0;
-  border-radius: 20px;
-  box-shadow: 0 6px 15px rgba(0.5, 0.5, 0.5, 0.10)
+  margin: spacing.$spacing-3;
+  padding: spacing.$spacing-3 0;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  max-width: 100%;
+
+  @include sm {
+    margin: spacing.$spacing-4;
+    padding: spacing.$spacing-4 0;
+    border-radius: 20px;
+  }
+
+  @include md {
+    margin: spacing.$spacing-5 auto;
+    max-width: 95%;
+    padding: spacing.$spacing-5 0 0;
+  }
 }
 
 .property-topbar__container {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: spacing.$spacing-4;
-  max-width: 95%;
-  margin: 0 auto;
-  padding: spacing.$spacing-4 spacing.$spacing-6;
+  flex-direction: column;
+  gap: spacing.$spacing-3;
+  padding: spacing.$spacing-3;
+  max-width: 100%;
+  overflow: hidden;
+
+  @include sm {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: spacing.$spacing-4;
+    padding: spacing.$spacing-4;
+  }
+
+  @include md {
+    padding: spacing.$spacing-4 spacing.$spacing-6;
+  }
 
   @include lg {
-    padding: spacing.$spacing-5 0;
+    padding: spacing.$spacing-5 spacing.$spacing-6;
   }
 }
 
 .property-topbar__left {
   display: flex;
   align-items: center;
-  gap: spacing.$spacing-4;
+  gap: spacing.$spacing-3;
   min-width: 0;
   flex: 1;
+  max-width: 100%;
+  overflow: hidden;
+
+  @include sm {
+    gap: spacing.$spacing-4;
+  }
 }
 
 .property-topbar__back {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
   border-radius: 50%;
   background: colors.$color-bg-tertiary;
   color: colors.$color-text-primary;
@@ -62,40 +93,60 @@
   }
 
   svg {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  @include sm {
+    width: 2.5rem;
+    height: 2.5rem;
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
   }
 }
 
 .property-topbar__info {
   min-width: 0;
   flex: 1;
+  overflow: hidden;
 }
 
 .property-topbar__title {
   font-family: typography.$font-family-heading;
-  font-size: 1.125rem;
+  font-size: 0.9375rem;
   font-weight: typography.$font-weight-semibold;
   color: colors.$color-text-primary;
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 100%;
+
+  @include sm {
+    font-size: 1rem;
+  }
 
   @include md {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
   }
 
   @include lg {
-    font-size: 1.375rem;
+    font-size: 1.25rem;
   }
 }
 
 .property-topbar__stats {
-  display: flex;
+  display: none;
   align-items: center;
   gap: spacing.$spacing-4;
   margin-top: spacing.$spacing-1;
+
+  @include md {
+    display: flex;
+  }
 }
 
 .property-topbar__stat {
@@ -114,9 +165,15 @@
 
 .property-topbar__actions {
   display: flex;
-  align-items: end;
-  gap: spacing.$spacing-3;
-  flex-shrink: 0;
+  align-items: center;
+  gap: spacing.$spacing-2;
+  width: 100%;
+
+  @include sm {
+    width: auto;
+    flex-shrink: 0;
+    gap: spacing.$spacing-3;
+  }
 }
 
 // ========================================
@@ -320,11 +377,15 @@
 .property-details__similar {
   max-width: 95%;
   margin: 0 auto;
-  padding: spacing.$spacing-6;
+  padding: spacing.$spacing-6 spacing.$spacing-4;
   border-top: 1px solid colors.$color-border-light;
 
+  @include md {
+    padding: spacing.$spacing-8 spacing.$spacing-5;
+  }
+
   @include lg {
-    padding: 2em 0;
+    padding: spacing.$spacing-10 0;
   }
 }
 
@@ -332,21 +393,17 @@
 // RESPONSIVE ADJUSTMENTS
 // ========================================
 
-@media (max-width: 767px) {
-  .property-topbar__stats {
-    display: none;
-  }
-
+@include mobile-only {
   .property-details__layout {
-    padding: spacing.$spacing-4;
+    padding: spacing.$spacing-4 spacing.$spacing-3;
   }
 
   .property-sidebar__card {
     border-radius: 0.75rem;
-    padding: spacing.$spacing-5;
+    padding: spacing.$spacing-4;
   }
 
   .property-specs {
-    padding: spacing.$spacing-5;
+    padding: spacing.$spacing-4;
   }
 }

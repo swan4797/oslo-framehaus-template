@@ -12,7 +12,15 @@ $page-width: 1200px;
 
 .gallery-section {
   background: colors.$color-bg-secondary;
-  padding: 17em 2em 5em 2em;
+  padding: 6rem 1rem 3rem 1rem;
+
+  @media (min-width: 768px) {
+    padding: 10rem 1.5rem 4rem 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 12rem 2rem 5rem 2rem;
+  }
 
   &__container {
     max-width: $page-width;

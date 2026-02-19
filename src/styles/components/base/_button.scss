@@ -95,7 +95,7 @@
 
   &--ghost {
     background-color: colors.$color-bg-secondary;
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
 
     &:hover:not(:disabled) {
       background-color: colors.$color-bg-secondary;

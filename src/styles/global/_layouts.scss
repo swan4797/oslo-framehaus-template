@@ -34,17 +34,21 @@ body {
   margin: 0 !important;
   display: flex;
   flex-direction: column;
-  
-
-  @media (max-width: 768px) {
-    padding-top: var(--header-height-mobile);
-  }
+  min-height: 100vh;
 }
 
 .main_content {
   flex-grow: 1;
   width: 100%;
-  padding: 2em;
+  padding: 1rem;
+
+  @media (min-width: 768px) {
+    padding: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 2rem;
+  }
 }
 
 // ========================================

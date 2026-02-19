@@ -50,16 +50,16 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: spacing.$space-12 spacing.$space-6;
+  padding: spacing.$space-10 spacing.$space-5;
   min-height: 50vh;
 
   @include md {
-    padding: spacing.$space-16 spacing.$space-10;
+    padding: spacing.$space-14 spacing.$space-8;
     min-height: 100vh;
   }
 
   @include lg {
-    padding: 7em 4em 4em 4em;  
+    padding: spacing.$space-20 spacing.$space-12 spacing.$space-12 spacing.$space-12;
   }
 }
 
@@ -68,7 +68,15 @@
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  max-width: 520px;
+  max-width: 100%;
+
+  @include md {
+    max-width: 480px;
+  }
+
+  @include lg {
+    max-width: 520px;
+  }
 }
 
 // ========================================
@@ -109,13 +117,14 @@
   font-size: $font-size-sm;
   font-weight: $font-weight-regular;
   line-height: 1.7;
-  color: colors.$color-text-secondary;
-  margin: 0 0 spacing.$space-10;
-  max-width: 380px;
+  color: colors.$color-text-primary;
+  margin: 0 0 spacing.$space-8;
+  max-width: 100%;
 
   @include md {
     font-size: $font-size-base;
     margin-bottom: auto;
+    max-width: 380px;
   }
 }
 
@@ -135,7 +144,7 @@
   font-family: $font-family-base;
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   letter-spacing: 0.02em;
 }
 

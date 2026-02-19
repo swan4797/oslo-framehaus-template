@@ -6,142 +6,138 @@
 // ========================================
 
 import Layout from '../layouts/Layout.astro'
-import Hero from '../components/Hero.astro'
 import StaticHero from '../components/static-page/StaticHero.astro'
 import StaticFullContent from '../components/static-page/StaticFullContent.astro'
-import IntroSection from '../components/static-page/layouts/IntroSection.astro'
 import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
 import CTABanner from '../components/static-page/layouts/CTABanner.astro'
 
 // Page content utilities
-import { getPageContent, hasSection } from '../lib/pages'
-
-const pageTitle = 'About Us'
-const pageDescription = 'Learn more about our team and our commitment to helping you find your perfect property.'
+import {
+  getPageContent,
+  hasSection,
+  getSectionTitle,
+  getSectionContent,
+  getSectionImage,
+  getHeroImage,
+} from '../lib/pages'
 
 // Fetch about page content from Stratos CRM
 const pageContent = await getPageContent('about')
+
+// Get hero image from CMS or use fallback
+const heroImage = getHeroImage(pageContent)
+
+// Get page title from CMS
+const pageTitle = pageContent?.page_title || 'About Us'
+const pageDescription = 'Learn more about our team and our commitment to helping you find your perfect property.'
+
+// Check which sections exist in CMS
+const hasOurStory = hasSection(pageContent, 'our_story')
+const hasWhatMakesUsDifferent = hasSection(pageContent, 'what_makes_us_different')
+const hasCoverageArea = hasSection(pageContent, 'coverage_area')
+const hasReputation = hasSection(pageContent, 'reputation')
+const hasOurPromise = hasSection(pageContent, 'our_promise')
+const hasCta = hasSection(pageContent, 'cta')
+
+// Get section images
+const ourStoryImage = getSectionImage(pageContent, 'our_story')
+const whatMakesUsDifferentImage = getSectionImage(pageContent, 'what_makes_us_different')
+const coverageAreaImage = getSectionImage(pageContent, 'coverage_area')
+const reputationImage = getSectionImage(pageContent, 'reputation')
+const ourPromiseImage = getSectionImage(pageContent, 'our_promise')
+const ctaImage = getSectionImage(pageContent, 'cta')
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
   <!-- Static Hero Section -->
   <StaticHero
-    title="ABOUT US<br/>YOUR TRUSTED PARTNER"
-    description="With years of local expertise and a passion for property, we're here to help you every step of the way. What started as a small family business has grown into a thriving agency with a reputation for excellence."
+    title={pageTitle}
+    description={pageContent?.content || ''}
     brandName="Est. 2005"
     backgroundType="image"
-    backgroundSrc="https://images.pexels.com/photos/5644365/pexels-photo-5644365.jpeg"
+    backgroundSrc={heroImage?.url || ourStoryImage?.url || "https://images.pexels.com/photos/5644365/pexels-photo-5644365.jpeg"}
+    backgroundAlt={heroImage?.alt || ourStoryImage?.alt || "About us"}
     categoryLabel="REAL ESTATE"
     overlayOpacity="light"
   />
 
-  <!-- Static Full Content Section -->
-  <StaticFullContent
-    blockKey="our_approach"
-    pageContent={pageContent}
-    subtitle="Our Philosophy"
-    titleAccent="Building"
-    titleMain="LASTING RELATIONSHIPS"
-    leadText="We believe that buying or selling a property is more than just a transaction. It's a significant life moment that deserves personal attention, expert guidance, and genuine care."
-    contentBlocks={[
-      {
-        heading: "Personal Service",
-        text: "Every client works directly with a dedicated agent who takes the time to understand your unique needs and goals. No call centres, no being passed around – just consistent, personal service from start to finish."
-      },
-      {
-        heading: "Local Expertise",
-        text: "Our team lives and works in the communities we serve. We know every neighbourhood, every street, and every factor that affects property values in our area."
-      },
-      {
-        heading: "Transparent Communication",
-        text: "We keep you informed at every stage. No surprises, no hidden fees – just honest advice and regular updates so you always know exactly where you stand."
-      },
-      {
-        heading: "Transparent Communication",
-        text: "We keep you informed at every stage. No surprises, no hidden fees – just honest advice and regular updates so you always know exactly where you stand."
-      },
-      {
-        heading: "Transparent Communication",
-        text: "We keep you informed at every stage. No surprises, no hidden fees – just honest advice and regular updates so you always know exactly where you stand."
-      },
-      {
-        heading: "Transparent Communication",
-        text: "We keep you informed at every stage. No surprises, no hidden fees – just honest advice and regular updates so you always know exactly where you stand."
-      },
-      {
-        heading: "Transparent Communication",
-        text: "We keep you informed at every stage. No surprises, no hidden fees – just honest advice and regular updates so you always know exactly where you stand."
-      },
-      {
-        heading: "Transparent Communication",
-        text: "We keep you informed at every stage. No surprises, no hidden fees – just honest advice and regular updates so you always know exactly where you stand."
-      }
-    ]}
-    imageSrc="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200"
-    imageAlt="Team meeting"
-  />
+  <!-- Our Story Section -->
+  {hasOurStory && (
+    <StaticFullContent
+      blockKey="our_story"
+      pageContent={pageContent}
+      imageSrc={ourStoryImage?.url}
+      imageAlt={ourStoryImage?.alt}
+    />
+  )}
 
+  <!-- What Makes Us Different Section -->
+  {hasWhatMakesUsDifferent && (
+    <ContentBlock
+      blockKey="what_makes_us_different"
+      pageContent={pageContent}
+      mediaSrc={whatMakesUsDifferentImage?.url}
+      mediaAlt={whatMakesUsDifferentImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/376531/pexels-photo-376531.jpeg"
+      secondaryMediaAlt="Home interior"
+      layout="default"
+      imagePosition="right"
+    />
+  )}
 
+  <!-- Coverage Area Section -->
+  {hasCoverageArea && (
+    <ContentBlock
+      blockKey="coverage_area"
+      pageContent={pageContent}
+      mediaSrc={coverageAreaImage?.url}
+      mediaAlt={coverageAreaImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/2082087/pexels-photo-2082087.jpeg"
+      secondaryMediaAlt="Property interior"
+      layout="default"
+      imagePosition="left"
+    />
+  )}
 
-  <!-- <ContentBlock
-    blockKey="our_values"
-    pageContent={pageContent}
-    mediaSrc="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=1200&q=80"
-    mediaAlt="Our values"
-    secondaryMediaSrc="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=800"
-    secondaryMediaAlt="Team values"
-    title="Our Values"
-    subtitle="What We Stand For"
-    description="Integrity, excellence, and client focus are at the heart of everything we do. We believe in transparent communication, honest advice, and going the extra mile to ensure every client achieves their property goals."
-    ctaText="Our services"
-    ctaLink="/sellers"
-    imagePosition="right"
-    overlayStrength="light"
-    serviceItems={["Integrity", "Excellence", "Client Focus"]}
-  />
+  <!-- Reputation Section -->
+  {hasReputation && (
+    <ContentBlock
+      blockKey="reputation"
+      pageContent={pageContent}
+      mediaSrc={reputationImage?.url}
+      mediaAlt={reputationImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/584399/living-room-couch-interior-room-584399.jpeg"
+      secondaryMediaAlt="Living room"
+      layout="default"
+      imagePosition="right"
+    />
+  )}
 
-  <ContentBlock
-    blockKey="meet_the_team"
-    pageContent={pageContent}
-    mediaSrc="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80"
-    mediaAlt="Meet the team"
-    secondaryMediaSrc="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=800"
-    secondaryMediaAlt="Expert team"
-    title="Meet The Team"
-    subtitle="Expert Guidance"
-    description="Our experienced team brings together decades of local property knowledge. From first-time buyers to seasoned investors, we have the expertise to guide you through every step of your property journey."
-    ctaText="Contact us"
-    ctaLink="/contact"
-    imagePosition="left"
-    overlayStrength="light"
-    serviceItems={["Local Knowledge", "Property Experts", "Dedicated Support"]}
-  /> -->
+  <!-- Our Promise Section -->
+  {hasOurPromise && (
+    <ContentBlock
+      blockKey="our_promise"
+      pageContent={pageContent}
+      mediaSrc={ourPromiseImage?.url}
+      mediaAlt={ourPromiseImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/1648839/pexels-photo-1648839.jpeg"
+      secondaryMediaAlt="Modern home"
+      layout="default"
+      imagePosition="left"
+    />
+  )}
 
-  <!-- FAQ Section -->
-  <ContentBlock
-    blockKey="about_faqs"
-    pageContent={pageContent}
-    layout="faq"
-    mediaSrc="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=800"
-    mediaAlt="Our team"
-    title="Frequently Asked Questions"
-    subtitle="FAQS"
-    imagePosition="right"
-    faqItems={[
-      { question: "How long have you been in business?", answer: "We've been serving the local community for over 20 years, building a reputation for honest advice, exceptional service, and deep local market knowledge." },
-      { question: "What areas do you cover?", answer: "We specialise in the local area and surrounding neighbourhoods. Our team has intimate knowledge of every street, school catchment, and community amenity in our coverage area." },
-      { question: "What makes you different from other agents?", answer: "We combine traditional values of personal service with modern marketing techniques. Every client gets a dedicated point of contact, and we pride ourselves on transparent communication throughout." },
-      { question: "Do you offer free valuations?", answer: "Yes, we offer completely free, no-obligation property valuations. Our expert team will visit your property, assess its value, and provide honest advice on achieving the best price." }
-    ]}
-  />
-
-  <!-- CTA Banner -->
-  <!-- <CTABanner
-    title="Ready to Find Your Perfect Property?"
-    subtitle="Whether you're buying, selling, or renting, we're here to help every step of the way. Get in touch today to start your property journey."
-    primaryCtaText="Get Started"
-    primaryCtaLink="/contact"
-    secondaryCtaText="Free Valuation"
-    secondaryCtaLink="/valuation"
-  /> -->
+  <!-- CTA Section -->
+  {hasCta && (
+    <CTABanner
+      blockKey="cta"
+      pageContent={pageContent}
+      backgroundType={ctaImage?.url ? "image" : "none"}
+      backgroundSrc={ctaImage?.url}
+      primaryCtaText="Get Started"
+      primaryCtaLink="/contact"
+      secondaryCtaText="Free Valuation"
+      secondaryCtaLink="/valuation"
+    />
+  )}
 </Layout>
