@@ -125,28 +125,26 @@
   line-height: 1.8;
   color: colors.$color-text-primary;
 
-  // Direct text content spacing
-  > * + * {
-    margin-top: 1.25em;
-  }
+  // Prose-like rich text styling for TipTap content
+  // Explicit element spacing to override any resets
 
   p {
-    margin: 0 0 1.25em 0;
+    display: block;
+    margin-block-start: 0;
+    margin-block-end: 1.25em;
+    margin-inline: 0;
 
     &:last-child {
-      margin-bottom: 0;
+      margin-block-end: 0;
     }
-  }
-
-  // Handle content without p tags (plain text with br tags)
-  br {
-    display: block;
-    content: "";
-    margin-top: 0.75em;
   }
 
   strong, b {
     font-weight: typography.$font-weight-semibold;
+  }
+
+  em, i {
+    font-style: italic;
   }
 
   a {
@@ -160,11 +158,22 @@
   }
 
   ul, ol {
-    margin: 1.25em 0;
-    padding-left: 1.5em;
+    display: block;
+    margin-block: 1.25em;
+    margin-inline: 0;
+    padding-inline-start: 1.5em;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
   }
 
   li {
+    display: list-item;
     margin-bottom: 0.5em;
 
     &:last-child {
@@ -172,14 +181,30 @@
     }
   }
 
-  h3, h4, h5, h6 {
-    margin: 1.5em 0 0.75em 0;
+  // Headings with proper spacing
+  h1, h2, h3, h4, h5, h6 {
+    display: block;
+    margin-block-start: 1.5em;
+    margin-block-end: 0.75em;
+    margin-inline: 0;
+    font-family: typography.$font-family-heading;
     font-weight: typography.$font-weight-semibold;
-    line-height: 1.4;
+    line-height: 1.3;
+    color: colors.$color-text-primary;
 
     &:first-child {
-      margin-top: 0;
+      margin-block-start: 0;
     }
+  }
+
+  h1 {
+    font-size: 2em;
+    margin-block-start: 2em;
+  }
+
+  h2 {
+    font-size: 1.5em;
+    margin-block-start: 1.75em;
   }
 
   h3 {
@@ -188,6 +213,16 @@
 
   h4 {
     font-size: 1.125em;
+  }
+
+  h5 {
+    font-size: 1em;
+  }
+
+  h6 {
+    font-size: 0.875em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   blockquote {
