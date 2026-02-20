@@ -59,7 +59,7 @@
   }
 
   @include lg {
-    padding: spacing.$spacing-20 spacing.$spacing-12 spacing.$spacing-12 spacing.$spacing-12;
+    padding: spacing.$spacing-40 spacing.$spacing-12 spacing.$spacing-12 spacing.$spacing-12;
   }
 }
 
@@ -123,8 +123,6 @@
 
   @include md {
     font-size: typography.$font-size-base;
-    margin-bottom: auto;
-    max-width: 380px;
   }
 }
 

@@ -36,7 +36,7 @@ $hero-accent: colors.$color-error;
 
 .hero__container {
   max-width: layout.$container-max-width;
-  margin: 0 auto;
+  margin-inline: auto;
   display: grid;
   grid-template-columns: 1fr 1.3fr;
   gap: spacing.$spacing-16;
@@ -162,7 +162,7 @@ $hero-accent: colors.$color-error;
 
 .search__container {
   max-width: layout.$container-max-width;
-  margin: 0 auto;
+  margin-inline: auto;
   width: 100%;
 }
 

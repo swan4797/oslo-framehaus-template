@@ -49,7 +49,7 @@ $card-amber-bg: #FFF8E1;
 
 .hero__container {
   max-width: $page-max-width;
-  margin: 0 auto;
+  margin-inline: auto;
   display: grid;
   grid-template-columns: 1fr;
   gap: spacing.$spacing-12;
@@ -176,7 +176,7 @@ $card-amber-bg: #FFF8E1;
 
 .showcase__container {
   max-width: $page-max-width;
-  margin: 0 auto;
+  margin-inline: auto;
   display: grid;
   grid-template-columns: 1fr;
   gap: spacing.$spacing-6;
@@ -449,7 +449,7 @@ $card-amber-bg: #FFF8E1;
 
 .content__container {
   max-width: $page-max-width;
-  margin: 0 auto;
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -731,7 +731,7 @@ $card-amber-bg: #FFF8E1;
 
 .testimonial__container {
   max-width: $page-max-width;
-  margin: 0 auto;
+  margin-inline: auto;
   display: grid;
   grid-template-columns: 1fr;
   gap: spacing.$spacing-12;
@@ -822,7 +822,7 @@ $card-amber-bg: #FFF8E1;
 
 .cta__container {
   max-width: 700px;
-  margin: 0 auto;
+  margin-inline: auto;
   text-align: center;
 }
 
@@ -921,7 +921,7 @@ $card-amber-bg: #FFF8E1;
 
   details {
     max-width: $page-max-width;
-    margin: 0 auto;
+    margin-inline: auto;
   }
 
   summary {

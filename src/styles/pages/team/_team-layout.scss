@@ -124,7 +124,7 @@
 .team-grid__featured {
   display: grid;
   width: 100%;
-  margin: 0 auto;
+  margin-inline: auto;
   grid-template-columns: repeat(2, 1fr);
   gap: spacing.$spacing-4;
 
@@ -146,7 +146,7 @@
 .team-grid__regular {
   display: grid;
   width: 100%;
-  margin: 0 auto;
+  margin-inline: auto;
   grid-template-columns: repeat(2, 1fr);
   gap: spacing.$spacing-4;
 

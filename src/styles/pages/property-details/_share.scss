@@ -5,13 +5,14 @@
 // ========================================
 
 @use '../../tokens/colors' as colors;
+@use '../../tokens/spacing' as spacing;
 @use '../../tokens/effects' as effects;
 @use '../../mixins' as *;
 
 .share-buttons {
   display: flex;
   justify-content: center;
-  gap: 0.625rem;
+  gap: spacing.$spacing-2-5;
 }
 
 .share-btn {
@@ -57,7 +58,7 @@
     bottom: calc(100% + 0.5rem);
     left: 50%;
     transform: translateX(-50%) translateY(0.25rem);
-    padding: 0.375rem 0.75rem;
+    padding: spacing.$spacing-1-5 0.75rem;
     background: colors.$color-bg-secondary;
     color: white;
     font-size: 0.75rem;

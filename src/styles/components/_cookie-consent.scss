@@ -82,7 +82,7 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
 
 .cookie-banner__container {
   max-width: layout.$container-max-width;
-  margin: 0 auto;
+  margin-inline: auto;
   background: colors.$color-bg-secondary;
   border-radius: effects.$radius-xl;
   box-shadow: effects.$shadow-lg;

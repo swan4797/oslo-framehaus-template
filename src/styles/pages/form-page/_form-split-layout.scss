@@ -57,7 +57,7 @@
 .form-split-layout__content-inner {
   width: 100%;
   max-width: 600px;
-  margin: 0 auto;
+  margin-inline: auto;
 
   @include lg {
     max-width: 640px;

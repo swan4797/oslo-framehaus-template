@@ -5,6 +5,7 @@
 // ========================================
 
 @use '../../tokens/colors' as colors;
+@use '../../tokens/spacing' as spacing;
 @use '../../tokens/typography' as typography;
 @use '../../tokens/effects' as effects;
 @use '../../mixins' as *;
@@ -13,7 +14,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.625rem;
+  gap: spacing.$spacing-2-5;
   padding: 0.875rem 1.5rem;
   font-family: typography.$font-family-base;
   font-size: 0.9375rem;

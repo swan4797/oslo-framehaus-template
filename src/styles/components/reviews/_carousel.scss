@@ -4,6 +4,7 @@
 // ========================================
 
 @use '../../tokens/colors' as colors;
+@use '../../tokens/spacing' as spacing;
 @use '../../tokens/typography' as typography;
 @use '../../mixins' as *;
 
@@ -18,7 +19,7 @@
   }
 
   @include lg {
-    padding: 6rem 0;
+    padding: 3rem 0;
   }
 
   &--alt {
@@ -342,7 +343,7 @@
 // Rating
 .rc__rating {
   display: flex;
-  gap: 0.125rem;
+  gap: spacing.$spacing-0-5;
   margin-bottom: 1rem;
 }
 
@@ -391,7 +392,7 @@
 .rc__author-info {
   display: flex;
   flex-direction: column;
-  gap: 0.125rem;
+  gap: spacing.$spacing-0-5;
 }
 
 .rc__author-name {

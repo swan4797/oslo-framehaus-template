@@ -5,6 +5,7 @@
 // ========================================
 
 @use '../../tokens/colors' as colors;
+@use '../../tokens/spacing' as spacing;
 @use '../../mixins' as *;
 
 .features-list {
@@ -32,7 +33,7 @@
       height: 1.125rem;
       color: colors.$color-primary;
       flex-shrink: 0;
-      margin-top: 0.125rem;
+      margin-top: spacing.$spacing-0-5;
     }
   }
 }

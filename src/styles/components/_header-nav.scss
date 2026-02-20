@@ -276,7 +276,7 @@ $z-dropdown: 200;
 
 .header__nav-topbar-logo-tagline {
   font-family: typography.$font-family-base;
-  font-size: clamp(0.625rem, 1.2vw, 0.75rem);
+  font-size: clamp(spacing.$spacing-2-5, 1.2vw, 0.75rem);
   font-weight: typography.$font-weight-regular;
   color: colors.$color-text-primary;
   letter-spacing: 0.25em;

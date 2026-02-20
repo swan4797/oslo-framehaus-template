@@ -15,16 +15,8 @@
 
 .service-grid {
   position: relative;
-  padding: spacing.$spacing-16 0;
+  padding: spacing.$spacing-12 0;
   background: colors.$color-bg-secondary;
-
-  @include md {
-    padding: spacing.$spacing-20 0;
-  }
-
-  @include lg {
-    padding: spacing.$spacing-24 0;
-  }
 
   &--has-background {
     background: colors.$color-bg-secondary;
@@ -465,7 +457,7 @@
     color: colors.$color-text-primary;
     line-height: 1.7;
     max-width: 500px;
-    margin: 0 auto;
+    margin-inline: auto;
   }
 
   .service-grid__cta {

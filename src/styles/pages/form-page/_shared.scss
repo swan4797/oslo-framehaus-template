@@ -50,7 +50,7 @@ $form-input-border-hover: colors.$color-border-medium;
 
 @mixin form-card($max-width: 60rem) {
   max-width: $max-width;
-  margin: 0 auto;
+  margin-inline: auto;
   background: colors.$color-bg-secondary;
   backdrop-filter: blur(8px);
   box-shadow: $form-shadow-card;
@@ -147,7 +147,7 @@ $form-input-border-hover: colors.$color-border-medium;
   font-size: 0.8125rem;
   font-weight: typography.$font-weight-regular;
   color: colors.$color-text-muted;
-  margin-left: 0.125rem;
+  margin-left: spacing.$spacing-0-5;
 }
 
 // ----------------------------------------
@@ -265,7 +265,7 @@ $form-input-border-hover: colors.$color-border-medium;
   flex-shrink: 0;
   width: 1.25rem;
   height: 1.25rem;
-  margin-top: 0.125rem;
+  margin-top: spacing.$spacing-0-5;
   cursor: pointer;
   accent-color: colors.$color-primary;
   border-radius: 0;
@@ -396,7 +396,7 @@ $form-input-border-hover: colors.$color-border-medium;
   flex-shrink: 0;
   width: 1.5rem;
   height: 1.5rem;
-  margin-top: 0.125rem;
+  margin-top: spacing.$spacing-0-5;
 }
 
 @mixin form-message-content {

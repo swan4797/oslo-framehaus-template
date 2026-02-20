@@ -237,7 +237,7 @@ $color-button-pink-hover: #f0b3ba;
 .form__checkbox-input {
   width: 1rem;
   height: 1rem;
-  margin-top: 0.125rem;
+  margin-top: spacing.$spacing-0-5;
   flex-shrink: 0;
   cursor: pointer;
   accent-color: colors.$color-primary;
@@ -289,7 +289,7 @@ $color-button-pink-hover: #f0b3ba;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.125rem;
+  gap: spacing.$spacing-0-5;
   height: 2.5rem;
   padding: spacing.$spacing-1;
   background: colors.$color-bg-tertiary;
@@ -316,7 +316,7 @@ $color-button-pink-hover: #f0b3ba;
 }
 
 .form__time-range {
-  font-size: 0.625rem;
+  font-size: spacing.$spacing-2-5;
   color: colors.$color-text-primary;
 }
 

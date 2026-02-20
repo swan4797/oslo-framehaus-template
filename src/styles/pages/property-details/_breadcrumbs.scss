@@ -24,7 +24,7 @@ $page-width: 1200px;
 
   &__container {
     max-width: $page-width;
-    margin: 0 auto;
+    margin-inline: auto;
   }
 
   &__list {

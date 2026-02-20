@@ -4,6 +4,7 @@
 // ========================================
 
 @use '../../tokens/colors' as colors;
+@use '../../tokens/spacing' as spacing;
 @use '../../tokens/effects' as effects;
 @use '../../mixins' as *;
 
@@ -30,7 +31,7 @@
 .search-controls__filters-badge {
   display: flex;
   align-items: center;
-  gap: 0.375rem;
+  gap: spacing.$spacing-1-5;
   padding: 0.5rem 1rem;
   background: colors.$color-bg-secondary;
   color: white;
@@ -49,7 +50,7 @@
 .search-controls__link {
   display: inline-flex;
   align-items: center;
-  gap: 0.375rem;
+  gap: spacing.$spacing-1-5;
   padding: 0.5rem 1rem;
   background: colors.$color-bg-secondary;
   border: 1px solid colors.$color-border-medium;

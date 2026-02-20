@@ -22,7 +22,7 @@
 
 .contact-info-grid {
   max-width: 60rem;
-  margin: 0 auto;
+  margin-inline: auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: spacing.$spacing-4;

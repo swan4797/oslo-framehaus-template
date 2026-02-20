@@ -186,7 +186,7 @@
   grid-template-columns: 1fr;
   gap: spacing.$spacing-6;
   max-width: 95%;
-  margin: 0 auto;
+  margin-inline: auto;
   padding: spacing.$spacing-6 0;
 
   @include lg {
@@ -349,7 +349,7 @@
     color: colors.$color-text-primary;
     opacity: 0.5;
     flex-shrink: 0;
-    margin-top: 0.125rem;
+    margin-top: spacing.$spacing-0-5;
   }
 }
 
@@ -376,7 +376,7 @@
 
 .property-details__similar {
   max-width: 95%;
-  margin: 0 auto;
+  margin-inline: auto;
   padding: spacing.$spacing-6 spacing.$spacing-4;
   border-top: 1px solid colors.$color-border-light;
 

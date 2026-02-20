@@ -17,7 +17,7 @@
 .general-enquiry-container {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
+  margin-inline: auto;
   display: grid;
   grid-template-columns: 1fr 380px;
   gap: spacing.$spacing-8;

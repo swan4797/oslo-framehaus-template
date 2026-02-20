@@ -30,7 +30,7 @@
 
   &--modern {
     .intro-section__wrapper {
-      margin: 0 auto;
+      margin-inline: auto;
     }
   }
 
@@ -328,7 +328,6 @@
     font-weight: typography.$font-weight-regular;
     color: colors.$color-text-primary;
     line-height: 1.7;
-    max-width: 36rem;
     margin: 0;
 
     // Handle CMS HTML content
