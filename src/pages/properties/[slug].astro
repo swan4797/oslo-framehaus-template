@@ -12,6 +12,7 @@ import Layout from '../../layouts/Layout.astro'
 import ImageGallery from '../../components/propertydetails/ImageGallery.astro'
 import DescriptionSection from '../../components/propertydetails/DescriptionSection.astro'
 import FloorplanSection from '../../components/propertydetails/FloorplanSection.astro'
+import VirtualTourSection from '../../components/propertydetails/VirtualTourSection.astro'
 import KeyFeaturesSection from '../../components/propertydetails/KeyFeaturesSection.astro'
 import PropertyMapSection from '../../components/map/PropertyMapSection.astro'
 import EnergyPerformanceSection from '../../components/propertydetails/EnergyPerformanceSection.astro'
@@ -59,6 +60,12 @@ const floorplanImages = (property.property_media || []).filter(
 )
 const epcImages = (property.property_media || []).filter(
   (media) => media.media_type === 'epc'
+)
+// Virtual tours: media_type 'virtual_tour' OR 'video' with mime_type 'text/uri-list' (external URL)
+const virtualTours = (property.property_media || []).filter(
+  (media) =>
+    media.media_type === 'virtual_tour' ||
+    (media.media_type === 'video' && media.mime_type === 'text/uri-list')
 )
 
 // -- SEO: Structured Data (Schema.org) --
@@ -242,6 +249,14 @@ const pageDescription = property.summary || `${propertyType} in ${property.city 
           <!-- Description Section -->
           <DescriptionSection description={property.description} />
 
+          <!-- Virtual Tour (if available) -->
+          {virtualTours.length > 0 && (
+            <VirtualTourSection
+              virtualTours={virtualTours}
+              propertyAddress={property.display_address}
+              propertyId={property.id}
+            />
+          )}
 
           <!-- Location Map -->
           {hasLocation && (

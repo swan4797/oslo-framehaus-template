@@ -1,0 +1,181 @@
+// ========================================
+// VIRTUAL TOUR SECTION STYLES
+// Embeds and external links for virtual tours
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+
+.virtual-tour-section {
+  // Header
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: spacing.$spacing-6;
+  }
+
+  &__title {
+    font-family: typography.$font-family-heading;
+    font-size: 1.5rem;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+    margin: 0;
+
+    @include md {
+      font-size: 1.75rem;
+    }
+  }
+
+  &__count {
+    display: inline-flex;
+    align-items: center;
+    padding: spacing.$spacing-1-5 0.75rem;
+    background: colors.$color-bg-tertiary;
+    border-radius: 100px;
+    font-size: 0.8125rem;
+    font-weight: typography.$font-weight-medium;
+    color: colors.$color-text-primary;
+    font-family: typography.$font-family-base;
+  }
+
+  // Content Container
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-6;
+  }
+
+  // Embed Wrapper (for iframes)
+  &__embed-wrapper {
+    position: relative;
+    background: colors.$color-bg-tertiary;
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  &__iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: none;
+    display: block;
+
+    @include md {
+      aspect-ratio: 16 / 10;
+      min-height: 500px;
+    }
+
+    @include lg {
+      min-height: 600px;
+    }
+  }
+
+  &__caption {
+    padding: spacing.$spacing-4 spacing.$spacing-5;
+    margin: 0;
+    font-size: typography.$font-size-sm;
+    color: colors.$color-text-secondary;
+    background: colors.$color-bg-secondary;
+    border-top: 1px solid colors.$color-border-light;
+  }
+
+  // External Link Card
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: spacing.$spacing-4;
+    padding: spacing.$spacing-5 spacing.$spacing-6;
+    background: colors.$color-bg-secondary;
+    border: 1px solid colors.$color-border-light;
+    border-radius: 1rem;
+    text-decoration: none;
+    transition:
+      background effects.$transition-base,
+      border-color effects.$transition-base,
+      box-shadow effects.$transition-base,
+      transform effects.$transition-base;
+
+    &:hover {
+      background: colors.$color-bg-tertiary;
+      border-color: colors.$color-primary;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      transform: translateY(-2px);
+
+      .virtual-tour-section__link-icon {
+        background: colors.$color-primary;
+        color: colors.$color-white;
+      }
+
+      .virtual-tour-section__link-arrow {
+        color: colors.$color-primary;
+        transform: translate(2px, -2px);
+      }
+    }
+  }
+
+  &__link-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    background: colors.$color-bg-tertiary;
+    border-radius: 0.75rem;
+    color: colors.$color-primary;
+    flex-shrink: 0;
+    transition:
+      background effects.$transition-base,
+      color effects.$transition-base;
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  &__link-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__link-title {
+    display: block;
+    font-family: typography.$font-family-base;
+    font-size: typography.$font-size-base;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+    margin-bottom: spacing.$spacing-0-5;
+
+    @include md {
+      font-size: 1.0625rem;
+    }
+  }
+
+  &__link-subtitle {
+    display: block;
+    font-size: typography.$font-size-sm;
+    color: colors.$color-text-secondary;
+  }
+
+  &__link-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: colors.$color-text-muted;
+    flex-shrink: 0;
+    transition:
+      color effects.$transition-base,
+      transform effects.$transition-base;
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+}

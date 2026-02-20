@@ -60,6 +60,7 @@ export interface PropertyMedia {
   file_url: string
   thumbnail_url?: string
   media_type: 'image' | 'video' | 'floorplan' | 'epc' | 'brochure' | 'virtual_tour'
+  mime_type?: string  // 'text/uri-list' indicates external URL (e.g., virtual tour link)
   is_primary: boolean
   display_order: number
   caption?: string

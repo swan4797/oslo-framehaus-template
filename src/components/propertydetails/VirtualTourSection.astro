@@ -1,0 +1,176 @@
+---
+// ========================================
+// VIRTUAL TOUR SECTION COMPONENT
+// Displays virtual tour embeds or links
+// Supports external URLs (Matterport, etc.)
+// ========================================
+
+import type { PropertyMedia } from '../../types/database'
+
+interface Props {
+  virtualTours: PropertyMedia[]
+  propertyAddress: string
+  propertyId: string
+}
+
+const { virtualTours, propertyAddress, propertyId } = Astro.props
+
+// Don't render if no virtual tours
+const hasVirtualTours = virtualTours.length > 0
+
+// Helper to detect embeddable URLs (Matterport, YouTube, etc.)
+const isEmbeddable = (url: string): boolean => {
+  const embeddablePatterns = [
+    /matterport\.com/i,
+    /my\.matterport\.com/i,
+    /youtube\.com\/embed/i,
+    /youtu\.be/i,
+    /vimeo\.com/i,
+    /cloudpano\.com/i,
+    /kuula\.co/i,
+    /roundme\.com/i,
+    /eyespy360\.com/i,
+    /vieweet\.com/i,
+  ]
+  return embeddablePatterns.some(pattern => pattern.test(url))
+}
+
+// Convert YouTube URLs to embed format
+const getEmbedUrl = (url: string): string => {
+  // YouTube watch URL to embed
+  const youtubeMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/)
+  if (youtubeMatch) {
+    return `https://www.youtube.com/embed/${youtubeMatch[1]}`
+  }
+  // Vimeo URL to embed
+  const vimeoMatch = url.match(/vimeo\.com\/(\d+)/)
+  if (vimeoMatch) {
+    return `https://player.vimeo.com/video/${vimeoMatch[1]}`
+  }
+  // Return as-is for other embeddable URLs (Matterport already provides embed URLs)
+  return url
+}
+
+// Get tour provider name for display
+const getTourProvider = (url: string): string => {
+  if (/matterport/i.test(url)) return 'Matterport'
+  if (/youtube|youtu\.be/i.test(url)) return 'YouTube'
+  if (/vimeo/i.test(url)) return 'Vimeo'
+  if (/cloudpano/i.test(url)) return 'CloudPano'
+  if (/kuula/i.test(url)) return 'Kuula'
+  if (/roundme/i.test(url)) return 'Roundme'
+  if (/eyespy360/i.test(url)) return 'EyeSpy360'
+  return 'Virtual Tour'
+}
+---
+
+{hasVirtualTours && (
+  <section class="virtual-tour-section" data-property-id={propertyId}>
+    <!-- Section Header -->
+    <div class="virtual-tour-section__header">
+      <h2 class="virtual-tour-section__title">Virtual Tour</h2>
+      {virtualTours.length > 1 && (
+        <span class="virtual-tour-section__count">
+          {virtualTours.length}&nbsp;tours
+        </span>
+      )}
+    </div>
+
+    <!-- Virtual Tours -->
+    <div class="virtual-tour-section__content">
+      {virtualTours.map((tour, index) => {
+        const tourUrl = tour.file_url
+        const canEmbed = isEmbeddable(tourUrl)
+        const embedUrl = canEmbed ? getEmbedUrl(tourUrl) : null
+        const provider = getTourProvider(tourUrl)
+
+        return canEmbed ? (
+          <!-- Embeddable Virtual Tour -->
+          <div class="virtual-tour-section__embed-wrapper">
+            <iframe
+              src={embedUrl}
+              title={tour.caption || `${provider} virtual tour of ${propertyAddress}`}
+              class="virtual-tour-section__iframe"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; xr-spatial-tracking; fullscreen"
+              allowfullscreen
+              loading="lazy"
+            />
+            {tour.caption && (
+              <p class="virtual-tour-section__caption">{tour.caption}</p>
+            )}
+          </div>
+        ) : (
+          <!-- External Link (non-embeddable) -->
+          <a
+            href={tourUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="virtual-tour-section__link"
+            data-tour-url={tourUrl}
+            data-tour-index={index}
+          >
+            <div class="virtual-tour-section__link-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 2a14.5 14.5 0 000 20 14.5 14.5 0 000-20"/>
+                <path d="M2 12h20"/>
+              </svg>
+            </div>
+            <div class="virtual-tour-section__link-content">
+              <span class="virtual-tour-section__link-title">
+                {tour.caption || `View ${provider}`}
+              </span>
+              <span class="virtual-tour-section__link-subtitle">
+                Opens in new tab
+              </span>
+            </div>
+            <div class="virtual-tour-section__link-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 17L17 7"/>
+                <path d="M7 7h10v10"/>
+              </svg>
+            </div>
+          </a>
+        )
+      })}
+    </div>
+  </section>
+)}
+
+<!-- Track virtual tour clicks -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const section = document.querySelector('.virtual-tour-section')
+    if (!section) return
+
+    const propertyId = section.getAttribute('data-property-id')
+    const links = section.querySelectorAll('.virtual-tour-section__link')
+    const iframes = section.querySelectorAll('.virtual-tour-section__iframe')
+
+    // Track link clicks
+    links.forEach((link) => {
+      link.addEventListener('click', () => {
+        if (window.StratosTracker && propertyId) {
+          const tourUrl = (link as HTMLElement).dataset.tourUrl
+          window.StratosTracker.trackVirtualTourClick(propertyId, tourUrl ? 'external_link' : 'unknown')
+          console.log('[VirtualTour] Tracked click:', propertyId)
+        }
+      })
+    })
+
+    // Track iframe interactions (when user clicks into iframe)
+    iframes.forEach((iframe) => {
+      iframe.addEventListener('load', () => {
+        // Track when iframe loads as a "view"
+        if (window.StratosTracker && propertyId) {
+          window.StratosTracker.trackVirtualTourClick(propertyId, 'embedded')
+          console.log('[VirtualTour] Tracked embed load:', propertyId)
+        }
+      })
+    })
+  })
+</script>
+
+<style lang="scss">
+  @use '../../styles/pages/property-details/virtual-tour';
+</style>
