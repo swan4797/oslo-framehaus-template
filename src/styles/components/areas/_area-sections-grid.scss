@@ -12,14 +12,14 @@
 
 .area-sections {
   background: colors.$color-bg-secondary;
-  padding: spacing.$space-16 0;
+  padding: spacing.$spacing-16 0;
 
   @include md {
-    padding: spacing.$space-20 0;
+    padding: spacing.$spacing-20 0;
   }
 
   @include lg {
-    padding: spacing.$space-24 0;
+    padding: spacing.$spacing-24 0;
   }
 }
 
@@ -34,18 +34,18 @@
 .area-sections__header {
   display: grid;
   grid-template-columns: 1fr;
-  gap: spacing.$space-4;
-  margin-bottom: spacing.$space-10;
+  gap: spacing.$spacing-4;
+  margin-bottom: spacing.$spacing-10;
 
   @include md {
     grid-template-columns: 1fr 1fr;
-    gap: spacing.$space-8;
+    gap: spacing.$spacing-8;
     align-items: end;
-    margin-bottom: spacing.$space-12;
+    margin-bottom: spacing.$spacing-12;
   }
 
   @include lg {
-    margin-bottom: spacing.$space-14;
+    margin-bottom: spacing.$spacing-14;
   }
 }
 
@@ -91,7 +91,7 @@
 .area-sections__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: spacing.$space-4;
+  gap: spacing.$spacing-4;
 
   @include sm {
     grid-template-columns: repeat(2, 1fr);
@@ -99,6 +99,6 @@
 
   @include lg {
     grid-template-columns: repeat(4, 1fr);
-    gap: spacing.$space-5;
+    gap: spacing.$spacing-5;
   }
 }

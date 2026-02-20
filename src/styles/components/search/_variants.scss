@@ -26,16 +26,16 @@
       display: flex;
       flex-direction: column;
       background: colors.$color-bg-secondary;
-      padding: spacing.$space-5 spacing.$space-6;
+      padding: spacing.$spacing-5 spacing.$spacing-6;
       box-shadow: effects.$shadow-md;
       border: 1px solid colors.$color-border-light;
       border-radius: effects.$radius-xl;
-      gap: spacing.$space-5;
+      gap: spacing.$spacing-5;
 
       @include mobile-only {
-        padding: spacing.$space-4;
+        padding: spacing.$spacing-4;
         border-radius: effects.$radius-lg;
-        gap: spacing.$space-4;
+        gap: spacing.$spacing-4;
       }
     }
 
@@ -50,7 +50,7 @@
     .search-bar__toggle-buttons {
       display: inline-flex;
       gap: 0;
-      padding: spacing.$space-1;
+      padding: spacing.$spacing-1;
       background: colors.$color-bg-secondary;
       border-radius: 100px;
       width: auto;
@@ -77,7 +77,7 @@
     }
 
     .search-bar__toggle-content {
-      padding: spacing.$space-2 spacing.$space-5;
+      padding: spacing.$spacing-2 spacing.$spacing-5;
       border-radius: 100px;
       font-size: typography.$font-size-sm;
       font-weight: typography.$font-weight-medium;
@@ -93,18 +93,18 @@
     .search-bar__main-fields {
       display: grid;
       grid-template-columns: 1fr;
-      gap: spacing.$space-4;
+      gap: spacing.$spacing-4;
       order: 2;
 
       @include md {
         grid-template-columns: 1.5fr 1fr 1.5fr 1fr auto;
-        gap: spacing.$space-3;
+        gap: spacing.$spacing-3;
         align-items: end;
       }
 
       @include lg {
         grid-template-columns: 400px 170px 1fr 1fr auto;
-        gap: spacing.$space-4;
+        gap: spacing.$spacing-4;
       }
     }
 
@@ -112,7 +112,7 @@
     .search-bar__field-group {
       display: flex;
       flex-direction: column;
-      gap: spacing.$space-1;
+      gap: spacing.$spacing-1;
 
       &--location {
         @include md {
@@ -148,7 +148,7 @@
     // Inline search button for sidebar
     .search-bar__btn--inline {
       height: 44px;
-      padding: spacing.$space-3 spacing.$space-5;
+      padding: spacing.$spacing-3 spacing.$spacing-5;
       background: colors.$color-text-primary;
       color: colors.$color-text-light;
       border: none;
@@ -163,7 +163,7 @@
 
       @include mobile-only {
         width: 100%;
-        margin-top: spacing.$space-2;
+        margin-top: spacing.$spacing-2;
       }
     }
 
@@ -171,7 +171,7 @@
     .search-bar__input,
     .search-bar__select {
       height: 44px;
-      padding: spacing.$space-3 spacing.$space-4;
+      padding: spacing.$spacing-3 spacing.$spacing-4;
       background: transparent;
       border: 1px solid colors.$color-border-light;
       border-radius: effects.$radius-md;
@@ -187,10 +187,10 @@
     .search-bar__field-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: spacing.$space-2;
+      gap: spacing.$spacing-2;
 
       @include md {
-        gap: spacing.$space-3;
+        gap: spacing.$spacing-3;
       }
     }
 
@@ -202,7 +202,7 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: spacing.$space-3;
+      gap: spacing.$spacing-3;
       order: 3;
     }
 
@@ -211,14 +211,14 @@
       display: inline-flex;
       align-items: center;
       width: auto;
-      padding: spacing.$space-2 spacing.$space-4;
+      padding: spacing.$spacing-2 spacing.$spacing-4;
       background: colors.$color-text-primary;
       border: none;
       border-radius: 100px;
       color: colors.$color-text-light;
       font-size: typography.$font-size-xs;
       font-weight: typography.$font-weight-medium;
-      gap: spacing.$space-2;
+      gap: spacing.$spacing-2;
       order: 4;
       flex-shrink: 0;
 
@@ -246,7 +246,7 @@
     // ROW 4: Advanced panel (expandable)
     // ----------------------------------------
     .search-bar__advanced-panel {
-      padding-top: spacing.$space-5;
+      padding-top: spacing.$spacing-5;
       border-top: 1px solid colors.$color-border-light;
       order: 5;
 
@@ -266,14 +266,14 @@
     .search-bar__checkbox-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: spacing.$space-2;
+      gap: spacing.$spacing-2;
     }
 
     .search-bar__checkbox-label {
       display: flex;
       align-items: center;
-      gap: spacing.$space-2;
-      padding: spacing.$space-2 spacing.$space-4;
+      gap: spacing.$spacing-2;
+      padding: spacing.$spacing-2 spacing.$spacing-4;
       background: colors.$color-bg-secondary;
       border: 1px solid colors.$color-border-light;
       border-radius: 100px;
@@ -325,7 +325,7 @@
   &--hero {
     .search-bar__form {
       background: colors.$color-bg-secondary;
-      padding: spacing.$space-3;
+      padding: spacing.$spacing-3;
       border-radius: effects.$radius-xl;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
     }
@@ -334,7 +334,7 @@
       @include md {
         display: grid;
         grid-template-columns: 400px 170px 1fr 1fr auto;
-        gap: spacing.$space-3;
+        gap: spacing.$spacing-3;
       }
 
       @include lg {
@@ -364,7 +364,7 @@
     .search-bar__field-row {
       @include md {
         grid-template-columns: 1fr;
-        gap: spacing.$space-3;
+        gap: spacing.$spacing-3;
       }
     }
 
@@ -385,13 +385,13 @@
   &--compact {
     .search-bar__form {
       background: colors.$color-bg-secondary;
-      padding: spacing.$space-4;
+      padding: spacing.$spacing-4;
       border-radius: effects.$radius-lg;
       box-shadow: effects.$shadow-md;
     }
 
     .search-bar__main-fields {
-      gap: spacing.$space-3;
+      gap: spacing.$spacing-3;
 
       @include sm {
         display: grid;
@@ -406,11 +406,11 @@
     }
 
     .search-bar__btn {
-      padding: spacing.$space-3 spacing.$space-5;
+      padding: spacing.$spacing-3 spacing.$spacing-5;
     }
 
     .search-bar__actions {
-      padding-top: spacing.$space-1;
+      padding-top: spacing.$spacing-1;
     }
   }
 
@@ -443,7 +443,7 @@
       background: colors.$color-bg-secondary;
       box-shadow: none;
       border: none;
-      gap: spacing.$space-3;
+      gap: spacing.$spacing-3;
     }
 
     .search-bar__toggle-group {
@@ -465,7 +465,7 @@
       background: colors.$color-bg-secondary;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      padding: spacing.$space-6;
+      padding: spacing.$spacing-6;
       border-radius: effects.$radius-xl;
       box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
       border: 1px solid rgba(255, 255, 255, 0.2);
@@ -480,7 +480,7 @@
   &--card {
     .search-bar__form {
       background: colors.$color-bg-secondary;
-      padding: spacing.$space-5;
+      padding: spacing.$spacing-5;
       border: 1px solid colors.$color-border-light;
       border-radius: effects.$radius-lg;
     }

@@ -25,15 +25,15 @@
 // ========================================
 
 .team-section {
-  padding: spacing.$space-16 0;
+  padding: spacing.$spacing-16 0;
   background: colors.$color-bg-secondary;
 
   @include md {
-    padding: spacing.$space-20 0;
+    padding: spacing.$spacing-20 0;
   }
 
   @include lg {
-    padding: spacing.$space-24 0;
+    padding: spacing.$spacing-24 0;
   }
 }
 
@@ -50,22 +50,22 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: spacing.$space-12;
+  margin-bottom: spacing.$spacing-12;
 
   @include md {
-    margin-bottom: spacing.$space-14;
+    margin-bottom: spacing.$spacing-14;
   }
 
   @include lg {
-    margin-bottom: spacing.$space-16;
+    margin-bottom: spacing.$spacing-16;
   }
 }
 
 .team-section__label {
   display: inline-flex;
   align-items: center;
-  gap: spacing.$space-2;
-  margin-bottom: spacing.$space-4;
+  gap: spacing.$spacing-2;
+  margin-bottom: spacing.$spacing-4;
 }
 
 .team-section__label-dot {
@@ -108,12 +108,12 @@
 .team-grid {
   display: flex;
   flex-direction: column;
-  gap: spacing.$space-8;
+  gap: spacing.$spacing-8;
   align-items: center;
   width: 100%;
 
   @include md {
-    gap: spacing.$space-10;
+    gap: spacing.$spacing-10;
   }
 }
 
@@ -126,16 +126,16 @@
   width: 100%;
   margin: 0 auto;
   grid-template-columns: repeat(2, 1fr);
-  gap: spacing.$space-4;
+  gap: spacing.$spacing-4;
 
   @include md {
     grid-template-columns: repeat(3, 1fr);
-    gap: spacing.$space-5;
+    gap: spacing.$spacing-5;
   }
 
   @include lg {
     grid-template-columns: repeat(4, 1fr);
-    gap: spacing.$space-6;
+    gap: spacing.$spacing-6;
   }
 }
 
@@ -148,16 +148,16 @@
   width: 100%;
   margin: 0 auto;
   grid-template-columns: repeat(2, 1fr);
-  gap: spacing.$space-4;
+  gap: spacing.$spacing-4;
 
   @include md {
     grid-template-columns: repeat(3, 1fr);
-    gap: spacing.$space-5;
+    gap: spacing.$spacing-5;
   }
 
   @include lg {
     grid-template-columns: repeat(4, 1fr);
-    gap: spacing.$space-6;
+    gap: spacing.$spacing-6;
   }
 }
 
@@ -202,24 +202,24 @@
 
 .team-grid__featured--gap-sm,
 .team-grid__regular--gap-sm {
-  gap: spacing.$space-3;
+  gap: spacing.$spacing-3;
 }
 
 .team-grid__featured--gap-md,
 .team-grid__regular--gap-md {
-  gap: spacing.$space-4;
+  gap: spacing.$spacing-4;
 
   @include md {
-    gap: spacing.$space-5;
+    gap: spacing.$spacing-5;
   }
 }
 
 .team-grid__featured--gap-lg,
 .team-grid__regular--gap-lg {
-  gap: spacing.$space-5;
+  gap: spacing.$spacing-5;
 
   @include md {
-    gap: spacing.$space-6;
+    gap: spacing.$spacing-6;
   }
 }
 
@@ -229,7 +229,7 @@
 
 .team-grid__empty {
   text-align: center;
-  padding: spacing.$space-12 spacing.$space-6;
+  padding: spacing.$spacing-12 spacing.$spacing-6;
   background: colors.$color-bg-tertiary;
   border-radius: effects.$radius-lg;
   width: 100%;

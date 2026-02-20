@@ -5,9 +5,12 @@
 // ========================================
 
 // Import design system
-@use '../variables' as *;
-@use '../mixins' as *;
 @use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/layout' as layout;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../mixins' as *;
 
 // ========================================
 // LOCAL TOKENS
@@ -27,7 +30,7 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
-  transition: opacity $transition-smooth, visibility $transition-smooth;
+  transition: opacity effects.$transition-smooth, visibility effects.$transition-smooth;
 
   &.is-visible {
     opacity: 1;
@@ -54,15 +57,15 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
   left: 0;
   right: 0;
   z-index: 9999;
-  padding: 0 $spacing-4 $spacing-4;
+  padding: 0 spacing.$spacing-4 spacing.$spacing-4;
   pointer-events: none;
   // Hidden by default
   opacity: 0;
   visibility: hidden;
   transform: translateY(100%);
-  transition: opacity $transition-smooth,
-              transform $transition-smooth,
-              visibility $transition-smooth;
+  transition: opacity effects.$transition-smooth,
+              transform effects.$transition-smooth,
+              visibility effects.$transition-smooth;
 
   // Visible state
   &.is-visible {
@@ -73,35 +76,35 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
   }
 
   @include md {
-    padding: 0 $spacing-6 $spacing-6;
+    padding: 0 spacing.$spacing-6 spacing.$spacing-6;
   }
 }
 
 .cookie-banner__container {
-  max-width: $container-max-width;
+  max-width: layout.$container-max-width;
   margin: 0 auto;
   background: colors.$color-bg-secondary;
-  border-radius: $radius-xl;
-  box-shadow: $shadow-lg;
-  border: 1px solid $border-light;
-  padding: $spacing-5;
+  border-radius: effects.$radius-xl;
+  box-shadow: effects.$shadow-lg;
+  border: 1px solid colors.$color-border-light;
+  padding: spacing.$spacing-5;
   display: flex;
   flex-direction: column;
-  gap: $spacing-5;
+  gap: spacing.$spacing-5;
 
   @include md {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: $spacing-6 $spacing-8;
-    gap: $spacing-8;
+    padding: spacing.$spacing-6 spacing.$spacing-8;
+    gap: spacing.$spacing-8;
   }
 }
 
 .cookie-banner__content {
   display: flex;
   align-items: flex-start;
-  gap: $spacing-4;
+  gap: spacing.$spacing-4;
   flex: 1;
 
   @include md {
@@ -117,8 +120,8 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
   align-items: center;
   justify-content: center;
   background: colors.$color-bg-secondary;
-  border-radius: $radius-lg;
-  color: $accent-primary;
+  border-radius: effects.$radius-lg;
+  color: colors.$color-primary;
 
   svg {
     width: 22px;
@@ -136,30 +139,30 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
 }
 
 .cookie-banner__title {
-  font-family: $font-family-base;
-  font-size: $font-size-base;
-  font-weight: $font-weight-semibold;
-  color: $text-primary;
-  margin: 0 0 $spacing-1;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+  margin: 0 0 spacing.$spacing-1;
   line-height: 1.4;
 }
 
 .cookie-banner__description {
-  font-family: $font-family-base;
-  font-size: $font-size-sm;
-  color: $text-secondary;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-text-secondary;
   margin: 0;
-  line-height: $line-height-base;
+  line-height: typography.$line-height-base;
 }
 
 .cookie-banner__link {
-  color: $accent-primary;
+  color: colors.$color-primary;
   text-decoration: none;
-  font-weight: $font-weight-medium;
-  transition: color $transition-fast;
+  font-weight: typography.$font-weight-medium;
+  transition: color effects.$transition-fast;
 
   &:hover {
-    color: $accent-primary-dark;
+    color: colors.$color-primary-dark;
     text-decoration: underline;
   }
 }
@@ -167,7 +170,7 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
 .cookie-banner__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: $spacing-2;
+  gap: spacing.$spacing-2;
   width: 100%;
 
   @include md {
@@ -177,13 +180,13 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
 }
 
 .cookie-banner__btn {
-  font-family: $font-family-base;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  padding: $spacing-2 $spacing-5;
-  border-radius: $radius-md;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-semibold;
+  padding: spacing.$spacing-2 spacing.$spacing-5;
+  border-radius: effects.$radius-md;
   cursor: pointer;
-  transition: all $transition-base;
+  transition: all effects.$transition-base;
   white-space: nowrap;
   flex: 1;
   min-width: 0;
@@ -194,7 +197,7 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
 
   &:focus {
     outline: none;
-    box-shadow: $focus-ring;
+    box-shadow: effects.$focus-ring;
   }
 
   &--primary {
@@ -215,11 +218,11 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
   &--secondary {
     background: colors.$color-bg-tertiary;
     color: colors.$color-text-primary;
-    border: 1px solid $border-medium;
+    border: 1px solid colors.$color-border-medium;
 
     &:hover {
       background: colors.$color-bg-secondary;
-      border-color: $border-medium;
+      border-color: colors.$color-border-medium;
     }
   }
 }
@@ -235,11 +238,11 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: $spacing-4;
+  padding: spacing.$spacing-4;
   // Hidden by default
   opacity: 0;
   visibility: hidden;
-  transition: opacity $transition-smooth, visibility $transition-smooth;
+  transition: opacity effects.$transition-smooth, visibility effects.$transition-smooth;
 
   &.is-visible {
     opacity: 1;
@@ -261,7 +264,7 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
 .cookie-modal__dialog {
   position: relative;
   background: colors.$color-bg-secondary;
-  border-radius: $radius-xl;
+  border-radius: effects.$radius-xl;
   box-shadow: $shadow-modal;
   width: 100%;
   max-width: 520px;
@@ -271,22 +274,22 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
   flex-direction: column;
   // Animation
   transform: translateY(20px) scale(0.98);
-  transition: transform $transition-smooth;
+  transition: transform effects.$transition-smooth;
 }
 
 .cookie-modal__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: $spacing-5 $spacing-6;
-  border-bottom: 1px solid $border-light;
+  padding: spacing.$spacing-5 spacing.$spacing-6;
+  border-bottom: 1px solid colors.$color-border-light;
   background: colors.$color-bg-secondary;
 }
 
 .cookie-modal__header-content {
   display: flex;
   align-items: center;
-  gap: $spacing-3;
+  gap: spacing.$spacing-3;
 }
 
 .cookie-modal__icon {
@@ -296,8 +299,8 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
   align-items: center;
   justify-content: center;
   background: colors.$color-bg-secondary;
-  border-radius: $radius-md;
-  color: $accent-primary;
+  border-radius: effects.$radius-md;
+  color: colors.$color-primary;
 
   svg {
     width: 20px;
@@ -306,10 +309,10 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
 }
 
 .cookie-modal__title {
-  font-family: $font-family-base;
-  font-size: $font-size-lg;
-  font-weight: $font-weight-bold;
-  color: $text-primary;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-lg;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
   margin: 0;
 }
 
@@ -321,10 +324,10 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
   justify-content: center;
   background: colors.$color-bg-secondary;
   border: none;
-  border-radius: $radius-md;
-  color: $text-muted;
+  border-radius: effects.$radius-md;
+  color: colors.$color-text-muted;
   cursor: pointer;
-  transition: all $transition-fast;
+  transition: all effects.$transition-fast;
 
   svg {
     width: 20px;
@@ -333,24 +336,24 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
 
   &:hover {
     background: colors.$color-bg-secondary;
-    color: $text-primary;
+    color: colors.$color-text-primary;
   }
 
   &:focus {
     outline: none;
-    box-shadow: $focus-ring;
+    box-shadow: effects.$focus-ring;
   }
 }
 
 .cookie-modal__content {
   flex: 1;
   overflow-y: auto;
-  padding: $spacing-6;
+  padding: spacing.$spacing-6;
 }
 
 .cookie-modal__category {
-  padding: $spacing-5 0;
-  border-bottom: 1px solid $border-light;
+  padding: spacing.$spacing-5 0;
+  border-bottom: 1px solid colors.$color-border-light;
 
   &:first-child {
     padding-top: 0;
@@ -366,44 +369,44 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: $spacing-4;
-  margin-bottom: $spacing-2;
+  gap: spacing.$spacing-4;
+  margin-bottom: spacing.$spacing-2;
 }
 
 .cookie-modal__category-info {
   display: flex;
   align-items: center;
-  gap: $spacing-3;
+  gap: spacing.$spacing-3;
   flex-wrap: wrap;
 }
 
 .cookie-modal__category-title {
-  font-family: $font-family-base;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  color: $text-primary;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
   margin: 0;
 }
 
 .cookie-modal__badge {
-  font-family: $font-family-base;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-xs;
+  font-weight: typography.$font-weight-semibold;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  padding: $spacing-1 $spacing-2;
-  border-radius: $radius-full;
+  padding: spacing.$spacing-1 spacing.$spacing-2;
+  border-radius: effects.$radius-full;
 
   &--required {
     background: colors.$color-bg-secondary;
-    color: $text-secondary;
+    color: colors.$color-text-secondary;
   }
 }
 
 .cookie-modal__category-desc {
-  font-family: $font-family-base;
-  font-size: $font-size-sm;
-  color: $text-secondary;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-text-secondary;
   margin: 0;
   line-height: 1.6;
 }
@@ -411,9 +414,9 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
 .cookie-modal__footer {
   display: flex;
   flex-direction: column;
-  gap: $spacing-3;
-  padding: $spacing-5 $spacing-6;
-  border-top: 1px solid $border-light;
+  gap: spacing.$spacing-3;
+  padding: spacing.$spacing-5 spacing.$spacing-6;
+  border-top: 1px solid colors.$color-border-light;
   background: colors.$color-bg-secondary;
 
   @media (min-width: 480px) {
@@ -423,13 +426,13 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
 }
 
 .cookie-modal__btn {
-  font-family: $font-family-base;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  padding: $spacing-3 $spacing-6;
-  border-radius: $radius-md;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-semibold;
+  padding: spacing.$spacing-3 spacing.$spacing-6;
+  border-radius: effects.$radius-md;
   cursor: pointer;
-  transition: all $transition-base;
+  transition: all effects.$transition-base;
   white-space: nowrap;
 
   @media (min-width: 480px) {
@@ -438,7 +441,7 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
 
   &:focus {
     outline: none;
-    box-shadow: $focus-ring;
+    box-shadow: effects.$focus-ring;
   }
 
   &--primary {
@@ -460,12 +463,12 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
   &--secondary {
     background: colors.$color-bg-tertiary;
     color: colors.$color-text-primary;
-    border: 1px solid $border-medium;
+    border: 1px solid colors.$color-border-medium;
     order: 1;
 
     &:hover {
       background: colors.$color-bg-secondary;
-      border-color: $border-medium;
+      border-color: colors.$color-border-medium;
     }
   }
 }
@@ -494,8 +497,8 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
   width: 44px;
   height: 24px;
   background: colors.$color-bg-secondary;
-  border-radius: $radius-full;
-  transition: all $transition-base;
+  border-radius: effects.$radius-full;
+  transition: all effects.$transition-base;
 
   &::before {
     content: '';
@@ -507,7 +510,7 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
     background: colors.$color-bg-secondary;
     border-radius: 50%;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-    transition: transform $transition-smooth;
+    transition: transform effects.$transition-smooth;
   }
 }
 
@@ -520,7 +523,7 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
 }
 
 .cookie-toggle__input:focus + .cookie-toggle__slider {
-  box-shadow: $focus-ring;
+  box-shadow: effects.$focus-ring;
 }
 
 .cookie-toggle__input:disabled + .cookie-toggle__slider {

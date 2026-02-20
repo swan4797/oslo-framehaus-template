@@ -10,15 +10,15 @@
 @use '../../mixins' as *;
 
 .form-hero {
-  padding: spacing.$space-16 spacing.$space-6 spacing.$space-12;
+  padding: spacing.$spacing-16 spacing.$spacing-6 spacing.$spacing-12;
   text-align: center;
 
   @include md {
-    padding: spacing.$space-20 spacing.$space-6 spacing.$space-14;
+    padding: spacing.$spacing-20 spacing.$spacing-6 spacing.$spacing-14;
   }
 
   @include mobile-only {
-    padding: spacing.$space-12 spacing.$space-5 spacing.$space-8;
+    padding: spacing.$spacing-12 spacing.$spacing-5 spacing.$spacing-8;
   }
 }
 
@@ -32,14 +32,14 @@
   font-size: typography.$font-size-4xl;
   font-weight: typography.$font-weight-bold;
   color: colors.$color-text-light;
-  margin: 0 0 spacing.$space-4 0;
+  margin: 0 0 spacing.$spacing-4 0;
   line-height: 1.15;
   letter-spacing: -0.025em;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
   @include md {
     font-size: 2.75rem;
-    margin-bottom: spacing.$space-5;
+    margin-bottom: spacing.$spacing-5;
   }
 
   @include lg {

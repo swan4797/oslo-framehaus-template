@@ -38,7 +38,7 @@
     color: colors.$color-text-muted;
 
     svg {
-      margin-bottom: spacing.$space-6;
+      margin-bottom: spacing.$spacing-6;
       opacity: 0.4;
     }
 
@@ -46,7 +46,7 @@
       font-size: typography.$font-size-2xl;
       font-weight: typography.$font-weight-semibold;
       color: colors.$color-text-primary;
-      margin: 0 0 spacing.$space-3;
+      margin: 0 0 spacing.$spacing-3;
     }
 
     p {

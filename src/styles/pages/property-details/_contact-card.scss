@@ -16,23 +16,23 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: spacing.$space-2;
+  gap: spacing.$spacing-2;
   width: 100%;
 
   @include sm {
-    gap: spacing.$space-3;
+    gap: spacing.$spacing-3;
   }
 
   @include md {
-    gap: spacing.$space-4;
+    gap: spacing.$spacing-4;
   }
 
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: spacing.$space-1-5;
-    padding: spacing.$space-2-5 spacing.$space-3;
+    gap: spacing.$spacing-1-5;
+    padding: spacing.$spacing-2-5 spacing.$spacing-3;
     font-size: 0.75rem;
     font-weight: typography.$font-weight-medium;
     border-radius: effects.$radius-md;
@@ -41,13 +41,13 @@
     white-space: nowrap;
 
     @include sm {
-      padding: spacing.$space-3 spacing.$space-4;
+      padding: spacing.$spacing-3 spacing.$spacing-4;
       font-size: 0.8125rem;
-      gap: spacing.$space-2;
+      gap: spacing.$spacing-2;
     }
 
     @include md {
-      padding: spacing.$space-3 spacing.$space-5;
+      padding: spacing.$spacing-3 spacing.$spacing-5;
       font-size: 0.875rem;
     }
 
@@ -97,11 +97,11 @@
 .contact-card-standalone__actions {
   display: flex;
   flex-direction: row;
-  gap: spacing.$space-2;
+  gap: spacing.$spacing-2;
   flex: 1;
 
   @include sm {
-    gap: spacing.$space-3;
+    gap: spacing.$spacing-3;
     flex: 0 0 auto;
   }
 
@@ -123,7 +123,7 @@
 
   @include md {
     display: block;
-    margin-right: spacing.$space-2;
+    margin-right: spacing.$spacing-2;
   }
 }
 

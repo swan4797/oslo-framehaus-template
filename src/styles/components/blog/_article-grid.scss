@@ -60,15 +60,15 @@
   // ----------------------------------------
 
   &--gap-sm {
-    gap: spacing.$space-4;
+    gap: spacing.$spacing-4;
   }
 
   &--gap-md {
-    gap: spacing.$space-6;
+    gap: spacing.$spacing-6;
   }
 
   &--gap-lg {
-    gap: spacing.$space-8;
+    gap: spacing.$spacing-8;
   }
 
   // ----------------------------------------
@@ -77,7 +77,7 @@
 
   &__empty {
     text-align: center;
-    padding: spacing.$space-12 spacing.$space-6;
+    padding: spacing.$spacing-12 spacing.$spacing-6;
     background: colors.$color-bg-secondary;
     border-radius: effects.$radius-lg;
 

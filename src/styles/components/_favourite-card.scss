@@ -5,21 +5,24 @@
 // ========================================
 
 // Import design system
-@use '../variables' as *;
-@use '../mixins' as *;
 @use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/layout' as layout;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../mixins' as *;
 
 .favourite-card {
   background: colors.$color-bg-secondary;
-  border-radius: $radius-xl;
+  border-radius: effects.$radius-xl;
   overflow: hidden;
-  box-shadow: $shadow-sm;
-  border: 1px solid $border-light;
-  transition: all $transition-base;
+  box-shadow: effects.$shadow-sm;
+  border: 1px solid colors.$color-border-light;
+  transition: all effects.$transition-base;
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: $shadow-lg;
+    box-shadow: effects.$shadow-lg;
   }
 
   &--removing {
@@ -38,7 +41,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform $transition-slow;
+    transition: transform effects.$transition-slow;
   }
 
   .favourite-card:hover & img {
@@ -52,66 +55,66 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  color: $text-muted;
+  color: colors.$color-text-muted;
 }
 
 .favourite-card__remove {
   position: absolute;
-  top: $spacing-3;
-  right: $spacing-3;
+  top: spacing.$spacing-3;
+  right: spacing.$spacing-3;
   width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: colors.$color-bg-secondary;
-  border: 2px solid $accent-primary;
+  border: 2px solid colors.$color-primary;
   border-radius: 50%;
-  color: $accent-primary;
+  color: colors.$color-primary;
   cursor: pointer;
-  transition: all $transition-fast;
+  transition: all effects.$transition-fast;
   z-index: 2;
 
   &:hover {
     background: colors.$color-bg-secondary;
-    color: $text-inverse;
+    color: colors.$color-text-light;
     transform: scale(1.1);
   }
 
   &:focus {
     outline: none;
-    box-shadow: $focus-ring;
+    box-shadow: effects.$focus-ring;
   }
 }
 
 .favourite-card__badge {
   position: absolute;
-  bottom: $spacing-3;
-  left: $spacing-3;
-  padding: $spacing-1 $spacing-3;
-  border-radius: $radius-full;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-bold;
+  bottom: spacing.$spacing-3;
+  left: spacing.$spacing-3;
+  padding: spacing.$spacing-1 spacing.$spacing-3;
+  border-radius: effects.$radius-full;
+  font-size: typography.$font-size-xs;
+  font-weight: typography.$font-weight-bold;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 
   &--sale {
     background: colors.$color-bg-secondary;
-    color: $text-inverse;
+    color: colors.$color-text-light;
   }
 
   &--let {
     background: colors.$color-bg-secondary;
-    color: $text-inverse;
+    color: colors.$color-text-light;
   }
 }
 
 .favourite-card__content {
   display: block;
-  padding: $spacing-5;
+  padding: spacing.$spacing-5;
   text-decoration: none;
   color: inherit;
-  transition: background $transition-fast;
+  transition: background effects.$transition-fast;
 
   &:hover {
     background: colors.$color-bg-secondary;
@@ -119,35 +122,35 @@
 }
 
 .favourite-card__address {
-  font-size: $font-size-base;
-  font-weight: $font-weight-bold;
-  color: $text-primary;
-  margin: 0 0 $spacing-3 0;
-  line-height: $line-height-tight;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
+  margin: 0 0 spacing.$spacing-3 0;
+  line-height: typography.$line-height-tight;
   @include line-clamp(2);
-  transition: color $transition-fast;
+  transition: color effects.$transition-fast;
 
   .favourite-card:hover & {
-    color: $accent-primary;
+    color: colors.$color-primary;
   }
 }
 
 .favourite-card__specs {
   display: flex;
   flex-wrap: wrap;
-  gap: $spacing-3;
-  margin-bottom: $spacing-4;
+  gap: spacing.$spacing-3;
+  margin-bottom: spacing.$spacing-4;
 }
 
 .favourite-card__spec {
   display: flex;
   align-items: center;
-  gap: $spacing-1;
-  font-size: $font-size-sm;
-  color: $text-secondary;
+  gap: spacing.$spacing-1;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-text-secondary;
 
   svg {
-    color: $text-muted;
+    color: colors.$color-text-muted;
   }
 }
 
@@ -155,18 +158,18 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: $spacing-3;
+  gap: spacing.$spacing-3;
 }
 
 .favourite-card__price {
-  font-size: $font-size-xl;
-  font-weight: $font-weight-bold;
-  color: $accent-primary;
+  font-size: typography.$font-size-xl;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-primary;
   margin: 0;
 }
 
 .favourite-card__saved {
-  font-size: $font-size-xs;
-  color: $text-muted;
+  font-size: typography.$font-size-xs;
+  color: colors.$color-text-muted;
   margin: 0;
 }

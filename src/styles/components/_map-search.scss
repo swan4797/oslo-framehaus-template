@@ -4,9 +4,11 @@
 // Using centralized color tokens from tokens/_colors.scss
 // ========================================
 
-@use '../variables' as *;
-@use '../mixins' as *;
 @use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../mixins' as *;
 
 // ----------------------------------------
 // CSS CUSTOM PROPERTIES
@@ -14,9 +16,9 @@
 
 :root {
   // Map accent colors (coral theme)
-  --map-accent: #{$accent-coral};
-  --map-accent-dark: #{$accent-coral-dark};
-  --map-accent-light: #{$accent-coral-light};
+  --map-accent: #{colors.$color-primary};
+  --map-accent-dark: #{colors.$color-primary-dark};
+  --map-accent-light: #{colors.$color-primary-light};
   --map-accent-rgb: 255, 90, 95;
 
   // Sidebar dimensions
@@ -24,8 +26,8 @@
   --map-sidebar-width-mobile: 100%;
 
   // Transitions
-  --map-transition-fast: #{$transition-fast};
-  --map-transition-base: #{$transition-base};
+  --map-transition-fast: #{effects.$transition-fast};
+  --map-transition-base: #{effects.$transition-base};
 }
 
 // ----------------------------------------
@@ -54,7 +56,7 @@
   height: 100%;
   overflow-y: auto;
   background-color: colors.$color-bg-secondary;
-  border-right: 1px solid $border-light;
+  border-right: 1px solid colors.$color-border-light;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -68,44 +70,44 @@
     height: 40vh;
     z-index: 1000;
     border-right: none;
-    border-top: 1px solid $border-light;
-    border-radius: $radius-xl $radius-xl 0 0;
+    border-top: 1px solid colors.$color-border-light;
+    border-radius: effects.$radius-xl effects.$radius-xl 0 0;
   }
 }
 
 // Sidebar Header
 .map-sidebar__header {
-  padding: $spacing-5 $spacing-4;
-  border-bottom: 1px solid $border-light;
+  padding: spacing.$spacing-5 spacing.$spacing-4;
+  border-bottom: 1px solid colors.$color-border-light;
   position: sticky;
   top: 0;
   background: colors.$color-bg-secondary;
   z-index: 10;
-  box-shadow: $shadow-xs;
+  box-shadow: effects.$shadow-xs;
 }
 
 .map-sidebar__title {
   margin: 0;
-  font-size: $font-size-xl;
-  font-weight: $font-weight-bold;
-  color: $text-primary;
-  font-family: $font-family-heading;
+  font-size: typography.$font-size-xl;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
+  font-family: typography.$font-family-heading;
 }
 
 .map-sidebar__subtitle {
-  margin: $spacing-1 0 0 0;
-  font-size: $font-size-sm;
-  color: $text-secondary;
+  margin: spacing.$spacing-1 0 0 0;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-text-secondary;
 }
 
 // Loading State
 .map-sidebar__loading {
   display: flex;
   align-items: center;
-  gap: $spacing-2;
-  color: $text-secondary;
-  font-size: $font-size-base;
-  font-weight: $font-weight-medium;
+  gap: spacing.$spacing-2;
+  color: colors.$color-text-secondary;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-medium;
 }
 
 .map-sidebar__loading-spinner {
@@ -119,7 +121,7 @@
 
 // Property Cards Container
 .map-sidebar__cards {
-  padding: $spacing-4;
+  padding: spacing.$spacing-4;
   flex: 1;
   overflow-y: auto;
 }
@@ -131,9 +133,9 @@
 .map-property-card {
   display: flex;
   flex-direction: row;
-  margin-bottom: $spacing-3;
-  border-radius: $radius-lg;
-  border: 2px solid $border-light;
+  margin-bottom: spacing.$spacing-3;
+  border-radius: effects.$radius-lg;
+  border: 2px solid colors.$color-border-light;
   overflow: hidden;
   text-decoration: none;
   color: inherit;
@@ -146,7 +148,7 @@
 
   &:hover {
     border-color: var(--map-accent);
-    box-shadow: $shadow-card-hover;
+    box-shadow: effects.$shadow-card-hover;
     transform: translateY(-1px);
   }
 
@@ -175,7 +177,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform $transition-slow;
+    transition: transform effects.$transition-slow;
   }
 
   .map-property-card:hover & img {
@@ -197,9 +199,9 @@
 .map-property-card__badge {
   position: absolute;
   padding: 2px 6px;
-  border-radius: $radius-sm;
+  border-radius: effects.$radius-sm;
   font-size: 9px;
-  font-weight: $font-weight-semibold;
+  font-weight: typography.$font-weight-semibold;
   letter-spacing: 0.3px;
   text-transform: uppercase;
 
@@ -207,19 +209,19 @@
     top: 6px;
     left: 6px;
     background: colors.$color-bg-secondary;
-    color: $bg-white;
+    color: colors.$color-bg-primary;
   }
 
   &--images {
     bottom: 6px;
     right: 6px;
     background: colors.$color-bg-secondary;
-    color: $bg-white;
+    color: colors.$color-bg-primary;
     display: flex;
     align-items: center;
     gap: 3px;
     font-size: 10px;
-    font-weight: $font-weight-medium;
+    font-weight: typography.$font-weight-medium;
 
     svg {
       width: 10px;
@@ -230,7 +232,7 @@
 
 // Card Content
 .map-property-card__content {
-  padding: $spacing-3;
+  padding: spacing.$spacing-3;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -239,40 +241,40 @@
 }
 
 .map-property-card__price {
-  font-size: $font-size-lg;
-  font-weight: $font-weight-bold;
-  color: $text-primary;
-  margin-bottom: $spacing-1;
-  font-family: $font-family-heading;
+  font-size: typography.$font-size-lg;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
+  margin-bottom: spacing.$spacing-1;
+  font-family: typography.$font-family-heading;
 }
 
 .map-property-card__price-suffix {
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  color: $text-secondary;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-secondary;
   margin-left: 2px;
 }
 
 .map-property-card__details {
   display: flex;
   flex-wrap: wrap;
-  gap: $spacing-1;
-  margin-bottom: $spacing-2;
+  gap: spacing.$spacing-1;
+  margin-bottom: spacing.$spacing-2;
 }
 
 .map-property-card__detail {
   background: colors.$color-bg-secondary;
   padding: 2px 6px;
-  border-radius: $radius-sm;
-  font-size: $font-size-xs;
-  color: $text-secondary;
+  border-radius: effects.$radius-sm;
+  font-size: typography.$font-size-xs;
+  color: colors.$color-text-secondary;
   text-transform: capitalize;
 }
 
 .map-property-card__address {
-  font-size: $font-size-sm;
-  color: $text-secondary;
-  line-height: $line-height-tight;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-text-secondary;
+  line-height: typography.$line-height-tight;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -286,18 +288,18 @@
 
 .map-empty-state {
   text-align: center;
-  padding: $spacing-12 $spacing-6;
+  padding: spacing.$spacing-12 spacing.$spacing-6;
   background: colors.$color-bg-secondary;
-  border-radius: $radius-lg;
-  border: 1px solid $border-light;
+  border-radius: effects.$radius-lg;
+  border: 1px solid colors.$color-border-light;
 }
 
 .map-empty-state__icon {
   width: 64px;
   height: 64px;
-  margin: 0 auto $spacing-4;
+  margin: 0 auto spacing.$spacing-4;
   background: colors.$color-bg-secondary;
-  border-radius: $radius-full;
+  border-radius: effects.$radius-full;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -306,16 +308,16 @@
 
 .map-empty-state__title {
   margin: 0;
-  font-size: $font-size-lg;
-  font-weight: $font-weight-semibold;
-  color: $text-primary;
+  font-size: typography.$font-size-lg;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
 }
 
 .map-empty-state__text {
-  margin: $spacing-2 0 0 0;
-  font-size: $font-size-sm;
-  color: $text-secondary;
-  line-height: $line-height-base;
+  margin: spacing.$spacing-2 0 0 0;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-text-secondary;
+  line-height: typography.$line-height-base;
 }
 
 // ----------------------------------------
@@ -351,34 +353,34 @@
   z-index: 1000;
 
   &--top-left {
-    top: $spacing-4;
-    left: $spacing-4;
+    top: spacing.$spacing-4;
+    left: spacing.$spacing-4;
   }
 
   &--top-right {
-    top: $spacing-4;
-    right: $spacing-4;
+    top: spacing.$spacing-4;
+    right: spacing.$spacing-4;
   }
 }
 
 // Search This Area Button
 .map-search-area-btn {
-  padding: $spacing-3 $spacing-5;
+  padding: spacing.$spacing-3 spacing.$spacing-5;
   background: colors.$color-bg-secondary;
-  color: $bg-white;
+  color: colors.$color-bg-primary;
   border: none;
-  border-radius: $radius-md;
-  font-size: $font-size-base;
-  font-weight: $font-weight-semibold;
+  border-radius: effects.$radius-md;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-semibold;
   cursor: pointer;
-  box-shadow: $shadow-md;
+  box-shadow: effects.$shadow-md;
   transition:
     background var(--map-transition-fast),
     transform var(--map-transition-fast);
-  font-family: $font-family-base;
+  font-family: typography.$font-family-base;
   display: flex;
   align-items: center;
-  gap: $spacing-2;
+  gap: spacing.$spacing-2;
 
   &:hover {
     background: colors.$color-bg-secondary;
@@ -406,12 +408,12 @@
 }
 
 .map-loading-text {
-  font-size: $font-size-lg;
-  font-weight: $font-weight-semibold;
+  font-size: typography.$font-size-lg;
+  font-weight: typography.$font-weight-semibold;
   color: var(--map-accent);
   display: flex;
   align-items: center;
-  gap: $spacing-2;
+  gap: spacing.$spacing-2;
 }
 
 // ----------------------------------------
@@ -425,14 +427,14 @@
 
 .price-pin {
   background: colors.$color-bg-secondary;
-  color: $text-primary;
+  color: colors.$color-text-primary;
   padding: 6px 10px;
-  border-radius: $radius-full;
+  border-radius: effects.$radius-full;
   font-size: 13px;
-  font-weight: $font-weight-bold;
-  font-family: $font-family-base;
+  font-weight: typography.$font-weight-bold;
+  font-family: typography.$font-family-base;
   white-space: nowrap;
-  box-shadow: $shadow-md;
+  box-shadow: effects.$shadow-md;
   border: 1px solid rgba(0, 0, 0, 0.08);
   cursor: pointer;
   transition: all var(--map-transition-fast);
@@ -451,26 +453,26 @@
     height: 0;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
-    border-top: 6px solid $bg-white;
+    border-top: 6px solid colors.$color-bg-primary;
     filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
   }
 
   &:hover,
   &.is-hovered {
     background: colors.$color-bg-secondary;
-    color: $bg-white;
+    color: colors.$color-bg-primary;
     transform: scale(1.08);
     z-index: 9999 !important;
-    box-shadow: $shadow-lg;
+    box-shadow: effects.$shadow-lg;
 
     &::after {
-      border-top-color: $text-primary;
+      border-top-color: colors.$color-text-primary;
     }
   }
 
   &.is-selected {
     background: colors.$color-bg-secondary;
-    color: $bg-white;
+    color: colors.$color-bg-primary;
     transform: scale(1.1);
     z-index: 9999 !important;
     box-shadow: 0 4px 14px rgba(var(--map-accent-rgb), 0.4);
@@ -482,7 +484,7 @@
 
   &.is-featured {
     background: colors.$color-bg-secondary;
-    color: $bg-white;
+    color: colors.$color-bg-primary;
 
     &::after {
       border-top-color: var(--map-accent);
@@ -508,17 +510,17 @@
 
 .cluster-marker {
   background: colors.$color-bg-secondary;
-  color: $bg-white;
-  border-radius: $radius-full;
+  color: colors.$color-bg-primary;
+  border-radius: effects.$radius-full;
   width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: $font-weight-bold;
-  border: 3px solid $bg-white;
-  box-shadow: $shadow-md;
-  font-family: $font-family-base;
+  font-weight: typography.$font-weight-bold;
+  border: 3px solid colors.$color-bg-primary;
+  box-shadow: effects.$shadow-md;
+  font-family: typography.$font-family-base;
 }
 
 // ----------------------------------------
@@ -527,13 +529,13 @@
 
 .property-popup {
   min-width: 220px;
-  font-family: $font-family-base;
+  font-family: typography.$font-family-base;
 
   img {
     width: 100%;
     height: 120px;
     object-fit: cover;
-    border-radius: $radius-md $radius-md 0 0;
+    border-radius: effects.$radius-md effects.$radius-md 0 0;
     margin: -14px -14px 12px -14px;
     width: calc(100% + 28px);
   }
@@ -544,30 +546,30 @@
 }
 
 .popup-price {
-  font-size: $font-size-lg;
-  font-weight: $font-weight-bold;
-  color: $text-primary;
-  margin-bottom: $spacing-1;
+  font-size: typography.$font-size-lg;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
+  margin-bottom: spacing.$spacing-1;
 }
 
 .popup-details {
-  font-size: $font-size-sm;
-  color: $text-secondary;
-  margin-bottom: $spacing-1;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-text-secondary;
+  margin-bottom: spacing.$spacing-1;
 }
 
 .popup-address {
-  font-size: $font-size-sm;
-  color: $text-secondary;
-  margin-bottom: $spacing-3;
-  line-height: $line-height-base;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-text-secondary;
+  margin-bottom: spacing.$spacing-3;
+  line-height: typography.$line-height-base;
 }
 
 .popup-link {
   display: inline-block;
   color: var(--map-accent);
-  font-weight: $font-weight-semibold;
-  font-size: $font-size-sm;
+  font-weight: typography.$font-weight-semibold;
+  font-size: typography.$font-size-sm;
   text-decoration: none;
   transition: color var(--map-transition-fast);
 
@@ -579,7 +581,7 @@
 
 // Custom Leaflet popup styling
 .leaflet-popup-content-wrapper {
-  border-radius: $radius-lg !important;
+  border-radius: effects.$radius-lg !important;
   padding: 0 !important;
   overflow: hidden;
 }
@@ -594,19 +596,19 @@
 
 .map-back-link {
   position: absolute;
-  top: $spacing-4;
-  left: $spacing-4;
+  top: spacing.$spacing-4;
+  left: spacing.$spacing-4;
   z-index: 1001;
   display: flex;
   align-items: center;
-  gap: $spacing-2;
-  padding: $spacing-2 $spacing-4;
+  gap: spacing.$spacing-2;
+  padding: spacing.$spacing-2 spacing.$spacing-4;
   background: colors.$color-bg-secondary;
-  border-radius: $radius-md;
-  box-shadow: $shadow-md;
-  color: $text-primary;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
+  border-radius: effects.$radius-md;
+  box-shadow: effects.$shadow-md;
+  color: colors.$color-text-primary;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
   text-decoration: none;
   transition:
     background var(--map-transition-fast),
@@ -614,7 +616,7 @@
 
   &:hover {
     background: colors.$color-bg-secondary;
-    box-shadow: $shadow-lg;
+    box-shadow: effects.$shadow-lg;
   }
 
   svg {
@@ -641,23 +643,23 @@
 // Filter Toggle Button
 .map-filters-toggle {
   position: absolute;
-  top: $spacing-4;
-  right: $spacing-4;
+  top: spacing.$spacing-4;
+  right: spacing.$spacing-4;
   z-index: 1000;
-  padding: $spacing-3 $spacing-4;
+  padding: spacing.$spacing-3 spacing.$spacing-4;
   background: colors.$color-bg-secondary;
-  color: $bg-white;
+  color: colors.$color-bg-primary;
   border: none;
-  border-radius: $radius-md;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
+  border-radius: effects.$radius-md;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-semibold;
   cursor: pointer;
-  box-shadow: $shadow-md;
+  box-shadow: effects.$shadow-md;
   transition: background var(--map-transition-fast);
-  font-family: $font-family-base;
+  font-family: typography.$font-family-base;
   display: flex;
   align-items: center;
-  gap: $spacing-2;
+  gap: spacing.$spacing-2;
 
   &:hover {
     background: colors.$color-bg-secondary;
@@ -673,9 +675,9 @@
   background: colors.$color-bg-secondary;
   color: var(--map-accent);
   padding: 2px 8px;
-  border-radius: $radius-full;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-bold;
+  border-radius: effects.$radius-full;
+  font-size: typography.$font-size-xs;
+  font-weight: typography.$font-weight-bold;
 }
 
 // Filter Panel Backdrop
@@ -703,15 +705,15 @@
   z-index: 1002;
   overflow-y: auto;
   animation: slideInLeft 0.3s ease-out;
-  font-family: $font-family-base;
+  font-family: typography.$font-family-base;
   display: flex;
   flex-direction: column;
 }
 
 // Panel Header
 .map-filters-panel__header {
-  padding: $spacing-6;
-  border-bottom: 2px solid $border-light;
+  padding: spacing.$spacing-6;
+  border-bottom: 2px solid colors.$color-border-light;
   position: sticky;
   top: 0;
   background: colors.$color-bg-secondary;
@@ -722,29 +724,29 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: $spacing-2;
+  margin-bottom: spacing.$spacing-2;
 }
 
 .map-filters-panel__title {
   margin: 0;
-  font-size: $font-size-2xl;
-  font-weight: $font-weight-bold;
-  color: $text-primary;
+  font-size: typography.$font-size-2xl;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
 }
 
 .map-filters-panel__close {
   background: colors.$color-bg-secondary;
   border: none;
   cursor: pointer;
-  padding: $spacing-1;
-  color: $text-secondary;
+  padding: spacing.$spacing-1;
+  color: colors.$color-text-secondary;
   transition: color var(--map-transition-fast);
   display: flex;
   align-items: center;
   justify-content: center;
 
   &:hover {
-    color: $text-primary;
+    color: colors.$color-text-primary;
   }
 
   svg {
@@ -755,20 +757,20 @@
 
 .map-filters-panel__count {
   margin: 0;
-  font-size: $font-size-sm;
-  color: $text-secondary;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-text-secondary;
 }
 
 // Panel Body
 .map-filters-panel__body {
-  padding: $spacing-6;
+  padding: spacing.$spacing-6;
   flex: 1;
   overflow-y: auto;
 }
 
 // Filter Section
 .map-filter-section {
-  margin-bottom: $spacing-6;
+  margin-bottom: spacing.$spacing-6;
 
   &:last-child {
     margin-bottom: 0;
@@ -777,53 +779,53 @@
 
 .map-filter-section__label {
   display: block;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  color: $text-primary;
-  margin-bottom: $spacing-2;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+  margin-bottom: spacing.$spacing-2;
 }
 
 .map-filter-section__hint {
-  margin: $spacing-2 0 0 0;
-  font-size: $font-size-xs;
-  color: $text-secondary;
+  margin: spacing.$spacing-2 0 0 0;
+  font-size: typography.$font-size-xs;
+  color: colors.$color-text-secondary;
   font-style: italic;
 }
 
 // Toggle Buttons (Sale/Let)
 .map-filter-toggles {
   display: flex;
-  gap: $spacing-2;
+  gap: spacing.$spacing-2;
 }
 
 .map-filter-toggle-btn {
   flex: 1;
-  padding: $spacing-3;
-  border: 2px solid $border-light;
+  padding: spacing.$spacing-3;
+  border: 2px solid colors.$color-border-light;
   background: colors.$color-bg-secondary;
-  color: $text-secondary;
-  border-radius: $radius-md;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
+  color: colors.$color-text-secondary;
+  border-radius: effects.$radius-md;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-semibold;
   cursor: pointer;
   transition: all var(--map-transition-fast);
   text-transform: capitalize;
 
   &:hover {
-    border-color: $border-medium;
+    border-color: colors.$color-border-medium;
   }
 
   &.is-active {
     border-color: var(--map-accent);
     background: colors.$color-bg-secondary;
-    color: $bg-white;
+    color: colors.$color-bg-primary;
   }
 }
 
 // Number Grid (Bedrooms/Bathrooms)
 .map-filter-number-grid {
   display: grid;
-  gap: $spacing-2;
+  gap: spacing.$spacing-2;
 
   &--5 {
     grid-template-columns: repeat(5, 1fr);
@@ -835,24 +837,24 @@
 }
 
 .map-filter-number-btn {
-  padding: $spacing-3 $spacing-2;
-  border: 2px solid $border-light;
+  padding: spacing.$spacing-3 spacing.$spacing-2;
+  border: 2px solid colors.$color-border-light;
   background: colors.$color-bg-secondary;
-  color: $text-secondary;
-  border-radius: $radius-md;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
+  color: colors.$color-text-secondary;
+  border-radius: effects.$radius-md;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-semibold;
   cursor: pointer;
   transition: all var(--map-transition-fast);
 
   &:hover {
-    border-color: $border-medium;
+    border-color: colors.$color-border-medium;
   }
 
   &.is-active {
     border-color: var(--map-accent);
     background: colors.$color-bg-secondary;
-    color: $bg-white;
+    color: colors.$color-bg-primary;
   }
 }
 
@@ -860,17 +862,17 @@
 .map-filter-price-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: $spacing-3;
+  gap: spacing.$spacing-3;
 }
 
 // Select Input
 .map-filter-select {
   width: 100%;
-  padding: $spacing-3;
-  border: 2px solid $border-light;
-  border-radius: $radius-md;
-  font-size: $font-size-sm;
-  font-family: $font-family-base;
+  padding: spacing.$spacing-3;
+  border: 2px solid colors.$color-border-light;
+  border-radius: effects.$radius-md;
+  font-size: typography.$font-size-sm;
+  font-family: typography.$font-family-base;
   outline: none;
   background: colors.$color-bg-secondary;
   cursor: pointer;
@@ -878,8 +880,8 @@
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right $spacing-3 center;
-  padding-right: $spacing-10;
+  background-position: right spacing.$spacing-3 center;
+  padding-right: spacing.$spacing-10;
 
   &:focus {
     border-color: var(--map-accent);
@@ -893,17 +895,17 @@
 
 .map-filter-input {
   width: 100%;
-  padding: $spacing-3 $spacing-10;
-  border: 2px solid $border-light;
-  border-radius: $radius-md;
-  font-size: $font-size-sm;
-  font-family: $font-family-base;
+  padding: spacing.$spacing-3 spacing.$spacing-10;
+  border: 2px solid colors.$color-border-light;
+  border-radius: effects.$radius-md;
+  font-size: typography.$font-size-sm;
+  font-family: typography.$font-family-base;
   outline: none;
   background: colors.$color-bg-secondary;
   transition: border-color var(--map-transition-fast);
 
   &::placeholder {
-    color: $text-muted;
+    color: colors.$color-text-muted;
   }
 
   &:focus {
@@ -913,11 +915,11 @@
 
 .map-filter-input-icon {
   position: absolute;
-  left: $spacing-3;
+  left: spacing.$spacing-3;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  color: $text-secondary;
+  color: colors.$color-text-secondary;
 
   svg {
     width: 18px;
@@ -927,23 +929,23 @@
 
 .map-filter-input-clear {
   position: absolute;
-  right: $spacing-2;
+  right: spacing.$spacing-2;
   top: 50%;
   transform: translateY(-50%);
   background: colors.$color-bg-secondary;
   border: none;
   cursor: pointer;
-  padding: $spacing-1;
-  color: $text-secondary;
+  padding: spacing.$spacing-1;
+  color: colors.$color-text-secondary;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: $radius-sm;
+  border-radius: effects.$radius-sm;
   transition: all var(--map-transition-fast);
 
   &:hover {
     background: colors.$color-bg-secondary;
-    color: $text-primary;
+    color: colors.$color-text-primary;
   }
 
   svg {
@@ -956,7 +958,7 @@
 .map-filter-checkbox {
   display: flex;
   align-items: center;
-  gap: $spacing-2;
+  gap: spacing.$spacing-2;
   cursor: pointer;
 
   input {
@@ -967,35 +969,35 @@
   }
 
   span {
-    font-size: $font-size-sm;
-    font-weight: $font-weight-semibold;
-    color: $text-primary;
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
   }
 }
 
 // Panel Footer
 .map-filters-panel__footer {
-  padding: $spacing-6;
-  border-top: 2px solid $border-light;
+  padding: spacing.$spacing-6;
+  border-top: 2px solid colors.$color-border-light;
   position: sticky;
   bottom: 0;
   background: colors.$color-bg-secondary;
   display: flex;
-  gap: $spacing-3;
+  gap: spacing.$spacing-3;
 }
 
 .map-filter-btn {
   flex: 1;
-  padding: $spacing-3;
-  border-radius: $radius-md;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
+  padding: spacing.$spacing-3;
+  border-radius: effects.$radius-md;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-semibold;
   cursor: pointer;
   transition: all var(--map-transition-fast);
-  font-family: $font-family-base;
+  font-family: typography.$font-family-base;
 
   &--secondary {
-    border: 2px solid $border-light;
+    border: 2px solid colors.$color-border-light;
     background: colors.$color-bg-tertiary;
     color: colors.$color-text-primary;
 

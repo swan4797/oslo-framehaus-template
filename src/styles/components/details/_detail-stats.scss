@@ -12,15 +12,15 @@
 
 .detail-stats {
   background: colors.$color-bg-secondary;
-  padding: spacing.$space-12 0 spacing.$space-16;
+  padding: spacing.$spacing-12 0 spacing.$spacing-16;
   border-top: 1px solid colors.$color-border-light;
 
   @include md {
-    padding: spacing.$space-16 0 spacing.$space-20;
+    padding: spacing.$spacing-16 0 spacing.$spacing-20;
   }
 
   @include lg {
-    padding: spacing.$space-20 0 spacing.$space-24;
+    padding: spacing.$spacing-20 0 spacing.$spacing-24;
   }
 }
 
@@ -35,18 +35,18 @@
 .detail-stats__header {
   display: grid;
   grid-template-columns: 1fr;
-  gap: spacing.$space-4;
-  margin-bottom: spacing.$space-10;
+  gap: spacing.$spacing-4;
+  margin-bottom: spacing.$spacing-10;
 
   @include md {
     grid-template-columns: 1fr 1fr;
-    gap: spacing.$space-8;
+    gap: spacing.$spacing-8;
     align-items: end;
-    margin-bottom: spacing.$space-12;
+    margin-bottom: spacing.$spacing-12;
   }
 
   @include lg {
-    margin-bottom: spacing.$space-14;
+    margin-bottom: spacing.$spacing-14;
   }
 }
 
@@ -104,18 +104,18 @@
 .detail-stats__card {
   display: flex;
   flex-direction: column;
-  gap: spacing.$space-2;
-  padding: spacing.$space-6;
+  gap: spacing.$spacing-2;
+  padding: spacing.$spacing-6;
   background: colors.$color-bg-secondary;
   text-align: center;
 
   @include md {
-    padding: spacing.$space-8;
-    gap: spacing.$space-3;
+    padding: spacing.$spacing-8;
+    gap: spacing.$spacing-3;
   }
 
   @include lg {
-    padding: spacing.$space-10;
+    padding: spacing.$spacing-10;
   }
 }
 

@@ -5,9 +5,12 @@
 // ========================================
 
 // Import design system
-@use '../variables' as *;
-@use '../mixins' as *;
 @use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/layout' as layout;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../mixins' as *;
 
 // ========================================
 // LOCAL TOKENS
@@ -23,26 +26,26 @@ $hero-accent: colors.$color-error;
 .hero__section {
   width: 100%;
   background: colors.$color-bg-secondary;
-  padding: $spacing-16 $spacing-8 $spacing-12;
+  padding: spacing.$spacing-16 spacing.$spacing-8 spacing.$spacing-12;
   position: relative;
 
   @media (max-width: 640px) {
-    padding: $spacing-8 $spacing-6;
+    padding: spacing.$spacing-8 spacing.$spacing-6;
   }
 }
 
 .hero__container {
-  max-width: $container-max-width;
+  max-width: layout.$container-max-width;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1.3fr;
-  gap: $spacing-16;
+  gap: spacing.$spacing-16;
   align-items: center;
-  margin-bottom: $spacing-12;
+  margin-bottom: spacing.$spacing-12;
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
-    gap: $spacing-12;
+    gap: spacing.$spacing-12;
   }
 }
 
@@ -51,7 +54,7 @@ $hero-accent: colors.$color-error;
 // ========================================
 
 .hero__content {
-  padding-right: $spacing-8;
+  padding-right: spacing.$spacing-8;
 
   @media (max-width: 1024px) {
     padding-right: 0;
@@ -61,10 +64,10 @@ $hero-accent: colors.$color-error;
 
 .hero__headline {
   font-size: clamp(2.5rem, 5vw, 3.75rem);
-  font-weight: $font-weight-bold;
-  color: $text-primary;
-  margin: 0 0 $spacing-6 0;
-  line-height: $line-height-tight;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
+  margin: 0 0 spacing.$spacing-6 0;
+  line-height: typography.$line-height-tight;
   letter-spacing: -0.03em;
 
   @media (max-width: 640px) {
@@ -74,27 +77,27 @@ $hero-accent: colors.$color-error;
 
 .hero__description {
   font-size: clamp(1.125rem, 1.5vw, 1.25rem);
-  color: $text-secondary;
-  margin: 0 0 $spacing-10 0;
+  color: colors.$color-text-secondary;
+  margin: 0 0 spacing.$spacing-10 0;
   line-height: 1.6;
-  font-weight: $font-weight-regular;
+  font-weight: typography.$font-weight-regular;
 
   @media (max-width: 640px) {
-    font-size: $font-size-base;
+    font-size: typography.$font-size-base;
   }
 }
 
 .hero__cta {
   display: inline-block;
-  padding: $spacing-4 $spacing-10;
-  font-size: $font-size-base;
-  color: $text-inverse;
+  padding: spacing.$spacing-4 spacing.$spacing-10;
+  font-size: typography.$font-size-base;
+  color: colors.$color-text-light;
   background: colors.$color-bg-secondary;
   border: none;
   text-decoration: none;
-  transition: all $transition-smooth;
-  border-radius: $radius-md;
-  font-weight: $font-weight-semibold;
+  transition: all effects.$transition-smooth;
+  border-radius: effects.$radius-md;
+  font-weight: typography.$font-weight-semibold;
   cursor: pointer;
 
   &:hover {
@@ -120,7 +123,7 @@ $hero-accent: colors.$color-error;
 .showcase__grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: $spacing-4;
+  gap: spacing.$spacing-4;
   width: 100%;
 
   @media (max-width: 640px) {
@@ -132,7 +135,7 @@ $hero-accent: colors.$color-error;
   position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  border-radius: $radius-lg;
+  border-radius: effects.$radius-lg;
   background: colors.$color-bg-secondary;
   opacity: 0;
   animation: hero-fade-in 0.8s ease forwards;
@@ -158,24 +161,24 @@ $hero-accent: colors.$color-error;
 // ========================================
 
 .search__container {
-  max-width: $container-max-width;
+  max-width: layout.$container-max-width;
   margin: 0 auto;
   width: 100%;
 }
 
 .search__wrapper {
   background: colors.$color-bg-secondary;
-  border-radius: $radius-lg;
-  padding: $spacing-6;
+  border-radius: effects.$radius-lg;
+  padding: spacing.$spacing-6;
   display: grid;
   grid-template-columns: 2fr repeat(3, 1fr) auto;
-  gap: $spacing-4;
+  gap: spacing.$spacing-4;
   align-items: center;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr 1fr;
-    gap: $spacing-4;
+    gap: spacing.$spacing-4;
   }
 
   @media (max-width: 640px) {
@@ -195,31 +198,31 @@ $hero-accent: colors.$color-error;
 
 .search__icon {
   position: absolute;
-  left: $spacing-4;
+  left: spacing.$spacing-4;
   width: 1.25rem;
   height: 1.25rem;
-  color: $text-muted;
+  color: colors.$color-text-muted;
   pointer-events: none;
 }
 
 .search__input {
   width: 100%;
-  padding: $spacing-3 $spacing-4 $spacing-3 $spacing-12;
-  border: 1px solid $border-light;
-  border-radius: $radius-md;
-  font-size: $font-size-sm;
-  color: $text-primary;
-  font-family: $font-family-base;
-  transition: all $transition-base;
+  padding: spacing.$spacing-3 spacing.$spacing-4 spacing.$spacing-3 spacing.$spacing-12;
+  border: 1px solid colors.$color-border-light;
+  border-radius: effects.$radius-md;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-text-primary;
+  font-family: typography.$font-family-base;
+  transition: all effects.$transition-base;
 
   &::placeholder {
-    color: $text-muted;
+    color: colors.$color-text-muted;
   }
 
   &:focus {
     outline: none;
-    border-color: $accent-primary;
-    box-shadow: $focus-ring;
+    border-color: colors.$color-primary;
+    box-shadow: effects.$focus-ring;
   }
 }
 
@@ -235,45 +238,45 @@ $hero-accent: colors.$color-error;
 
 .dropdown__icon {
   position: absolute;
-  left: $spacing-4;
+  left: spacing.$spacing-4;
   width: 1.25rem;
   height: 1.25rem;
-  color: $text-muted;
+  color: colors.$color-text-muted;
   pointer-events: none;
   z-index: 1;
 }
 
 .dropdown__chevron {
   position: absolute;
-  right: $spacing-4;
+  right: spacing.$spacing-4;
   width: 1rem;
   height: 1rem;
-  color: $text-muted;
+  color: colors.$color-text-muted;
   pointer-events: none;
   z-index: 1;
 }
 
 .dropdown__select {
   width: 100%;
-  padding: $spacing-3 $spacing-12;
-  border: 1px solid $border-light;
-  border-radius: $radius-md;
-  font-size: $font-size-sm;
-  color: $text-primary;
-  font-family: $font-family-base;
+  padding: spacing.$spacing-3 spacing.$spacing-12;
+  border: 1px solid colors.$color-border-light;
+  border-radius: effects.$radius-md;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-text-primary;
+  font-family: typography.$font-family-base;
   background: colors.$color-bg-secondary;
   cursor: pointer;
   appearance: none;
-  transition: all $transition-base;
+  transition: all effects.$transition-base;
 
   &:focus {
     outline: none;
-    border-color: $accent-primary;
-    box-shadow: $focus-ring;
+    border-color: colors.$color-primary;
+    box-shadow: effects.$focus-ring;
   }
 
   option {
-    padding: $spacing-2;
+    padding: spacing.$spacing-2;
   }
 }
 
@@ -282,16 +285,16 @@ $hero-accent: colors.$color-error;
 // ========================================
 
 .search__button {
-  padding: $spacing-3 $spacing-10;
+  padding: spacing.$spacing-3 spacing.$spacing-10;
   background: colors.$color-bg-secondary;
-  color: $text-inverse;
+  color: colors.$color-text-light;
   border: none;
-  border-radius: $radius-md;
-  font-size: $font-size-base;
-  font-weight: $font-weight-semibold;
-  font-family: $font-family-base;
+  border-radius: effects.$radius-md;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-semibold;
+  font-family: typography.$font-family-base;
   cursor: pointer;
-  transition: all $transition-smooth;
+  transition: all effects.$transition-smooth;
   white-space: nowrap;
 
   &:hover {

@@ -4,17 +4,20 @@
 // Using centralized color tokens from tokens/_colors.scss
 // ========================================
 
-@use '../variables' as *;
-@use '../mixins' as *;
 @use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/layout' as layout;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../mixins' as *;
 
 // ----------------------------------------
 // COMPONENT VARIABLES
 // ----------------------------------------
 
-$search-padding-y: $spacing-5;
-$search-padding-y-desktop: $spacing-8;
-$search-padding-x: $spacing-5;
+$search-padding-y: spacing.$spacing-5;
+$search-padding-y-desktop: spacing.$spacing-8;
+$search-padding-x: spacing.$spacing-5;
 $search-field-bg: colors.$color-bg-primary;
 $search-field-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
 $search-field-shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
@@ -26,11 +29,11 @@ $search-icon-size: 22px;
 // ----------------------------------------
 
 .property-search {
-  padding: $spacing-8 0;
+  padding: spacing.$spacing-8 0;
   background: colors.$color-bg-secondary;
 
   @include md {
-    padding: $spacing-10 0;
+    padding: spacing.$spacing-10 0;
   }
 }
 
@@ -45,12 +48,12 @@ $search-icon-size: 22px;
 .property-search__form {
   display: flex;
   flex-direction: column;
-  gap: $spacing-4;
+  gap: spacing.$spacing-4;
 
   @include lg {
     flex-direction: row;
     align-items: stretch;
-    gap: $spacing-5;
+    gap: spacing.$spacing-5;
   }
 }
 
@@ -62,13 +65,13 @@ $search-icon-size: 22px;
   display: flex;
   align-items: center;
   background: colors.$color-bg-secondary;
-  border-radius: $radius-lg;
+  border-radius: effects.$radius-lg;
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: $search-field-shadow;
   overflow: hidden;
   flex: 1;
   min-width: 0;
-  transition: box-shadow $transition-fast, border-color $transition-fast;
+  transition: box-shadow effects.$transition-fast, border-color effects.$transition-fast;
 
   @include lg {
     flex: 0 0 40%;
@@ -80,7 +83,7 @@ $search-icon-size: 22px;
   }
 
   &:focus-within {
-    border-color: $accent-coral;
+    border-color: colors.$color-primary;
     box-shadow: $search-field-shadow;
   }
 }
@@ -90,7 +93,7 @@ $search-icon-size: 22px;
   align-items: center;
   flex: 1;
   min-width: 0;
-  padding: $search-padding-y $spacing-4;
+  padding: $search-padding-y spacing.$spacing-4;
 
   @include lg {
     padding: $search-padding-y-desktop $search-padding-x;
@@ -102,49 +105,49 @@ $search-icon-size: 22px;
   width: $search-icon-size;
   height: $search-icon-size;
   color: $search-icon-color;
-  margin-right: $spacing-3;
+  margin-right: spacing.$spacing-3;
 }
 
 .property-search__input {
   flex: 1;
   min-width: 0;
   padding: 0;
-  font-family: $font-family-base;
-  font-size: $font-size-base;
-  color: $text-primary;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  color: colors.$color-text-primary;
   background: colors.$color-bg-secondary;
   border: none;
   outline: none;
 
   @include lg {
-    font-size: $font-size-lg;
+    font-size: typography.$font-size-lg;
   }
 
   &::placeholder {
-    color: $text-muted;
+    color: colors.$color-text-muted;
   }
 }
 
 .property-search__submit {
   flex-shrink: 0;
   align-self: stretch;
-  margin: $spacing-2;
-  padding: $spacing-4 $spacing-6;
-  font-family: $font-family-base;
-  font-size: $font-size-base;
-  font-weight: $font-weight-semibold;
-  color: $bg-white;
+  margin: spacing.$spacing-2;
+  padding: spacing.$spacing-4 spacing.$spacing-6;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-bg-primary;
   background: colors.$color-bg-secondary;
   border: none;
-  border-radius: $radius-md;
+  border-radius: effects.$radius-md;
   cursor: pointer;
-  transition: background $transition-fast, transform $transition-fast;
+  transition: background effects.$transition-fast, transform effects.$transition-fast;
   white-space: nowrap;
 
   @include lg {
-    margin: $spacing-3;
-    padding: $spacing-5 $spacing-8;
-    font-size: $font-size-lg;
+    margin: spacing.$spacing-3;
+    padding: spacing.$spacing-5 spacing.$spacing-8;
+    font-size: typography.$font-size-lg;
   }
 
   &:hover {
@@ -163,18 +166,18 @@ $search-icon-size: 22px;
 .property-search__filters {
   display: flex;
   flex-direction: column;
-  gap: $spacing-4;
+  gap: spacing.$spacing-4;
 
   @include sm {
     flex-direction: row;
     flex-wrap: wrap;
-    gap: $spacing-4;
+    gap: spacing.$spacing-4;
   }
 
   @include lg {
     flex: 1;
     flex-wrap: nowrap;
-    gap: $spacing-5;
+    gap: spacing.$spacing-5;
   }
 }
 
@@ -182,31 +185,31 @@ $search-icon-size: 22px;
   position: relative;
   display: flex;
   align-items: center;
-  gap: $spacing-3;
-  padding: $search-padding-y $spacing-10 $search-padding-y $search-padding-x;
+  gap: spacing.$spacing-3;
+  padding: $search-padding-y spacing.$spacing-10 $search-padding-y $search-padding-x;
   background: colors.$color-bg-secondary;
   border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: $radius-lg;
+  border-radius: effects.$radius-lg;
   box-shadow: $search-field-shadow;
   cursor: pointer;
-  transition: box-shadow $transition-fast, border-color $transition-fast;
+  transition: box-shadow effects.$transition-fast, border-color effects.$transition-fast;
   flex: 1;
   min-width: 140px;
 
   @include lg {
-    padding: $search-padding-y-desktop $spacing-12 $search-padding-y-desktop $search-padding-x;
+    padding: $search-padding-y-desktop spacing.$spacing-12 $search-padding-y-desktop $search-padding-x;
   }
 
   // Dropdown arrow
   &::after {
     content: '';
     position: absolute;
-    right: $spacing-5;
+    right: spacing.$spacing-5;
     width: 0;
     height: 0;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
-    border-top: 6px solid $text-muted;
+    border-top: 6px solid colors.$color-text-muted;
     pointer-events: none;
   }
 
@@ -215,7 +218,7 @@ $search-icon-size: 22px;
   }
 
   @include sm {
-    flex: 1 1 calc(33.333% - #{$spacing-4});
+    flex: 1 1 calc(33.333% - #{spacing.$spacing-4});
   }
 
   @include lg {
@@ -243,19 +246,19 @@ $search-icon-size: 22px;
   height: 100%;
   opacity: 0;
   cursor: pointer;
-  font-size: $font-size-base;
+  font-size: typography.$font-size-base;
 }
 
 .property-search__filter-label {
-  font-family: $font-family-base;
-  font-size: $font-size-base;
-  font-weight: $font-weight-regular;
-  color: $text-secondary;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-regular;
+  color: colors.$color-text-secondary;
   white-space: nowrap;
   pointer-events: none;
 
   @include lg {
-    font-size: $font-size-lg;
+    font-size: typography.$font-size-lg;
   }
 }
 
@@ -265,36 +268,36 @@ $search-icon-size: 22px;
 
 .property-search--card {
   background: colors.$color-bg-secondary;
-  padding: $spacing-8 0;
+  padding: spacing.$spacing-8 0;
 
   @include md {
-    padding: $spacing-10 0;
+    padding: spacing.$spacing-10 0;
   }
 
   .property-search__form {
     background: colors.$color-bg-secondary;
-    border-radius: $radius-xl;
-    padding: $spacing-5;
-    box-shadow: $shadow-lg;
+    border-radius: effects.$radius-xl;
+    padding: spacing.$spacing-5;
+    box-shadow: effects.$shadow-lg;
     border: 1px solid rgba(0, 0, 0, 0.04);
 
     @include md {
-      padding: $spacing-6;
+      padding: spacing.$spacing-6;
     }
   }
 
   .property-search__input-group,
   .property-search__filter {
-    border: 1px solid $border-light;
+    border: 1px solid colors.$color-border-light;
     box-shadow: none;
 
     &:hover {
       box-shadow: none;
-      border-color: $border-medium;
+      border-color: colors.$color-border-medium;
     }
 
     &:focus-within {
-      box-shadow: 0 0 0 3px rgba($accent-coral, 0.1);
+      box-shadow: 0 0 0 3px rgba(colors.$color-primary, 0.1);
     }
   }
 }
@@ -310,10 +313,10 @@ $search-icon-size: 22px;
   .property-search__input-group,
   .property-search__filter {
     box-shadow: none;
-    border: 1px solid $border-light;
+    border: 1px solid colors.$color-border-light;
 
     &:hover {
-      border-color: $border-medium;
+      border-color: colors.$color-border-medium;
       box-shadow: none;
     }
   }

@@ -4,30 +4,32 @@
 // Using centralized color tokens from tokens/_colors.scss
 // ========================================
 
-@use '../variables' as *;
-@use '../mixins' as *;
 @use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../mixins' as *;
 
 // ----------------------------------------
 // COMPONENT VARIABLES
 // ----------------------------------------
 
-$hero-gradient-start: $accent-coral;
+$hero-gradient-start: colors.$color-primary;
 $hero-gradient-end: colors.$color-primary-light;
-$hero-padding-mobile: $spacing-8;
-$hero-padding-desktop: $spacing-12;
+$hero-padding-mobile: spacing.$spacing-8;
+$hero-padding-desktop: spacing.$spacing-12;
 
 $sidebar-width: 380px;
 $sidebar-width-tablet: 320px;
-$content-gap: $spacing-8;
+$content-gap: spacing.$spacing-8;
 
-$results-header-bg: $bg-white;
+$results-header-bg: colors.$color-bg-primary;
 $results-header-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-$results-header-radius: $radius-xl;
+$results-header-radius: effects.$radius-xl;
 
-$state-container-bg: $bg-white;
+$state-container-bg: colors.$color-bg-primary;
 $state-container-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-$state-container-radius: $radius-xl;
+$state-container-radius: effects.$radius-xl;
 
 // ----------------------------------------
 // PAGE CONTAINER
@@ -69,9 +71,9 @@ $state-container-radius: $radius-xl;
 
 .search-page__hero-title {
   font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: $font-weight-bold;
-  color: $bg-white;
-  margin: 0 0 $spacing-3 0;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-bg-primary;
+  margin: 0 0 spacing.$spacing-3 0;
   text-align: center;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -92,11 +94,11 @@ $state-container-radius: $radius-xl;
 }
 
 .search-page__main {
-  margin-top: -$spacing-6;
-  padding-bottom: $spacing-16;
+  margin-top: -spacing.$spacing-6;
+  padding-bottom: spacing.$spacing-16;
 
   @include mobile-only {
-    padding-bottom: $spacing-12;
+    padding-bottom: spacing.$spacing-12;
   }
 }
 
@@ -134,7 +136,7 @@ $state-container-radius: $radius-xl;
 
   @include lg {
     position: sticky;
-    top: $spacing-8;
+    top: spacing.$spacing-8;
   }
 }
 
@@ -156,16 +158,16 @@ $state-container-radius: $radius-xl;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: $spacing-4;
-  padding: $spacing-6 $spacing-8;
+  gap: spacing.$spacing-4;
+  padding: spacing.$spacing-6 spacing.$spacing-8;
   background: colors.$color-bg-secondary;
   border-radius: $results-header-radius;
   box-shadow: $results-header-shadow;
-  border: 1px solid $border-light;
-  margin-bottom: $spacing-8;
+  border: 1px solid colors.$color-border-light;
+  margin-bottom: spacing.$spacing-8;
 
   @include mobile-only {
-    padding: $spacing-5 $spacing-6;
+    padding: spacing.$spacing-5 spacing.$spacing-6;
   }
 }
 
@@ -175,36 +177,36 @@ $state-container-radius: $radius-xl;
 }
 
 .search-page__results-count {
-  font-size: $font-size-2xl;
-  font-weight: $font-weight-bold;
-  color: $text-primary;
-  margin: 0 0 $spacing-2 0;
+  font-size: typography.$font-size-2xl;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
+  margin: 0 0 spacing.$spacing-2 0;
   display: flex;
   align-items: baseline;
-  gap: $spacing-2;
+  gap: spacing.$spacing-2;
 }
 
 .search-page__count-number {
-  color: $accent-coral;
+  color: colors.$color-primary;
 }
 
 .search-page__count-text {
-  font-size: $font-size-lg;
-  color: $text-secondary;
-  font-weight: $font-weight-semibold;
+  font-size: typography.$font-size-lg;
+  color: colors.$color-text-secondary;
+  font-weight: typography.$font-weight-semibold;
 }
 
 .search-page__results-location {
   display: flex;
   align-items: center;
-  gap: $spacing-2;
-  color: $text-secondary;
-  font-size: $font-size-sm;
+  gap: spacing.$spacing-2;
+  color: colors.$color-text-secondary;
+  font-size: typography.$font-size-sm;
   margin: 0;
 }
 
 .search-page__location-icon {
-  color: $text-muted;
+  color: colors.$color-text-muted;
   flex-shrink: 0;
 }
 
@@ -217,7 +219,7 @@ $state-container-radius: $radius-xl;
   flex-direction: column;
   align-items: stretch;
   width: 100%;
-  gap: $spacing-4;
+  gap: spacing.$spacing-4;
 
   @include sm {
     flex-direction: row;
@@ -229,13 +231,13 @@ $state-container-radius: $radius-xl;
 .search-page__filters-badge {
   display: flex;
   align-items: center;
-  gap: $spacing-2;
-  padding: $spacing-2 $spacing-4;
+  gap: spacing.$spacing-2;
+  padding: spacing.$spacing-2 spacing.$spacing-4;
   background: colors.$color-bg-secondary;
-  color: $bg-white;
+  color: colors.$color-bg-primary;
   border-radius: 999px;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-semibold;
 }
 
 .search-page__badge-icon {
@@ -251,7 +253,7 @@ $state-container-radius: $radius-xl;
 .search-page__sort {
   display: flex;
   align-items: center;
-  gap: $spacing-2;
+  gap: spacing.$spacing-2;
   width: 100%;
   justify-content: space-between;
 
@@ -262,26 +264,26 @@ $state-container-radius: $radius-xl;
 }
 
 .search-page__sort-label {
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  color: $text-secondary;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-secondary;
 }
 
 .search-page__sort-select {
-  padding: $spacing-2 $spacing-10 $spacing-2 $spacing-4;
+  padding: spacing.$spacing-2 spacing.$spacing-10 spacing.$spacing-2 spacing.$spacing-4;
   background: colors.$color-bg-secondary;
-  border: 1px solid $border-light;
-  border-radius: $radius-md;
-  font-family: $font-family-base;
-  font-size: $font-size-sm;
-  color: $text-primary;
-  font-weight: $font-weight-medium;
+  border: 1px solid colors.$color-border-light;
+  border-radius: effects.$radius-md;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-text-primary;
+  font-weight: typography.$font-weight-medium;
   cursor: pointer;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right $spacing-3 center;
-  transition: border-color $transition-fast, background $transition-fast, box-shadow $transition-fast;
+  background-position: right spacing.$spacing-3 center;
+  transition: border-color effects.$transition-fast, background effects.$transition-fast, box-shadow effects.$transition-fast;
   flex: 1;
 
   @include sm {
@@ -289,14 +291,14 @@ $state-container-radius: $radius-xl;
   }
 
   &:hover {
-    border-color: $border-medium;
+    border-color: colors.$color-border-medium;
     background-color: colors.$color-bg-secondary;
   }
 
   &:focus {
     outline: none;
-    border-color: $accent-coral;
-    box-shadow: 0 0 0 3px rgba($accent-coral, 0.1);
+    border-color: colors.$color-primary;
+    box-shadow: 0 0 0 3px rgba(colors.$color-primary, 0.1);
   }
 }
 
@@ -307,28 +309,28 @@ $state-container-radius: $radius-xl;
 .search-page__map-link {
   display: inline-flex;
   align-items: center;
-  gap: $spacing-2;
-  padding: $spacing-2 $spacing-4;
+  gap: spacing.$spacing-2;
+  padding: spacing.$spacing-2 spacing.$spacing-4;
   background: colors.$color-bg-secondary;
-  border: 1px solid $border-light;
-  border-radius: $radius-md;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  color: $text-primary;
+  border: 1px solid colors.$color-border-light;
+  border-radius: effects.$radius-md;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
   text-decoration: none;
-  transition: border-color $transition-fast, background $transition-fast, color $transition-fast;
+  transition: border-color effects.$transition-fast, background effects.$transition-fast, color effects.$transition-fast;
   white-space: nowrap;
 
   &:hover {
-    border-color: $accent-coral;
-    color: $accent-coral;
+    border-color: colors.$color-primary;
+    color: colors.$color-primary;
     background: colors.$color-bg-secondary;
   }
 
   &:focus {
     outline: none;
-    border-color: $accent-coral;
-    box-shadow: 0 0 0 3px rgba($accent-coral, 0.1);
+    border-color: colors.$color-primary;
+    box-shadow: 0 0 0 3px rgba(colors.$color-primary, 0.1);
   }
 }
 
@@ -344,7 +346,7 @@ $state-container-radius: $radius-xl;
 .search-page__property-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: $spacing-6;
+  gap: spacing.$spacing-6;
 
   @include sm {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -360,7 +362,7 @@ $state-container-radius: $radius-xl;
 // ----------------------------------------
 
 .search-page__pagination {
-  margin-top: $spacing-12;
+  margin-top: spacing.$spacing-12;
 }
 
 // ----------------------------------------
@@ -371,19 +373,19 @@ $state-container-radius: $radius-xl;
   background: colors.$color-bg-secondary;
   border-radius: $state-container-radius;
   box-shadow: $state-container-shadow;
-  border: 1px solid $border-light;
-  padding: $spacing-16 $spacing-8;
+  border: 1px solid colors.$color-border-light;
+  padding: spacing.$spacing-16 spacing.$spacing-8;
   text-align: center;
 
   @include mobile-only {
-    padding: $spacing-12 $spacing-6;
+    padding: spacing.$spacing-12 spacing.$spacing-6;
   }
 }
 
 .search-page__state-icon {
   width: 5rem;
   height: 5rem;
-  margin: 0 auto $spacing-6;
+  margin: 0 auto spacing.$spacing-6;
 
   @include mobile-only {
     width: 4rem;
@@ -396,21 +398,21 @@ $state-container-radius: $radius-xl;
 }
 
 .search-page__state-icon--empty {
-  color: $text-muted;
+  color: colors.$color-text-muted;
 }
 
 .search-page__state-title {
-  font-size: $font-size-2xl;
-  font-weight: $font-weight-bold;
-  color: $text-primary;
-  margin: 0 0 $spacing-3 0;
+  font-size: typography.$font-size-2xl;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
+  margin: 0 0 spacing.$spacing-3 0;
 }
 
 .search-page__state-message {
-  font-size: $font-size-base;
-  color: $text-secondary;
-  margin: 0 0 $spacing-8 0;
-  line-height: $line-height-relaxed;
+  font-size: typography.$font-size-base;
+  color: colors.$color-text-secondary;
+  margin: 0 0 spacing.$spacing-8 0;
+  line-height: typography.$line-height-relaxed;
 }
 
 // ----------------------------------------
@@ -419,29 +421,29 @@ $state-container-radius: $radius-xl;
 
 .search-page__suggestions {
   max-width: 400px;
-  margin: 0 auto $spacing-8;
-  padding: $spacing-6;
+  margin: 0 auto spacing.$spacing-8;
+  padding: spacing.$spacing-6;
   background: colors.$color-bg-secondary;
-  border-radius: $radius-md;
+  border-radius: effects.$radius-md;
   text-align: left;
 }
 
 .search-page__suggestions-title {
-  font-size: $font-size-sm;
-  font-weight: $font-weight-bold;
-  color: $text-primary;
-  margin: 0 0 $spacing-3 0;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
+  margin: 0 0 spacing.$spacing-3 0;
 }
 
 .search-page__suggestions-list {
   margin: 0;
-  padding-left: $spacing-6;
+  padding-left: spacing.$spacing-6;
   list-style: disc;
 
   li {
-    font-size: $font-size-sm;
-    color: $text-secondary;
-    margin-bottom: $spacing-2;
+    font-size: typography.$font-size-sm;
+    color: colors.$color-text-secondary;
+    margin-bottom: spacing.$spacing-2;
 
     &:last-child {
       margin-bottom: 0;
@@ -456,20 +458,20 @@ $state-container-radius: $radius-xl;
 .search-page__state-button {
   display: inline-flex;
   align-items: center;
-  gap: $spacing-2;
-  padding: $spacing-4 $spacing-6;
+  gap: spacing.$spacing-2;
+  padding: spacing.$spacing-4 spacing.$spacing-6;
   background: colors.$color-bg-secondary;
-  color: $bg-white;
+  color: colors.$color-bg-primary;
   text-decoration: none;
-  border-radius: $radius-md;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  transition: background $transition-fast, transform $transition-fast, box-shadow $transition-fast;
+  border-radius: effects.$radius-md;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-semibold;
+  transition: background effects.$transition-fast, transform effects.$transition-fast, box-shadow effects.$transition-fast;
 
   &:hover {
     background: colors.$color-bg-secondary;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba($accent-coral, 0.3);
+    box-shadow: 0 8px 20px rgba(colors.$color-primary, 0.3);
   }
 
   &:active {

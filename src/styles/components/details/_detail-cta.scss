@@ -13,14 +13,14 @@
 .detail-cta {
   position: relative;
   background: colors.$color-bg-primary;
-  padding: spacing.$space-16 0;
+  padding: spacing.$spacing-16 0;
 
   @include md {
-    padding: spacing.$space-20 0;
+    padding: spacing.$spacing-20 0;
   }
 
   @include lg {
-    padding: spacing.$space-24 0;
+    padding: spacing.$spacing-24 0;
   }
 
   &--has-background {
@@ -79,11 +79,11 @@
   font-weight: typography.$font-weight-regular;
   color: colors.$color-accent;
   line-height: 1.2;
-  margin: 0 0 spacing.$space-4;
+  margin: 0 0 spacing.$spacing-4;
 
   @include md {
     font-size: clamp(2rem, 4vw, 2.75rem);
-    margin-bottom: spacing.$space-5;
+    margin-bottom: spacing.$spacing-5;
   }
 }
 
@@ -94,11 +94,11 @@
   color: colors.$color-accent;
   opacity: 0.85;
   line-height: 1.6;
-  margin: 0 0 spacing.$space-8;
+  margin: 0 0 spacing.$spacing-8;
 
   @include md {
     font-size: typography.$font-size-base;
-    margin-bottom: spacing.$space-10;
+    margin-bottom: spacing.$spacing-10;
   }
 }
 
@@ -109,11 +109,11 @@
 .detail-cta__actions {
   display: flex;
   flex-direction: column;
-  gap: spacing.$space-3;
+  gap: spacing.$spacing-3;
 
   @include sm {
     flex-direction: row;
-    gap: spacing.$space-4;
+    gap: spacing.$spacing-4;
   }
 }
 
@@ -121,7 +121,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: spacing.$space-3 spacing.$space-6;
+  padding: spacing.$spacing-3 spacing.$spacing-6;
   font-family: typography.$font-family-body;
   font-size: typography.$font-size-sm;
   font-weight: typography.$font-weight-medium;
@@ -131,7 +131,7 @@
   white-space: nowrap;
 
   @include md {
-    padding: spacing.$space-4 spacing.$space-8;
+    padding: spacing.$spacing-4 spacing.$spacing-8;
   }
 
   &--primary {

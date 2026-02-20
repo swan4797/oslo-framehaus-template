@@ -4,9 +4,12 @@
 // Using centralized color tokens from tokens/_colors.scss
 // ========================================
 
-@use '../variables' as *;
-@use '../mixins' as *;
 @use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/layout' as layout;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../mixins' as *;
 
 // ----------------------------------------
 // COMPONENT VARIABLES
@@ -240,7 +243,7 @@ $sizes: (
 
 .favourite-btn--text {
   border-radius: 100px;
-  padding: $spacing-2 $spacing-4;
+  padding: spacing.$spacing-2 spacing.$spacing-4;
   width: auto;
   height: auto;
   min-height: 36px;
@@ -276,7 +279,7 @@ $sizes: (
   .favourite-btn__spinner--inline {
     width: 16px;
     height: 16px;
-    margin-right: $spacing-2;
+    margin-right: spacing.$spacing-2;
     opacity: 0;
     display: none;
   }
@@ -300,9 +303,9 @@ $sizes: (
 
 .favourite-btn--icon-text {
   border-radius: 100px;
-  padding: 0 $spacing-4;
+  padding: 0 spacing.$spacing-4;
   width: auto;
-  gap: $spacing-2;
+  gap: spacing.$spacing-2;
 
   .favourite-btn__icon {
     position: relative;
@@ -329,7 +332,7 @@ $sizes: (
 
   .favourite-btn__icon--filled {
     position: absolute;
-    left: $spacing-4;
+    left: spacing.$spacing-4;
     top: 50%;
     transform: translateY(-50%) scale(0.5);
     opacity: 0;
@@ -346,10 +349,10 @@ $sizes: (
 // ----------------------------------------
 
 .favourite-btn__label {
-  margin-left: $spacing-2;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  color: $text-secondary;
+  margin-left: spacing.$spacing-2;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-secondary;
   white-space: nowrap;
   transition: color 0.2s ease;
 
@@ -420,17 +423,17 @@ $sizes: (
 
 .favourite-toast {
   position: fixed;
-  bottom: $spacing-6;
-  right: $spacing-6;
+  bottom: spacing.$spacing-6;
+  right: spacing.$spacing-6;
   display: flex;
   align-items: center;
-  gap: $spacing-3;
-  padding: $spacing-4 $spacing-5;
+  gap: spacing.$spacing-3;
+  padding: spacing.$spacing-4 spacing.$spacing-5;
   background: colors.$color-bg-secondary;
-  color: $bg-white;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  border-radius: $radius-lg;
+  color: colors.$color-bg-primary;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
+  border-radius: effects.$radius-lg;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   z-index: 9999;
   animation: toast-in 0.3s ease-out;

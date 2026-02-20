@@ -15,11 +15,11 @@
   flex-direction: column;
   background: colors.$color-bg-tertiary;
   border-radius: effects.$radius-lg;
-  padding: spacing.$space-6;
+  padding: spacing.$spacing-6;
   min-height: 200px;
 
   @include md {
-    padding: spacing.$space-8;
+    padding: spacing.$spacing-8;
     min-height: 240px;
   }
 }
@@ -31,11 +31,11 @@
 .area-section-card__header {
   display: flex;
   flex-direction: column;
-  gap: spacing.$space-3;
-  margin-bottom: spacing.$space-4;
+  gap: spacing.$spacing-3;
+  margin-bottom: spacing.$spacing-4;
 
   @include md {
-    margin-bottom: spacing.$space-5;
+    margin-bottom: spacing.$spacing-5;
   }
 }
 
@@ -92,7 +92,7 @@
   }
 
   :global(p) {
-    margin: 0 0 spacing.$space-2;
+    margin: 0 0 spacing.$spacing-2;
 
     &:last-child {
       margin-bottom: 0;
@@ -106,12 +106,12 @@
 
   :global(ul),
   :global(ol) {
-    margin: spacing.$space-2 0;
-    padding-left: spacing.$space-4;
+    margin: spacing.$spacing-2 0;
+    padding-left: spacing.$spacing-4;
   }
 
   :global(li) {
-    margin-bottom: spacing.$space-1;
+    margin-bottom: spacing.$spacing-1;
   }
 
   :global(a) {

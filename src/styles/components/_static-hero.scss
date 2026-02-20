@@ -4,12 +4,12 @@
 // Using centralized color tokens
 // ========================================
 
-@use '../variables' as *;
-@use '../mixins' as *;
 @use '../tokens/colors' as colors;
 @use '../tokens/effects' as effects;
+@use '../tokens/layout' as layout;
 @use '../tokens/spacing' as spacing;
 @use '../tokens/typography' as typography;
+@use '../mixins' as *;
 
 // ========================================
 // BASE LAYOUT
@@ -50,16 +50,16 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: spacing.$space-10 spacing.$space-5;
+  padding: spacing.$spacing-10 spacing.$spacing-5;
   min-height: 50vh;
 
   @include md {
-    padding: spacing.$space-14 spacing.$space-8;
+    padding: spacing.$spacing-14 spacing.$spacing-8;
     min-height: 100vh;
   }
 
   @include lg {
-    padding: spacing.$space-20 spacing.$space-12 spacing.$space-12 spacing.$space-12;
+    padding: spacing.$spacing-20 spacing.$spacing-12 spacing.$spacing-12 spacing.$spacing-12;
   }
 }
 
@@ -84,14 +84,14 @@
 // ========================================
 
 .static-hero__title {
-  font-family: $font-family-heading;
+  font-family: typography.$font-family-heading;
   font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: $font-weight-medium;
+  font-weight: typography.$font-weight-medium;
   line-height: 1.1;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   color: colors.$color-text-primary;
-  margin: 0 0 spacing.$space-8;
+  margin: 0 0 spacing.$spacing-8;
 
   // Support for line breaks
   br {
@@ -100,7 +100,7 @@
 
   @include md {
     font-size: clamp(2.5rem, 4vw, 4rem);
-    margin-bottom: spacing.$space-12;
+    margin-bottom: spacing.$spacing-12;
   }
 
   @include lg {
@@ -113,16 +113,16 @@
 // ========================================
 
 .static-hero__description {
-  font-family: $font-family-base;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-regular;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-regular;
   line-height: 1.7;
   color: colors.$color-text-primary;
-  margin: 0 0 spacing.$space-8;
+  margin: 0 0 spacing.$spacing-8;
   max-width: 100%;
 
   @include md {
-    font-size: $font-size-base;
+    font-size: typography.$font-size-base;
     margin-bottom: auto;
     max-width: 380px;
   }
@@ -135,15 +135,15 @@
 .static-hero__brand {
   display: flex;
   align-items: center;
-  gap: spacing.$space-3;
+  gap: spacing.$spacing-3;
   margin-top: auto;
-  padding-top: spacing.$space-10;
+  padding-top: spacing.$spacing-10;
 }
 
 .static-hero__brand-name {
-  font-family: $font-family-base;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
   color: colors.$color-text-primary;
   letter-spacing: 0.02em;
 }
@@ -233,28 +233,28 @@
 
 .static-hero__category {
   position: absolute;
-  bottom: spacing.$space-10;
+  bottom: spacing.$spacing-10;
   left: 0;
   right: 0;
   display: flex;
   justify-content: center;
-  padding: 0 spacing.$space-6;
+  padding: 0 spacing.$spacing-6;
   z-index: 2;
 
   @include md {
-    bottom: spacing.$space-16;
-    padding: 0 spacing.$space-10;
+    bottom: spacing.$spacing-16;
+    padding: 0 spacing.$spacing-10;
   }
 
   @include lg {
-    bottom: spacing.$space-20;
+    bottom: spacing.$spacing-20;
   }
 }
 
 .static-hero__category-label {
-  font-family: $font-family-heading;
+  font-family: typography.$font-family-heading;
   font-size: clamp(1.5rem, 4vw, 3rem);
-  font-weight: $font-weight-medium;
+  font-weight: typography.$font-weight-medium;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: colors.$color-text-light;
@@ -322,7 +322,7 @@
 // RESPONSIVE ADJUSTMENTS
 // ========================================
 
-@media (max-width: #{$breakpoint-md - 1px}) {
+@media (max-width: #{layout.$breakpoint-md - 1px}) {
   .static-hero {
     .static-hero__content-panel {
       order: 2;
@@ -334,7 +334,7 @@
   }
 
   .static-hero__category {
-    bottom: spacing.$space-8;
+    bottom: spacing.$spacing-8;
   }
 }
 

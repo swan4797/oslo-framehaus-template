@@ -9,7 +9,7 @@
 .area-info-bar {
   background: colors.$color-bg-secondary;
   color: colors.$color-text-light;
-  padding: spacing.$space-4 0;
+  padding: spacing.$spacing-4 0;
 
   &__container {
     max-width: 1200px;
@@ -18,13 +18,13 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: spacing.$space-6 spacing.$space-12;
+    gap: spacing.$spacing-6 spacing.$spacing-12;
   }
 
   &__item {
     display: flex;
     align-items: center;
-    gap: spacing.$space-2;
+    gap: spacing.$spacing-2;
     font-size: 0.9375rem;
 
     svg {

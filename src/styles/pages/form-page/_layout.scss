@@ -40,9 +40,9 @@
 .form-page__content {
   position: relative;
   z-index: 2;
-  padding-bottom: spacing.$space-20;
+  padding-bottom: spacing.$spacing-20;
 
   @include mobile-only {
-    padding-bottom: spacing.$space-12;
+    padding-bottom: spacing.$spacing-12;
   }
 }

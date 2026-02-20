@@ -28,20 +28,20 @@
     font-size: clamp(1.25rem, 3vw, 1.5rem);
     font-weight: typography.$font-weight-semibold;
     color: colors.$color-text-primary;
-    margin: 0 0 spacing.$space-6;
+    margin: 0 0 spacing.$spacing-6;
   }
 
   &__items {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: spacing.$space-6 spacing.$space-10;
+    gap: spacing.$spacing-6 spacing.$spacing-10;
   }
 
   &__item {
     display: flex;
     align-items: center;
-    gap: spacing.$space-3;
+    gap: spacing.$spacing-3;
     font-size: typography.$font-size-base;
     color: colors.$color-text-muted;
 

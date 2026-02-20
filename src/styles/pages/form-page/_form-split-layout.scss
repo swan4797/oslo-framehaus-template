@@ -8,7 +8,6 @@
 @use '../../tokens/spacing' as spacing;
 @use '../../tokens/typography' as typography;
 @use '../../mixins' as *;
-@use '../../variables' as *;
 
 // ========================================
 // BASE LAYOUT
@@ -39,19 +38,19 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: spacing.$space-20 spacing.$space-6 spacing.$space-12;
+  padding: spacing.$spacing-20 spacing.$spacing-6 spacing.$spacing-12;
   overflow-y: auto;
 
   @include md {
     flex: 0 0 50%;
-    padding: spacing.$space-20 spacing.$space-8;
+    padding: spacing.$spacing-20 spacing.$spacing-8;
     min-height: 100vh;
     min-height: 100svh;
   }
 
   @include lg {
     flex: 0 0 55%;
-    padding: spacing.$space-24 spacing.$space-12 spacing.$space-16;
+    padding: spacing.$spacing-24 spacing.$spacing-12 spacing.$spacing-16;
   }
 }
 
@@ -63,7 +62,7 @@
   @include lg {
     max-width: 640px;
     margin: 0 auto 0 0;
-    padding-left: spacing.$space-8;
+    padding-left: spacing.$spacing-8;
   }
 }
 
@@ -146,21 +145,21 @@
 
 .form-split-layout__category {
   position: absolute;
-  bottom: spacing.$space-10;
+  bottom: spacing.$spacing-10;
   left: 0;
   right: 0;
   display: flex;
   justify-content: center;
-  padding: 0 spacing.$space-6;
+  padding: 0 spacing.$spacing-6;
   z-index: 2;
 
   @include md {
-    bottom: spacing.$space-16;
-    padding: 0 spacing.$space-10;
+    bottom: spacing.$spacing-16;
+    padding: 0 spacing.$spacing-10;
   }
 
   @include lg {
-    bottom: spacing.$space-20;
+    bottom: spacing.$spacing-20;
   }
 }
 
@@ -197,7 +196,7 @@
     letter-spacing: -0.02em;
     text-transform: uppercase;
     color: colors.$color-text-primary;
-    margin: 0 0 spacing.$space-4;
+    margin: 0 0 spacing.$spacing-4;
 
     @include md {
       font-size: clamp(2.5rem, 4vw, 3.5rem);
@@ -211,12 +210,12 @@
     font-weight: typography.$font-weight-regular;
     line-height: 1.6;
     color: colors.$color-text-primary;
-    margin: 0 0 spacing.$space-8;
+    margin: 0 0 spacing.$spacing-8;
     max-width: 480px;
 
     @include md {
       font-size: typography.$font-size-lg;
-      margin-bottom: spacing.$space-10;
+      margin-bottom: spacing.$spacing-10;
     }
   }
 
@@ -224,21 +223,21 @@
   .form-split-card {
     background: colors.$color-bg-secondary;
     border-radius: 1rem;
-    padding: spacing.$space-6;
-    margin-bottom: spacing.$space-8;
+    padding: spacing.$spacing-6;
+    margin-bottom: spacing.$spacing-8;
 
     @include md {
-      padding: spacing.$space-8;
-      margin-bottom: spacing.$space-10;
+      padding: spacing.$spacing-8;
+      margin-bottom: spacing.$spacing-10;
     }
   }
 
   // Section spacing
   .form-split-section {
-    margin-bottom: spacing.$space-8;
+    margin-bottom: spacing.$spacing-8;
 
     @include md {
-      margin-bottom: spacing.$space-10;
+      margin-bottom: spacing.$spacing-10;
     }
 
     &:last-child {
@@ -248,10 +247,10 @@
 
   // Contact info grid override
   .contact-info-grid {
-    margin-bottom: spacing.$space-8;
+    margin-bottom: spacing.$spacing-8;
 
     @include md {
-      margin-bottom: spacing.$space-10;
+      margin-bottom: spacing.$spacing-10;
     }
   }
 }
