@@ -8,7 +8,9 @@
 // Consumers can @use 'global' as * to access all variables and mixins
 @forward 'variables';
 @forward 'mixins';
-@forward 'animations';
+
+// Animation system (modular)
+@use '../animations';
 
 // Import global layout styles (these output actual CSS)
 @use 'layouts';

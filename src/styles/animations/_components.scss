@@ -1,0 +1,289 @@
+// ========================================
+// COMPONENT AUTO-ANIMATIONS
+// Automatic scroll-reveal for common components
+// Use .no-animate to opt-out
+// ========================================
+
+@use 'keyframes';
+
+// ----------------------------------------
+// SECTION ANIMATIONS
+// Full-width content sections
+// ----------------------------------------
+
+.intro-section:not(.no-animate),
+.content-block:not(.no-animate),
+.static-full-content:not(.no-animate),
+.cta-banner:not(.no-animate),
+.branch-contact:not(.no-animate),
+.branch-team:not(.no-animate),
+.team-section:not(.no-animate),
+.service-section:not(.no-animate),
+.faq-section:not(.no-animate),
+.form-page-layout:not(.no-animate) {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+  &.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ----------------------------------------
+// HERO ANIMATIONS
+// Full-width hero sections (faster, more prominent)
+// ----------------------------------------
+
+.hero:not(.no-animate),
+.static-hero:not(.no-animate),
+.hero-split:not(.no-animate),
+.detail-hero:not(.no-animate),
+.search-hero:not(.no-animate),
+.form-hero:not(.no-animate),
+.favourites-hero:not(.no-animate) {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+
+  &.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ----------------------------------------
+// GRID STAGGER ANIMATIONS
+// Card grids with staggered children
+// ----------------------------------------
+
+.property-grid:not(.no-animate),
+.team-grid:not(.no-animate),
+.branches-grid:not(.no-animate),
+.areas-grid:not(.no-animate),
+.article-grid:not(.no-animate),
+.service-grid__items:not(.no-animate),
+.favourites-grid:not(.no-animate),
+.area-sections-grid:not(.no-animate),
+.contact-info-grid:not(.no-animate) {
+  > * {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+
+  &.is-revealed > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  // Stagger children with 80ms spacing
+  &.is-revealed > *:nth-child(1) { transition-delay: 0s; }
+  &.is-revealed > *:nth-child(2) { transition-delay: 0.08s; }
+  &.is-revealed > *:nth-child(3) { transition-delay: 0.16s; }
+  &.is-revealed > *:nth-child(4) { transition-delay: 0.24s; }
+  &.is-revealed > *:nth-child(5) { transition-delay: 0.32s; }
+  &.is-revealed > *:nth-child(6) { transition-delay: 0.4s; }
+  &.is-revealed > *:nth-child(7) { transition-delay: 0.48s; }
+  &.is-revealed > *:nth-child(8) { transition-delay: 0.56s; }
+  &.is-revealed > *:nth-child(9) { transition-delay: 0.64s; }
+  &.is-revealed > *:nth-child(10) { transition-delay: 0.72s; }
+  &.is-revealed > *:nth-child(11) { transition-delay: 0.8s; }
+  &.is-revealed > *:nth-child(12) { transition-delay: 0.88s; }
+}
+
+// ----------------------------------------
+// INDIVIDUAL CARD ANIMATIONS
+// For standalone cards (not in grids)
+// ----------------------------------------
+
+.property-card:not(.no-animate),
+.branch-card:not(.no-animate),
+.team-card:not(.no-animate),
+.team-member-card:not(.no-animate),
+.area-card:not(.no-animate),
+.area-section-card:not(.no-animate),
+.blog-article-card:not(.no-animate),
+.featured-blog-card:not(.no-animate),
+.form-card:not(.no-animate),
+.contact-card:not(.no-animate),
+.share-card:not(.no-animate) {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+
+  &.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ----------------------------------------
+// STATS AND FEATURES
+// Scale-in effect for stat items
+// ----------------------------------------
+
+.intro-section__stats:not(.no-animate),
+.property-specs:not(.no-animate),
+.detail-stats:not(.no-animate),
+.area-info-bar:not(.no-animate) {
+  > * {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  }
+
+  &.is-revealed > * {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  // Quick stagger with 60ms spacing
+  &.is-revealed > *:nth-child(1) { transition-delay: 0s; }
+  &.is-revealed > *:nth-child(2) { transition-delay: 0.06s; }
+  &.is-revealed > *:nth-child(3) { transition-delay: 0.12s; }
+  &.is-revealed > *:nth-child(4) { transition-delay: 0.18s; }
+  &.is-revealed > *:nth-child(5) { transition-delay: 0.24s; }
+  &.is-revealed > *:nth-child(6) { transition-delay: 0.3s; }
+}
+
+// ----------------------------------------
+// FORM ANIMATIONS
+// ----------------------------------------
+
+.form-section:not(.no-animate),
+.enquiry-form:not(.no-animate),
+.contact-form:not(.no-animate),
+.viewing-form:not(.no-animate),
+.valuation-form:not(.no-animate),
+.newsletter-form:not(.no-animate) {
+  opacity: 0;
+  transform: translateY(25px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+  &.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ----------------------------------------
+// PROPERTY DETAILS SECTIONS
+// ----------------------------------------
+
+.description-section:not(.no-animate),
+.key-features-section:not(.no-animate),
+.viewing-section:not(.no-animate),
+.energy-performance-section:not(.no-animate),
+.floorplan-section:not(.no-animate),
+.virtual-tour-section:not(.no-animate),
+.property-map-section:not(.no-animate),
+.similar-properties:not(.no-animate) {
+  opacity: 0;
+  transform: translateY(25px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+  &.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ----------------------------------------
+// IMAGE GALLERY
+// ----------------------------------------
+
+.image-gallery:not(.no-animate) {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+
+  &.is-revealed {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// ----------------------------------------
+// SEARCH COMPONENTS
+// ----------------------------------------
+
+.search-results-grid:not(.no-animate),
+.search-results-list:not(.no-animate) {
+  > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  }
+
+  &.is-revealed > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &.is-revealed > *:nth-child(1) { transition-delay: 0s; }
+  &.is-revealed > *:nth-child(2) { transition-delay: 0.06s; }
+  &.is-revealed > *:nth-child(3) { transition-delay: 0.12s; }
+  &.is-revealed > *:nth-child(4) { transition-delay: 0.18s; }
+  &.is-revealed > *:nth-child(5) { transition-delay: 0.24s; }
+  &.is-revealed > *:nth-child(6) { transition-delay: 0.3s; }
+  &.is-revealed > *:nth-child(7) { transition-delay: 0.36s; }
+  &.is-revealed > *:nth-child(8) { transition-delay: 0.42s; }
+}
+
+.search-controls:not(.no-animate),
+.search-sidebar:not(.no-animate),
+.pagination:not(.no-animate) {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+
+  &.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ----------------------------------------
+// BREADCRUMBS
+// ----------------------------------------
+
+.breadcrumbs:not(.no-animate) {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+
+  &.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ----------------------------------------
+// FOOTER
+// ----------------------------------------
+
+.site-footer:not(.no-animate) {
+  opacity: 0;
+  transition: opacity 0.6s ease-out;
+
+  &.is-revealed {
+    opacity: 1;
+  }
+}
+
+// ----------------------------------------
+// RELATED/SIMILAR SECTIONS
+// ----------------------------------------
+
+.related-articles:not(.no-animate) {
+  opacity: 0;
+  transform: translateY(25px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+
+  &.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

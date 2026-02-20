@@ -1,0 +1,423 @@
+// ========================================
+// BUTTON & CTA ANIMATIONS
+// Interactive button effects and reveals
+// ========================================
+
+@use 'keyframes';
+
+// ----------------------------------------
+// BUTTON REVEAL ANIMATIONS
+// For buttons that animate into view
+// ----------------------------------------
+
+.btn-reveal,
+.button-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+
+  &.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.btn-reveal-scale,
+.button-reveal-scale {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+
+  &.is-revealed {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.btn-reveal-fade,
+.button-reveal-fade {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+
+  &.is-revealed {
+    opacity: 1;
+  }
+}
+
+// ----------------------------------------
+// HERO CTA ANIMATIONS
+// Buttons within hero sections
+// ----------------------------------------
+
+.hero:not(.no-animate),
+.static-hero:not(.no-animate),
+.detail-hero:not(.no-animate) {
+  .hero__cta,
+  .hero-cta,
+  .btn-primary,
+  .btn-secondary {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+
+  &.is-revealed {
+    .hero__cta,
+    .hero-cta,
+    .btn-primary,
+    .btn-secondary {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.2s;
+    }
+  }
+
+  // Stagger multiple CTAs
+  &.is-revealed .hero__cta:nth-child(2),
+  &.is-revealed .hero-cta:nth-child(2) {
+    transition-delay: 0.28s;
+  }
+}
+
+// ----------------------------------------
+// CTA BANNER BUTTON ANIMATIONS
+// ----------------------------------------
+
+.cta-banner:not(.no-animate) {
+  .cta-banner__button,
+  .btn-primary,
+  .btn-secondary {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease-out 0.15s, transform 0.5s ease-out 0.15s;
+  }
+
+  &.is-revealed {
+    .cta-banner__button,
+    .btn-primary,
+    .btn-secondary {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+// ----------------------------------------
+// BUTTON HOVER EFFECTS
+// Interactive states
+// ----------------------------------------
+
+// Lift effect with shadow
+.btn-hover-lift {
+  transition: transform var(--transition-fast, 150ms) ease-out,
+              box-shadow var(--transition-fast, 150ms) ease-out,
+              background-color var(--transition-fast, 150ms) ease-out,
+              border-color var(--transition-fast, 150ms) ease-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+// Scale effect
+.btn-hover-scale {
+  transition: transform var(--transition-fast, 150ms) ease-out,
+              background-color var(--transition-fast, 150ms) ease-out,
+              border-color var(--transition-fast, 150ms) ease-out;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+// Subtle scale for inline buttons
+.btn-hover-scale-subtle {
+  transition: transform var(--transition-fast, 150ms) ease-out;
+
+  &:hover {
+    transform: scale(1.01);
+  }
+
+  &:active {
+    transform: scale(0.99);
+  }
+}
+
+// ----------------------------------------
+// BUTTON SHINE EFFECT
+// Animated highlight sweep
+// ----------------------------------------
+
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.5s ease-out;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
+}
+
+// ----------------------------------------
+// ARROW/ICON ANIMATIONS
+// For buttons with icons
+// ----------------------------------------
+
+.btn-arrow-right {
+  .btn__icon,
+  .icon,
+  svg {
+    transition: transform var(--transition-fast, 150ms) ease-out;
+  }
+
+  &:hover {
+    .btn__icon,
+    .icon,
+    svg {
+      transform: translateX(4px);
+    }
+  }
+}
+
+.btn-arrow-down {
+  .btn__icon,
+  .icon,
+  svg {
+    transition: transform var(--transition-fast, 150ms) ease-out;
+  }
+
+  &:hover {
+    .btn__icon,
+    .icon,
+    svg {
+      transform: translateY(2px);
+    }
+  }
+}
+
+.btn-icon-rotate {
+  .btn__icon,
+  .icon,
+  svg {
+    transition: transform var(--transition-base, 200ms) ease-out;
+  }
+
+  &:hover {
+    .btn__icon,
+    .icon,
+    svg {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+.btn-icon-spin {
+  .btn__icon,
+  .icon,
+  svg {
+    transition: transform var(--transition-slow, 300ms) ease-out;
+  }
+
+  &:hover {
+    .btn__icon,
+    .icon,
+    svg {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+// ----------------------------------------
+// BUTTON GLOW EFFECTS
+// ----------------------------------------
+
+.btn-glow {
+  transition: box-shadow var(--transition-base, 200ms) ease-out,
+              background-color var(--transition-base, 200ms) ease-out;
+
+  &:hover {
+    box-shadow: 0 0 20px rgba(var(--color-primary-rgb, 224, 122, 95), 0.4);
+  }
+}
+
+.btn-glow-subtle {
+  transition: box-shadow var(--transition-base, 200ms) ease-out,
+              background-color var(--transition-base, 200ms) ease-out;
+
+  &:hover {
+    box-shadow: 0 0 12px rgba(var(--color-primary-rgb, 224, 122, 95), 0.25);
+  }
+}
+
+// ----------------------------------------
+// BUTTON BORDER ANIMATIONS
+// ----------------------------------------
+
+.btn-border-fill {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--color-primary);
+    transition: width var(--transition-base, 200ms) ease-out;
+    z-index: -1;
+  }
+
+  &:hover::before {
+    width: 100%;
+  }
+}
+
+// ----------------------------------------
+// FAVOURITE BUTTON ANIMATIONS
+// Heart/save button interactions
+// ----------------------------------------
+
+.favourite-button,
+.btn-favourite {
+  .heart-icon,
+  svg {
+    transition: transform var(--transition-fast, 150ms) ease-out;
+  }
+
+  &:hover {
+    .heart-icon,
+    svg {
+      transform: scale(1.1);
+    }
+  }
+
+  &:active {
+    .heart-icon,
+    svg {
+      transform: scale(0.9);
+    }
+  }
+
+  // Filled state animation
+  &.is-active,
+  &[data-active="true"] {
+    .heart-icon,
+    svg {
+      animation: button-pop 0.3s ease-out;
+    }
+  }
+}
+
+// ----------------------------------------
+// BUTTON GROUP STAGGER
+// For groups of buttons
+// ----------------------------------------
+
+.btn-group-stagger {
+  > * {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  }
+
+  &.is-revealed > *:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0s; }
+  &.is-revealed > *:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 0.08s; }
+  &.is-revealed > *:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 0.16s; }
+  &.is-revealed > *:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 0.24s; }
+}
+
+// ----------------------------------------
+// FORM BUTTON ANIMATIONS
+// Submit and form action buttons
+// ----------------------------------------
+
+.form-section:not(.no-animate),
+.enquiry-form:not(.no-animate),
+.contact-form:not(.no-animate) {
+  button[type="submit"],
+  .btn-submit,
+  .form__submit {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s;
+  }
+
+  &.is-revealed {
+    button[type="submit"],
+    .btn-submit,
+    .form__submit {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+// ----------------------------------------
+// LINK BUTTON ANIMATIONS
+// Text-style clickable links
+// ----------------------------------------
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+
+  .link-arrow__icon,
+  svg {
+    transition: transform var(--transition-fast, 150ms) ease-out;
+  }
+
+  &:hover {
+    .link-arrow__icon,
+    svg {
+      transform: translateX(4px);
+    }
+  }
+}
+
+.link-underline-grow {
+  position: relative;
+  text-decoration: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: currentColor;
+    transition: width var(--transition-base, 200ms) ease-out;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}

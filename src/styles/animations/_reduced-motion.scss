@@ -1,0 +1,318 @@
+// ========================================
+// REDUCED MOTION
+// Accessibility support for motion sensitivity
+// ========================================
+
+@media (prefers-reduced-motion: reduce) {
+  // ----------------------------------------
+  // DISABLE ALL ANIMATIONS
+  // ----------------------------------------
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  // ----------------------------------------
+  // REVEAL ELEMENTS IMMEDIATELY
+  // ----------------------------------------
+
+  [data-reveal],
+  [data-reveal-stagger] > *,
+  [data-load] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    clip-path: none !important;
+  }
+
+  // ----------------------------------------
+  // DISABLE ANIMATION CLASSES
+  // ----------------------------------------
+
+  .animate,
+  .animate-fade-in,
+  .animate-fade-out,
+  .animate-fade-in-blur,
+  .animate-slide-up,
+  .animate-slide-down,
+  .animate-slide-left,
+  .animate-slide-right,
+  .animate-slide-up-subtle,
+  .animate-scale-in,
+  .animate-scale-out,
+  .animate-scale-in-subtle,
+  .animate-bounce,
+  .animate-pulse,
+  .animate-spin,
+  .animate-float,
+  .animate-float-subtle {
+    animation: none !important;
+  }
+
+  // ----------------------------------------
+  // DISABLE HOVER TRANSFORMS
+  // ----------------------------------------
+
+  .hover-lift:hover,
+  .hover-lift-subtle:hover,
+  .hover-scale:hover,
+  .hover-scale-subtle:hover,
+  .hover-scale-down:hover,
+  .hover-slide-right:hover,
+  .hover-slide-up:hover {
+    transform: none !important;
+  }
+
+  .hover-image-zoom:hover img,
+  .hover-image-zoom-subtle:hover img,
+  .image-hover-zoom:hover img,
+  .image-hover-zoom-subtle:hover img {
+    transform: none !important;
+  }
+
+  // ----------------------------------------
+  // SHOW COMPONENT CONTENT IMMEDIATELY
+  // ----------------------------------------
+
+  // Sections
+  .intro-section,
+  .content-block,
+  .static-full-content,
+  .cta-banner,
+  .branch-contact,
+  .branch-team,
+  .team-section,
+  .service-section,
+  .faq-section,
+  .form-page-layout {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  // Heroes
+  .hero,
+  .static-hero,
+  .hero-split,
+  .detail-hero,
+  .search-hero,
+  .form-hero,
+  .favourites-hero {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  // Grids and their children
+  .property-grid,
+  .team-grid,
+  .branches-grid,
+  .areas-grid,
+  .article-grid,
+  .service-grid__items,
+  .favourites-grid,
+  .area-sections-grid,
+  .contact-info-grid,
+  .search-results-grid,
+  .search-results-list {
+    > * {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  // Cards
+  .property-card,
+  .branch-card,
+  .team-card,
+  .team-member-card,
+  .area-card,
+  .area-section-card,
+  .blog-article-card,
+  .featured-blog-card,
+  .form-card,
+  .contact-card,
+  .share-card {
+    opacity: 1 !important;
+    transform: none !important;
+
+    img {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  // Stats
+  .intro-section__stats,
+  .property-specs,
+  .detail-stats,
+  .area-info-bar {
+    > * {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  // Forms
+  .form-section,
+  .enquiry-form,
+  .contact-form,
+  .viewing-form,
+  .valuation-form,
+  .newsletter-form {
+    opacity: 1 !important;
+    transform: none !important;
+
+    button[type="submit"],
+    .btn-submit,
+    .form__submit {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  // Details sections
+  .description-section,
+  .key-features-section,
+  .viewing-section,
+  .energy-performance-section,
+  .floorplan-section,
+  .virtual-tour-section,
+  .property-map-section,
+  .similar-properties {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  // Images
+  .image-gallery,
+  .gallery-grid,
+  .image-reveal,
+  .image-reveal-fade,
+  .image-reveal-blur,
+  .image-clip-reveal-up,
+  .image-clip-reveal-down,
+  .image-clip-reveal-left,
+  .image-clip-reveal-right,
+  .image-container-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    clip-path: none !important;
+
+    img,
+    picture {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  // Search components
+  .search-controls,
+  .search-sidebar,
+  .pagination,
+  .breadcrumbs {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  // Footer
+  .site-footer {
+    opacity: 1 !important;
+  }
+
+  // Related sections
+  .related-articles {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  // ----------------------------------------
+  // HEADINGS
+  // ----------------------------------------
+
+  .heading-reveal,
+  .heading-reveal-subtle,
+  .heading-reveal-fade,
+  .text-line-reveal > span {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .section-header {
+    .section-header__title,
+    .section-header__subtitle {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  // ----------------------------------------
+  // BUTTONS
+  // ----------------------------------------
+
+  .btn-reveal,
+  .button-reveal,
+  .btn-reveal-scale,
+  .button-reveal-scale,
+  .btn-reveal-fade,
+  .button-reveal-fade {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .btn-group-stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  // Disable button animations
+  .btn-shine::before {
+    display: none !important;
+  }
+
+  .btn-arrow-right:hover .btn__icon,
+  .btn-arrow-right:hover .icon,
+  .btn-arrow-right:hover svg,
+  .btn-arrow-down:hover .btn__icon,
+  .btn-arrow-down:hover .icon,
+  .btn-arrow-down:hover svg,
+  .btn-icon-rotate:hover .btn__icon,
+  .btn-icon-rotate:hover .icon,
+  .btn-icon-rotate:hover svg,
+  .btn-icon-spin:hover .btn__icon,
+  .btn-icon-spin:hover .icon,
+  .btn-icon-spin:hover svg {
+    transform: none !important;
+  }
+
+  // ----------------------------------------
+  // DISABLE LOADING SKELETONS
+  // ----------------------------------------
+
+  .skeleton,
+  .skeleton-pulse {
+    animation: none !important;
+    background: var(--color-bg-secondary) !important;
+  }
+
+  // ----------------------------------------
+  // KEEP BASIC HOVER FEEDBACK
+  // Color changes are still allowed for usability
+  // ----------------------------------------
+
+  .hover-color-primary:hover {
+    color: var(--color-primary);
+  }
+
+  .hover-bg-subtle:hover {
+    background-color: var(--color-bg-secondary);
+  }
+
+  .hover-border-primary:hover {
+    border-color: var(--color-primary);
+  }
+}

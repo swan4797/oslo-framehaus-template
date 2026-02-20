@@ -1,0 +1,300 @@
+// ========================================
+// IMAGE ANIMATIONS
+// Reveal and interaction effects for images
+// ========================================
+
+@use 'keyframes';
+
+// ----------------------------------------
+// IMAGE REVEAL EFFECTS
+// For images that animate into view
+// ----------------------------------------
+
+.image-reveal {
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+  &.is-revealed {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.image-reveal-fade {
+  opacity: 0;
+  transition: opacity 0.6s ease-out;
+
+  &.is-revealed {
+    opacity: 1;
+  }
+}
+
+.image-reveal-blur {
+  opacity: 0;
+  filter: blur(10px);
+  transform: scale(1.02);
+  transition: opacity 0.7s ease-out, filter 0.7s ease-out, transform 0.7s ease-out;
+
+  &.is-revealed {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+// ----------------------------------------
+// CLIP-PATH REVEALS
+// Directional mask reveals for images
+// ----------------------------------------
+
+.image-clip-reveal-up {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  &.is-revealed {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.image-clip-reveal-down {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  &.is-revealed {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.image-clip-reveal-left {
+  clip-path: inset(0 0 0 100%);
+  transition: clip-path 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  &.is-revealed {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.image-clip-reveal-right {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  &.is-revealed {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+// ----------------------------------------
+// IMAGE CONTAINER ANIMATIONS
+// For image wrappers with overflow
+// ----------------------------------------
+
+.image-container-reveal {
+  overflow: hidden;
+
+  img,
+  picture,
+  .image-container-reveal__image {
+    opacity: 0;
+    transform: scale(1.1);
+    transition: opacity 0.7s ease-out, transform 0.9s ease-out;
+  }
+
+  &.is-revealed {
+    img,
+    picture,
+    .image-container-reveal__image {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+// ----------------------------------------
+// GALLERY IMAGE ANIMATIONS
+// For image grids and galleries
+// ----------------------------------------
+
+.image-gallery:not(.no-animate),
+.gallery-grid:not(.no-animate) {
+  > * {
+    opacity: 0;
+    transform: scale(0.98);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+
+  &.is-revealed > * {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  // Stagger gallery items
+  &.is-revealed > *:nth-child(1) { transition-delay: 0s; }
+  &.is-revealed > *:nth-child(2) { transition-delay: 0.08s; }
+  &.is-revealed > *:nth-child(3) { transition-delay: 0.16s; }
+  &.is-revealed > *:nth-child(4) { transition-delay: 0.24s; }
+  &.is-revealed > *:nth-child(5) { transition-delay: 0.32s; }
+  &.is-revealed > *:nth-child(6) { transition-delay: 0.4s; }
+}
+
+// ----------------------------------------
+// CARD IMAGE ANIMATIONS
+// Images within card components
+// ----------------------------------------
+
+.property-card:not(.no-animate),
+.blog-article-card:not(.no-animate),
+.area-card:not(.no-animate),
+.featured-blog-card:not(.no-animate) {
+  .card__image,
+  .property-card__image,
+  picture {
+    overflow: hidden;
+
+    img {
+      opacity: 0;
+      transform: scale(1.05);
+      transition: opacity 0.5s ease-out 0.1s, transform 0.6s ease-out 0.1s;
+    }
+  }
+
+  &.is-revealed {
+    .card__image img,
+    .property-card__image img,
+    picture img {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+// ----------------------------------------
+// HERO IMAGE ANIMATIONS
+// Background images in hero sections
+// ----------------------------------------
+
+.hero:not(.no-animate),
+.static-hero:not(.no-animate),
+.detail-hero:not(.no-animate) {
+  .hero__background,
+  .hero-background,
+  .hero__image {
+    opacity: 0;
+    transform: scale(1.02);
+    transition: opacity 0.8s ease-out, transform 1s ease-out;
+  }
+
+  &.is-revealed {
+    .hero__background,
+    .hero-background,
+    .hero__image {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+// ----------------------------------------
+// LAZY LOAD FADE-IN
+// For images that load lazily
+// ----------------------------------------
+
+img[loading="lazy"],
+.lazy-image {
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
+
+  &.loaded,
+  &[data-loaded="true"] {
+    opacity: 1;
+  }
+}
+
+// Native lazy loading support
+img.lazyloaded {
+  opacity: 1;
+  transition: opacity 0.4s ease-out;
+}
+
+// ----------------------------------------
+// IMAGE HOVER INTERACTIONS
+// Additional hover effects for images
+// ----------------------------------------
+
+.image-hover-zoom {
+  overflow: hidden;
+
+  img {
+    transition: transform var(--transition-slow, 300ms) ease-out;
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
+}
+
+.image-hover-zoom-subtle {
+  overflow: hidden;
+
+  img {
+    transition: transform var(--transition-slow, 300ms) ease-out;
+  }
+
+  &:hover img {
+    transform: scale(1.02);
+  }
+}
+
+.image-hover-brightness {
+  img {
+    transition: filter var(--transition-base, 200ms) ease-out;
+  }
+
+  &:hover img {
+    filter: brightness(1.1);
+  }
+}
+
+.image-hover-dim {
+  img {
+    transition: opacity var(--transition-base, 200ms) ease-out;
+  }
+
+  &:hover img {
+    opacity: 0.85;
+  }
+}
+
+// ----------------------------------------
+// IMAGE OVERLAY ANIMATIONS
+// For image overlays that reveal on hover
+// ----------------------------------------
+
+.image-overlay-reveal {
+  position: relative;
+  overflow: hidden;
+
+  .image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 60%);
+    opacity: 0;
+    transition: opacity var(--transition-base, 200ms) ease-out;
+  }
+
+  &:hover .image-overlay {
+    opacity: 1;
+  }
+}
+
+.image-overlay-always {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent 50%);
+    pointer-events: none;
+  }
+}

@@ -1,0 +1,53 @@
+// ========================================
+// ANIMATIONS INDEX
+// Central import for all animation styles
+// ========================================
+//
+// Usage in components:
+//   @use '../animations' as *;
+//
+// This module provides:
+// - Keyframes: Reusable animation definitions
+// - Utilities: Animation helper classes
+// - Scroll Reveal: Intersection Observer animations
+// - Load Animations: On-page-load effects
+// - Hover Effects: Interactive hover states
+// - Components: Auto-animations for common components
+// - Headings: Typography-specific animations
+// - Images: Image reveal and interaction effects
+// - Buttons: CTA and button animations
+// - Reduced Motion: Accessibility support
+// ========================================
+
+// Keyframe definitions (must be first)
+@use 'keyframes';
+
+// Forward keyframes for external use
+@forward 'keyframes';
+
+// Animation utilities and classes
+@use 'utilities';
+
+// Scroll-triggered reveal system
+@use 'scroll-reveal';
+
+// On-load animations
+@use 'load-animations';
+
+// Hover interaction effects
+@use 'hover-effects';
+
+// Component auto-animations
+@use 'components';
+
+// Heading-specific animations
+@use 'headings';
+
+// Image animations
+@use 'images';
+
+// Button/CTA animations
+@use 'buttons';
+
+// Reduced motion accessibility (must be last)
+@use 'reduced-motion';

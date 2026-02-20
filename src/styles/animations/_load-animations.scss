@@ -1,0 +1,80 @@
+// ========================================
+// ON-LOAD ANIMATIONS
+// Elements that animate immediately on page load
+// ========================================
+
+@use 'keyframes';
+
+// ----------------------------------------
+// DATA-LOAD TRIGGERED ANIMATIONS
+// ----------------------------------------
+
+[data-load="fade"] {
+  animation: fade-in 0.6s ease-out both;
+}
+
+[data-load="up"] {
+  animation: slide-up 0.6s ease-out both;
+}
+
+[data-load="down"] {
+  animation: slide-down 0.6s ease-out both;
+}
+
+[data-load="left"] {
+  animation: slide-left 0.6s ease-out both;
+}
+
+[data-load="right"] {
+  animation: slide-right 0.6s ease-out both;
+}
+
+[data-load="scale"] {
+  animation: scale-in 0.6s ease-out both;
+}
+
+[data-load="blur"] {
+  animation: fade-in-blur 0.7s ease-out both;
+}
+
+[data-load="subtle"] {
+  animation: slide-up-subtle 0.5s ease-out both;
+}
+
+// ----------------------------------------
+// LOAD ANIMATION DELAYS
+// ----------------------------------------
+
+[data-load-delay="50"] { animation-delay: 0.05s; }
+[data-load-delay="100"] { animation-delay: 0.1s; }
+[data-load-delay="150"] { animation-delay: 0.15s; }
+[data-load-delay="200"] { animation-delay: 0.2s; }
+[data-load-delay="300"] { animation-delay: 0.3s; }
+[data-load-delay="400"] { animation-delay: 0.4s; }
+[data-load-delay="500"] { animation-delay: 0.5s; }
+[data-load-delay="600"] { animation-delay: 0.6s; }
+[data-load-delay="700"] { animation-delay: 0.7s; }
+[data-load-delay="800"] { animation-delay: 0.8s; }
+
+// ----------------------------------------
+// LOAD STAGGER SYSTEM
+// For staggering immediate load animations
+// ----------------------------------------
+
+[data-load-stagger] {
+  > *:nth-child(1) { animation-delay: 0s; }
+  > *:nth-child(2) { animation-delay: 0.08s; }
+  > *:nth-child(3) { animation-delay: 0.16s; }
+  > *:nth-child(4) { animation-delay: 0.24s; }
+  > *:nth-child(5) { animation-delay: 0.32s; }
+  > *:nth-child(6) { animation-delay: 0.4s; }
+}
+
+[data-load-stagger="fast"] {
+  > *:nth-child(1) { animation-delay: 0s; }
+  > *:nth-child(2) { animation-delay: 0.05s; }
+  > *:nth-child(3) { animation-delay: 0.1s; }
+  > *:nth-child(4) { animation-delay: 0.15s; }
+  > *:nth-child(5) { animation-delay: 0.2s; }
+  > *:nth-child(6) { animation-delay: 0.25s; }
+}
