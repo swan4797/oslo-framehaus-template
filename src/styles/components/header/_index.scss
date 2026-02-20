@@ -1,0 +1,32 @@
+// ========================================
+// HEADER STYLES - MAIN ENTRY POINT
+// Modular header styling architecture
+// ========================================
+//
+// Structure:
+// - _base.scss       : Core structure, CSS custom properties
+// - _layout.scss     : Container, outer wrapper, actions
+// - _logo.scss       : Logo, branding elements
+// - _nav.scss        : Desktop navigation, dropdowns
+// - _fullscreen.scss : Full-screen overlay navigation
+// - _mobile.scss     : Hamburger, mobile menu, toggle
+// - variants/        : Header variant styles
+//   - _transparent.scss
+//   - _solid.scss
+//   - _dark.scss
+//   - _minimal.scss
+//
+// ========================================
+
+// Core styles
+@use 'base';
+@use 'layout';
+@use 'logo';
+
+// Navigation
+@use 'nav';
+@use 'fullscreen';
+@use 'mobile';
+
+// Variants
+@use 'variants';

@@ -49,6 +49,53 @@ function getElements() {
 function createPropertyCard(fav: FavouriteItem): string {
   const property = fav.property
 
+  // Debug: log the property data structure to see what we're working with
+  console.log('[FavouritesCard] Property data:', {
+    id: property.id,
+    main_image_url: property.main_image_url,
+    property_media: property.property_media,
+    // Check for alternative field names
+    images: (property as any).images,
+    media: (property as any).media,
+    thumbnail: (property as any).thumbnail,
+    image_url: (property as any).image_url,
+  })
+
+  // Get main image URL with comprehensive fallback (matches getThumbnailUrl pattern)
+  let imageUrl: string | null = null
+
+  // 1. Check main_image_url first (used by some API responses)
+  if (property.main_image_url) {
+    imageUrl = property.main_image_url
+  }
+  // 2. Check property_media array
+  else if (property.property_media?.length) {
+    const primaryImage = property.property_media.find(m => m.is_primary)
+    imageUrl = primaryImage?.thumbnail_url
+      || primaryImage?.file_url
+      || property.property_media[0]?.thumbnail_url
+      || property.property_media[0]?.file_url
+      || null
+  }
+  // 3. Check alternative field names that APIs might use
+  else if ((property as any).images?.length) {
+    const images = (property as any).images
+    imageUrl = images[0]?.url || images[0]?.thumbnail_url || images[0]?.file_url || images[0] || null
+  }
+  else if ((property as any).image_url) {
+    imageUrl = (property as any).image_url
+  }
+  else if ((property as any).thumbnail) {
+    imageUrl = (property as any).thumbnail
+  }
+
+  // 4. Fallback to placeholder
+  if (!imageUrl) {
+    imageUrl = '/images/placeholder-property.jpg'
+  }
+
+  console.log('[FavouritesCard] Using image URL:', imageUrl)
+
   // Format price
   let price = 'POA'
   if (property.asking_price) {
@@ -82,8 +129,8 @@ function createPropertyCard(fav: FavouriteItem): string {
   return `
     <article class="favourite-card">
       <div class="favourite-card__image">
-        ${property.main_image_url
-          ? `<img src="${property.main_image_url}" alt="${property.display_address}" loading="lazy" />`
+        ${imageUrl
+          ? `<img src="${imageUrl}" alt="${property.display_address}" loading="lazy" />`
           : `<div class="favourite-card__placeholder">
                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>

@@ -1,0 +1,17 @@
+// ========================================
+// HEADER VARIANT: MINIMAL
+// Simplified header appearance
+// ========================================
+
+@use '../../../tokens/colors' as colors;
+
+// ----------------------------------------
+// MINIMAL VARIANT
+// ----------------------------------------
+
+.site-header--minimal {
+  --header-bg: transparent;
+  --header-border: transparent;
+  --header-text-color: #{colors.$color-text-primary};
+  --header-text-hover: #{colors.$color-primary};
+}

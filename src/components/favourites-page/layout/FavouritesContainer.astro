@@ -17,20 +17,4 @@ const { class: className = '' } = Astro.props
   </div>
 </div>
 
-<style lang="scss">
-  @use '../../../styles/variables' as *;
-  @use '../../../styles/mixins' as *;
-
-  .favourites-main {
-    margin-top: -$spacing-6;
-    padding-bottom: $spacing-16;
-
-    @include mobile-only {
-      padding-bottom: $spacing-12;
-    }
-  }
-
-  .favourites-container {
-    @include container;
-  }
-</style>
+<!-- Styles in centralized _favourites-page.scss -->

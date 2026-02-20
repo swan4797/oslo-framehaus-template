@@ -1,0 +1,17 @@
+// ========================================
+// HEADER VARIANT: SOLID
+// Solid background, standard header appearance
+// ========================================
+
+@use '../../../tokens/colors' as colors;
+
+// ----------------------------------------
+// SOLID VARIANT
+// ----------------------------------------
+
+.site-header--solid {
+  --header-bg: #{colors.$color-bg-primary};
+  --header-border: #{colors.$color-border-light};
+  --header-text-color: #{colors.$color-text-primary};
+  --header-text-hover: #{colors.$color-primary};
+}

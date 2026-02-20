@@ -1,0 +1,17 @@
+// ========================================
+// HEADER VARIANT: DARK
+// Dark background, light text
+// ========================================
+
+@use '../../../tokens/colors' as colors;
+
+// ----------------------------------------
+// DARK VARIANT
+// ----------------------------------------
+
+.site-header--dark {
+  --header-bg: #{colors.$color-bg-dark};
+  --header-border: #{colors.$color-border-dark};
+  --header-text-color: #{colors.$color-text-light};
+  --header-text-hover: #{colors.$color-primary-light};
+}

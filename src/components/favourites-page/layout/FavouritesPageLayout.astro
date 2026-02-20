@@ -15,11 +15,6 @@ const { class: className = '' } = Astro.props
   <slot />
 </div>
 
-<style lang="scss">
-  @use '../../../styles/variables' as *;
-
-  .favourites-page {
-    min-height: 100vh;
-    background: $bg-off-white;
-  }
+<style lang="scss" is:global>
+  @use '../../../styles/components/favourites-page';
 </style>

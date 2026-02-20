@@ -1,0 +1,300 @@
+// ========================================
+// FAVOURITES PAGE STYLES
+// Consolidated styles for the favourites page
+// ========================================
+
+@use '../tokens/colors' as colors;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../tokens/effects' as effects;
+@use '../mixins' as *;
+
+// ----------------------------------------
+// PAGE LAYOUT
+// ----------------------------------------
+
+.favourites-page {
+  min-height: 100vh;
+  background: colors.$color-bg-tertiary;
+}
+
+// ----------------------------------------
+// HERO SECTION
+// ----------------------------------------
+
+.favourites-hero {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    colors.$color-primary 0%,
+    colors.$color-primary-dark 100%
+  );
+  padding: spacing.$spacing-10 0;
+  overflow: hidden;
+
+  @include md {
+    padding: spacing.$spacing-12 0;
+  }
+
+  @include lg {
+    padding: spacing.$spacing-16 0;
+  }
+}
+
+.favourites-hero__background {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, colors.$color-white-15 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, colors.$color-white-10 0%, transparent 50%);
+  opacity: 0.6;
+}
+
+.favourites-hero__content {
+  position: relative;
+  z-index: 1;
+}
+
+.favourites-hero__container {
+  @include container;
+  text-align: center;
+}
+
+.favourites-hero__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: colors.$color-white-20;
+  border-radius: effects.$radius-full;
+  margin-bottom: spacing.$spacing-4;
+  color: colors.$color-white;
+
+  @include md {
+    width: 80px;
+    height: 80px;
+
+    svg {
+      width: 40px;
+      height: 40px;
+    }
+  }
+}
+
+.favourites-hero__title {
+  font-family: typography.$font-family-heading;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-white;
+  margin: 0 0 spacing.$spacing-3 0;
+  text-shadow: 0 2px 8px colors.$color-black-10;
+}
+
+.favourites-hero__subtitle {
+  font-family: typography.$font-family-body;
+  font-size: clamp(0.9375rem, 2vw, 1.125rem);
+  color: colors.$color-white-85;
+  margin: 0;
+  line-height: typography.$line-height-relaxed;
+}
+
+// ----------------------------------------
+// MAIN CONTAINER
+// ----------------------------------------
+
+.favourites-main {
+  margin-top: -(spacing.$spacing-6);
+  padding-bottom: spacing.$spacing-16;
+
+  @include mobile-only {
+    padding-bottom: spacing.$spacing-12;
+  }
+}
+
+.favourites-container {
+  @include container;
+}
+
+// ----------------------------------------
+// STATE COMPONENTS (Loading & Empty)
+// ----------------------------------------
+
+.favourites-state {
+  background: colors.$color-bg-secondary;
+  border-radius: effects.$radius-xl;
+  box-shadow: effects.$shadow-sm;
+  border: 1px solid colors.$color-border-light;
+  padding: spacing.$spacing-16 spacing.$spacing-8;
+  text-align: center;
+
+  @include mobile-only {
+    padding: spacing.$spacing-12 spacing.$spacing-6;
+  }
+}
+
+.favourites-state--hidden {
+  display: none;
+}
+
+// Loading state spinner
+.favourites-state__spinner {
+  margin-bottom: spacing.$spacing-6;
+}
+
+.favourites-state__spinner-icon {
+  width: 48px;
+  height: 48px;
+  color: colors.$color-primary;
+  animation: favourites-spin 1s linear infinite;
+}
+
+@keyframes favourites-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.favourites-state__text {
+  font-family: typography.$font-family-body;
+  font-size: typography.$font-size-base;
+  color: colors.$color-text-secondary;
+  margin: 0;
+  line-height: typography.$line-height-relaxed;
+}
+
+// Empty state icon
+.favourites-state__icon {
+  color: colors.$color-text-muted;
+  margin-bottom: spacing.$spacing-6;
+
+  svg {
+    width: 80px;
+    height: 80px;
+
+    @include mobile-only {
+      width: 64px;
+      height: 64px;
+    }
+  }
+}
+
+.favourites-state__title {
+  font-family: typography.$font-family-heading;
+  font-size: typography.$font-size-2xl;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
+  margin: 0 0 spacing.$spacing-3 0;
+}
+
+.favourites-state__message {
+  font-family: typography.$font-family-body;
+  font-size: typography.$font-size-base;
+  color: colors.$color-text-secondary;
+  margin: 0 0 spacing.$spacing-8 0;
+  line-height: typography.$line-height-relaxed;
+}
+
+.favourites-state__button {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing.$spacing-2;
+  padding: spacing.$spacing-4 spacing.$spacing-6;
+  background: colors.$color-button-primary;
+  color: colors.$color-button-text-primary;
+  text-decoration: none;
+  border-radius: effects.$radius-md;
+  font-family: typography.$font-family-body;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-semibold;
+  transition: all effects.$transition-fast;
+
+  &:hover {
+    background: colors.$color-button-primary-hover;
+    transform: translateY(-2px);
+    box-shadow: effects.$shadow-lg;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// ----------------------------------------
+// HEADER (Count & Clear All)
+// ----------------------------------------
+
+.favourites-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: spacing.$spacing-4;
+  padding: spacing.$spacing-6 spacing.$spacing-8;
+  background: colors.$color-bg-secondary;
+  border-radius: effects.$radius-xl;
+  box-shadow: effects.$shadow-sm;
+  border: 1px solid colors.$color-border-light;
+  margin-bottom: spacing.$spacing-6;
+
+  @include mobile-only {
+    padding: spacing.$spacing-5 spacing.$spacing-6;
+  }
+}
+
+.favourites-header__count {
+  font-family: typography.$font-family-heading;
+  font-size: typography.$font-size-xl;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
+  margin: 0;
+
+  span {
+    color: colors.$color-primary;
+  }
+}
+
+.favourites-header__clear {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing.$spacing-2;
+  padding: spacing.$spacing-2 spacing.$spacing-4;
+  background: transparent;
+  color: colors.$color-text-secondary;
+  border: 1px solid colors.$color-border-light;
+  border-radius: effects.$radius-md;
+  font-family: typography.$font-family-body;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
+  cursor: pointer;
+  transition: all effects.$transition-fast;
+
+  &:hover {
+    color: colors.$color-error;
+    border-color: colors.$color-error;
+    background: colors.$color-error-lighter;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: colors.$color-error;
+    box-shadow: 0 0 0 3px colors.$color-error-light;
+  }
+}
+
+// ----------------------------------------
+// GRID LAYOUT
+// ----------------------------------------
+
+.favourites-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing.$spacing-6;
+
+  @include sm {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

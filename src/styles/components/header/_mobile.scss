@@ -3,12 +3,12 @@
 // Hamburger, mobile menu, toggle
 // ========================================
 
-@use '../tokens/colors' as colors;
-@use '../tokens/effects' as effects;
-@use '../tokens/spacing' as spacing;
-@use '../tokens/sizing' as sizing;
-@use '../tokens/typography' as typography;
-@use '../mixins' as *;
+@use '../../tokens/colors' as colors;
+@use '../../tokens/effects' as effects;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/sizing' as sizing;
+@use '../../tokens/typography' as typography;
+@use '../../mixins' as *;
 
 // ----------------------------------------
 // DESIGN TOKENS
@@ -20,9 +20,9 @@ $mobile-menu-text-muted: colors.$color-text-muted;
 $mobile-menu-border: colors.$color-border-light;
 $mobile-menu-hover-bg: colors.$color-bg-secondary;
 
-// ========================================
+// ----------------------------------------
 // MOBILE MENU TOGGLE
-// ========================================
+// ----------------------------------------
 
 .header__mobile-toggle {
   display: flex;
@@ -78,9 +78,9 @@ $mobile-menu-hover-bg: colors.$color-bg-secondary;
   }
 }
 
-// ========================================
+// ----------------------------------------
 // MOBILE MENU (Legacy - now uses full-screen nav)
-// ========================================
+// ----------------------------------------
 
 .header__mobile-menu {
   display: none !important;
@@ -92,9 +92,9 @@ $mobile-menu-hover-bg: colors.$color-bg-secondary;
   pointer-events: auto;
 }
 
-// ========================================
+// ----------------------------------------
 // MOBILE NAV CONTENT
-// ========================================
+// ----------------------------------------
 
 .header__mobile-nav {
   display: flex;

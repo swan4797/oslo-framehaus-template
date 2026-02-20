@@ -9,6 +9,7 @@ import { siteConfig, apiConfig } from '../lib/config'
 import CookieConsent from '../components/CookieConsent.astro'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
+import ScrollAnimations from '../components/ScrollAnimations.astro'
 
 import "../styles/global.css";
 import '../styles/global/_layouts.scss';
@@ -189,6 +190,9 @@ const fullTitle = title === siteConfig.name ? title : `${title} | ${siteConfig.n
 
     <!-- Cookie Consent -->
     <CookieConsent />
+
+    <!-- Scroll Animations -->
+    <ScrollAnimations />
   </body>
 </html>
 

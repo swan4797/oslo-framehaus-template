@@ -1,0 +1,18 @@
+---
+// ========================================
+// SCROLL ANIMATIONS
+// Include this component in layouts to enable scroll reveal animations
+// ========================================
+
+// No props needed - just include <ScrollAnimations /> in your layout
+---
+
+<script>
+  import { initAnimations } from '../scripts/scroll-animations'
+
+  // Initialize animations
+  initAnimations()
+
+  // Re-initialize on Astro View Transitions
+  document.addEventListener('astro:page-load', initAnimations)
+</script>

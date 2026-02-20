@@ -10,6 +10,7 @@ import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import CookieConsent from '../components/CookieConsent.astro'
 import BrandProvider from '../components/BrandProvider.astro'
+import ScrollAnimations from '../components/ScrollAnimations.astro'
 
 // Import Header types for configuration
 import type { HeaderVariant, HeaderConfig, HeaderVariantConfig, NavItem } from '../components/Header.astro'
@@ -192,5 +193,8 @@ const bodyClasses = ['body_wrapper', bodyClass].filter(Boolean).join(' ')
 
     <!-- Cookie Consent -->
     <CookieConsent />
+
+    <!-- Scroll Animations -->
+    <ScrollAnimations />
   </body>
 </html>

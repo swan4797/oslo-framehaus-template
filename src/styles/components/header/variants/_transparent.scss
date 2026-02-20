@@ -1,0 +1,17 @@
+// ========================================
+// HEADER VARIANT: TRANSPARENT
+// Transparent background, for use over hero images
+// ========================================
+
+@use '../../../tokens/colors' as colors;
+
+// ----------------------------------------
+// TRANSPARENT VARIANT
+// ----------------------------------------
+
+.site-header--transparent {
+  --header-bg: transparent;
+  --header-border: transparent;
+  --header-text-color: #{colors.$color-text-primary};
+  --header-text-hover: #{colors.$color-primary};
+}
