@@ -78,6 +78,8 @@ export interface PropertyMapData {
   bedrooms: number
   bathrooms: number | null
   receptions: number | null
+  floor_area: number | null
+  internal_area: number | null
   property_type: string
   property_style: string | null
   is_featured: boolean
@@ -454,6 +456,8 @@ export interface SimilarProperty {
   city: string
   bedrooms: number
   bathrooms: number | null
+  floor_area: number | null
+  internal_area: number | null
   property_type: string
   listing_type: string
   listing_status: string
