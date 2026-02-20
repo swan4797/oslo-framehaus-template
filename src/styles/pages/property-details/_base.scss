@@ -134,7 +134,7 @@
   }
 
   @include lg {
-    font-size: 1.25rem;
+    font-size: 2rem;
   }
 }
 
@@ -168,6 +168,7 @@
   align-items: center;
   gap: spacing.$spacing-2;
   width: 100%;
+  flex-direction: column;
 
   @include sm {
     width: auto;

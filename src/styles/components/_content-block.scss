@@ -21,12 +21,12 @@
   min-height: 500px;
 
   @include md {
-    grid-template-columns: 1fr 1fr;
     min-height: 600px;
   }
 
   @include lg {
     min-height: 700px;
+    grid-template-columns: 1fr 1fr;
     padding: 0;
   }
 }
@@ -40,7 +40,7 @@
   overflow: hidden;
   min-height: 300px;
 
-  @include md {
+  @include lg {
     min-height: 100%;
   }
 }
@@ -331,7 +331,7 @@
   .content-block__media {
     order: 1;
 
-    @include md {
+    @include lg {
       order: 2;
     }
   }
@@ -339,7 +339,7 @@
   .content-block__text {
     order: 2;
 
-    @include md {
+    @include lg {
       order: 1;
     }
   }

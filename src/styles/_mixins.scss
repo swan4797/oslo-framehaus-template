@@ -76,6 +76,10 @@
     padding-left: $container-padding;
     padding-right: $container-padding;
   }
+  @include lg {
+    max-width: $container-oslo-narrow-width;
+
+  }
 }
 
 @mixin container-narrow {

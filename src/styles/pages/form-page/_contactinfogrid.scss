@@ -12,11 +12,11 @@
 
 .contact-info-section {
   padding: 0 spacing.$spacing-6;
-  margin-bottom: spacing.$spacing-12;
+  margin: spacing.$spacing-12 0;
 
   @include mobile-only {
     padding: 0 spacing.$spacing-4;
-    margin-bottom: spacing.$spacing-8;
+    margin: spacing.$spacing-6 0;
   }
 }
 
@@ -113,7 +113,7 @@ a.contact-info-card {
   justify-content: center;
   width: 2.25rem;
   height: 2.25rem;
-  background: colors.$color-bg-secondary;
+  background: colors.$color-bg-tertiary;
   border-radius: 0;
   color: colors.$color-text-primary;
   transition: background effects.$transition-fast, color effects.$transition-fast;

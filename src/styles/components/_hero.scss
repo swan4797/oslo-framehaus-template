@@ -130,18 +130,21 @@
 
   @include sm {
     padding: spacing.$spacing-8 spacing.$spacing-6 spacing.$spacing-12;
+    flex-direction: column;
+
   }
 
   @include md {
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
     padding: spacing.$spacing-10 spacing.$spacing-10 spacing.$spacing-16;
-    gap: spacing.$spacing-10;
+  
   }
 
   @include lg {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
     padding: spacing.$spacing-12 spacing.$spacing-16 spacing.$spacing-20;
+    gap: spacing.$spacing-10;
   }
 }
 

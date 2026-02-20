@@ -22,6 +22,7 @@
 
   @include md {
     min-height: 380px;
+    margin: 3em 0 0 0;
   }
 
 
@@ -119,7 +120,7 @@
   width: 100%;
 
   @include lg {
-    max-width: 520px;
+    max-width: 720px;
   }
 }
 
@@ -144,7 +145,6 @@
   line-height: 1.7;
   color: colors.$color-accent;
   margin: 0 0 spacing.$spacing-8;
-  max-width: 400px;
 
   @include md {
     font-size: typography.$font-size-base;

@@ -60,7 +60,7 @@ const ctaImage = getSectionImage(pageContent, 'cta')
   <!-- Why Choose Us Section -->
   {hasWhyChoose && (
     <StaticFullContent
-      blockKey="why_choose_us"
+      blockKey="oslo_buyers"
       pageContent={pageContent}
       imageSrc={whyChooseImage?.url}
       imageAlt={whyChooseImage?.alt}
@@ -68,7 +68,7 @@ const ctaImage = getSectionImage(pageContent, 'cta')
   )}
 
   <!-- Areas of Expertise Section -->
-  {hasAreasExpertise && (
+  <!-- {hasAreasExpertise && (
     <ContentBlock
       blockKey="areas_of_expertise"
       pageContent={pageContent}
@@ -79,10 +79,10 @@ const ctaImage = getSectionImage(pageContent, 'cta')
       layout="default"
       imagePosition="right"
     />
-  )}
+  )} -->
 
   <!-- Getting Started Section -->
-  {hasGettingStarted && (
+  <!-- {hasGettingStarted && (
     <ContentBlock
       blockKey="getting_started"
       pageContent={pageContent}
@@ -93,10 +93,10 @@ const ctaImage = getSectionImage(pageContent, 'cta')
       layout="default"
       imagePosition="left"
     />
-  )}
+  )} -->
 
   <!-- CTA Section -->
-  {hasCta && (
+  <!-- {hasCta && (
     <CTABanner
       blockKey="cta"
       pageContent={pageContent}
@@ -107,5 +107,5 @@ const ctaImage = getSectionImage(pageContent, 'cta')
       secondaryCtaText="Contact Us"
       secondaryCtaLink="/contact"
     />
-  )}
+  )} -->
 </Layout>
