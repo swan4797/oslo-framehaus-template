@@ -225,9 +225,23 @@ function initViewToggle(): void {
     console.log(`[SearchPage] View switched to: ${view}`)
   }
 
+  // Scroll to results section
+  function scrollToResults(): void {
+    const resultsSection = document.querySelector('[data-results-section]')
+    if (resultsSection) {
+      resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
   // Button click handlers
-  gridBtn.addEventListener('click', () => switchView('grid'))
-  listBtn.addEventListener('click', () => switchView('list'))
+  gridBtn.addEventListener('click', () => {
+    switchView('grid')
+    scrollToResults()
+  })
+  listBtn.addEventListener('click', () => {
+    switchView('list')
+    scrollToResults()
+  })
 
   console.log('[SearchPage] View toggle initialized')
 }

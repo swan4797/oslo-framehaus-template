@@ -14,8 +14,6 @@ $search-sidebar-width: 340px;
   width: 100%;
   max-width: $search-content-width;
   margin-inline: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
 
   @include md {
     padding-left: 2rem;
