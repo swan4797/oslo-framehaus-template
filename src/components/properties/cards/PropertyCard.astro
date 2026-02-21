@@ -27,6 +27,7 @@ const propertyUrl = getPropertyUrl(property)
 const displayPrice = getDisplayPrice(property)
 const thumbnailUrl = getThumbnailUrl(property)
 const propertyType = formatPropertyType(property.property_type)
+const propertyStyle = property.property_style || null
 
 // Get floor area with fallback to internal_area
 const floorArea = property.floor_area || property.internal_area || null
@@ -220,8 +221,9 @@ const remainingPhotosCount = totalImageCount - 5
       <div class="property-card__content">
         <!-- Header Row: Title + Price -->
         <div class="property-card__header">
+          <!-- Address -->
           <h3 class="property-card__title">
-            {propertyType || 'Property'}
+            {truncateText(property.address_line_1 || '', 10)}
           </h3>
           <div class="property-card__price">
             <span class="property-card__price-value">{displayPrice}</span>
@@ -231,10 +233,12 @@ const remainingPhotosCount = totalImageCount - 5
           </div>
         </div>
 
-        <!-- Address -->
-        <p class="property-card__address">
-          {truncateText(property.display_address || '', 30)}
-        </p>
+        <!-- Property Type & Style -->
+        {(propertyType || propertyStyle) && (
+          <p class="property-card__type">
+            {propertyType}{propertyType && propertyStyle && ' • '}{propertyStyle}
+          </p>
+        )}
 
         <!-- Divider -->
         <div class="property-card__divider"></div>

@@ -27,6 +27,7 @@ const propertyUrl = getPropertyUrl(property)
 const displayPrice = getDisplayPrice(property)
 const thumbnailUrl = getThumbnailUrl(property)
 const propertyType = formatPropertyType(property.property_type)
+const propertyStyle = property.property_style || null
 
 // Truncate text helper - clean truncation without breaking words
 const truncateText = (text: string, maxLength: number): string => {
@@ -137,7 +138,8 @@ const remainingPhotosCount = totalImageCount - 5
 // Build category label
 const categoryLabel = [
   property.listing_type === 'sale' ? 'For Sale' : 'To Rent',
-  propertyType
+  propertyType,
+  propertyStyle
 ].filter(Boolean).join(' • ')
 ---
 
