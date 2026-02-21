@@ -39,7 +39,7 @@ const brand = await fetchBrandSettings(true)
 const contact = getContactInfo(brand)
 
 // Fetch homepage content from Stratos CRM
-const pageContent = await getPageContent('elliot-and-co')
+const pageContent = await getPageContent('homepage')
 
 // Get hero image from CMS
 const heroImage = getHeroImage(pageContent)
@@ -202,7 +202,7 @@ const reviews = [
 
   <!-- Why Choose Us - Bento Layout -->
   <ServiceGrid
-    title={servicesTitle || "Why <em>Choose</em> Compatto"}
+    title={servicesTitle || "Why <em>Choose</em> us"}
     layout="bento"
     items={[
       {

@@ -32,7 +32,7 @@ const pageTitle = pageContent?.page_title || 'About Us'
 const pageDescription = 'Learn more about our team and our commitment to helping you find your perfect property.'
 
 // Check which sections exist in CMS
-const hasOurStory = hasSection(pageContent, 'our_story')
+const hasOurStory = hasSection(pageContent, 'oslo_about_full')
 const hasWhatMakesUsDifferent = hasSection(pageContent, 'what_makes_us_different')
 const hasCoverageArea = hasSection(pageContent, 'coverage_area')
 const hasReputation = hasSection(pageContent, 'reputation')
@@ -40,7 +40,7 @@ const hasOurPromise = hasSection(pageContent, 'our_promise')
 const hasCta = hasSection(pageContent, 'cta')
 
 // Get section images
-const ourStoryImage = getSectionImage(pageContent, 'our_story')
+const ourStoryImage = getSectionImage(pageContent, 'oslo_about_full')
 const whatMakesUsDifferentImage = getSectionImage(pageContent, 'what_makes_us_different')
 const coverageAreaImage = getSectionImage(pageContent, 'coverage_area')
 const reputationImage = getSectionImage(pageContent, 'reputation')
@@ -64,7 +64,7 @@ const ctaImage = getSectionImage(pageContent, 'cta')
   <!-- Our Story Section -->
   {hasOurStory && (
     <StaticFullContent
-      blockKey="oslo_full"
+      blockKey="oslo_about_full"
       pageContent={pageContent}
       imageSrc={ourStoryImage?.url}
       imageAlt={ourStoryImage?.alt}

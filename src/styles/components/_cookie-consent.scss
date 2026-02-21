@@ -42,7 +42,7 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
 .cookie-overlay__backdrop {
   position: absolute;
   inset: 0;
-  background: colors.$color-bg-secondary;
+  background: #02020261;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
@@ -150,7 +150,7 @@ $accent-coral-light: rgba(var(--color-primary-rgb, 224, 122, 95), 0.1);
 .cookie-banner__description {
   font-family: typography.$font-family-base;
   font-size: typography.$font-size-sm;
-  color: colors.$color-text-secondary;
+  color: colors.$color-text-primary;
   margin: 0;
   line-height: typography.$line-height-base;
 }

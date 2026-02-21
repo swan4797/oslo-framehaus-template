@@ -32,14 +32,14 @@ const pageTitle = pageContent?.page_title || 'Selling Your Property'
 const pageDescription = 'Expert guidance and support for selling your property. Get the best price with our experienced team.'
 
 // Check which sections exist in CMS
-const hasWhySellers = hasSection(pageContent, 'why_sellers_choose_us')
+const hasWhySellers = hasSection(pageContent, 'oslo_seller_full')
 const hasSellingProcess = hasSection(pageContent, 'selling_process')
 const hasAreasCovered = hasSection(pageContent, 'areas_covered')
 const hasTestimonials = hasSection(pageContent, 'testimonials')
 const hasCta = hasSection(pageContent, 'cta')
 
 // Get section images
-const whySellersImage = getSectionImage(pageContent, 'why_sellers_choose_us')
+const whySellersImage = getSectionImage(pageContent, 'oslo_seller_full')
 const sellingProcessImage = getSectionImage(pageContent, 'selling_process')
 const areasCoveredImage = getSectionImage(pageContent, 'areas_covered')
 const testimonialsImage = getSectionImage(pageContent, 'testimonials')
@@ -62,7 +62,7 @@ const ctaImage = getSectionImage(pageContent, 'cta')
   <!-- Why Sellers Choose Us Section -->
   {hasWhySellers && (
     <StaticFullContent
-      blockKey="full_sellers"
+      blockKey="oslo_seller_full"
       pageContent={pageContent}
       imageSrc={whySellersImage?.url}
       imageAlt={whySellersImage?.alt}

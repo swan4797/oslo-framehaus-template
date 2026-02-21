@@ -70,8 +70,3 @@ $container-max-width: 90rem;
 // LOGO MODIFIERS
 // ----------------------------------------
 
-.site-header--light-logo {
-  .header__logo-img {
-    filter: brightness(0) invert(1);
-  }
-}
